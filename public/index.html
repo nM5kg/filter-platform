@@ -48,7 +48,7 @@
 </head>
 <body>
 <header>
-  <h1>פילטער פּלאַטפאָרמע <span class="badge">פֿאַזע 1 — Core Platform</span></h1>
+  <h1>פילטער פּלאַטפאָרמע <span class="badge">פֿאַזע 3 — Ads + SafeSearch</span></h1>
   <p>אַדמין און קונה דאַשבאָרד — פֿאַרבונדן צום filter-platform-api וואָרקער און דער Neon דאַטאַבאַזע.</p>
 </header>
 <main>
@@ -126,6 +126,29 @@
         <input id="domCategory" placeholder="קאַטעגאָריע">
         <button>צולייגן</button>
       </form>
+    </div>
+
+    <div class="card">
+      <h2>אַדס / טראַקערס — בלאָק־ליסטע (פֿאַזע 3)</h2>
+      <p class="muted">דאָס ווערט אָנגעווענדט נאָר ווען די פּאָליטיק האָט <b>filter_ads = יאָ</b>. די סטאַנדאַרט־פּאָליטיק האָט עס אויסגעלאָשן, אַזוי די דאָמעינס דאָ זײַנען דערווײַל נישט בלאָקירט.</p>
+      <div class="row">
+        <button onclick="loadAds('all')">אַלע</button>
+        <button onclick="loadAds('ads')" class="secondary">אַדס</button>
+        <button onclick="loadAds('tracking')" class="secondary">טראַקינג</button>
+        <button onclick="loadAds('analytics')" class="secondary">אַנאַליטיקס</button>
+        <span id="adsCount" class="muted"></span>
+      </div>
+      <div id="ads" style="margin-top:8px"></div>
+    </div>
+
+    <div class="card">
+      <h2>SafeSearch (פֿאַזע 3)</h2>
+      <p class="muted">צווינגט זיכערע זוכונג אויף Google / Bing / DuckDuckGo / YouTube — URL־פּאַראַמעטערס (באַלד־אויספֿירלעך) און DNS־CNAME־שלאָסן (נעץ־שטאַפּל).</p>
+      <div class="row">
+        <select id="ssDevice" onchange="loadSafesearch()"></select>
+        <button onclick="loadSafesearch()">ווײַזן</button>
+      </div>
+      <div id="safesearch" style="margin-top:8px"></div>
     </div>
 
     <div class="card">
@@ -221,6 +244,7 @@
 const API = "https://filter-platform-api.gavhah-copy.workers.dev";
 let TOKEN = sessionStorage.getItem("fp_token") || "";
 let CUSTOMERS = [], DEVICES = [], POLICIES = [];
+let ADS = [], SAFESEARCH = null, DEV_STATUS = {};
 
 function setStatus(msg, ok) {
   const el = document.getElementById("status");
@@ -277,26 +301,38 @@ async function loadAll() {
   const h = await fetch(API + "/health").then(r => r.json());
   document.getElementById("health").innerHTML =
     "סערוויס: <b>" + esc(h.service) + "</b> — סטאַטוס: <b>" + esc(h.status) + "</b> — דאַטאַבאַזע: <b>" + esc(h.database) + "</b> — פֿאַזע: " + esc(h.phase);
-  const [c, d, p, req, an, au] = await Promise.all([
+  const [c, d, p, req, an, au, ads, ss] = await Promise.all([
     api("GET", "/api/v1/customers"), api("GET", "/api/v1/devices"), api("GET", "/api/v1/policies"),
-    api("GET", "/api/v1/requests"), api("GET", "/api/v1/analysis?limit=10"), api("GET", "/api/v1/audit-logs?limit=10"),
+    api("GET", "/api/v1/requests"), api("GET", "/api/v1/analysis?limit=20"), api("GET", "/api/v1/audit-logs?limit=10"),
+    api("GET", "/api/v1/ads/blocklist"), api("GET", "/api/v1/safesearch"),
   ]);
   CUSTOMERS = c.data; DEVICES = d.data; POLICIES = p.data;
+  ADS = ads.data; SAFESEARCH = ss.data;
+  // Latest heartbeat per device (live status + last seen).
+  DEV_STATUS = {};
+  await Promise.all(DEVICES.map(async x => {
+    try { const s = await api("GET", "/api/v1/devices/" + x.id + "/status"); DEV_STATUS[x.id] = s.data; }
+    catch (e) { DEV_STATUS[x.id] = null; }
+  }));
   const dom = await api("GET", "/api/v1/domains");
   const apps = await api("GET", "/api/v1/applications");
   const words = await api("GET", "/api/v1/blocked-words");
   document.getElementById("stats").innerHTML =
     [["קאַסטאַמערס", CUSTOMERS.length], ["דעוויסעס", DEVICES.length], ["פּאָליטיקן", POLICIES.length],
-     ["דאָמעינס", dom.data.length], ["אַפּס", apps.data.length], ["בקשות", req.data.length]
+     ["דאָמעינס", dom.data.length], ["אַפּס", apps.data.length], ["בקשות", req.data.length],
+     ["אַדס־דאָמעינס", ADS.count], ["AI אַנאַליזן", an.data.length]
     ].map(([k, v]) => '<div class="stat"><b>' + v + "</b>" + k + "</div>").join("");
   renderCustomers(); renderDevices(); renderPolicies(); renderDomains(dom.data);
   renderApps(apps.data); renderWords(words.data); renderRequests(req.data);
   renderAnalysis(an.data); renderAudit(au.data);
+  renderAds(ADS.entries); renderSafesearch(SAFESEARCH);
   const opts = CUSTOMERS.map(x => '<option value="' + x.id + '">' + esc(x.name) + " (" + esc(x.email) + ")</option>").join("");
   document.getElementById("dCustomer").innerHTML = opts;
   document.getElementById("rCustomer").innerHTML = opts;
   document.getElementById("myCustomer").innerHTML = opts;
   document.getElementById("rCustomer2").innerHTML = opts;
+  document.getElementById("ssDevice").innerHTML = '<option value="">דיפֿאָלט־פּאָליטיק</option>' +
+    DEVICES.map(x => '<option value="' + x.id + '">' + esc(x.name) + " (" + esc(x.customer_name) + ")</option>").join("");
 }
 
 function renderCustomers() {
@@ -305,10 +341,16 @@ function renderCustomers() {
     : '<p class="muted">קיין קאַסטאַמערס נישטאָ — שאַפֿט אַ נײַעם קונה אונטן.</p>';
 }
 function renderDevices() {
-  document.getElementById("devices").innerHTML = DEVICES.length ? "<table><tr><th>נאָמען</th><th>קונה</th><th>פּלאַטפֿאָרמע</th><th>סטאַטוס</th><th>פּאָליטיק</th><th>אַקטיוואַציע־קאָד</th></tr>" +
-    DEVICES.map(x => "<tr><td>" + esc(x.name) + "</td><td>" + esc(x.customer_name) + "</td><td>" + esc(x.platform) + "</td><td>" +
+  document.getElementById("devices").innerHTML = DEVICES.length ? "<table><tr><th>נאָמען</th><th>קונה</th><th>פּלאַטפֿאָרמע</th><th>סטאַטוס</th><th>אָנליין</th><th>לעצט געזען</th><th>פּאָליטיק</th><th>אַקטיוואַציע־קאָד</th></tr>" +
+    DEVICES.map(x => {
+      const st = DEV_STATUS[x.id];
+      const live = !st ? pill("—", "pending") : st.status === "online" ? pill("אָנליין", "allow") : st.status === "offline" ? pill("אָפֿליין", "block") : pill(st.status, "pending");
+      const seen = x.last_seen_at || (st ? st.checked_at : null);
+      return "<tr><td>" + esc(x.name) + "</td><td>" + esc(x.customer_name) + "</td><td>" + esc(x.platform) + "</td><td>" +
       (x.status === "active" ? pill("אַקטיוו", "allow") : x.status === "pending" ? pill("וואַרט אויף קאָד", "pending") : pill(x.status, "block")) + "</td><td>" +
-      esc(x.policy_name || "—") + "</td><td dir='ltr'>" + (x.status === "pending" ? esc(x.activation_code || "") : "—") + "</td></tr>").join("") + "</table>"
+      live + "</td><td dir='ltr'>" + esc(seen ? String(seen).slice(0, 19).replace("T", " ") : "—") + "</td><td>" +
+      esc(x.policy_name || "—") + "</td><td dir='ltr'>" + (x.status === "pending" ? esc(x.activation_code || "") : "—") + "</td></tr>";
+    }).join("") + "</table>"
     : '<p class="muted">קיין דעוויסעס נישטאָ.</p>';
 }
 function renderPolicies() {
@@ -317,8 +359,45 @@ function renderPolicies() {
     '<span class="muted">' + esc(p.description || "") + "</span><br>" +
     "בלאָקירט בילדער: <b>" + (p.block_images ? "יאָ" : "ניין") + "</b> · באַדעקט בילדער: <b>" + (p.cover_images ? "יאָ" : "ניין") +
     "</b> · ווידעאָ־פֿילטער: <b>" + (p.filter_videos ? "יאָ" : "ניין") + "</b> · אַדס: <b>" + (p.filter_ads ? "יאָ" : "ניין") +
-    "</b> · נײַע זײַטן דאַרפֿן אַפּרוּווּל: <b>" + (p.require_approval_for_new_sites ? "יאָ" : "ניין") +
+    "</b> · SafeSearch: <b>" + (p.force_safesearch ? "אָן" : "אויס") + "</b> · נײַע זײַטן דאַרפֿן אַפּרוּווּל: <b>" + (p.require_approval_for_new_sites ? "יאָ" : "ניין") +
     "</b> · אויטאָ־באַשלוס שוועל: <b>" + p.auto_decide_threshold + "</b></div>").join("");
+}
+function renderAds(entries) {
+  const list = entries || [];
+  document.getElementById("adsCount").textContent = list.length + " דאָמעינס";
+  document.getElementById("ads").innerHTML = list.length ? "<table><tr><th>דאָמעין</th><th>קאַטעגאָריע</th><th>מקור</th></tr>" +
+    list.map(x => "<tr><td dir='ltr'>" + esc(x.domain) + "</td><td>" + pill(esc(x.category || ""), x.category === "ads" ? "block" : x.category === "tracking" ? "review" : "pending") + "</td><td>" + esc(x.source || "") + "</td></tr>").join("") + "</table>"
+    : '<p class="muted">קיין אַדס־דאָמעינס נישטאָ פֿאַר דער קאַטעגאָריע.</p>';
+}
+async function loadAds(category) {
+  try {
+    const q = !category || category === "all" ? "" : "?category=" + encodeURIComponent(category);
+    const d = await api("GET", "/api/v1/ads/blocklist" + q);
+    ADS = d.data;
+    renderAds(ADS.entries);
+  } catch (err) { setStatus("פֿעלער: " + err.message, false); }
+}
+function renderSafesearch(d) {
+  const el = document.getElementById("safesearch");
+  if (!d) { el.innerHTML = '<p class="muted">קיין SafeSearch־דאַטן נישטאָ.</p>'; return; }
+  let html = "<p>פּאָליטיק: <b>" + esc(d.policy_name) + "</b> — SafeSearch: " +
+    (d.force_safesearch ? pill("אָן", "allow") : pill("אויס", "block")) + "</p>";
+  if (!d.force_safesearch) {
+    html += '<p class="muted">SafeSearch איז אויסגעלאָשן פֿאַר דער פּאָליטיק — קיין כּללים זײַנען נישט אַקטיוו.</p>';
+  } else if (d.engines && d.engines.length) {
+    html += "<table><tr><th>זוכמאַשין</th><th>אופֿן</th><th>כּלל</th><th>באַמערקונג</th></tr>" +
+      d.engines.map(e => "<tr><td>" + esc(e.engine) + "</td><td>" + esc(e.method) + "</td><td dir='ltr'>" + esc(e.rule) + "</td><td>" + esc(e.note || "") + "</td></tr>").join("") + "</table>";
+  }
+  el.innerHTML = html;
+}
+async function loadSafesearch() {
+  try {
+    const did = document.getElementById("ssDevice").value;
+    const q = did ? "?device_id=" + encodeURIComponent(did) : "";
+    const d = await api("GET", "/api/v1/safesearch" + q);
+    SAFESEARCH = d.data;
+    renderSafesearch(SAFESEARCH);
+  } catch (err) { setStatus("פֿעלער: " + err.message, false); }
 }
 function renderDomains(list) {
   document.getElementById("domains").innerHTML = list.length ? "<table><tr><th>דאָמעין</th><th>באַשלוס</th><th>קאַטעגאָריע</th><th>מקור</th></tr>" +
@@ -350,10 +429,22 @@ function renderRequests(list) {
     : '<p class="muted">קיין בקשות נישטאָ.</p>';
 }
 function renderAnalysis(list) {
-  document.getElementById("analysis").innerHTML = list.length ? list.map(x =>
-    "<div><b dir='ltr'>" + esc(x.target) + "</b> — " + esc(x.result.verdict || "?") + " (" + esc(x.result.confidence) + ")<br>" +
-    '<span class="muted">' + esc((x.result.reasons || []).join("; ")) + "</span></div>").join("<hr>")
-    : '<p class="muted">קיין אַנאַליזן נישטאָ.</p>';
+  const el = document.getElementById("analysis");
+  if (!list.length) { el.innerHTML = '<p class="muted">קיין אַנאַליזן נישטאָ.</p>'; return; }
+  const appr = list.filter(x => x.result && x.result.verdict === "approve").length;
+  const rej = list.filter(x => x.result && x.result.verdict === "reject").length;
+  const confs = list.map(x => x.result && x.result.confidence).filter(c => typeof c === "number");
+  const avg = confs.length ? (confs.reduce((a, b) => a + b, 0) / confs.length).toFixed(2) : "—";
+  const cached = list.filter(x => x.result && x.result.cached).length;
+  el.innerHTML = '<div class="grid" style="margin-bottom:10px">' +
+    [["סך־הכּל", list.length], ["אַפּרוווד", appr], ["אָפּגעוואָרפֿן", rej],
+     ["דורכשניט־קאָנפֿידענץ", avg], ["פֿון קאַש", cached]
+    ].map(([k, v]) => '<div class="stat"><b>' + v + "</b>" + k + "</div>").join("") + "</div>" +
+    "<table><tr><th>ווען</th><th>ציל</th><th>באַשלוס</th><th>קאָנפֿידענץ</th><th>סיבות</th></tr>" +
+    list.map(x => "<tr><td dir='ltr'>" + esc(String(x.created_at || "").slice(0, 19).replace("T", " ")) + "</td><td dir='ltr'>" + esc(x.target) + "</td><td>" +
+      (x.result.verdict === "approve" ? pill("אַפּרוווד", "allow") : pill("אָפּגעוואָרפֿן", "block")) + "</td><td dir='ltr'>" +
+      esc(x.result.confidence == null ? "—" : x.result.confidence) + (x.result.cached ? " (קאַש)" : "") + "</td><td>" +
+      esc((x.result.reasons || []).join("; ")) + "</td></tr>").join("") + "</table>";
 }
 function renderAudit(list) {
   document.getElementById("audit").innerHTML = list.length ? "<table><tr><th>ווען</th><th>אַקציע</th><th>אָביעקט</th></tr>" +
@@ -437,11 +528,11 @@ async function loadCustomerView() {
       api("GET", "/api/v1/devices"), api("GET", "/api/v1/requests?customer_id=" + cid), api("GET", "/api/v1/policies"),
     ]);
     const mine = devs.data.filter(x => x.customer_id === cid);
-    document.getElementById("myDevices").innerHTML = mine.length ? "<table><tr><th>דעוויס</th><th>פּלאַטפֿאָרמע</th><th>סטאַטוס</th><th>פּאָליטיק</th></tr>" +
-      mine.map(x => "<tr><td>" + esc(x.name) + "</td><td>" + esc(x.platform) + "</td><td>" + (x.status === "active" ? pill("אַקטיוו", "allow") : pill("וואַרט אויף קאָד", "pending")) + "</td><td>" + esc(x.policy_name || "—") + "</td></tr>").join("") + "</table>"
+    document.getElementById("myDevices").innerHTML = mine.length ? "<table><tr><th>דעוויס</th><th>פּלאַטפֿאָרמע</th><th>סטאַטוס</th><th>לעצט געזען</th><th>פּאָליטיק</th></tr>" +
+      mine.map(x => "<tr><td>" + esc(x.name) + "</td><td>" + esc(x.platform) + "</td><td>" + (x.status === "active" ? pill("אַקטיוו", "allow") : pill("וואַרט אויף קאָד", "pending")) + "</td><td dir='ltr'>" + esc(x.last_seen_at ? String(x.last_seen_at).slice(0, 19).replace("T", " ") : "—") + "</td><td>" + esc(x.policy_name || "—") + "</td></tr>").join("") + "</table>"
       : '<p class="muted">קיין דעוויסעס נישטאָ פֿאַר דעם קונה.</p>';
     const def = pols.data.find(p => p.is_default) || pols.data[0];
-    document.getElementById("myPolicy").innerHTML = def ? "<b>מײַן פּאָליטיק:</b> " + esc(def.name) + " — בלאָקירט בילדער: <b>" + (def.block_images ? "יאָ" : "ניין") + "</b> · אַנדערש אָפֿן." : "";
+    document.getElementById("myPolicy").innerHTML = def ? "<b>מײַן פּאָליטיק:</b> " + esc(def.name) + " — בלאָקירט בילדער: <b>" + (def.block_images ? "יאָ" : "ניין") + "</b> · אַדס־פֿילטער: <b>" + (def.filter_ads ? "אָן" : "אויס") + "</b> · SafeSearch: <b>" + (def.force_safesearch ? "אָן" : "אויס") + "</b> · ווידעאָ־פֿילטער: <b>" + (def.filter_videos ? "יאָ" : "ניין") + "</b>." : "";
     document.getElementById("myRequests").innerHTML = reqs.data.length ? "<table><tr><th>סאָרט</th><th>ציל</th><th>סטאַטוס</th><th>AI באַשלוס</th></tr>" +
       reqs.data.map(x => "<tr><td>" + esc(x.kind) + "</td><td dir='ltr'>" + esc(x.target) + "</td><td>" + statusPill(x.status) + "</td><td>" + esc(x.ai_verdict || "—") + "</td></tr>").join("") + "</table>"
       : '<p class="muted">קיין בקשות נישטאָ.</p>';
