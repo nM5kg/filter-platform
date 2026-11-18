@@ -22,8 +22,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.Material.Light.DarkActionBar"
-        android:usesCleartextTraffic="false"
-        android:zygotePreloadName="org.mozilla.gecko.process.ZygotePreload">
+        android:usesCleartextTraffic="false">
+        <!-- NOTE (0.1.1 fix): the GeckoView AAR manifest's zygotePreloadName
+             (org.mozilla.gecko.process.ZygotePreload) was in 0.1.0 and the
+             app died at process start on the user's BLU phone with only
+             "keeps stopping" — the preload runs before any Activity and
+             can kill the process if it fails. GeckoView works without it
+             (it is only a startup optimisation), so it is REMOVED here. -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
