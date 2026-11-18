@@ -1,0 +1,49 @@
+{
+  "route": "A relay-18080 + SPKI pin",
+  "nav_ms": 1681,
+  "http_status": 200,
+  "final_url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dalbert%2Beinstein%26udm%3D2%26sei%3DNYn9atOpG-3EkPIPvfnYwQM&q=EhAqBE5BABQiHAAAAABtvaIcGLWS9tcGIjASaWt96BCyBzyumvpl8_VVu2XP1J6WqgPLOlVwMB_KeUykq9HOPmQSeHCIKTxYLo4yAVJaAUNguJeH3K-e1eGMAQ",
+  "title": "https://www.google.com/search?q=albert+einstein&udm=2&sei=NYn9atOpG-3EkPIPvfnYwQM",
+  "img_total": 0,
+  "img_loaded": 0,
+  "body_text_len": 350,
+  "body_snippet": "\n\nAbout this page\n\nOur systems have detected unusual traffic from your computer network. This page checks to see if it's really you sending the requests, and not a robot. Why did this happen?\n\n\n\nIP ad",
+  "request_failures": [],
+  "request_failure_count": 0
+}
+{
+  "route": "B relay-18080 + --ignore-certificate-errors",
+  "nav_ms": 1546,
+  "http_status": 200,
+  "final_url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dalbert%2Beinstein%26udm%3D2%26sei%3DPIn9ap_nDbvHkPIPyNiz8Aw&q=EhAqBE5BACRFHAAAAAAk5UUcGLyS9tcGIjBmhu1MmmmzAFSwMq3Is4l7HMQZTGFyBDEWbm8C-ZfeeP0YWTbD6626SVBzKxgfJNoyAVJaAUNgyMS3p7Lmj9tN",
+  "title": "https://www.google.com/search?q=albert+einstein&udm=2&sei=PIn9ap_nDbvHkPIPyNiz8Aw",
+  "img_total": 0,
+  "img_loaded": 0,
+  "body_text_len": 350,
+  "body_snippet": "\n\nAbout this page\n\nOur systems have detected unusual traffic from your computer network. This page checks to see if it's really you sending the requests, and not a robot. Why did this happen?\n\n\n\nIP ad",
+  "request_failures": [],
+  "request_failure_count": 0
+}
+{
+  "route": "C relay-18081 + SPKI pin",
+  "nav_ms": 1479,
+  "http_status": 200,
+  "final_url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dalbert%2Beinstein%26udm%3D2%26sei%3DQ4n9aqmGBaaSwt0P-5HymQw&q=EhAqBE5BADR3NAAAAAAT0fc0GMOS9tcGIjAFseJZugoaqbuOTiEYBrX75DWOAADZdK5MAWGqdnYfJCA0uW6xgt2kF-fjsE8SbCwyAVJaAUNgs6v8m7Xc0fGgAQ",
+  "title": "https://www.google.com/search?q=albert+einstein&udm=2&sei=Q4n9aqmGBaaSwt0P-5HymQw",
+  "img_total": 0,
+  "img_loaded": 0,
+  "body_text_len": 350,
+  "body_snippet": "\n\nAbout this page\n\nOur systems have detected unusual traffic from your computer network. This page checks to see if it's really you sending the requests, and not a robot. Why did this happen?\n\n\n\nIP ad",
+  "request_failures": [],
+  "request_failure_count": 0
+}
+{
+  "route": "D direct upstream proxy + Playwright auth",
+  "nav_ms": 102,
+  "nav_error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://images.google.com/search?q=albert+einstein&tbm=isch",
+  "final_url": "about:blank",
+  "request_failures": [
+    "https://images.google.com/search?q=albert+einstein&tbm=isch (net::ERR_TUNNEL_CONNECTION_FAILED)"
+  ],
+  "request_failure_count": 1
+}

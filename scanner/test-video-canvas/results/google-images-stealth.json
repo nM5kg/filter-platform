@@ -1,0 +1,12 @@
+{
+  "route": "stealth attempt (remove --enable-automation, --disable-blink-features=AutomationControlled, navigator.webdriver=false, real UA, relay 18080 + SPKI pin)",
+  "http_status": 200,
+  "final_url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dalbert%2Beinstein%26udm%3D2 (truncated)",
+  "title": "https://www.google.com/search?q=albert+einstein&udm=2&sei=aYn9atrnM8mYwbkP0YK--AU",
+  "sorry": true,
+  "img_total": 0,
+  "img_loaded": 0,
+  "body_text_len": 350,
+  "body_snippet": "About this page — Our systems have detected unusual traffic from your computer network. This page checks to see if it's really you sending the requests, and no…",
+  "nav_ms": 7176
+}

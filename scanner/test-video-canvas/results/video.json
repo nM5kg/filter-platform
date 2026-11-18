@@ -1,0 +1,64 @@
+{
+  "url": "http://127.0.0.1:8125/video.html",
+  "final_url": "http://127.0.0.1:8125/video.html",
+  "scanned_at": "2026-11-18T11:13:51.903Z",
+  "policy_version": "standard-v1",
+  "scan_ms": 23820,
+  "nav_ms": 15140,
+  "cpu_seconds": 6.245,
+  "peak_rss_mb": 788,
+  "http_status": 200,
+  "redirects": 0,
+  "detector": {
+    "name": "MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class) + face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
+    "backend": "cpu",
+    "loaded": true,
+    "person_model": "MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "person_loaded": true,
+    "face_model": "face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
+    "face_loaded": true,
+    "error": null
+  },
+  "detection_candidates": 1,
+  "detection_skipped": 0,
+  "elements": [
+    {
+      "type": "video",
+      "selector": "video#v",
+      "box": {
+        "x": 20,
+        "y": 221,
+        "w": 854,
+        "h": 480
+      },
+      "detection": "person",
+      "confidence": 0.82,
+      "decision": "BLOCK",
+      "src": "http://127.0.0.1:8125/assets/obama-chile-480p.webm",
+      "persons": 1,
+      "detected_by": "person"
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "people": 1,
+    "covered": 0,
+    "blocked": 1,
+    "review": 0
+  },
+  "verdict": "REVIEW",
+  "failures": [
+    "note: running as root, Chromium launched with --no-sandbox (sandbox would be on for a non-root user)",
+    "note: TEST-ONLY SCANNER_ALLOW_LOOPBACK=1 — SSRF loopback guard disabled for this run (local test pages only)",
+    "networkidle not reached in 15s (page keeps loading)"
+  ],
+  "ssrf_checks": [
+    {
+      "url": "http://127.0.0.1:8125/video.html",
+      "check": "initial-host",
+      "ok": true,
+      "reason": "TEST-ONLY: SCANNER_ALLOW_LOOPBACK=1"
+    }
+  ],
+  "screenshot": "/home/hatch/workspace/filter-platform/scanner/test-video-canvas/results/127-0-0-1-video-html.png"
+}

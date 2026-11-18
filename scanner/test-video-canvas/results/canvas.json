@@ -1,0 +1,127 @@
+{
+  "url": "http://127.0.0.1:8125/canvas.html",
+  "final_url": "http://127.0.0.1:8125/canvas.html",
+  "scanned_at": "2026-11-18T11:15:57.190Z",
+  "policy_version": "standard-v1",
+  "scan_ms": 61814,
+  "nav_ms": 16201,
+  "cpu_seconds": 22.71,
+  "peak_rss_mb": 943.6,
+  "http_status": 200,
+  "redirects": 0,
+  "detector": {
+    "name": "MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class) + face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
+    "backend": "cpu",
+    "loaded": true,
+    "person_model": "MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "person_loaded": true,
+    "face_model": "face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
+    "face_loaded": true,
+    "error": null
+  },
+  "detection_candidates": 5,
+  "detection_skipped": 0,
+  "elements": [
+    {
+      "type": "img",
+      "selector": "img#img-control",
+      "box": {
+        "x": 20,
+        "y": 1742,
+        "w": 482,
+        "h": 642
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "http://127.0.0.1:8125/assets/p1-huang-portrait.jpg",
+      "note": "page.evaluate: Error: load failed / CORS"
+    },
+    {
+      "type": "canvas",
+      "selector": "canvas#c-person",
+      "box": {
+        "x": 20,
+        "y": 274,
+        "w": 482,
+        "h": 642
+      },
+      "detection": "person",
+      "confidence": 0.966,
+      "decision": "BLOCK",
+      "faces": 1,
+      "persons": 1,
+      "detected_by": "person+face"
+    },
+    {
+      "type": "canvas",
+      "selector": "canvas#c-video",
+      "box": {
+        "x": 20,
+        "y": 924,
+        "w": 856,
+        "h": 482
+      },
+      "detection": "person",
+      "confidence": 0.818,
+      "decision": "BLOCK",
+      "faces": 1,
+      "persons": 1,
+      "detected_by": "person+face"
+    },
+    {
+      "type": "canvas",
+      "selector": "canvas#c-landscape",
+      "box": {
+        "x": 20,
+        "y": 1414,
+        "w": 482,
+        "h": 320
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW"
+    },
+    {
+      "type": "video",
+      "selector": "video#v",
+      "box": {
+        "x": 20,
+        "y": 2392,
+        "w": 427,
+        "h": 240
+      },
+      "detection": "person",
+      "confidence": 0.768,
+      "decision": "BLOCK",
+      "src": "http://127.0.0.1:8125/assets/obama-chile-480p.webm",
+      "faces": 1,
+      "persons": 1,
+      "detected_by": "person+face"
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "people": 3,
+    "covered": 0,
+    "blocked": 3,
+    "review": 1
+  },
+  "verdict": "REVIEW",
+  "failures": [
+    "note: running as root, Chromium launched with --no-sandbox (sandbox would be on for a non-root user)",
+    "note: TEST-ONLY SCANNER_ALLOW_LOOPBACK=1 — SSRF loopback guard disabled for this run (local test pages only)",
+    "networkidle not reached in 15s (page keeps loading)",
+    "detector page request failed: http://127.0.0.1:8125/assets/p1-huang-portrait.jpg (net::ERR_FAILED)",
+    "detection element 1 (img img#img-control) — page.evaluate: Error: load failed / CORS"
+  ],
+  "ssrf_checks": [
+    {
+      "url": "http://127.0.0.1:8125/canvas.html",
+      "check": "initial-host",
+      "ok": true,
+      "reason": "TEST-ONLY: SCANNER_ALLOW_LOOPBACK=1"
+    }
+  ],
+  "screenshot": "/home/hatch/workspace/filter-platform/scanner/test-video-canvas/results/127-0-0-1-canvas-html.png"
+}

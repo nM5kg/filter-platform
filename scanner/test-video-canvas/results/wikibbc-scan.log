@@ -1,0 +1,122 @@
+[scan] 1.5s navigation done (1209ms, status=200)
+[scan] 6.9s scroll pass done
+[scan] 7.0s collected 24 visual elements
+[scan] 8.5s detector page ready (person_loaded=true face_loaded=true backend=cpu)
+[scan] 8.5s detect 1/17 type=img box=400x267 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Dusky-capped_flycatcher_%28Myiarc
+[scan] 10.8s detect 1/17 -> none
+[scan] 10.9s detect 2/17 type=img box=141x139 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Przewalskis_horse.jpg/250px-Przew
+[scan] 12.4s detect 2/17 -> none
+[scan] 12.4s detect 3/17 type=img box=118x166 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Bunlet_Harcourt_1937_3.jpg/120px-
+[scan] 13.9s detect 3/17 -> person conf=0.963 via=person+face
+[scan] 13.9s detect 4/17 type=img box=119x164 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Gilbert-GS-Big.JPG/120px-Gilbert-
+[scan] 15.3s detect 4/17 -> person conf=0.849 via=person+face
+[scan] 15.3s detect 5/17 type=img box=121x161 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/2021-05-22_Bald_geht_die_Party_ri
+[scan] 17.1s detect 5/17 -> none
+[scan] 17.1s detect 6/17 type=img box=121x161 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Jensen_Huang_Stanford_2026-04-30_
+[scan] 18.6s detect 6/17 -> person conf=0.967 via=person+face
+[scan] 18.6s detect 7/17 type=img box=121x161 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/1956_Press_Photo_Communist_Party_
+[scan] 20.1s detect 7/17 -> person conf=0.986 via=person+face
+[scan] 20.1s detect 8/17 type=img box=35x41 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Wikiquote-logo.svg/40px-Wikiquote
+[scan] 21.6s detect 8/17 -> none
+[scan] 21.6s detect 9/17 type=img box=35x41 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Wikispecies-logo.svg/40px-Wikispe
+[scan] 23.0s detect 9/17 -> none
+[scan] 23.0s detect 10/17 type=img box=41x34 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/Wikiversity_logo_2017.svg/60px-Wi
+[scan] 24.5s detect 10/17 -> none
+[scan] 24.5s detect 11/17 type=img box=35x37 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Wikisource-logo.svg/40px-Wikisour
+[scan] 26.1s detect 11/17 -> none
+[scan] 26.1s detect 12/17 type=img box=35x35 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/MediaWiki-2020-icon.svg/40px-Medi
+[scan] 27.5s detect 12/17 -> none
+[scan] 27.5s detect 13/17 type=img box=35x35 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Wikimedia_Community_Logo.svg/40px
+[scan] 29.2s detect 13/17 -> none
+[scan] 29.2s detect 14/17 type=img box=35x35 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Wikibooks-logo.svg/40px-Wikibooks
+[scan] 30.7s detect 14/17 -> none
+[scan] 30.7s detect 15/17 type=img box=35x35 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Wikifunctions-logo.svg/40px-Wikif
+[scan] 32.2s detect 15/17 -> none
+[scan] 32.2s detect 16/17 type=img box=35x35 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Wikivoyage-Logo-v3-icon.svg/40px-
+[scan] 33.7s detect 16/17 -> none
+[scan] 33.7s detect 17/17 type=img box=35x35 src=https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Wiktionary-logo-en-v2.svg/40px-Wi
+[scan] 35.1s detect 17/17 -> none
+[scan] 9.5s navigation done (9301ms, status=200)
+[scan] 38.9s scroll pass done
+[scan] 38.9s collected 72 visual elements
+[scan] 41.0s detector page ready (person_loaded=true face_loaded=true backend=cpu)
+[scan] 41.0s detect 1/40 type=img box=1280x426 src=https://ichef.bbci.co.uk/images/ic/1376xn/p0pkjx8q.jpg.webp
+[scan] 45.8s detect 1/40 -> person conf=0.896 via=face
+[scan] 45.8s detect 2/40 type=img box=832x468 src=https://ichef.bbci.co.uk/images/ic/1024x576/p0pnkz0v.jpg.webp
+[scan] 48.8s detect 2/40 -> none
+[scan] 48.8s detect 3/40 type=img box=832x468 src=https://ichef.bbci.co.uk/images/ic/raw/p0nw7m52.jpg.webp
+[scan] 52.2s detect 3/40 -> uncertain conf=0.464 via=person
+[scan] 52.2s detect 4/40 type=img box=827x465 src=https://ichef.bbci.co.uk/news/1536/cpsprodpb/3148/live/d7883600-e2a7-11f1-99b6-a35a62fa426
+[scan] 54.4s detect 4/40 -> person conf=0.773 via=person
+[scan] 54.4s detect 5/40 type=img box=827x465 src=https://ichef.bbci.co.uk/images/ic/1024x576/p0pn9srh.jpg.webp
+[scan] 56.4s detect 5/40 -> uncertain conf=0.506 via=person
+[scan] 56.4s detect 6/40 type=img box=616x347 src=https://ichef.bbci.co.uk/ace/standard/480/cpsprodpb/e1f8/live/94b217a0-e334-11f1-a094-5fdc
+[scan] 58.1s detect 6/40 -> person conf=0.907 via=person+face
+[scan] 58.1s detect 7/40 type=img box=616x347 src=https://ichef.bbci.co.uk/images/ic/640x360/p0pnfmks.jpg.webp
+[scan] 60.1s detect 7/40 -> none
+[scan] 60.1s detect 8/40 type=img box=616x347 src=https://ichef.bbci.co.uk/images/ic/640x360/p0pnfhcn.jpg.webp
+[scan] 61.9s detect 8/40 -> person conf=0.936 via=person+face
+[scan] 61.9s detect 9/40 type=img box=616x347 src=https://ichef.bbci.co.uk/news/640/cpsprodpb/b2fd/live/c9c932d0-e324-11f1-99a1-253766e7ad8b
+[scan] 63.7s detect 9/40 -> uncertain conf=0.572 via=person
+[scan] 63.7s detect 10/40 type=img box=405x228 src=https://ichef.bbci.co.uk/images/ic/320x180/p0p80lkj.jpg.webp
+[scan] 65.3s detect 10/40 -> person conf=0.955 via=person+face
+[scan] 65.3s detect 11/40 type=img box=405x228 src=https://ichef.bbci.co.uk/images/ic/320x180/p0l685z5.jpg.webp
+[scan] 66.9s detect 11/40 -> person conf=0.75 via=person+face
+[scan] 66.9s detect 12/40 type=img box=405x228 src=https://ichef.bbci.co.uk/images/ic/320x180/p0nqvr4k.jpg.webp
+[scan] 68.6s detect 12/40 -> person conf=0.829 via=person+face
+[scan] 68.6s detect 13/40 type=img box=458x153 src=https://ichef.bbci.co.uk/images/ic/480xn/p0pkjx8n.png.webp
+[scan] 70.4s detect 13/40 -> none
+[scan] 70.4s detect 14/40 type=img box=300x169 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/e20b/live/66ff6490-e323-11f1-a094-5fdc692f3e33
+[scan] 72.1s detect 14/40 -> person conf=0.93 via=person+face
+[scan] 72.1s detect 15/40 type=img box=300x169 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/a56b/live/b9e12140-e2f5-11f1-910a-c953499d69d5
+[scan] 73.9s detect 15/40 -> person conf=0.796 via=person
+[scan] 73.9s detect 16/40 type=img box=300x169 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/80ea/live/d55939e0-e31c-11f1-99a1-253766e7ad8b
+[scan] 75.6s detect 16/40 -> none
+[scan] 75.6s detect 17/40 type=img box=300x169 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/c96b/live/b14b3a60-d9c8-11f1-93e1-3b657b665bcf
+[scan] 77.4s detect 17/40 -> person conf=0.879 via=person
+[scan] 77.4s detect 18/40 type=img box=300x169 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/fb1d/live/c5d2fbf0-e330-11f1-9c56-6ffaf0e1e706
+[scan] 79.1s detect 18/40 -> person conf=0.794 via=person+face
+[scan] 79.1s detect 19/40 type=img box=300x169 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/0369/live/387a8f10-e2ff-11f1-a094-5fdc692f3e33
+[scan] 81.3s detect 19/40 -> person conf=0.943 via=person+face
+[scan] 81.3s detect 20/40 type=img box=300x169 src=https://ichef.bbci.co.uk/images/ic/raw/p0ncb748.jpg.webp
+[scan] 83.0s detect 20/40 -> none
+[scan] 83.0s detect 21/40 type=img box=300x169 src=https://ichef.bbci.co.uk/images/ic/raw/p0jnr6hx.jpg.webp
+[scan] 85.2s detect 21/40 -> uncertain conf=0.681 via=person
+[scan] 85.2s detect 22/40 type=img box=300x169 src=https://ichef.bbci.co.uk/images/ic/raw/p0jq6tfl.jpg.webp
+[scan] 87.7s detect 22/40 -> none
+[scan] 87.7s detect 23/40 type=img box=300x169 src=https://ichef.bbci.co.uk/images/ic/1920x1080/p0h74xp9.jpg.webp
+[scan] 90.2s detect 23/40 -> none
+[scan] 90.2s detect 24/40 type=img box=300x169 src=https://ichef.bbci.co.uk/images/ic/raw/p0nkn8ny.jpg.webp
+[scan] 92.2s detect 24/40 -> uncertain conf=0.475 via=person
+[scan] 92.2s detect 25/40 type=img box=300x169 src=https://ichef.bbci.co.uk/images/ic/raw/p0nw860t.jpg.webp
+[scan] 94.9s detect 25/40 -> uncertain conf=0.57 via=person
+[scan] 94.9s detect 26/40 type=img box=300x169 src=https://ichef.bbci.co.uk/images/ic/raw/p0lr3t4c.png.webp
+[scan] 96.7s detect 26/40 -> person conf=0.805 via=person
+[scan] 96.7s detect 27/40 type=img box=300x169 src=https://ichef.bbci.co.uk/images/ic/raw/p0k21mq7.jpg.webp
+[scan] 98.9s detect 27/40 -> uncertain conf=0.654 via=person
+[scan] 98.9s detect 28/40 type=img box=296x167 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/db6e/live/1044c2a0-e2d1-11f1-99ed-7de3e5932968
+[scan] 101.1s detect 28/40 -> none
+[scan] 101.1s detect 29/40 type=img box=296x167 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/331b/live/2dc2ba90-e33e-11f1-9479-d17d3e98c29d
+[scan] 102.8s detect 29/40 -> person conf=0.894 via=person+face
+[scan] 102.8s detect 30/40 type=img box=296x167 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/8241/live/e3e3a9c0-e2a7-11f1-8226-87dfa5049e9a
+[scan] 104.4s detect 30/40 -> person conf=0.967 via=person+face
+[scan] 104.4s detect 31/40 type=img box=296x167 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/ee74/live/b9842e30-e337-11f1-9479-d17d3e98c29d
+[scan] 106.2s detect 31/40 -> person conf=0.885 via=person
+[scan] 106.2s detect 32/40 type=img box=296x167 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/1959/live/65173c80-e287-11f1-b166-176de21e2352
+[scan] 107.8s detect 32/40 -> uncertain conf=0.613 via=person
+[scan] 107.8s detect 33/40 type=img box=296x167 src=https://ichef.bbci.co.uk/images/ic/320x180/p0pm6h4f.jpg.webp
+[scan] 109.6s detect 33/40 -> person conf=0.779 via=person
+[scan] 109.6s detect 34/40 type=img box=296x167 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/ca06/live/582be290-e33c-11f1-99a1-253766e7ad8b
+[scan] 111.5s detect 34/40 -> person conf=0.997 via=person+face
+[scan] 111.5s detect 35/40 type=img box=296x167 src=https://ichef.bbci.co.uk/images/ic/1024xn/p0pmmhcy.jpg.webp
+[scan] 113.7s detect 35/40 -> none
+[scan] 113.7s detect 36/40 type=img box=296x167 src=https://ichef.bbci.co.uk/images/ic/320x180/p0pm2ywn.jpg.webp
+[scan] 116.0s detect 36/40 -> person conf=0.749 via=person+face
+[scan] 116.0s detect 37/40 type=img box=296x167 src=https://ichef.bbci.co.uk/images/ic/320x180/p0pmvpnc.jpg.webp
+[scan] 117.7s detect 37/40 -> none
+[scan] 117.7s detect 38/40 type=img box=296x167 src=https://ichef.bbci.co.uk/images/ic/320x180/p0pcxdc3.jpg.webp
+[scan] 119.6s detect 38/40 -> uncertain conf=0.661 via=person+face
+[scan] 119.6s detect 39/40 type=img box=296x167 src=https://ichef.bbci.co.uk/images/ic/raw/p0pkbr8k.jpg.webp
+[scan] 121.7s detect 39/40 -> none
+[scan] 121.7s detect 40/40 type=img box=270x152 src=https://ichef.bbci.co.uk/news/320/cpsprodpb/ac99/live/a44fd170-e2ad-11f1-a094-5fdc692f3e33
+[scan] 123.3s detect 40/40 -> person conf=0.946 via=person+face

@@ -1,0 +1,14 @@
+[scan] 3.1s navigation done (1190ms, status=200)
+[scan] 30.3s scroll pass done
+[scan] 30.6s collected 5 visual elements
+[scan] 36.5s detector page ready (person_loaded=true face_loaded=true backend=cpu)
+[scan] 36.5s detect 1/5 type=canvas box=856x482 src=
+[scan] 44.1s detect 1/5 -> person conf=0.818 via=person+face
+[scan] 44.1s detect 2/5 type=img box=482x642 src=http://127.0.0.1:8125/assets/p1-huang-portrait.jpg
+[scan] 44.5s detect 2/5 -> uncertain (page.evaluate: Error: load failed / CORS)
+[scan] 44.5s detect 3/5 type=canvas box=482x642 src=
+[scan] 48.5s detect 3/5 -> person conf=0.966 via=person+face
+[scan] 48.5s detect 4/5 type=canvas box=482x320 src=
+[scan] 55.2s detect 4/5 -> none
+[scan] 55.2s detect 5/5 type=video box=427x240 src=http://127.0.0.1:8125/assets/obama-chile-480p.webm
+[scan] 61.0s detect 5/5 -> person conf=0.768 via=person+face

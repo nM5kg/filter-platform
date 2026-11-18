@@ -1,0 +1,6 @@
+[scan] 1.5s navigation done (131ms, status=200)
+[scan] 18.4s scroll pass done
+[scan] 18.5s collected 1 visual elements
+[scan] 20.3s detector page ready (person_loaded=true face_loaded=true backend=cpu)
+[scan] 20.3s detect 1/1 type=video box=854x480 src=http://127.0.0.1:8125/assets/obama-chile-480p.webm
+[scan] 23.6s detect 1/1 -> person conf=0.82 via=person
