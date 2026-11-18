@@ -243,9 +243,14 @@ export default {
       if (resource === "policies" && request.method === "POST") {
         if (!body.name) return json({ error: "name is required" }, 400);
         const b = (k, d) => (body[k] === undefined ? d : body[k]);
+        // NOTE (fixed 2026-11-18): the old code passed isBool(...) here,
+        // which returns whether the value IS a boolean — so every boolean
+        // body value (true AND false) was stored as true. asBool coerces
+        // the actual value instead; a false flag now really stays false.
+        const asBool = (v, d) => (v === undefined ? d : !!v);
         const strictness = isInt(body.strictness) && body.strictness >= 1 && body.strictness <= 3 ? body.strictness : 2;
         const rows = await sql(env, `INSERT INTO policies (name, description, strictness, cover_images, block_images, filter_videos, filter_ads, require_approval_for_new_sites)
-          VALUES (${lit(body.name)}, ${lit(b("description", null))}, ${strictness}, ${isBool(b("cover_images", true))}, ${isBool(b("block_images", false))}, ${isBool(b("filter_videos", true))}, ${isBool(b("filter_ads", true))}, ${isBool(b("require_approval_for_new_sites", true))}) RETURNING *`);
+          VALUES (${lit(body.name)}, ${lit(b("description", null))}, ${strictness}, ${asBool(b("cover_images", true), true)}, ${asBool(b("block_images", false), false)}, ${asBool(b("filter_videos", true), true)}, ${asBool(b("filter_ads", true), true)}, ${asBool(b("require_approval_for_new_sites", true), true)}) RETURNING *`);
         const p = rows[0];
         await sql(env, `INSERT INTO policy_versions (policy_id, version, snapshot) VALUES (${lit(p.id)}, 1, ${lit(JSON.stringify(p))}::jsonb)`);
         await audit(env, "policy.created", "policies", p.id, { name: p.name });

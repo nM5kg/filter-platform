@@ -38,7 +38,7 @@ Platform, kolylt, or any existing Worker/database/repo.
 | `audit_logs` | Every create/decision/activation, with actor, action, entity, details JSONB. |
 | `device_status` | Heartbeat log per device (online/offline/unknown, filter_active, policy_version). Latest row = current status. |
 | `blocked_words` | Explicit-words text blocklist (global, Phase 1). Matched against real fetched page text by the classifier. |
-| `ad_domains` | Phase 3 starter: ad/tracker domains (category `ads`/`tracking`/`analytics`), seeded with 26 real domains. Separate from `domains`; enforced only when the policy has `filter_ads=true`. |
+| `ad_domains` | Phase 3 starter: ad/tracker domains (category `ads`/`tracking`/`analytics`), seeded with 26 real domains (15 ads, 11 tracking, 0 analytics). Separate from `domains`; enforced only when the policy has `filter_ads=true`. Extension DNR enforcement wired 2026-11-18 (see "What is NOT built" / Phase 3 wiring). |
 
 Seed (`seed.sql`, real data only — no demo/sample rows): the default Standard
 policy + v1 snapshot, 16 global domains (5 allow, 11 block, real domains in
@@ -70,7 +70,7 @@ only through the real API flow.
 | `GET/POST /api/v1/policies`, `GET /api/v1/policies/:id` | List / create (creates v1 snapshot) / one + its versions. |
 | `GET /api/v1/devices` | List with customer + policy names. `?customer_id=` filters to one customer (fixed 2026-11-18 — it used to ignore the filter). |
 | `GET /api/v1/devices/:id/status` | Latest status row. |
-| `GET /api/v1/ads/blocklist` | Phase 3 starter: ad/tracker domains from the `ad_domains` table (`?category=ads|tracking|analytics`). Enforced only when the device policy has `filter_ads=true`; the main `domains/check` flow is untouched. |
+| `GET /api/v1/ads/blocklist` | Phase 3 starter: ad/tracker domains from the `ad_domains` table (`?category=ads|tracking|analytics`). Enforced only when the device policy has `filter_ads=true`; the main `domains/check` flow is untouched. The extension enforces it via DNR since 2026-11-18 (ads rules in id range 5000+, verified in `extension/verify/results-phase3-ads.json`). |
 | `GET /api/v1/safesearch` | Phase 3 starter: SafeSearch enforcement config for the resolved policy (`?device_id=` / `?customer_id=`, else the default policy). Returns `force_safesearch` + per-engine URL-param and DNS-CNAME rules (Google `safe=active` / `forcesafesearch.google.com`, Bing `adlt=strict` / `strict.bing.com`, DuckDuckGo `kp=1` / `safe.duckduckgo.com`, YouTube `restrict.youtube.com`). |
 | `POST /api/v1/devices` | Create pending device; returns a 6-digit activation code; default policy applied when none is given. |
 | `POST /api/v1/devices/register` `{code}` | Activates a pending device (wrong/used code → 404). Writes a `device_status` row. |
@@ -141,13 +141,28 @@ Single static page (Yiddish RTL) calling the Worker API. Admin tab: health +
 counts, customers (+add), devices (+add, shows the activation code once),
 policy card, domains allow/block (+add, filter), apps (+add), blocked words
 (+add), requests (Classify / Approve / Reject buttons), analyses, audit log.
+**Phase 3 additions (2026-11-18):** ads/tracker blocklist card — lists the 26
+`ad_domains` from `GET /api/v1/ads/blocklist` with a category filter
+(all/ads/tracking/analytics; live counts 15/11/0) and a note that the list
+only takes effect when the policy has `filter_ads=true`; SafeSearch card —
+`GET /api/v1/safesearch` for the default policy or a chosen device, showing
+`force_safesearch` + the 7 per-engine URL-param/DNS-CNAME rules; scan-stats
+card — the `GET /api/v1/analysis` list upgraded to summary tiles (total /
+approved / rejected / avg confidence / from-cache) + a table with time,
+target, verdict, confidence, reasons; devices table now shows live status
+(`GET /api/v1/devices/:id/status` — online/offline) and last-seen time, and
+the customer view shows last-seen + the policy's ads/SafeSearch flags.
 Customer tab: pick a customer, my devices, my policy, domain check tool,
 register-a-device-with-code form, my requests + new request form. The API
 token is typed in once and kept in `sessionStorage` only.
 Deploy: `python3 pages_deploy.py` (upload-token → check-missing → upload →
 upsert-hashes → deployment; blake3 asset hash). GitHub→Pages integration is
 broken (error 8000011), so direct upload is the path; re-run the script for
-updates.
+updates. Verified live 2026-11-18 via `harness/verify-dashboard-phase3.js`
+(Playwright through the egress relay): HTTP 200, 26 ads rows, 7 SafeSearch
+rules, 4 analyses (1 approved / 3 rejected, avg confidence 0.73), 5 devices
+with live status + last seen, tracking filter → 11 rows, per-device SafeSearch
+resolves to the same Standard policy.
 
 ## How Phase 2 plugs in
 
@@ -168,7 +183,9 @@ updates.
 Custom Android browser (assessed only — see `CHROMIUM_ANDROID_ASSESSMENT.md`;
 do not start the browser build before the Cromite-vs-GeckoView-vs-raw-Chromium
 decision), full SafeSearch enforcement in the extension/device (the Worker
-config endpoints exist — Phase 3 starters), the real open-source AI model
+config endpoints exist — Phase 3 starters — and the dashboard shows them, but
+the extension does NOT yet rewrite search URLs or set DNS; that is the next
+Phase 3 step), the real open-source AI model
 (Phase 4; the scanner and extension both use face detection as the
 placeholder detector), device apps, Android Enterprise / iOS MDM, production
 hardening (restricted CORS, rate limits, per-customer auth, password hashing
@@ -183,6 +200,27 @@ the pre-rendering scanner (`scanner/` — verified on 4 real sites, see
 `scanner/README.md` and `scanner/SCAN_REPORT.md`); the Phase 3 starters
 (`ad_domains` + `GET /api/v1/ads/blocklist`, `force_safesearch` +
 `GET /api/v1/safesearch`).
+
+**Phase 3 wiring, 2026-11-18 ~10:45 EST (this session):** the dashboard now
+shows the ads blocklist, SafeSearch config and scan stats (see Dashboard
+above), and the extension enforces the ads blocklist via DNR — but ONLY when
+the device policy has `filter_ads=true` (ads rules live in their own DNR id
+range 5000+, domains stay 1000+; `fpAdBlocklist` cached alongside the domains
+list, same gate on the cache path). Verified live via
+`harness/verify-phase3-ads.js` (Playwright + egress relay, both runs LIVE
+sync from the service worker): Standard policy (`filter_ads=false`) → 22 DNR
+rules, 0 ads rules; temporary test policy (`filter_ads=true`, device deleted
+after) → 74 rules (22 + 52 ads) and `doubleclick.net` navigation fails with
+`ERR_BLOCKED_BY_CLIENT`; results in `extension/verify/results-phase3-ads.json`.
+The Phase 2 regression re-run (`harness/verify-phase2-relay.js block`) still
+passes: 22 domain rules, 9 found/10 scanned, 6 human blocked, facebook.com
+blocked. Worker fix in the same session: `POST /api/v1/policies` used
+`isBool(...)` (a type check) as the stored value, so EVERY boolean flag came
+back `true` no matter what the caller sent — including `filter_ads=false`.
+Fixed with a real coercion (`asBool`); verified live (create with all flags
+false → POST and GET both return false; test policies deleted, 1 policy left).
+The fix is why a `filter_ads=false` policy created through the API could
+previously have silently enabled ads filtering.
 
 ## Operational gotchas (verified)
 
