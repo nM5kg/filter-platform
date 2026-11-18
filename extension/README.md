@@ -36,6 +36,16 @@ declarativeNetRequest rules fetched from the Phase 1 API.
   rules (`*://domain/*` and `*://*.domain/*` per domain), re-syncs hourly.
   The API token + device id are **not** in this code — the user pastes them
   in the popup; they live only in `chrome.storage.local`.
+  **Phase 3 (2026-11-18):** also fetches `GET /api/v1/ads/blocklist` (26
+  ad/tracker domains) and builds DNR rules from it — **only when the device
+  policy has `filter_ads=true`**. Ads rules live in their own id range
+  (5000+, domains stay 1000+) so the two sets never collide; the status
+  object reports `adBlocklistDomains`, `adRulesCount`, `adsEnforced`, and
+  the popup shows the ads-filter state. The Standard policy has
+  `filter_ads=false`, so by default the 26 domains are fetched but NOT
+  enforced. The cache fallback applies the same gate (cached ads list +
+  cached policy flag). A failed ads fetch degrades to an empty ads list and
+  never breaks the domains sync.
 - `content.js` — scans `<img>`, CSS `background-image`, lazy images
   (`loading=lazy`, `data-src`) and dynamically added content
   (`MutationObserver` + scroll/load listeners). Per image: face detection →
@@ -45,7 +55,9 @@ declarativeNetRequest rules fetched from the Phase 1 API.
   per-image log on `window.__fpLog`.
 - `popup.html` / `popup.js` — Yiddish RTL popup: paste API token + device
   id (+ optional customer id), demo mode switch (policy / block / cover /
-  strict), sync button, policy + rule-count + stats display.
+  strict), sync button, policy + rule-count + stats display. The status
+  lines now include the ads filter (`אָן` with rule/domain counts, or
+  `אויס (פּאָליטיק filter_ads=ניין)`).
 - `vendor/face-api.js` — bundled face-api.js (+ tfjs), MIT.
 - `models/` — tinyFaceDetector weights (MIT).
 - `test-page/index.html` + `test-page/photos/` — local test page (see below).
@@ -109,3 +121,16 @@ VM (Chromium has no working internet route here); policy sync was verified
 via the cache path with real live API data, and DNR blocking was verified
 live (`ERR_BLOCKED_BY_CLIENT` for facebook.com). Google Images was
 unreachable from this VM's Chromium and is unverified.
+
+**Phase 3 ads (2026-11-18):** `harness/verify-phase3-ads.js` +
+`verify/results-phase3-ads.json` — two LIVE syncs from the service worker
+through the egress relay (127.0.0.1:18080): Standard policy
+(`filter_ads=false`) → 22 DNR rules, 0 ads rules; temporary test policy
+(`filter_ads=true`, device + policy deleted after the run) → 74 rules
+(22 domains + 52 ads, ids 5000–5051) and `doubleclick.net` navigation fails
+with `ERR_BLOCKED_BY_CLIENT`. The Phase 2 regression re-run
+(`harness/verify-phase2-relay.js block`) still passes with the new
+background.js: live sync, 22 domain rules, 9 found/10 scanned, 6 human
+blocked, facebook.com blocked. Note: that re-run overwrote
+`verify/results-relay.json` with the block-mode run only; the full 3-mode
+results remain in `verify/results.json`.

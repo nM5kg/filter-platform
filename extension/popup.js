@@ -23,6 +23,9 @@ function renderStatus(st, stats) {
   if (st.policyFetched) {
     lines.push('בילדער: ' + (st.block_images ? 'בלאקירן' : st.cover_images ? 'באַדעקן' : 'אָפֿן'));
     lines.push('בלאקירטע דאמיינען: ' + (st.blocklistDomains ?? '?') + '  •  DNR כּללים: ' + (st.rulesCount ?? '?'));
+    lines.push('אַדס־פֿילטער: ' + (st.adsEnforced
+      ? 'אָן — ' + (st.adRulesCount ?? '?') + ' כּללים פֿון ' + (st.adBlocklistDomains ?? '?') + ' דאָמעינס'
+      : 'אויס (פּאָליטיק filter_ads=ניין)'));
     lines.push('לעצטע סינק: ' + (st.lastSync || '?'));
   }
   el.textContent = lines.join('\n');
