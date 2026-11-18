@@ -33,8 +33,15 @@ const server = http.createServer((req, res) => {
   req.pipe(up);
 });
 
-server.on('connect', (req, socket) => {
+server.on('connect', (req, socket, clientHead) => {
   // CONNECT target:443 -> open TCP to egress proxy, send CONNECT with auth.
+  // NOTE: `clientHead` holds bytes the client already sent after the CONNECT
+  // headers (Java's HttpClient pipelines the TLS ClientHello in the same
+  // flush; curl waits for the 200 first). Dropping `clientHead` silently
+  // breaks the TLS handshake for pipelining clients, so it must be
+  // forwarded upstream once the tunnel is established.
+  // (Named `clientHead`, not `head`: the data handler below declares its
+  // own local `head` for the upstream response headers.)
   let established = false;
   let buf = Buffer.alloc(0);
   const upstreamSock = net.connect(UP_PORT, UP_HOST);
@@ -65,6 +72,9 @@ server.on('connect', (req, socket) => {
     established = true;
     cleanup();
     socket.write('HTTP/1.1 200 Connection Established\r\n\r\n');
+    // Pipelined bytes from the client (e.g. the TLS ClientHello sent
+    // immediately after the CONNECT headers): forward them upstream.
+    if (clientHead && clientHead.length) upstreamSock.write(clientHead);
     const rest = buf.slice(end + 4);
     // Bytes after the 200 headers are the start of the tunneled TLS
     // stream from the target server: forward to the CLIENT, never

@@ -1,0 +1,63 @@
+{
+  "ranAt": "2026-11-18T10:48:31.955Z",
+  "url": "https://filter-platform-dashboard.pages.dev/",
+  "checks": {
+    "status": "פֿאַרבונדן — דער API ענטפֿערט.",
+    "health": "סערוויס: filter-platform-api — סטאַטוס: ok — דאַטאַבאַזע: connected — פֿאַזע: 1",
+    "statTiles": [
+      "5: קאַסטאַמערס",
+      "5: דעוויסעס",
+      "1: פּאָליטיקן",
+      "25: דאָמעינס",
+      "6: אַפּס",
+      "15: בקשות",
+      "26: אַדס־דאָמעינס",
+      "4: AI אַנאַליזן"
+    ],
+    "adsCountLabel": "26 דאָמעינס",
+    "adsRows": 26,
+    "adsFirstDomains": [
+      "adnxs.com",
+      "ads.yahoo.com",
+      "adsafeprotected.com"
+    ],
+    "safesearchText": "פּאָליטיק: Standard — block images + explicit words, rest open — SafeSearch: אָן\n\nזוכמאַשין\tאופֿן\tכּלל\tבאַמערקונג\ngoogle\turl_param\tsafe=active\tGoogle Search SafeSearch strict\ngoogle\tdns\tCNAME forcesafesearch.google.com\tNetwork lock: map www.google.com (and country domains) to this CNAME\nbing\turl_param\tadlt=strict\tBing SafeSearch strict\nbing\tdns\tCNAME strict.bing.com\tNetwork lock for Bing\nduckduckgo\turl_param\tkp=1\tDuckDuckGo SafeSearch strict (kp=1 strict, -1 moderate, -2 off)\nduckduckgo\tdns\tCNAME safe.duckduckgo.com\tNetwork lock for DuckDuckGo, disables the client controls\nyoutube\tdns\tCNAME restrict.youtube.com\tYouTube Restricted Mode lock (restrictmoderate.youtube.com for moderate)",
+    "safesearchRows": 7,
+    "analysisStats": [
+      "4: סך־הכּל",
+      "1: אַפּרוווד",
+      "3: אָפּגעוואָרפֿן",
+      "0.73: דורכשניט־קאָנפֿידענץ",
+      "0: פֿון קאַש"
+    ],
+    "analysisRows": 4,
+    "analysisFirstTarget": "2026-11-18 09:05:00",
+    "deviceRows": 5,
+    "deviceHeaders": [
+      "נאָמען",
+      "קונה",
+      "פּלאַטפֿאָרמע",
+      "סטאַטוס",
+      "אָנליין",
+      "לעצט געזען",
+      "פּאָליטיק",
+      "אַקטיוואַציע־קאָד"
+    ],
+    "deviceCellsSample": [
+      "Dogfood Phone\tDogfood Family\tandroid\tאַקטיוו\tאָנליין\t2026-11-18 10:28:51\tStandard — block images + explicit words, rest open\t—",
+      "Dogfood Phone\tDogfood Family\tandroid\tאַקטיוו\tאָנליין\t2026-11-18 10:18:17\tStandard — block images + explicit words, rest open\t—"
+    ],
+    "policyText": "Standard — block images + explicit words, rest open דיפֿאָלט\nDefault policy (Yakob, 2026-11-18): blocks human pictures and really dirty words, even in text; everything else stays open. Blacklist mode.\nבלאָקירט בילדער: יאָ · באַדעקט בילדער: ניין · ווידעאָ־פֿילטער: ניין · אַדס: ניין · SafeSearch: אָן · נײַע זײַטן דאַרפֿן אַפּרוּווּל: ניין · אויטאָ־באַשלוס שוועל: 0.7000",
+    "ssDeviceOptions": 6,
+    "adsTrackingFilter": {
+      "label": "11 דאָמעינס",
+      "rows": 11,
+      "cats": [
+        "tracking"
+      ]
+    },
+    "safesearchPerDevice": "פּאָליטיק: Standard — block images + explicit words, rest open — SafeSearch: אָן\n\nזוכמאַשין\tאופֿן\tכּלל\tבאַמערקונג\ngoogle\turl_param\tsafe=active\tGoogle Search SafeSearch strict\ngoogle\tdns\tCNAME forcesaf"
+  },
+  "ok": true,
+  "httpStatus": 200
+}
