@@ -44,7 +44,7 @@
 <h2>אָפּטיילונג 4 — cross-origin בילדער (מענטש)</h2>
 <div class="grid">
   <figure><img id="img-xorigin" data-expect="human" src="https://commons.wikimedia.org/wiki/Special:FilePath/Albert%20Einstein%20sticks%20his%20tongue.jpg?width=800" alt="Einstein cross-origin" crossorigin="anonymous"><figcaption>Einstein פֿון commons.wikimedia.org — cross-origin; אָן CORS וועט די דעטעקציע זיין "אומזיכער"</figcaption></figure>
-  <figure><img id="img-xorigin-local" data-expect="human-uncertain" src="http://127.0.0.1:8124/person-einstein.jpg" alt="Einstein cross-origin local port"><figcaption>Einstein פֿון 127.0.0.1:8124 — אַנדערער פּאָרט = cross-origin, אָן CORS העדערס. ערוואַרט: "אומזיכער" (בלאק/באַדעקן: בלייבט; שטרענג: באַדעקט)</figcaption></figure>
+  <figure><img id="img-xorigin-local" data-expect="human-uncertain" src="http://127.0.0.1:8124/person-einstein.jpg" alt="Einstein cross-origin local port"><figcaption>Einstein פֿון 127.0.0.1:8124 — אַנדערער פּאָרט = cross-origin, אָן CORS העדערס. ערוואַרט: "אומזיכער" → באַדעקט אין אַלע מאָדעס (fail closed, זינט v1.1.0 — פֿריער איז עס געבליבן אין בלאק/באַדעקן מאָדע)</figcaption></figure>
 </div>
 
 <h2>אָפּטיילונג 5 — בלאקירטע דאָמיין פּראָבע</h2>
