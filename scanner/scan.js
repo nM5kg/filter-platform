@@ -89,11 +89,11 @@ async function main() {
 
   // ---- SCAN_REPORT.md -----------------------------------------------------
   const lines = [];
-  lines.push('# Visual Protection Engine — Scan Report (prototype v0.1.0)');
+  lines.push('# Visual Protection Engine — Scan Report (prototype v0.2.0)');
   lines.push('');
   lines.push(`Generated: ${new Date().toISOString()} (UTC)`);
   lines.push(`Policy: standard-v1 (block_images=true, cover_images=false, threshold 0.70)`);
-  lines.push(`Detector: face-api.js tinyFaceDetector, CPU backend, models bundled in scanner/models/`);
+  lines.push(`Detector: MediaPipe ObjectDetector EfficientDet-Lite0 (COCO person class) + face-api.js tinyFaceDetector fallback, CPU backend, models bundled in scanner/models/ (see detector.js)`);
   lines.push(`Sandbox: ${proxy ? `proxy ${proxy} + TLS SPKI pin (egress CA only)` : 'direct internet, strict TLS'}`);
   lines.push('');
   lines.push('| Site | Verdict | HTTP | Scan ms | CPU s | Peak RSS MB | Elements | People | Blocked | Review | Failures |');
@@ -110,13 +110,13 @@ async function main() {
     lines.push(`- Final URL: ${map.final_url || map.url}`);
     lines.push(`- HTTP status: ${map.http_status ?? 'n/a'}, redirects: ${map.redirects ?? 'n/a'}, navigation: ${map.nav_ms ?? 'n/a'} ms`);
     lines.push(`- Scan time: ${map.scan_ms} ms, CPU: ${map.cpu_seconds} s, peak RSS: ${map.peak_rss_mb} MB`);
-    lines.push(`- Detector: loaded=${map.detector ? map.detector.loaded : '?'}${map.detector && map.detector.error ? `, error: ${map.detector.error}` : ''}; candidates checked: ${map.detection_candidates ?? '?'}, skipped (over budget): ${map.detection_skipped ?? '?'}`);
+    lines.push(`- Detector: loaded=${map.detector ? map.detector.loaded : '?'} (person_loaded=${map.detector ? map.detector.person_loaded : '?'}, face_loaded=${map.detector ? map.detector.face_loaded : '?'})${map.detector && map.detector.error ? `, error: ${map.detector.error}` : ''}; candidates checked: ${map.detection_candidates ?? '?'}, skipped (over budget): ${map.detection_skipped ?? '?'}`);
     lines.push(`- Elements by type: ${JSON.stringify(byType(map.elements))}`);
     lines.push(`- Summary: ${JSON.stringify(map.summary)}`);
     const people = map.elements.filter((e) => e.detection === 'person');
     if (people.length) {
       lines.push(`- People detected:`);
-      for (const p of people) lines.push(`  - conf=${p.confidence} (${p.faces || 1} face${(p.faces || 1) > 1 ? 's' : ''}) — ${p.type} \`${p.selector}\` → ${p.decision} — ${(p.src || '').slice(0, 120)}`);
+      for (const p of people) lines.push(`  - conf=${p.confidence}${p.persons ? ` (${p.persons} person${p.persons > 1 ? 's' : ''})` : ''}${p.faces ? ` (${p.faces} face${p.faces > 1 ? 's' : ''})` : ''}${p.detected_by ? ` via ${p.detected_by}` : ''} — ${p.type} \`${p.selector}\` → ${p.decision} — ${(p.src || '').slice(0, 120)}`);
     } else lines.push('- People detected: none');
     const uncertain = map.elements.filter((e) => e.detection === 'uncertain');
     if (uncertain.length) {
@@ -134,8 +134,15 @@ async function main() {
     }
     lines.push('');
   }
+  // Keep the previous report verbatim below the new run, so the baseline
+  // is never overwritten (v0.1.0 face-only baseline lives underneath).
   const reportPath = path.join(__dirname, 'SCAN_REPORT.md');
-  fs.writeFileSync(reportPath, lines.join('\n'));
+  let previous = '';
+  if (fs.existsSync(reportPath)) previous = fs.readFileSync(reportPath, 'utf8');
+  const out = previous
+    ? lines.join('\n') + '\n\n---\n\n## Previous report (kept verbatim)\n\n' + previous
+    : lines.join('\n');
+  fs.writeFileSync(reportPath, out);
   console.log(`\n[scan] report -> ${reportPath}`);
 }
 

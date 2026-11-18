@@ -14,8 +14,10 @@
  *   2. Renders the page in a fresh, isolated headless-Chromium context,
  *      scrolls to trigger lazy loading, then collects rendered visual
  *      elements (<img>, CSS backgrounds, <svg> images, <canvas>, <video>).
- *   3. Detects people on-device, CPU-first, with face-api.js
- *      tinyFaceDetector running inside the page (models bundled locally).
+ *   3. Detects people on-device, CPU-first, with a real person detector
+ *      (MediaPipe ObjectDetector, EfficientDet-Lite0) plus face-api.js
+ *      tinyFaceDetector as fallback/complement — see detector.js.
+ *      A person OR face hit counts as human.
  *   4. Emits a Visual Content Map JSON with per-element
  *      ALLOW / COVER / BLOCK / REVIEW decisions under the Standard policy.
  *
@@ -42,6 +44,7 @@ const path = require('path');
 const dns = require('dns').promises;
 const net = require('net');
 const { chromium } = require('playwright');
+const { createDetector, PERSON_MODEL_NAME, FACE_MODEL_NAME } = require('./detector');
 
 const MODELS_DIR = path.join(__dirname, 'models');
 const POLICY_VERSION = 'standard-v1';
@@ -51,7 +54,6 @@ const POLICY = { block_images: true, cover_images: false, threshold: 0.70 };
 const NAV_TIMEOUT_MS = 30_000;
 const MAX_REDIRECTS = 5;
 const MAX_IMAGES = 40;          // detection budget per scan (largest first)
-const DETECT_SCORE_FLOOR = 0.40; // below this: 'none'
 const SCAN_HARD_CAP_MS = 180_000;
 
 // ---------------------------------------------------------------- SSRF guard
@@ -123,9 +125,22 @@ function ipBlocked(ip) {
 
 const dnsCache = new Map(); // hostname -> { ok, reason } (per-process)
 
+// TEST-ONLY override (default OFF): SCANNER_ALLOW_LOOPBACK=1 lets the
+// scanner target loopback hosts so it can be verified against local test
+// pages (scanner/test-video-canvas/). It disables the SSRF guard for
+// loopback only and is recorded in failures[] on every run that sets it.
+// NEVER set in production.
+const LOOPBACK_OVERRIDE = process.env.SCANNER_ALLOW_LOOPBACK === '1';
+function isLoopbackHost(host) {
+  if (host === 'localhost' || host.endsWith('.localhost') || host === '::1' || host === '::') return true;
+  if (net.isIP(host) === 4) return host.split('.')[0] === '127';
+  return false;
+}
+
 async function hostAllowed(hostname) {
   // URL.hostname returns IPv6 literals with brackets ('[::1]') — strip them.
   const host = hostname.toLowerCase().replace(/^\[|\]$/g, '').replace(/\.$/, '');
+  if (LOOPBACK_OVERRIDE && isLoopbackHost(host)) return { ok: true, reason: 'TEST-ONLY: SCANNER_ALLOW_LOOPBACK=1' };
   if (host === 'localhost' || host.endsWith('.localhost')) return { ok: false, reason: 'localhost name' };
   if (net.isIP(host)) {
     const why = ipBlocked(host);
@@ -270,6 +285,9 @@ async function scan(rawUrl, opts = {}) {
       launchArgs.push('--no-sandbox');
       failures.push('note: running as root, Chromium launched with --no-sandbox (sandbox would be on for a non-root user)');
     }
+    if (LOOPBACK_OVERRIDE) {
+      failures.push('note: TEST-ONLY SCANNER_ALLOW_LOOPBACK=1 — SSRF loopback guard disabled for this run (local test pages only)');
+    }
     if (opts.spkiPin) launchArgs.push(`--ignore-certificate-errors-spki-list=${opts.spkiPin}`);
     const launchOpts = { args: launchArgs };
     if (opts.proxy) launchOpts.proxy = { server: opts.proxy };
@@ -307,7 +325,10 @@ async function scan(rawUrl, opts = {}) {
         return route.abort('failed');
       }
       const ext = path.extname(full);
-      const type = ext === '.json' ? 'application/json' : ext === '.js' ? 'text/javascript' : 'application/octet-stream';
+      const type = ext === '.json' ? 'application/json'
+        : ext === '.js' || ext === '.mjs' ? 'text/javascript'
+        : ext === '.wasm' ? 'application/wasm'
+        : 'application/octet-stream';
       return route.fulfill({ body: fs.readFileSync(full), contentType: type });
     };
 
@@ -436,71 +457,60 @@ async function scan(rawUrl, opts = {}) {
     }).catch((e) => { failures.push(`element collection failed: ${e.message.slice(0, 150)}`); return []; });
     phase(`collected ${collected.length} visual elements`);
 
-    // ---- on-device person detection (face-api.js, CPU) -------------------
+    // ---- on-device person detection (MediaPipe person + face-api face) ---
     // Detection runs in a DEDICATED detector page (about:blank), NOT in
     // the scanned page: the scanned page's scripts, timers, CSP and
     // tainted canvases cannot stall or corrupt detection, and a hung
     // detector page can be closed and recreated without touching the
     // scan. Images are loaded by URL in the detector page; <video> and
     // <canvas> are sampled via element screenshots (which also bypasses
-    // CORS taint — a screenshot is our own pixels).
-    let detector = { name: 'face-api.js tinyFaceDetector (vladmandic fork 1.7.15)', backend: 'cpu', loaded: false, error: null };
+    // CORS taint — a screenshot is our own pixels). See detector.js.
+    let detector = {
+      name: `${PERSON_MODEL_NAME} + ${FACE_MODEL_NAME}`,
+      backend: 'cpu', loaded: false,
+      person_model: PERSON_MODEL_NAME, person_loaded: false,
+      face_model: FACE_MODEL_NAME, face_loaded: false,
+      error: null,
+    };
     const candidates = collected
       .filter((e) => e.visible && e.box.w >= 32 && e.box.h >= 32)
       .sort((a, b) => (b.box.w * b.box.h) - (a.box.w * a.box.h))
       .slice(0, opts.maxImages || MAX_IMAGES);
     const skippedCount = collected.filter((e) => e.visible && e.box.w >= 32 && e.box.h >= 32).length - candidates.length;
 
-    let detPage = null;
-    const setupDetPage = async (pg) => {
-      pg.on('requestfailed', (req) => {
-        const f = req.failure();
-        if (f && f.errorText !== 'net::ERR_ABORTED') failures.push(`detector page request failed: ${req.url().slice(0, 120)} (${f.errorText})`);
-      });
-      await pg.addScriptTag({ path: path.join(MODELS_DIR, 'face-api.js') });
-      const loaded = await withTimeout(pg.evaluate(async () => {
-        await faceapi.nets.tinyFaceDetector.loadFromUri('https://scanner-models/');
-        await faceapi.tf.setBackend('cpu');
-        await faceapi.tf.ready();
-        return { backend: faceapi.tf.getBackend() };
-      }), 30_000, 'detector model load timed out after 30s');
-      detector.loaded = true;
-      detector.backend = loaded.backend || 'cpu';
+    let det = null;
+    let detFailed = null;
+    const detRequestFailed = (req) => {
+      const f = req.failure();
+      if (f && f.errorText !== 'net::ERR_ABORTED') failures.push(`detector page request failed: ${req.url().slice(0, 120)} (${f.errorText})`);
     };
-    const ensureDetPage = async () => {
-      if (detPage) return detPage;
-      detPage = await context.newPage();
-      await setupDetPage(detPage);
-      return detPage;
+    const ensureDet = async () => {
+      if (det) return det;
+      if (detFailed) throw detFailed;
+      try {
+        det = await withTimeout(createDetector(context, detRequestFailed), 60_000, 'detector load timed out after 60s');
+        detector = det.info;
+        return det;
+      } catch (e) {
+        detFailed = e;
+        detector.error = String(e.message).slice(0, 200);
+        throw e;
+      }
     };
-    const resetDetPage = async () => {
-      try { if (detPage) await detPage.close(); } catch {}
-      detPage = null;
-      return ensureDetPage();
+    const resetDet = async () => {
+      try { if (det) await det.close(); } catch {}
+      det = null;
+      return ensureDet();
     };
     const detectPixels = async (input) => {
-      // input: { src } (URL to load) or { dataUrl } (screenshot PNG).
-      const pg = await ensureDetPage();
-      return pg.evaluate(async ({ src, dataUrl, floor }) => {
-        const loadImg = (s) => new Promise((resolve, reject) => {
-          const im = new Image();
-          if (!s.startsWith('data:')) im.crossOrigin = 'anonymous';
-          im.onload = () => resolve(im);
-          im.onerror = () => reject(new Error('load failed / CORS'));
-          im.src = s;
-          setTimeout(() => reject(new Error('load timeout')), 8000);
-        });
-        const im = await loadImg(dataUrl || src);
-        const dets = await faceapi.detectAllFaces(im, new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: floor }));
-        const best = dets.length ? Math.max(...dets.map((d) => d.score)) : 0;
-        return { faces: dets.length, best: +best.toFixed(3) };
-      }, { src: input.src || null, dataUrl: input.dataUrl || null, floor: DETECT_SCORE_FLOOR });
+      const d = await ensureDet();
+      return d.detect(input);
     };
 
     if (candidates.length) {
       try {
-        await ensureDetPage();
-        phase('detector page ready (models loaded, backend=cpu)');
+        await ensureDet();
+        phase(`detector page ready (person_loaded=${detector.person_loaded} face_loaded=${detector.face_loaded} backend=${detector.backend})`);
       } catch (e) {
         detector.error = String(e.message).slice(0, 200);
         failures.push(`detector failed to load: ${detector.error}`);
@@ -536,14 +546,25 @@ async function scan(rawUrl, opts = {}) {
             // A timeout may mean the detector page is wedged: recycle it
             // so the next element gets a clean page.
             if (/timed out/.test(rError)) {
-              try { await resetDetPage(); } catch (e2) { failures.push(`detector page reset failed: ${String(e2.message).slice(0, 120)}`); }
+              try { await resetDet(); } catch (e2) { failures.push(`detector page reset failed: ${String(e2.message).slice(0, 120)}`); }
             }
           }
           if (rError) { c.detection = 'uncertain'; c.confidence = 0; c.detectError = rError; }
-          else if (r.faces > 0 && r.best >= POLICY.threshold) { c.detection = 'person'; c.confidence = r.best; c.faces = r.faces; }
-          else if (r.faces > 0) { c.detection = 'uncertain'; c.confidence = r.best; c.faces = r.faces; }
-          else { c.detection = 'none'; c.confidence = 0; }
-          phase(`detect ${idx + 1}/${candidates.length} -> ${c.detection}${c.confidence ? ` conf=${c.confidence}` : ''}${c.detectError ? ` (${c.detectError})` : ''}`);
+          else {
+            // Person OR face hit = human. confidence = best of the two.
+            const personHit = (r.persons || 0) > 0;
+            const faceHit = (r.faces || 0) > 0;
+            const best = Math.max(r.personBest || 0, r.faceBest || 0);
+            c.persons = r.persons || 0;
+            if (r.personBoxes && r.personBoxes.length) c.personBoxes = r.personBoxes;
+            if (r.faces) c.faces = r.faces;
+            if (personHit || faceHit) {
+              c.detected_by = personHit && faceHit ? 'person+face' : personHit ? 'person' : 'face';
+              c.detection = best >= POLICY.threshold ? 'person' : 'uncertain';
+              c.confidence = best;
+            } else { c.detection = 'none'; c.confidence = 0; }
+          }
+          phase(`detect ${idx + 1}/${candidates.length} -> ${c.detection}${c.confidence ? ` conf=${c.confidence}` : ''}${c.detected_by ? ` via=${c.detected_by}` : ''}${c.detectError ? ` (${c.detectError})` : ''}`);
         }
       } else {
         for (const c of candidates) { c.detection = 'uncertain'; c.confidence = 0; c.detectError = 'detector unavailable'; }
@@ -564,6 +585,8 @@ async function scan(rawUrl, opts = {}) {
       if (e.src) el.src = e.src.slice(0, 200);
       if (e.detectError) el.note = e.detectError;
       if (e.faces) el.faces = e.faces;
+      if (e.persons) el.persons = e.persons;
+      if (e.detected_by) el.detected_by = e.detected_by;
       return el;
     });
 

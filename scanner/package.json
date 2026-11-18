@@ -1,6 +1,6 @@
 {
   "name": "filter-platform-scanner",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AI Pre-Rendering Website Inspection & Visual Protection Engine (prototype) for the Filter Platform",
   "private": true,
   "type": "commonjs",
@@ -9,6 +9,7 @@
     "scan-one": "node scanner.js"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "^1.2.3",
     "playwright": "^1.65.1"
   }
 }
