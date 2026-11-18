@@ -77,6 +77,7 @@ class MainActivity : Activity() {
         findViewById<Button>(R.id.refreshPolicyButton).setOnClickListener { loadPolicy() }
         findViewById<Button>(R.id.checkStatusButton).setOnClickListener { checkStatus() }
         findViewById<Button>(R.id.dashboardButton).setOnClickListener { openDashboard() }
+        findViewById<Button>(R.id.browserButton).setOnClickListener { openBrowser() }
         findViewById<Button>(R.id.resetButton).setOnClickListener { resetAll() }
 
         showScreen()
@@ -246,6 +247,10 @@ class MainActivity : Activity() {
 
     private fun openDashboard() {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(SecureStore.DASHBOARD_URL)))
+    }
+
+    private fun openBrowser() {
+        startActivity(Intent(this, BrowserActivity::class.java))
     }
 
     private fun resetAll() {
