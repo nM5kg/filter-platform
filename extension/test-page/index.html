@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="yi" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>פֿילטער פּלאַטפאָרם — טעסט בלאַט (Phase 2)</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; background: #fff; color: #111; }
+  h1 { font-size: 22px; } h2 { font-size: 18px; margin-top: 32px; border-bottom: 2px solid #ddd; padding-bottom: 4px; }
+  .grid { display: flex; flex-wrap: wrap; gap: 16px; }
+  figure { margin: 0; width: 260px; }
+  figure img { width: 260px; height: 200px; object-fit: cover; border: 1px solid #ccc; }
+  figcaption { font-size: 13px; color: #444; margin-top: 4px; }
+  #stats { background: #f3f4f6; border: 1px solid #ccc; padding: 12px; border-radius: 8px; white-space: pre-wrap; font-family: monospace; direction: ltr; text-align: left; }
+  .bg-person { width: 260px; height: 200px; background-image: url('photos/person-einstein.jpg'); background-size: cover; background-position: center; border: 1px solid #ccc; position: relative; }
+  .spacer { height: 900px; background: repeating-linear-gradient(#fafafa, #fafafa 40px, #eee 40px, #eee 80px); display: flex; align-items: center; justify-content: center; color: #888; }
+  .note { background: #fffbeb; border: 1px solid #f59e0b; padding: 10px; border-radius: 8px; font-size: 14px; }
+</style>
+</head>
+<body>
+<h1>🛡️ פֿילטער פּלאַטפאָרם — טעסט בלאַט</h1>
+<p>דאָס בלאַט פּרüווט די בראַוזער עקסטענשאַן: מענטש־בילדער זאָלן בלאקירט / באַדעקט ווערן, אַנדערע בילדער זאָלן בלייבן.</p>
+
+<h2>סטאַטוס (לעבט פֿון דער עקסטענשאַן)</h2>
+<pre id="stats">וואַרט אויף עקסטענשאַן…</pre>
+
+<h2>אָפּטיילונג 1 — בילדער מיט מענטשן (3)</h2>
+<div class="grid">
+  <figure><img id="img-einstein" data-expect="human" src="photos/person-einstein.jpg" alt="Albert Einstein"><figcaption>Einstein — פּנים, ערוואַרט: מענטש</figcaption></figure>
+  <figure><img id="img-obama" data-expect="human" src="photos/person-obama-family.jpg" alt="Obama family"><figcaption>Obama משפּחה — עטלעכע פּנימער, ערוואַרט: מענטש</figcaption></figure>
+  <figure><img id="img-curie" data-expect="human" src="photos/person-marie-curie.jpg" alt="Marie Curie"><figcaption>Marie Curie — פּנים, ערוואַרט: מענטש</figcaption></figure>
+</div>
+
+<h2>אָפּטיילונג 2 — בילדער אָן מענטשן (3)</h2>
+<div class="grid">
+  <figure><img id="img-apple" data-expect="no-human" src="photos/nopeople-apple.jpg" alt="Apple"><figcaption>עפּל — ערוואַרט: קיין מענטש</figcaption></figure>
+  <figure><img id="img-cat" data-expect="no-human" src="photos/nopeople-cat.jpg" alt="Cat"><figcaption>קאַץ — ערוואַרט: קיין מענטש</figcaption></figure>
+  <figure><img id="img-earth" data-expect="no-human" src="photos/nopeople-earth.jpg" alt="Earth"><figcaption>ערד פֿון קאָסמאָס — ערוואַרט: קיין מענטש</figcaption></figure>
+</div>
+
+<h2>אָפּטיילונג 3 — CSS הינטערגרונט בילד (מענטש)</h2>
+<div class="bg-person" id="bg-person" data-expect="human"></div>
+<p>דאָס איז אַ div מיט background-image (Einstein), נישט קיין &lt;img&gt;.</p>
+
+<h2>אָפּטיילונג 4 — cross-origin בילדער (מענטש)</h2>
+<div class="grid">
+  <figure><img id="img-xorigin" data-expect="human" src="https://commons.wikimedia.org/wiki/Special:FilePath/Albert%20Einstein%20sticks%20his%20tongue.jpg?width=800" alt="Einstein cross-origin" crossorigin="anonymous"><figcaption>Einstein פֿון commons.wikimedia.org — cross-origin; אָן CORS וועט די דעטעקציע זיין "אומזיכער"</figcaption></figure>
+  <figure><img id="img-xorigin-local" data-expect="human-uncertain" src="http://127.0.0.1:8124/person-einstein.jpg" alt="Einstein cross-origin local port"><figcaption>Einstein פֿון 127.0.0.1:8124 — אַנדערער פּאָרט = cross-origin, אָן CORS העדערס. ערוואַרט: "אומזיכער" (בלאק/באַדעקן: בלייבט; שטרענג: באַדעקט)</figcaption></figure>
+</div>
+
+<h2>אָפּטיילונג 5 — בלאקירטע דאָמיין פּראָבע</h2>
+<p class="note">דאָס בילד דאָ קומט פֿון facebook.com — אַ דאָמיין אויף דער בלאָקליסט. די DNR כּללים זאָלן די בעטונג בלאקירן.</p>
+<img id="img-facebook-probe" data-expect="dnr-blocked" src="https://www.facebook.com/favicon.ico" alt="facebook probe" width="16" height="16">
+
+<h2>אָפּטיילונג 6 — דינאַמישע בילדער</h2>
+<p>אַ בילד מיט אַ מענטש ווערט צוגעלייגט מיט JavaScript נאָך 2 סעקונדעס (MutationObserver טעסט):</p>
+<div class="grid" id="dynamic-slot"></div>
+
+<div class="spacer">⬇ סקראָל אַראָפּ פֿאַר דאָס פֿוילע (lazy) בילד ⬇</div>
+
+<h2>אָפּטיילונג 7 — פֿויל (lazy) בילד מיט מענטש</h2>
+<div class="grid">
+  <figure><img id="img-lazy" data-expect="human" loading="lazy" src="photos/person-marie-curie.jpg" alt="Marie Curie lazy"><figcaption>Marie Curie, loading=lazy — ערוואַרט: מענטש (נאָכן סקראָלן)</figcaption></figure>
+</div>
+
+<script>
+  // Dynamic image injected after 2s (MutationObserver test)
+  setTimeout(function () {
+    var img = document.createElement('img');
+    img.id = 'img-dynamic';
+    img.setAttribute('data-expect', 'human');
+    img.src = 'photos/person-obama-family.jpg';
+    img.alt = 'Obama family (dynamic)';
+    img.style.width = '260px'; img.style.height = '200px'; img.style.objectFit = 'cover';
+    var fig = document.createElement('figure');
+    var cap = document.createElement('figcaption');
+    cap.textContent = 'Obama משפּחה — דינאַמיש צוגעלייגט נאָך 2 סעקונדעס';
+    fig.appendChild(img); fig.appendChild(cap);
+    document.getElementById('dynamic-slot').appendChild(fig);
+  }, 2000);
+
+  // Live status panel from the extension's DOM mirror (content scripts run
+  // in an isolated JS world, so window.__fpStats is invisible to this page;
+  // the extension publishes the same stats as data attributes + #fp-dom-stats).
+  setInterval(function () {
+    var el = document.getElementById('stats');
+    var root = document.documentElement;
+    var raw = root.getAttribute('data-fp-stats');
+    if (raw) {
+      el.textContent = 'mode=' + root.getAttribute('data-fp-mode')
+        + ' modelReady=' + root.getAttribute('data-fp-model-ready')
+        + ' scanDone=' + root.getAttribute('data-fp-scan-done')
+        + '\n' + JSON.stringify(JSON.parse(raw), null, 2);
+    }
+  }, 500);
+</script>
+</body>
+</html>
