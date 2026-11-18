@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>07 — Live streams</title>
+<style>body{font-family:sans-serif;margin:20px;max-width:900px}canvas,video{display:block;border:1px solid #888;margin:10px 0;background:#000}</style>
+</head>
+<body>
+<h1>07 — Live streams</h1>
+<p>Expected: <b>both stream videos are covered</b>. A live stream is
+re-sampled while it plays, but one clean frame never decides a stream —
+in this prototype (no detector) streams stay covered.</p>
+
+<h2>Stream from canvas.captureStream() — no camera permission needed</h2>
+<p>A canvas animates the person portrait; its stream feeds the video below.
+This tests the <code>srcObject instanceof MediaStream</code> path.</p>
+<canvas id="src-canvas" width="480" height="320"></canvas>
+<video id="v-capture" width="480" height="320" muted playsinline autoplay></video>
+
+<h2>Camera stream (optional — needs camera permission)</h2>
+<p>Tap the button to request the camera. NOTE: the prototype does not yet
+implement GeckoView's PermissionDelegate for camera access, so this will
+probably be denied on the device — that itself is a finding to record.
+If it is granted, the camera video must be covered like everything else.</p>
+<button id="cam-btn">Request camera</button>
+<video id="v-camera" width="480" height="320" muted playsinline autoplay></video>
+
+<p id="status">loading…</p>
+<script>
+const st = document.getElementById('status');
+// Animated source canvas: draw the portrait with a moving marker so the
+// stream is visibly live.
+const c = document.getElementById('src-canvas');
+const ctx = c.getContext('2d');
+const img = new Image();
+img.onload = () => {
+  let x = 0;
+  function frame(){
+    ctx.drawImage(img, 0, 0, 480, 320);
+    ctx.fillStyle = '#f00';
+    ctx.fillRect(x % 480, 300, 40, 12);
+    x += 4;
+    requestAnimationFrame(frame);
+  }
+  frame();
+  const stream = c.captureStream(15);
+  document.getElementById('v-capture').srcObject = stream;
+  st.textContent = 'captureStream running.';
+};
+img.onerror = () => { st.textContent = 'ERROR loading p1 portrait'; };
+img.src = 'assets/p1-huang-portrait.jpg';
+
+document.getElementById('cam-btn').addEventListener('click', async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    document.getElementById('v-camera').srcObject = stream;
+    st.textContent = 'camera granted.';
+  } catch (e) {
+    st.textContent = 'camera NOT granted: ' + e.name + ' — ' + e.message;
+  }
+});
+</script>
+</body>
+</html>

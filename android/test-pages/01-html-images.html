@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>01 — HTML images</title>
+<style>body{font-family:sans-serif;margin:20px;max-width:900px}img{display:block;margin:10px 0;border:1px solid #888;max-width:100%}</style>
+</head>
+<body>
+<h1>01 — HTML images</h1>
+<p>Expected: <b>every image below is covered</b> (dark overlay), including the
+lazy one and the one whose src is set by JS after 1 s.</p>
+
+<h2>Plain &lt;img&gt; — person</h2>
+<img id="img-person" src="assets/p1-huang-portrait.jpg" width="480" height="640" alt="Jensen Huang portrait">
+
+<h2>Plain &lt;img&gt; — crowd</h2>
+<img id="img-crowd" src="assets/d1-crowd-funeral.jpg" width="480" height="320" alt="Crowd">
+
+<h2>Plain &lt;img&gt; — landscape control (no person)</h2>
+<img id="img-landscape" src="assets/l1-glacier-lake.jpg" width="480" height="318" alt="Glacier lake">
+
+<h2>&lt;picture&gt; / srcset</h2>
+<picture>
+  <source srcset="assets/p1-huang-portrait.jpg" media="(min-width: 400px)">
+  <img id="img-picture" src="assets/l1-glacier-lake.jpg" width="480" height="640" alt="picture element">
+</picture>
+
+<h2>Lazy-loading image (loading=lazy)</h2>
+<img id="img-lazy" src="assets/d1-crowd-funeral.jpg" width="480" height="320" loading="lazy" alt="lazy crowd">
+
+<h2>Image whose src is set by JS after 1 s (data-src pattern)</h2>
+<img id="img-datasrc" data-src="assets/p1-huang-portrait.jpg" width="480" height="640" alt="set later by JS">
+
+<h2>Input type=image</h2>
+<input type="image" id="img-input" src="assets/l1-glacier-lake.jpg" width="480" height="318" alt="input image">
+
+<p id="status">waiting…</p>
+<script>
+setTimeout(function () {
+  var el = document.getElementById('img-datasrc');
+  el.src = el.getAttribute('data-src');
+  document.getElementById('status').textContent = 'JS set the data-src image src at 1 s.';
+}, 1000);
+document.getElementById('status').textContent = 'page loaded; data-src image pending.';
+</script>
+</body>
+</html>

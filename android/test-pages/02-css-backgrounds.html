@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>02 — CSS backgrounds</title>
+<style>
+  body{font-family:sans-serif;margin:20px;max-width:900px}
+  .box{width:480px;height:320px;margin:10px 0;border:1px solid #888;background-size:cover;background-position:center}
+  #bg-person{background-image:url("assets/p1-huang-portrait.jpg")}
+  #bg-crowd{background-image:url("assets/d1-crowd-funeral.jpg")}
+  #bg-landscape{background-image:url("assets/l1-glacier-lake.jpg")}
+  #bg-sprite{width:240px;height:320px;background-image:url("assets/p1-huang-portrait.jpg");background-size:960px 1279px;background-position:-240px 0}
+  #bg-datauri{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='320'%3E%3Crect width='480' height='320' fill='%23c00'/%3E%3Ctext x='20' y='160' font-size='40' fill='white'%3EDATA-URI BG%3C/text%3E%3C/svg%3E")}
+  .card{padding:16px;color:#fff;text-shadow:0 1px 2px #000}
+</style>
+</head>
+<body>
+<h1>02 — CSS backgrounds</h1>
+<p>Expected: <b>every box below is covered</b>. The text inside the card box
+must stay readable — only its background image is stripped, not the text.
+(CSS backgrounds are reported without a thumbnail in this prototype, so they
+can never be ALLOWed here; they stay covered.)</p>
+
+<h2>background-image — person</h2>
+<div class="box" id="bg-person"></div>
+
+<h2>background-image — crowd</h2>
+<div class="box" id="bg-crowd"></div>
+
+<h2>background-image — landscape control</h2>
+<div class="box" id="bg-landscape"></div>
+
+<h2>Sprite (background-position offset into a larger image)</h2>
+<div class="box" id="bg-sprite"></div>
+
+<h2>data: URI background (inline SVG)</h2>
+<div class="box" id="bg-datauri"></div>
+
+<h2>Background on an element with text (card)</h2>
+<div class="box card" id="bg-person-card" style="background-image:url('assets/d1-crowd-funeral.jpg')">
+  This text must stay visible. Only the photo behind it is filtered.
+</div>
+
+<h2>Background set by JS after 1 s</h2>
+<div class="box" id="bg-js">JS sets this background at 1 s.</div>
+
+<script>
+setTimeout(function () {
+  document.getElementById('bg-js').style.backgroundImage = 'url("assets/p1-huang-portrait.jpg")';
+}, 1000);
+</script>
+</body>
+</html>
