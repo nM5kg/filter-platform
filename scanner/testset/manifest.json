@@ -1,0 +1,153 @@
+{
+  "detector": "MediaPipe ObjectDetector EfficientDet-Lite0 (person class) + face-api.js tinyFaceDetector fallback; policy threshold 0.70, score floor 0.40 (see ../detector.js)",
+  "generated": "2026-11-18",
+  "images": [
+    {
+      "category": "behind",
+      "count": 1,
+      "file": "b1-back-soldier.png",
+      "id": "b1-back-soldier",
+      "notes": "Soldier seen from behind (back of head, no face), verified by eye.",
+      "person_present": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Back_view_of_USMC_MCCUU,_2002.png"
+    },
+    {
+      "category": "behind",
+      "count": 1,
+      "file": "b2-behind-back.jpg",
+      "id": "b2-behind-back",
+      "notes": "Guitarist from behind/side, head turned away, no visible face. Black-and-white.",
+      "person_present": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Behind_his_back_(Unsplash).jpg"
+    },
+    {
+      "category": "behind",
+      "count": 1,
+      "file": "b3-back-tattoo.jpg",
+      "id": "b3-back-tattoo",
+      "notes": "Man from behind, full back tattoo, no face. Bare back (tattoo documentation photo, non-sexual).",
+      "person_present": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Man_with_a_full_back_tattoo._Color.jpg"
+    },
+    {
+      "category": "distant",
+      "count": null,
+      "file": "d1-crowd-funeral.jpg",
+      "id": "d1-crowd-funeral",
+      "notes": "Huge crowd, hundreds of people, most small/distant. Count not asserted.",
+      "person_present": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Massive_crowd_gathering_for_Osman_Hadi_funeral_at_Manik_Mia_Avenue.jpg"
+    },
+    {
+      "category": "distant",
+      "count": null,
+      "file": "d2-crowd-street-night.jpg",
+      "id": "d2-crowd-street-night",
+      "notes": "Dense night street crowd, many small/distant figures. Count not asserted.",
+      "person_present": true,
+      "source": "https://commons.wikimedia.org/wiki/File:DSC_6250_A_dense_crowd_fills_a_palm-lined_city_street_at_night_lights_and_vendor_tents_glowing_along_the_sides_as_people_move_toward_an_illuminated_distant_block.jpg"
+    },
+    {
+      "category": "distant",
+      "count": 1,
+      "file": "d3-lone-beach.jpg",
+      "id": "d3-lone-beach",
+      "notes": "One person walking alone on a wide beach — a single small/distant figure, hard to spot at thumbnail size.",
+      "person_present": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Walking_alone_at_a_sea_beach.jpg"
+    },
+    {
+      "category": "group",
+      "count": 11,
+      "file": "g1-team-cincinnati.jpg",
+      "id": "g1-team-cincinnati",
+      "notes": "Football team group photo, 11 players, faces visible.",
+      "person_present": true,
+      "source": "https://commons.wikimedia.org/wiki/File:FC_Cincinnati_starters_group_photo_(29125666664)_(cropped).jpg"
+    },
+    {
+      "category": "group",
+      "count": 7,
+      "file": "g2-imperial-family.jpg",
+      "id": "g2-imperial-family",
+      "notes": "Romanov family 1913, 7 people, faces visible. Black-and-white.",
+      "person_present": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Russian_Imperial_Family_1913.jpg"
+    },
+    {
+      "category": "group",
+      "count": null,
+      "file": "g3-west-point-1899.png",
+      "id": "g3-west-point-1899",
+      "notes": "1899 West Point baseball team, ~14 players, faces visible. Exact count not asserted (overlapping figures). Black-and-white.",
+      "person_present": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Group_photo_of_the_1899_West_Point_baseball_team.png"
+    },
+    {
+      "category": "portrait",
+      "count": 1,
+      "file": "p1-huang-portrait.jpg",
+      "id": "p1-huang-portrait",
+      "notes": "Frontal portrait, positive control (face-api found it at 0.944 in the v0.1.0 baseline).",
+      "person_present": true,
+      "source": "https://commons.wikimedia.org/wiki/File:Jensen_Huang_Stanford_2026-04-30_010_(cropped).jpg"
+    },
+    {
+      "category": "portrait",
+      "count": 1,
+      "file": "p2-khrushchev-portrait.jpg",
+      "id": "p2-khrushchev-portrait",
+      "notes": "Frontal portrait, positive control (face-api found it at 0.986 in the v0.1.0 baseline). Black-and-white.",
+      "person_present": true,
+      "source": "https://commons.wikimedia.org/wiki/File:1956_Press_Photo_Communist_Party_Secretary_Nikita_Khrushchev_in_Moscow_(3x4_cropped).jpg"
+    },
+    {
+      "category": "animal",
+      "count": 0,
+      "file": "a1-dog-running.jpg",
+      "id": "a1-dog-running",
+      "notes": "Country lane, one small dog in the distance, no person visible. Hard negative (small animal).",
+      "person_present": false,
+      "source": "https://commons.wikimedia.org/wiki/File:Dog_running_in_Tunnel_Lane_(Orleton)_-_geograph.org.uk_-_6599342.jpg"
+    },
+    {
+      "category": "animal",
+      "count": 0,
+      "file": "a2-dog-stream.jpg",
+      "id": "a2-dog-stream",
+      "notes": "Dog running by a stream, no person visible, verified by eye.",
+      "person_present": false,
+      "source": "https://commons.wikimedia.org/wiki/File:Running_waters_and_a_running_dog_-_geograph.org.uk_-_2823167.jpg"
+    },
+    {
+      "category": "landscape",
+      "count": 0,
+      "file": "l1-glacier-lake.jpg",
+      "id": "l1-glacier-lake",
+      "notes": "Glacier lagoon at sunset, no people.",
+      "person_present": false,
+      "source": "https://commons.wikimedia.org/wiki/File:Jokulsarlon_lake,_Iceland.jpg"
+    },
+    {
+      "category": "landscape",
+      "count": 0,
+      "file": "l2-mountain-lake.jpg",
+      "id": "l2-mountain-lake",
+      "notes": "Mountain lake and rock formations, no people.",
+      "person_present": false,
+      "source": "https://commons.wikimedia.org/wiki/File:Ergaki,_Mountain_lake_Skazka,_Rock_formations,_Sayan_Mountains,_Russia.jpg"
+    },
+    {
+      "category": "object",
+      "count": 0,
+      "file": "o1-vintage-camera.jpg",
+      "id": "o1-vintage-camera",
+      "notes": "Vintage film camera product shot, no people. Hard negative (round flash reflector could read as a face-like shape).",
+      "person_present": false,
+      "source": "https://commons.wikimedia.org/wiki/File:Vintage_Beacon_II_Film_Camera_By_Whitehouse_Products_With_Optional_Flash_Unit_(22274785336).jpg"
+    }
+  ],
+  "note": "All 16 images downloaded. b1-back-soldier.png and a2-dog-stream.jpg initially failed with Wikimedia HTTP 429 via Python/curl (shared egress IP throttled); both were then fetched successfully through headless Chromium (same egress relay) at 200.",
+  "source": "All images are real photos from Wikimedia Commons (freely licensed; see each file page). Downloaded at 960px wide via Special:FilePath (width=800 rounds up to the next standard thumb size). Ground truth was verified by looking at every image (see contact-sheet.jpg).",
+  "version": "v0.2.0-person-detector"
+}
