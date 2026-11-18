@@ -12,6 +12,7 @@
       "all_frames": false,
       "js": [
         "vendor/face-api.js",
+        "detector.js",
         "content.js"
       ],
       "matches": [
@@ -21,20 +22,23 @@
       "run_at": "document_idle"
     }
   ],
-  "description": "Free kosher internet filter: blocks human pictures per policy (on-device face detection) and blocks listed domains. Phase 2.",
+  "description": "Free kosher internet filter: blocks human pictures per policy (on-device person + face detection) and blocks listed domains. Phase 2.",
   "host_permissions": [
     "http://*/*",
     "https://*/*"
   ],
   "manifest_version": 3,
-  "name": "Filter Platform \u2014 Kosher Browser Filter",
+  "name": "Filter Platform — Kosher Browser Filter",
   "permissions": [
     "storage",
     "declarativeNetRequest",
     "alarms"
   ],
   "short_name": "Filter Platform",
-  "version": "1.0.0",
+  "version": "1.2.0",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
   "web_accessible_resources": [
     {
       "matches": [
@@ -42,7 +46,9 @@
         "https://*/*"
       ],
       "resources": [
-        "models/*"
+        "models/*",
+        "detector.html",
+        "blocked.html"
       ]
     }
   ]

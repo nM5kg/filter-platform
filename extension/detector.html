@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<!-- Filter Platform — person detector host page.
+     Loaded ONLY as a hidden <iframe> (src = this file, an extension page)
+     injected by detector.js. It runs in the chrome-extension:// origin,
+     which is the one place an MV3 content script can get a full extension
+     page: MediaPipe Tasks Vision loads its WASM runtime by injecting a
+     classic <script> into document.body, so the bundle and the WASM
+     loader must share one JS world — a content script's isolated world
+     cannot do that. This page is that world.
+     No UI, no network beyond the extension itself. -->
+<html><head><meta charset="utf-8"><title>Filter Platform — person detector</title></head>
+<body><script type="module" src="./detector-page.js"></script></body></html>
