@@ -4,6 +4,96 @@ Built 2026-11-18. Stack: **Neon (PostgreSQL 17) + Cloudflare Workers + Cloudflar
 Everything is NEW and separate — nothing touches Gavhah, Webline 101, Hotline
 Platform, kolylt, or any existing Worker/database/repo.
 
+## Decisions 2026-11-18 ~12:55 EST (Yakob — binding)
+
+### 1. Browser base = GeckoView (main candidate)
+
+- **GeckoView 160.0.20261116130455** (stable channel, Firefox 160.0.1 build
+  2026-11-16), **MPL-2.0**; matching Android Components **160.0.1** (also
+  MPL-2.0). Verified 2026-11-18 from Mozilla Maven metadata — see
+  `android/GECKOVIEW-RESEARCH.md`. Own Browser App + own Filtering Engine,
+  using Mozilla Android Components where they help build browser
+  UI/functions — NOT a ready-made foreign browser UI. Stable release, NOT
+  Nightly, for the first production version. Pin `geckoview-omni`
+  explicitly alongside AC's `browser-engine-gecko`; never mix plain
+  `geckoview` with `-omni`.
+- **Cromite is NOT the main base** (GPLv3 — the browser app itself would
+  have to be open source). **Raw Chromium stays a backup only**, if
+  GeckoView cannot meet the technical requirements.
+- **Prototype built 2026-11-18** (see `android/GECKOVIEW-PROTOTYPE.md`):
+  GeckoView browser Activity with own UI (address bar, navigation), own
+  `FilterEngine`, built-in privileged WebExtension + content script
+  (fail-closed covering), native bridge (WebExtension message handler <->
+  Kotlin). Unit tests 22/22 pass. Manual debug APK verified (200,066,826
+  bytes, arm64-v8a, apksigner v2+v3, `com.filterplatform.app`). Never run
+  on a phone yet — GeckoView startup, extension install, content-script
+  injection, bridge round-trip and cover behaviour on real sites are all
+  UNPROVEN until a real Android device run.
+
+### 2. EfficientDet-Lite0 — prototype / first testing ONLY
+
+- Do NOT confirm it as the production model until exact weights, hash,
+  source and license are verified. Hash confirmed (independently, twice):
+  sha256 `4b59100025bea1235a84c1038879a6cccc9f6c49f5e41144e91e74d99e780993`,
+  float16, 7,254,339 bytes, source Google's official MediaPipe bucket.
+  Weights license still UNVERIFIED — see `scanner/models/LICENSES.md` and
+  `scanner/models/PRODUCTION-MODELS.md` (pub.dev's Apache 2.0 claim covers
+  the float32 v1 builds, not our float16 file; "KTag SBOM" could not be
+  located; TF Hub is Kaggle-gated and unreadable).
+- **Production candidate: Intel OMZ person-detection-0202** (Apache 2.0 repo
+  license verified; IR-only; conversion path IR → ONNX via community tool
+  `openvino2onnx`, then one ONNX file serves extension (onnxruntime-web /
+  WASM), Android (onnxruntime-android AAR) and scanner (onnxruntime-node)).
+  Open: published `model.yml` checksums do NOT match the files the bucket
+  serves (measured FP16 .bin sha256 `11599bdd44bf863d…`, published
+  `2a149bc8c2f02965c…`), and Intel staff (2026-11-18) say to get written
+  confirmation before commercial shipment. License-cleanest fallback:
+  RF-DETR Nano (Apache 2.0, README explicitly allows closed-source
+  commercial use; ~122 MB FP32). Nothing here is legal advice.
+
+### 3. Visual Scanner — GeckoView-native (rework)
+
+- Do NOT assume the Playwright Chromium scanner sees the same content as
+  the Android browser. The scanner must check visual content INSIDE
+  GeckoView: built-in privileged WebExtension + content scripts + native
+  bridge (see prototype, §1). Test separately: HTML images, CSS
+  backgrounds, Canvas, SVG, WebGL, video frames, live streams, dynamic
+  content. Unreviewed visual content stays COVERED until a decision is
+  ready (fail closed). The Playwright/Chromium scanner (`scanner/`)
+  remains the pre-rendering prototype and its results do NOT transfer
+  automatically to GeckoView.
+
+### 4. Order of work
+
+1. GeckoView Browser Prototype with the Visual Filter integrated (done,
+   2026-11-18 — see §1). 2. Prove the scanner detects people on real
+   sites incl. canvas and video INSIDE GeckoView (needs a real Android
+   device). 3. Then continue with the whole platform. Do NOT rebuild the
+   whole project.
+
+### 5. Build environment (verified 2026-11-18, corrects the old record)
+
+- Installed Gradle 8.5 (`~/gradle-8.5/bin/gradle`) RUNS (`gradle --version`
+  → Gradle 8.5 / JVM 17.0.21, exit 0). Use it directly, never `./gradlew`
+  (the wrapper fails: its distribution download dies in the SSL
+  handshake).
+- BUT: JVM data transfer is still intercepted on this VM — a Java Socket
+  connects, but the first `read()` returns the 193-byte sandbox
+  interceptor message (`muse: Other TCP connections is turned off…`); the
+  Gradle daemon dies on the loopback socket with the same bytes. So
+  Gradle cannot download dependencies here. AND: **SDK platform 37 does
+  not exist for download** (verified 2026-11-18: `repository2-1.xml`
+  lists at most platform-36-ext19; `platform-37_r01.zip` → 404) while the
+  GeckoView 160 AAR declares `minCompileSdk=37` — a Gradle build of this
+  module fails on EVERY machine right now, not just this VM, until Google
+  publishes SDK platform 37.
+- The manual build (`android/manual-build/build.sh`, curl for deps, kotlinc
+  + aapt2 + d8) is therefore the primary verified build path: it compiles
+  against android.jar 34 (a prototype-only compromise vs the AAR's
+  minCompileSdk=37) and produced the verified 200 MB APK above.
+- There is NO `other_tcp` / "Direct network protocols" setting anywhere
+  in Muse's permissions — do not send Yakob hunting for it.
+
 ## Live endpoints
 
 - API Worker: `https://filter-platform-api.gavhah-copy.workers.dev`
@@ -169,7 +259,10 @@ resolves to the same Standard policy.
 - **Browser extension / custom browser:** calls `GET /domains/check` per
   navigation and reads the device's policy (`GET /devices`, `GET /policies/:id`)
   for `block_images`/`cover_images`; reports new images through the same
-  `POST /requests` flow. No API change needed.
+  `POST /requests` flow. No API change needed. The custom browser is the
+  GeckoView prototype (`android/` — see Decisions §1); its in-browser visual
+  filter is a built-in privileged WebExtension + content script + native
+  bridge, NOT the MV3 extension (different runtime).
 - **Image/video AI (Visual Shield):** replaces/augments `scoreContent()` via
   the adapter contract above; per-image verdicts can reuse `ai_analysis_results`
   with `target_type='image'`.
@@ -180,16 +273,21 @@ resolves to the same Standard policy.
 
 ## What is NOT built (Phases 4–6)
 
-Custom Android browser (assessed only — see `CHROMIUM_ANDROID_ASSESSMENT.md`;
-do not start the browser build before the Cromite-vs-GeckoView-vs-raw-Chromium
-decision), full SafeSearch enforcement in the extension/device (the Worker
-config endpoints exist — Phase 3 starters — and the dashboard shows them, but
-the extension does NOT yet rewrite search URLs or set DNS; that is the next
-Phase 3 step), the real open-source AI model
-(Phase 4; the scanner and extension both use face detection as the
-placeholder detector), device apps, Android Enterprise / iOS MDM, production
-hardening (restricted CORS, rate limits, per-customer auth, password hashing
-for `users`, backups, monitoring, load testing).
+Custom Android browser — **decision made 2026-11-18 (Yakob): GeckoView**
+(see Decisions §1); the prototype is built (`android/`,
+`GECKOVIEW-PROTOTYPE.md`, 22/22 unit tests, 200 MB manual APK verified)
+but has never run on a phone — GeckoView startup, extension install,
+content-script injection, bridge round-trip and cover behaviour on real
+sites are all unproven until a real Android device run. Gradle build is
+blocked until Google publishes SDK platform 37 (the GeckoView 160 AAR
+declares `minCompileSdk=37`). Full SafeSearch enforcement in the
+extension/device (the Worker config endpoints exist — Phase 3 starters —
+and the dashboard shows them, but the extension does NOT yet rewrite
+search URLs or set DNS; that is the next Phase 3 step), the real
+open-source AI model (Phase 4; the scanner and extension both use face
+detection as the placeholder detector), device apps, Android Enterprise /
+iOS MDM, production hardening (restricted CORS, rate limits, per-customer
+auth, password hashing for `users`, backups, monitoring, load testing).
 
 Built overnight 2026-11-18 (all verified live, see below): the MV3 browser
 extension (`extension/` — policy fetch, on-device face detection,
@@ -250,10 +348,13 @@ activation code) → `POST /devices/register` → `GET /domains/check?domain=…
 `POST /requests` → `POST /requests/:id/classify` → check the dashboards at
 the URLs above with the API token.
 
-## GitHub (for the parent to create — not created by this build)
+## GitHub
 
-Suggested repo: `nM5kg/filter-platform` (public). Push from
-`~/workspace/filter-platform/`: `schema.sql`, `seed.sql`,
+Repo: `nM5kg/filter-platform` (public, main) — created 2026-11-18, **37
+commits** as of 2026-11-18 ~06:52 EST (92 files incl. Phase 1, extension,
+scanner, Android skeleton; verified via raw.githubusercontent.com). Push
+from `~/workspace/filter-platform/` via the browser upload flow (GitHub
+web UI, signed in as nM5kg): `schema.sql`, `seed.sql`,
 `migration-001-policy-decision.sql`, `cleanup-001-demo-data.sql`, `worker.js`,
 `deploy.py`, `pages_deploy.py`, `fpsql.py`, `verify_api.py`, `dogfood.py`,
 `create_project.py`, `save_uri.py`, `get_code.py`, `public/index.html`,

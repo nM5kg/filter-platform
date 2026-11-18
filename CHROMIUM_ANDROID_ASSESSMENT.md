@@ -8,6 +8,42 @@ assessment only. Sources: Chromium's own Android build docs, the Aerium
 single-developer Chromium Android fork (updated Oct 2026), a WebView
 maintainer's answer (Jan 2026), and Cromite release listings (2026).
 
+## Decision 2026-11-18 ~12:55 EST (Yakob — binding)
+
+- **Browser base = GeckoView (main candidate).** Pinned stable version
+  **160.0.20261116130455** (Firefox 160.0.1 build 2026-11-16), license
+  **MPL-2.0**; matching Android Components **160.0.1** (MPL-2.0).
+  Verified 2026-11-18 from Mozilla Maven metadata — full research in
+  `android/GECKOVIEW-RESEARCH.md`. Own Browser App + own Filtering
+  Engine, using Mozilla Android Components where they help build browser
+  UI/functions — NOT a ready-made foreign browser UI. Stable release,
+  NOT Nightly, for the first production version.
+- **Cromite is NOT the main base** (GPLv3 — the browser app itself would
+  have to be open source). **Raw Chromium stays a backup only**, if
+  GeckoView cannot meet the technical requirements.
+- **Prototype built 2026-11-18** (`android/GECKOVIEW-PROTOTYPE.md`):
+  GeckoView browser Activity with own UI, own `FilterEngine`, built-in
+  privileged WebExtension + content script (fail-closed covering),
+  native bridge. Unit tests 22/22 pass; manual debug APK verified
+  (200,066,826 bytes, arm64-v8a, apksigner v2+v3). Never run on a phone
+  yet — real-device verification is still open.
+- **Gradle blocker found during the prototype (verified 2026-11-18):**
+  the GeckoView 160 AAR declares `minCompileSdk=37`, but **SDK platform
+  37 does not exist for download** (`repository2-1.xml` lists at most
+  platform-36-ext19; `platform-37_r01.zip` → 404) — a Gradle build of
+  this module fails on EVERY machine right now, not just this VM, until
+  Google publishes SDK platform 37. The manual build (`build.sh`,
+  android.jar 34) is the verified path meanwhile (prototype-only
+  compromise). Separately, JVM data transfer is still intercepted on
+  this VM (connect OK, first `read()` returns the 193-byte sandbox
+  interceptor message), so Gradle cannot download dependencies here;
+  use the installed Gradle 8.5 binary, never `./gradlew` (its
+  distribution download dies in the SSL handshake). There is NO
+  `other_tcp` setting — do not ask Yakob for it.
+- The scanner rework decision (same day): visual content must be checked
+  INSIDE GeckoView — the Playwright/Chromium scanner's results do NOT
+  transfer automatically. See `ARCHITECTURE.md` Decisions §3.
+
 ## Verdict up front
 
 - A **raw Chromium Android build from source is real but heavy**: it needs a
@@ -19,18 +55,22 @@ maintainer's answer (Jan 2026), and Cromite release listings (2026).
   Bromite successor, GPL v3) with a small patch set — but Cromite itself lags
   upstream by 3–4 major versions at times, and GPL v3 means the browser app
   itself must be open source (the filter backend/SaaS can stay closed, but
-  the browser code cannot be closed).
+  the browser code cannot be closed). **DECIDED 2026-11-18: Cromite is NOT
+  the main base, for exactly this GPLv3 reason.**
 - **Plain Android WebView is NOT the browser** (per Yakob): it is an embedded
   view, not a browser — no control over rendering/networking, no extensions,
   and it cannot put the Visual Shield inside other apps. It can only be an
   embedded viewer inside a larger app, not the product.
 - **GeckoView is the serious alternative**: Mozilla-maintained, MPL-2.0,
   Firefox-extension support, ~90 MB AAR, updated every 2 weeks. It is not
-  Chromium, so it is a different engine bet.
+  Chromium, so it is a different engine bet. **DECIDED 2026-11-18: this is
+  the main candidate — pinned stable 160.0.20261116130455, AC 160.0.1,
+  prototype built (see Decision section above).**
 - Recommended order: prove the filtering with the Phase 2 extension +
   scanner engine first (in progress), then take an architecture decision
   (Cromite base vs GeckoView vs raw Chromium) with Yakob before writing any
-  browser code.
+  browser code. **Decision made 2026-11-18 — see above; the prototype is
+  the next step, then real-device proof.**
 
 ## 1. Raw Chromium Android build (from source)
 
@@ -81,11 +121,17 @@ From Chromium's Android build instructions and the awChromium build doc:
   source (GPL) while the filter service (API, scanner, lists, dashboards)
   stays a separate closed backend. That split must be deliberate.
 
-## 3. The alternative engine: GeckoView (Mozilla)
+## 3. The alternative engine: GeckoView (Mozilla) — CHOSEN 2026-11-18
 
 - **What it is**: Firefox's engine as an embeddable Android component
   (used by Firefox, IronFox, Mullvad browser, and others).
-- **Size**: ~90 MB AAR; roughly +90–190 MB to the APK.
+- **Pinned version (verified 2026-11-18 from Mozilla Maven):**
+  **160.0.20261116130455** (stable channel, Firefox 160.0.1 build
+  2026-11-16); matching Android Components **160.0.1**. Beta is 161.x,
+  nightly 162.x. Full version/license research:
+  `android/GECKOVIEW-RESEARCH.md`.
+- **Size**: ~90 MB AAR; roughly +90–190 MB to the APK. (The prototype APK
+  is 200,066,826 bytes, arm64-v8a only; all-ABI would be ~520 MB.)
 - **Maintenance**: Mozilla publishes a new GeckoView every 2 weeks
   (e.g. 153.0.2, Sep 2026); the app pins a Maven version — no source
   build, no rebase treadmill.
@@ -109,16 +155,20 @@ From Chromium's Android build instructions and the awChromium build doc:
   own app's pages.
 - Verdict: usable as an embedded viewer component later; not the browser.
 
-## 5. Recommendation
+## 5. Recommendation — DECIDED 2026-11-18 (see Decision section above)
 
 1. **Now**: finish Phase 2 (MV3 extension, desktop + Kiwi on Android) and
    the pre-rendering scanner — they prove the filtering engine with no
-   browser build at all.
+   browser build at all. *(Done; the GeckoView prototype is the next
+   step.)*
 2. **Decision needed from Yakob** (not an overnight job): Cromite base
    (Chromium, GPL v3 browser, lags upstream) vs GeckoView shell
    (MPL-2.0, Mozilla-maintained, extension-ready) vs raw Chromium
    (maximum control, maximum maintenance). The decision gates all browser
-   work.
+   work. **MADE 2026-11-18: GeckoView (main), Cromite demoted, raw
+   Chromium backup only.**
 3. **Do not** start a raw Chromium checkout or a browser app until that
    decision is made — the checkout alone is ~100 GB and the first build is
-   a multi-hour job on a machine we do not have.
+   a multi-hour job on a machine we do not have. *(Decision made; the
+   GeckoView prototype is built. Next: prove it on a real Android device,
+   then continue with the whole platform.)*
