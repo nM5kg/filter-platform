@@ -1,18 +1,22 @@
 {
   "url": "https://commons.wikimedia.org/wiki/Commons:Featured_pictures",
   "final_url": "https://commons.wikimedia.org/wiki/Commons:Featured_pictures",
-  "scanned_at": "2026-11-18T10:14:41.430Z",
+  "scanned_at": "2026-11-18T10:55:35.659Z",
   "policy_version": "standard-v1",
-  "scan_ms": 82588,
-  "nav_ms": 7487,
-  "cpu_seconds": 84.871,
-  "peak_rss_mb": 2626.2,
+  "scan_ms": 77807,
+  "nav_ms": 5296,
+  "cpu_seconds": 63.4,
+  "peak_rss_mb": 1207.2,
   "http_status": 200,
   "redirects": 0,
   "detector": {
-    "name": "face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
+    "name": "MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class) + face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
     "backend": "cpu",
     "loaded": true,
+    "person_model": "MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "person_loaded": true,
+    "face_model": "face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
+    "face_loaded": true,
     "error": null
   },
   "detection_candidates": 40,
@@ -643,10 +647,12 @@
         "w": 180,
         "h": 120
       },
-      "detection": "none",
-      "confidence": 0,
-      "decision": "ALLOW",
-      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/The_Terror_of_War_%28hi-res%29.jpg/330px-The_Terror_of_War_%28hi-res%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=th"
+      "detection": "person",
+      "confidence": 0.736,
+      "decision": "BLOCK",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/The_Terror_of_War_%28hi-res%29.jpg/330px-The_Terror_of_War_%28hi-res%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=th",
+      "persons": 10,
+      "detected_by": "person"
     },
     {
       "type": "img",
@@ -1148,10 +1154,12 @@
         "h": 156
       },
       "detection": "person",
-      "confidence": 0.706,
+      "confidence": 0.87,
       "decision": "BLOCK",
       "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/2005_Quero_estar_enfadado_pero_c%C3%A1esme_moi_ben_e_es_gracioso.jpg/250px-2005_Quero_estar_enfadado_pero_c%C3%A1esme_moi_ben_e_es_gracioso.jpg",
-      "faces": 1
+      "faces": 1,
+      "persons": 1,
+      "detected_by": "person+face"
     },
     {
       "type": "img",
@@ -1740,7 +1748,9 @@
       "confidence": 0.844,
       "decision": "BLOCK",
       "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/STS-107_crew_in_orbit.jpg/250px-STS-107_crew_in_orbit.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail",
-      "faces": 9
+      "faces": 9,
+      "persons": 6,
+      "detected_by": "person+face"
     },
     {
       "type": "img",
@@ -1755,7 +1765,8 @@
       "confidence": 0.682,
       "decision": "REVIEW",
       "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Apollo_lunar_mapping_camera.jpg/330px-Apollo_lunar_mapping_camera.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnai",
-      "faces": 1
+      "faces": 1,
+      "detected_by": "face"
     },
     {
       "type": "img",
@@ -1794,10 +1805,12 @@
         "w": 196,
         "h": 168
       },
-      "detection": "none",
-      "confidence": 0,
-      "decision": "ALLOW",
-      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/Gotland_Grand_National_2026_56.jpg/250px-Gotland_Grand_National_2026_56.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=th"
+      "detection": "person",
+      "confidence": 0.858,
+      "decision": "BLOCK",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/Gotland_Grand_National_2026_56.jpg/250px-Gotland_Grand_National_2026_56.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=th",
+      "persons": 4,
+      "detected_by": "person"
     },
     {
       "type": "img",
@@ -1808,10 +1821,12 @@
         "w": 246,
         "h": 168
       },
-      "detection": "none",
-      "confidence": 0,
-      "decision": "ALLOW",
-      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Florian_Lipowitz_%28team_Red_Bull%E2%80%93Bora%E2%80%93hansgrohe%29_winning_Stage_5_%282026_Tour_of_Slovenia%29.jpg/330px-Florian_Lipowitz_%28t"
+      "detection": "uncertain",
+      "confidence": 0.497,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Florian_Lipowitz_%28team_Red_Bull%E2%80%93Bora%E2%80%93hansgrohe%29_winning_Stage_5_%282026_Tour_of_Slovenia%29.jpg/330px-Florian_Lipowitz_%28t",
+      "persons": 1,
+      "detected_by": "person"
     },
     {
       "type": "img",
@@ -3440,10 +3455,10 @@
   ],
   "summary": {
     "total": 244,
-    "people": 2,
+    "people": 4,
     "covered": 0,
-    "blocked": 2,
-    "review": 201
+    "blocked": 4,
+    "review": 202
   },
   "verdict": "REVIEW",
   "failures": [

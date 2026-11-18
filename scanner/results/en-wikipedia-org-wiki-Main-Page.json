@@ -1,18 +1,22 @@
 {
   "url": "https://en.wikipedia.org/wiki/Main_Page",
   "final_url": "https://en.wikipedia.org/wiki/Main_Page",
-  "scanned_at": "2026-11-18T10:11:18.490Z",
+  "scanned_at": "2026-11-18T11:21:40.317Z",
   "policy_version": "standard-v1",
-  "scan_ms": 39087,
-  "nav_ms": 3225,
-  "cpu_seconds": 39.929,
-  "peak_rss_mb": 2591.7,
+  "scan_ms": 35494,
+  "nav_ms": 4172,
+  "cpu_seconds": 30.373,
+  "peak_rss_mb": 1134,
   "http_status": 200,
   "redirects": 0,
   "detector": {
-    "name": "face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
+    "name": "MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class) + face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
     "backend": "cpu",
     "loaded": true,
+    "person_model": "MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "person_loaded": true,
+    "face_model": "face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
+    "face_loaded": true,
     "error": null
   },
   "detection_candidates": 17,
@@ -69,11 +73,13 @@
         "w": 119,
         "h": 164
       },
-      "detection": "uncertain",
-      "confidence": 0.452,
-      "decision": "REVIEW",
+      "detection": "person",
+      "confidence": 0.849,
+      "decision": "BLOCK",
       "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Gilbert-GS-Big.JPG/120px-Gilbert-GS-Big.JPG?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
-      "faces": 1
+      "faces": 1,
+      "persons": 1,
+      "detected_by": "person+face"
     },
     {
       "type": "img",
@@ -85,10 +91,12 @@
         "h": 166
       },
       "detection": "person",
-      "confidence": 0.957,
+      "confidence": 0.963,
       "decision": "BLOCK",
       "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Bunlet_Harcourt_1937_3.jpg/120px-Bunlet_Harcourt_1937_3.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
-      "faces": 1
+      "faces": 1,
+      "persons": 1,
+      "detected_by": "person+face"
     },
     {
       "type": "img",
@@ -114,10 +122,12 @@
         "h": 161
       },
       "detection": "person",
-      "confidence": 0.944,
+      "confidence": 0.967,
       "decision": "BLOCK",
       "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Jensen_Huang_Stanford_2026-04-30_010_%28cropped%29.jpg/250px-Jensen_Huang_Stanford_2026-04-30_010_%28cropped%29.jpg?utm_source=en.wikipedia.org",
-      "faces": 1
+      "faces": 1,
+      "persons": 1,
+      "detected_by": "person+face"
     },
     {
       "type": "img",
@@ -132,7 +142,9 @@
       "confidence": 0.986,
       "decision": "BLOCK",
       "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/1956_Press_Photo_Communist_Party_Secretary_Nikita_Khrushchev_in_Moscow_%283x4_cropped%29.jpg/250px-1956_Press_Photo_Communist_Party_Secretary_N",
-      "faces": 1
+      "faces": 1,
+      "persons": 1,
+      "detected_by": "person+face"
     },
     {
       "type": "img",
@@ -361,10 +373,10 @@
   ],
   "summary": {
     "total": 24,
-    "people": 3,
+    "people": 4,
     "covered": 0,
-    "blocked": 3,
-    "review": 7
+    "blocked": 4,
+    "review": 6
   },
   "verdict": "REVIEW",
   "failures": [
