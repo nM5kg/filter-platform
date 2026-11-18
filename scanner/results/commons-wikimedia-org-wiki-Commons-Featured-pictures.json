@@ -1,0 +1,3461 @@
+{
+  "url": "https://commons.wikimedia.org/wiki/Commons:Featured_pictures",
+  "final_url": "https://commons.wikimedia.org/wiki/Commons:Featured_pictures",
+  "scanned_at": "2026-11-18T10:14:41.430Z",
+  "policy_version": "standard-v1",
+  "scan_ms": 82588,
+  "nav_ms": 7487,
+  "cpu_seconds": 84.871,
+  "peak_rss_mb": 2626.2,
+  "http_status": 200,
+  "redirects": 0,
+  "detector": {
+    "name": "face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
+    "backend": "cpu",
+    "loaded": true,
+    "error": null
+  },
+  "detection_candidates": 40,
+  "detection_skipped": 24,
+  "elements": [
+    {
+      "type": "img",
+      "selector": "body.mediawiki > div.vector-header-container:nth-of-type(2) > header.vector-header > div.vector-header-start:nth-of-type(1) > a.mw-logo > img.mw-logo-icon",
+      "box": {
+        "x": 84,
+        "y": 8,
+        "w": 50,
+        "h": 50
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://commons.wikimedia.org/static/images/icons/commonswiki.svg"
+    },
+    {
+      "type": "img",
+      "selector": "div.vector-header-container:nth-of-type(2) > header.vector-header > div.vector-header-start:nth-of-type(1) > a.mw-logo > span.mw-logo-container > img.mw-logo-wordmark",
+      "box": {
+        "x": 144,
+        "y": 17,
+        "w": 115,
+        "h": 32
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://commons.wikimedia.org/static/images/mobile/copyright/commonswiki-wordmark.svg"
+    },
+    {
+      "type": "img",
+      "selector": "tbody > tr:nth-of-type(1) > td.left-box:nth-of-type(1) > figure.mw-halign-right > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 577,
+        "y": 472,
+        "w": 50,
+        "h": 48
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Cscr-featured.svg/60px-Cscr-featured.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "tr:nth-of-type(1) > td.left-box:nth-of-type(1) > p:nth-of-type(7) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 75,
+        "y": 1147,
+        "w": 18,
+        "h": 18
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Feed-icon.svg/20px-Feed-icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "tbody > tr:nth-of-type(2) > td.toccolours > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 678,
+        "y": 442,
+        "w": 300,
+        "h": 194
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Ponte_Vittorio_Emanuele_II_San_Pietro%2C_Rome%2C_Italy.jpg/330px-Ponte_Vittorio_Emanuele_II_San_Pietro%2C_Rome%2C_Italy.jpg?utm_source=commons."
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(1) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 84,
+        "y": 1422,
+        "w": 246,
+        "h": 164
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Common_wombat_%28Vombatus_ursinus_tasmaniensis%29_female_with_juvenile_Maria_Island.jpg/330px-Common_wombat_%28Vombatus_ursinus_tasmaniensis%29"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(1) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 337,
+        "y": 1422,
+        "w": 246,
+        "h": 164
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e5/Marsh_frog_%28Pelophylax_ridibundus%29_Nazilli.jpg/330px-Marsh_frog_%28Pelophylax_ridibundus%29_Nazilli.jpg?utm_source=commons.wikimedia.org&ut"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(1) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 590,
+        "y": 1422,
+        "w": 119,
+        "h": 164
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Macaca_nigra_self-portrait_large.jpg/250px-Macaca_nigra_self-portrait_large.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_conten"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(1) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 715,
+        "y": 1422,
+        "w": 262,
+        "h": 164
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Impala_Males_Fighting_Horns_Locked_Serengeti_Nov26_A7CR_16325.jpg/330px-Impala_Males_Fighting_Horns_Locked_Serengeti_Nov26_A7CR_16325.jpg?utm_s"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(1) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 109,
+        "y": 1629,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Spider_icon_%28Noun_Project%29.svg/40px-Spider_icon_%28Noun_Project%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(3) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 310,
+        "y": 1629,
+        "w": 19,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/Drosm3.svg/20px-Drosm3.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(5) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 448,
+        "y": 1629,
+        "w": 18,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Fourmi03.svg/20px-Fourmi03.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(7) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 810,
+        "y": 1634,
+        "w": 25,
+        "h": 14
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Butterfly_black.svg/40px-Butterfly_black.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(9) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 224,
+        "y": 1659,
+        "w": 25,
+        "h": 16
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Dragonfly_2_%28PSF%29.svg/40px-Dragonfly_2_%28PSF%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(11) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 541,
+        "y": 1655,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Carabidae.svg/40px-Carabidae.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(13) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 756,
+        "y": 1655,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Fish_icon_%28The_Noun_Project_27052%29.svg/40px-Fish_icon_%28The_Noun_Project_27052%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pa"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(15) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 156,
+        "y": 1684,
+        "w": 25,
+        "h": 20
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Sinnbild_Amphibienwanderung.svg/40px-Sinnbild_Amphibienwanderung.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumb"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(17) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 365,
+        "y": 1681,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Lizards.svg/40px-Lizards.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(19) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 535,
+        "y": 1682,
+        "w": 25,
+        "h": 23
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Stork_silhouette.svg/40px-Stork_silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(21) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 664,
+        "y": 1682,
+        "w": 25,
+        "h": 24
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Buteo_jamaicensis_2_silhouette.svg/40px-Buteo_jamaicensis_2_silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(23) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 238,
+        "y": 1707,
+        "w": 22,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Duck_on_Yeadon_Tarn_silhouette.svg/40px-Duck_on_Yeadon_Tarn_silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(25) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 462,
+        "y": 1710,
+        "w": 25,
+        "h": 19
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Chroicocephalus_scopulinus_-Marlborough%2C_New_Zealand_-adult-8_silhouette.svg/40px-Chroicocephalus_scopulinus_-Marlborough%2C_New_Zealand_-adu"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(27) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 689,
+        "y": 1707,
+        "w": 24,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Kingfisher_icon.svg/40px-Kingfisher_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(29) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 831,
+        "y": 1712,
+        "w": 25,
+        "h": 16
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Sparrow_Silhouette.svg/40px-Sparrow_Silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(31) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 224,
+        "y": 1734,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Australian_Pelican_Kioloa_silhouette.svg/40px-Australian_Pelican_Kioloa_silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(33) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 378,
+        "y": 1734,
+        "w": 24,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Rabbit_%2814798%29_-_The_Noun_Project.svg/40px-Rabbit_%2814798%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pars"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(35) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 579,
+        "y": 1734,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/Zebu_silhouette.svg/40px-Zebu_silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(37) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 867,
+        "y": 1734,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Jaguar_head_icon.svg/40px-Jaguar_head_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(39) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 269,
+        "y": 1760,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/Monkey_icon_svg.svg/40px-Monkey_icon_svg.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(41) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 376,
+        "y": 1765,
+        "w": 25,
+        "h": 15
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/FP_Snail_icon.svg/40px-FP_Snail_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(43) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 467,
+        "y": 1760,
+        "w": 22,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/Skull_Icon_%28Noun_Project%29.svg/40px-Skull_Icon_%28Noun_Project%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=t"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(45) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 633,
+        "y": 1761,
+        "w": 25,
+        "h": 22
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Android_Emoji_1f41a.svg/40px-Android_Emoji_1f41a.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(3) > dl > dd > span.skin-invert:nth-of-type(47) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 721,
+        "y": 1760,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Cougar_%2828783%29_-_The_Noun_Project.svg/40px-Cougar_%2828783%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pars"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(2) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 239,
+        "y": 1874,
+        "w": 88,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/Webb_opens_a_Treasure_Chest_filled_with_stars_ESA524464.jpg/250px-Webb_opens_a_Treasure_Chest_filled_with_stars_ESA524464.jpg?utm_source=common"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(2) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 332,
+        "y": 1874,
+        "w": 157,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/NGC_1514-_The_Crystal_Ball_Nebula_%28noirlab2613a%29.jpg/250px-NGC_1514-_The_Crystal_Ball_Nebula_%28noirlab2613a%29.jpg?utm_source=commons.wiki"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(2) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 496,
+        "y": 1874,
+        "w": 180,
+        "h": 120
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/The_Fish_Head_Nebula_in_false_color%2C_ISH_%28Infrared%2C_Sulfur-II%2C_Hydrogen-alpha%29.png/330px-The_Fish_Head_Nebula_in_false_color%2C_ISH_%"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(2) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 682,
+        "y": 1874,
+        "w": 142,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5a/Rosette_Nebula_Captured_with_DECam_%28noirlab2424a%29.jpg/250px-Rosette_Nebula_Captured_with_DECam_%28noirlab2424a%29.jpg?utm_source=commons.wi"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(3) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 267,
+        "y": 2114,
+        "w": 180,
+        "h": 120
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Un_d%C3%A9tail_sur_le_plateau_d%27une_ruche_avec_les_alv%C3%A9oles_remplies_de_miel.jpg/330px-Un_d%C3%A9tail_sur_le_plateau_d%27une_ruche_avec_"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(3) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 453,
+        "y": 2114,
+        "w": 156,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Cajun_fries_from_Popeyes_Louisiana_Kitchen%2C_Stratford%2C_Ontario%2C_2025-08-04.jpg/250px-Cajun_fries_from_Popeyes_Louisiana_Kitchen%2C_Stratf"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(3) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 615,
+        "y": 2114,
+        "w": 180,
+        "h": 120
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Empanada_de_Vigan.jpg/330px-Empanada_de_Vigan.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(4) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 85,
+        "y": 2353,
+        "w": 277,
+        "h": 155
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/2026-11-01_Xerocomellus_chrysenteron_agg._%28Z5-14340E%29_by_Achim_Lammerts.jpg/330px-2026-11-01_Xerocomellus_chrysenteron_agg._%28Z5-14340E%29"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(4) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 368,
+        "y": 2353,
+        "w": 207,
+        "h": 155
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Orangegelber_Fliegenpilz_%28Amanita_muscaria_var._aureola%29_Bruderwald-20261012-RM-173617.jpg/250px-Orangegelber_Fliegenpilz_%28Amanita_muscar"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(4) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 582,
+        "y": 2353,
+        "w": 155,
+        "h": 155
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Kegeliger_Helmling_%28Mycena_metata%29_Bruderwald-20261012-RM-171448.jpg/250px-Kegeliger_Helmling_%28Mycena_metata%29_Bruderwald-20261012-RM-17"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(4) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 744,
+        "y": 2353,
+        "w": 233,
+        "h": 155
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Kuehneromyces_mutabilis_2026_G4.jpg/330px-Kuehneromyces_mutabilis_2026_G4.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content="
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(5) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 269,
+        "y": 2628,
+        "w": 180,
+        "h": 120
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/The_Terror_of_War_%28hi-res%29.jpg/330px-The_Terror_of_War_%28hi-res%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=th"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(5) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 455,
+        "y": 2628,
+        "w": 83,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Claudia_Jones_1948_-_Cropped.jpg/250px-Claudia_Jones_1948_-_Cropped.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbn"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(5) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 544,
+        "y": 2628,
+        "w": 160,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/Vestmannaeyjar_Vulkanasche_1.jpg/250px-Vestmannaeyjar_Vulkanasche_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbn"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(5) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 710,
+        "y": 2628,
+        "w": 84,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Helga_Dernesch%2C_Erismann_SAPA-A-1552-FO-114-1-DC.jpg/250px-Helga_Dernesch%2C_Erismann_SAPA-A-1552-FO-114-1-DC.jpg?utm_source=commons.wikimedi"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(1) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 396,
+        "y": 2793,
+        "w": 25,
+        "h": 21
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Noun_project_288.svg/40px-Noun_project_288.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(3) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 513,
+        "y": 2792,
+        "w": 30,
+        "h": 24
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Adults_%28469396%29_-_The_Noun_Project.svg/40px-Adults_%28469396%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pa"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(6) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 85,
+        "y": 2905,
+        "w": 104,
+        "h": 156
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Crepuscular_rays_and_fog_in_the_early_morning%2C_Pozowice%2C_Lesser_Poland_Voivodeship%2C_20261025_0647_6708.jpg/120px-Crepuscular_rays_and_fog"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(6) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 196,
+        "y": 2905,
+        "w": 280,
+        "h": 156
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Nebelfall_am_Simmelsberg.jpg/330px-Nebelfall_am_Simmelsberg.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(6) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 482,
+        "y": 2905,
+        "w": 209,
+        "h": 156
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Fernlike_stellar_dendrite_snowflake%2C_brightfield%2C_focus_stack.jpg/250px-Fernlike_stellar_dendrite_snowflake%2C_brightfield%2C_focus_stack.j"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(6) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 698,
+        "y": 2905,
+        "w": 279,
+        "h": 156
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Litli-Hr%C3%BAtur_-_Volcanic_Eruption_in_Iceland_July_2023_%2853063284354%29.jpg/330px-Litli-Hr%C3%BAtur_-_Volcanic_Eruption_in_Iceland_July_20"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(1) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 398,
+        "y": 3107,
+        "w": 25,
+        "h": 21
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Noun_project_428.svg/40px-Noun_project_428.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(3) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 591,
+        "y": 3103,
+        "w": 30,
+        "h": 30
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Weather_Icons_-_sct.svg/40px-Weather_Icons_-_sct.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(7) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 256,
+        "y": 3222,
+        "w": 183,
+        "h": 120
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Arch_of_Septimius_Severus-Dougga.jpg/330px-Arch_of_Septimius_Severus-Dougga.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_conten"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(7) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 445,
+        "y": 3222,
+        "w": 182,
+        "h": 120
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/%D0%96%D0%A1_%E2%80%9E%D0%97%D0%B0%D1%98%D0%B0%D1%81%E2%80%9C.jpg/330px-%D0%96%D0%A1_%E2%80%9E%D0%97%D0%B0%D1%98%D0%B0%D1%81%E2%80%9C.jpg?utm_s"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(7) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 633,
+        "y": 3222,
+        "w": 87,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/A_match_burning_out.jpg/250px-A_match_burning_out.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(7) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 726,
+        "y": 3222,
+        "w": 80,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Monolithic_Buddha_statue_in_Hussain_Sagar%2C_Hyderabad.jpg/120px-Monolithic_Buddha_statue_in_Hussain_Sagar%2C_Hyderabad.jpg?utm_source=commons."
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(1) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 132,
+        "y": 3387,
+        "w": 25,
+        "h": 21
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Car_-_The_Noun_Project.svg/40px-Car_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(3) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 282,
+        "y": 3387,
+        "w": 25,
+        "h": 20
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Db-Schild.svg/40px-Db-Schild.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(5) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 423,
+        "y": 3385,
+        "w": 23,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Sailboat_symbol.svg/40px-Sailboat_symbol.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(7) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 583,
+        "y": 3385,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Airplane_silhouette.svg/40px-Airplane_silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(9) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 723,
+        "y": 3385,
+        "w": 23,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Noun_project_528.svg/40px-Noun_project_528.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(11) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 941,
+        "y": 3385,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Noun_Project_-_Sculpture.svg/40px-Noun_Project_-_Sculpture.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(13) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 362,
+        "y": 3411,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Simpleicons_Places_home-front.svg/40px-Simpleicons_Places_home-front.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=t"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(15) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 578,
+        "y": 3411,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Money_-_The_Noun_Project.svg/40px-Money_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(17) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 739,
+        "y": 3411,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Noun_project_454.svg/40px-Noun_project_454.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(8) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 85,
+        "y": 3525,
+        "w": 231,
+        "h": 154
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/A_Swirl_of_a_Day_for_Phytoplankton_%28154086%29.jpg/330px-A_Swirl_of_a_Day_for_Phytoplankton_%28154086%29.jpg?utm_source=commons.wikimedia.org&"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(8) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 322,
+        "y": 3525,
+        "w": 205,
+        "h": 154
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Scanning_electron_micrograph_of_a_human_H9_T_cell_infected_with_HIV_virus_particles.jpg/250px-Scanning_electron_micrograph_of_a_human_H9_T_cell"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(8) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 535,
+        "y": 3525,
+        "w": 205,
+        "h": 154
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/Algal_mat_in_Marine_Park_%2890933%29.jpg/250px-Algal_mat_in_Marine_Park_%2890933%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&ut"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(8) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 746,
+        "y": 3525,
+        "w": 231,
+        "h": 154
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Alfombra_de_algas_amarillas%2C_parque_nacional_Ras_Muhammad%2C_Egipto%2C_2022-03-27%2C_DD_42.jpg/330px-Alfombra_de_algas_amarillas%2C_parque_na"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(9) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 263,
+        "y": 3799,
+        "w": 93,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Marit_Stiles%2C_Windsor%2C_Ontario%2C_2026-11-11_05.jpg/250px-Marit_Stiles%2C_Windsor%2C_Ontario%2C_2026-11-11_05.jpg?utm_source=commons.wikime"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(9) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 362,
+        "y": 3799,
+        "w": 182,
+        "h": 120
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Traditional_Textile_Drying_Process.jpg/330px-Traditional_Textile_Drying_Process.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_co"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(9) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 551,
+        "y": 3799,
+        "w": 74,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Museu_Soares_dos_Reis_October_2026-1.jpg/120px-Museu_Soares_dos_Reis_October_2026-1.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&ut"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(9) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 631,
+        "y": 3799,
+        "w": 168,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Olivia_O%27Brien_%40_The_Fonda_9_01_2021_%2851783607674%29.jpg/330px-Olivia_O%27Brien_%40_The_Fonda_9_01_2021_%2851783607674%29.jpg?utm_source="
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(1) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 372,
+        "y": 3964,
+        "w": 25,
+        "h": 21
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Noun_project_288.svg/40px-Noun_project_288.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(3) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 468,
+        "y": 3962,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Worker_%2813085%29_-_The_Noun_Project.svg/40px-Worker_%2813085%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pars"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(5) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 631,
+        "y": 3962,
+        "w": 21,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/User_%2850358%29_-_The_Noun_Project.svg/40px-User_%2850358%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&u"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(10) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 84,
+        "y": 4076,
+        "w": 201,
+        "h": 156
+      },
+      "detection": "person",
+      "confidence": 0.706,
+      "decision": "BLOCK",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/2005_Quero_estar_enfadado_pero_c%C3%A1esme_moi_ben_e_es_gracioso.jpg/250px-2005_Quero_estar_enfadado_pero_c%C3%A1esme_moi_ben_e_es_gracioso.jpg",
+      "faces": 1
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(10) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 292,
+        "y": 4076,
+        "w": 235,
+        "h": 156
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Zeedijk_bij_Koehool._27-07-2026._%28d.j.b.%29_04.jpg/330px-Zeedijk_bij_Koehool._27-07-2026._%28d.j.b.%29_04.jpg?utm_source=commons.wikimedia.or"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(10) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 534,
+        "y": 4076,
+        "w": 201,
+        "h": 156
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Dassault_Falcon_2000S_EASY_II.jpg/250px-Dassault_Falcon_2000S_EASY_II.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thum"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(10) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 742,
+        "y": 4076,
+        "w": 236,
+        "h": 156
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/Rostige-Stahlspundwand-Schatten-Carolinensiel-Morgens-2026.jpg/330px-Rostige-Stahlspundwand-Schatten-Carolinensiel-Morgens-2026.jpg?utm_source="
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(1) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 178,
+        "y": 4275,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/NotoSans_-_Empty_Note_Pad_-_1F5C7.svg/40px-NotoSans_-_Empty_Note_Pad_-_1F5C7.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_c"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(3) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 426,
+        "y": 4275,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Paint_Brush_-_The_Noun_Project.svg/40px-Paint_Brush_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(5) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 639,
+        "y": 4275,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Yin_yang.svg/40px-Yin_yang.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(11) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 85,
+        "y": 4389,
+        "w": 287,
+        "h": 161
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/%D0%A0%D1%83%D0%B4%D0%BD%D0%B8%D0%BA_%E2%80%9E%D0%A1%D0%B8%D0%B2%D0%B5%D1%86%E2%80%9C_4.jpg/330px-%D0%A0%D1%83%D0%B4%D0%BD%D0%B8%D0%BA_%E2%80%9"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(11) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 378,
+        "y": 4389,
+        "w": 247,
+        "h": 161
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Eberbach_-_Hebert_-_Heiligkreuzkapelle_-_Innenansicht_zum_Dachstuhl_%28RQCD3332%29.jpg/330px-Eberbach_-_Hebert_-_Heiligkreuzkapelle_-_Innenansi"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(11) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 632,
+        "y": 4389,
+        "w": 231,
+        "h": 161
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Saghfe_aramgah.jpg/330px-Saghfe_aramgah.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(11) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 870,
+        "y": 4389,
+        "w": 107,
+        "h": 161
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/D-4-71-122-30_Marienkapelle_Kappel.jpg/120px-D-4-71-122-30_Marienkapelle_Kappel.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_co"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(1) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 138,
+        "y": 4596,
+        "w": 25,
+        "h": 20
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Farm_-_The_Noun_Project.svg/40px-Farm_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(3) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 266,
+        "y": 4593,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/57/Simpleicons_Places_building.svg/40px-Simpleicons_Places_building.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumb"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(5) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 482,
+        "y": 4593,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Maki7-bridge.svg/40px-Maki7-bridge.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(7) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 585,
+        "y": 4593,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Legenda_grodzisko.svg/40px-Legenda_grodzisko.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(9) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 820,
+        "y": 4593,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Map_icons_by_Scott_de_Jonge_-_museum.svg/40px-Map_icons_by_Scott_de_Jonge_-_museum.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(11) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 923,
+        "y": 4593,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Map_icons_by_Scott_de_Jonge_-_cemetery.svg/40px-Map_icons_by_Scott_de_Jonge_-_cemetery.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pa"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(13) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 231,
+        "y": 4619,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/City_icon_%28Noun_Project%29.svg/40px-City_icon_%28Noun_Project%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thu"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(15) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 359,
+        "y": 4619,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Tree_beside_bench_with_backrest_Pinhead_icon.svg/40px-Tree_beside_bench_with_backrest_Pinhead_icon.svg.png?utm_source=commons.wikimedia.org&utm"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(17) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 548,
+        "y": 4620,
+        "w": 25,
+        "h": 23
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Factory_icon.svg/40px-Factory_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(19) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 655,
+        "y": 4619,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Noun_project_-_Door_to_behind_the_scenes.svg/40px-Noun_project_-_Door_to_behind_the_scenes.svg.png?utm_source=commons.wikimedia.org&utm_campaig"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(21) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 762,
+        "y": 4619,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Mountain_icon_%28Noun_Project%29.svg/40px-Mountain_icon_%28Noun_Project%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_con"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(23) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 861,
+        "y": 4619,
+        "w": 22,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Eglise_icone.svg/40px-Eglise_icone.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(25) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 227,
+        "y": 4646,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Religious_interior.svg/40px-Religious_interior.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(27) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 492,
+        "y": 4646,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Emojione_BW_1F505.svg/40px-Emojione_BW_1F505.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(29) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 754,
+        "y": 4646,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/27/FP_Satellite_icon.svg/40px-FP_Satellite_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(31) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 919,
+        "y": 4651,
+        "w": 25,
+        "h": 15
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Coastal_%288676%29_-_The_Noun_Project.svg/40px-Coastal_%288676%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pars"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(33) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 338,
+        "y": 4673,
+        "w": 25,
+        "h": 22
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Noun_project_465.svg/40px-Noun_project_465.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(35) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 433,
+        "y": 4672,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Observation-tower-a-black.svg/40px-Observation-tower-a-black.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(37) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 532,
+        "y": 4672,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Q55488_noun_19262_ccPierreLucAuclair_train-station.svg/40px-Q55488_noun_19262_ccPierreLucAuclair_train-station.svg.png?utm_source=commons.wikim"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(39) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 649,
+        "y": 4672,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Emojione_BW_1F6E3.svg/40px-Emojione_BW_1F6E3.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(41) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 742,
+        "y": 4672,
+        "w": 23,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Noun_project_756.svg/40px-Noun_project_756.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(12) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 85,
+        "y": 4786,
+        "w": 253,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Large_skipper_%28Ochlodes_sylvanus%29_on_wild_Siberian_iris_%28Iris_sibirica%29_Ruggeller_Riet.jpg/330px-Large_skipper_%28Ochlodes_sylvanus%29_"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(12) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 345,
+        "y": 4786,
+        "w": 253,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Canna-indica-Sitia-Crete-Greece.jpg/330px-Canna-indica-Sitia-Crete-Greece.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content="
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(12) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 605,
+        "y": 4786,
+        "w": 253,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Rosa_hybrida_salmon-orange_in_Jardin_universitaire_Roger-Van_den_Hende%2C_Quebec%2C_Canada.jpg/330px-Rosa_hybrida_salmon-orange_in_Jardin_unive"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(12) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 865,
+        "y": 4786,
+        "w": 112,
+        "h": 169
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Xanthium_strumarium_2026_G2.jpg/120px-Xanthium_strumarium_2026_G2.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnai"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(1) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 136,
+        "y": 4998,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Leaf_icon_%28Noun_Project%29.svg/40px-Leaf_icon_%28Noun_Project%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thu"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(3) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 227,
+        "y": 4998,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Arundina_graminifolia_%285%29_1200_vector_icon.svg/40px-Arundina_graminifolia_%285%29_1200_vector_icon.svg.png?utm_source=commons.wikimedia.org"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(5) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 506,
+        "y": 4998,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/Gazania_rigens_var._rigens_vector_icon.svg/40px-Gazania_rigens_var._rigens_vector_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pa"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(7) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 621,
+        "y": 4998,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Maki-park-15.svg/40px-Maki-park-15.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(9) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 725,
+        "y": 4998,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Fluent_Emoji_high_contrast_1fab7.svg/40px-Fluent_Emoji_high_contrast_1fab7.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_con"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(11) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 872,
+        "y": 5000,
+        "w": 25,
+        "h": 22
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Android_Emoji_1f339.svg/40px-Android_Emoji_1f339.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(13) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 85,
+        "y": 5112,
+        "w": 158,
+        "h": 158
+      },
+      "detection": "person",
+      "confidence": 0.844,
+      "decision": "BLOCK",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/STS-107_crew_in_orbit.jpg/250px-STS-107_crew_in_orbit.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail",
+      "faces": 9
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(13) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 250,
+        "y": 5112,
+        "w": 240,
+        "h": 158
+      },
+      "detection": "uncertain",
+      "confidence": 0.682,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Apollo_lunar_mapping_camera.jpg/330px-Apollo_lunar_mapping_camera.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnai",
+      "faces": 1
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(13) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 496,
+        "y": 5112,
+        "w": 237,
+        "h": 158
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/The_Cygnus_XL_cargo_spacecraft_is_in_the_grasp_of_the_Canadarm2_robotic_arm_%28iss074e0378294%29.jpg/330px-The_Cygnus_XL_cargo_spacecraft_is_in"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(13) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 740,
+        "y": 5112,
+        "w": 237,
+        "h": 158
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Zhuque-2E_propellant_dump_over_Wisconsin.jpg/330px-Zhuque-2E_propellant_dump_over_Wisconsin.jpg?utm_source=commons.wikimedia.org&utm_campaign=p"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(14) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 84,
+        "y": 5390,
+        "w": 196,
+        "h": 168
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/Gotland_Grand_National_2026_56.jpg/250px-Gotland_Grand_National_2026_56.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=th"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(14) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 287,
+        "y": 5390,
+        "w": 246,
+        "h": 168
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Florian_Lipowitz_%28team_Red_Bull%E2%80%93Bora%E2%80%93hansgrohe%29_winning_Stage_5_%282026_Tour_of_Slovenia%29.jpg/330px-Florian_Lipowitz_%28t"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(14) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 540,
+        "y": 5390,
+        "w": 319,
+        "h": 168
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/27/Florian_Lipowitz_passing_Finish_line%2C_Stage_5%2C_Novo_mesto%2C_2026_ToS.jpg/500px-Florian_Lipowitz_passing_Finish_line%2C_Stage_5%2C_Novo_mes"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(14) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 866,
+        "y": 5390,
+        "w": 112,
+        "h": 168
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/2019-05-18_Fu%C3%9Fball%2C_Frauen%2C_UEFA_Women%27s_Champions_League%2C_Olympique_Lyonnais_-_FC_Barcelona_StP_1076_LR10_by_Stepro.jpg/120px-201"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(15) > li.gallerybox:nth-of-type(1) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 303,
+        "y": 5677,
+        "w": 87,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/Love-lorn_lyrics_of_a_lonesome_lad_-_Gordon_Ross._LCCN2011648867-restored.jpg/250px-Love-lorn_lyrics_of_a_lonesome_lad_-_Gordon_Ross._LCCN20116"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(15) > li.gallerybox:nth-of-type(2) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 396,
+        "y": 5677,
+        "w": 120,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/Mandelbrot_Set_Image_119.png/250px-Mandelbrot_Set_Image_119.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(15) > li.gallerybox:nth-of-type(3) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 523,
+        "y": 5677,
+        "w": 69,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Fleurs_d%27automne_-_Edouard_Toudouze.jpg/120px-Fleurs_d%27automne_-_Edouard_Toudouze.jpg?utm_source=commons.wikimedia.org&utm_campaign=parser&"
+    },
+    {
+      "type": "img",
+      "selector": "ul.gallery:nth-of-type(15) > li.gallerybox:nth-of-type(4) > div.thumb:nth-of-type(1) > span > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 598,
+        "y": 5677,
+        "w": 161,
+        "h": 120
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Interieur_du_palais_du_Bardo_-_Detail_de_faiences.jpg/250px-Interieur_du_palais_du_Bardo_-_Detail_de_faiences.jpg?utm_source=commons.wikimedia."
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(1) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 134,
+        "y": 5841,
+        "w": 22,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/Noun_project_216.svg/40px-Noun_project_216.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(3) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 332,
+        "y": 5841,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Arts_and_Culture_-_The_Noun_Project.svg/40px-Arts_and_Culture_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&u"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(5) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 483,
+        "y": 5842,
+        "w": 25,
+        "h": 22
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Android_Emoji_1f304.svg/40px-Android_Emoji_1f304.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(7) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 596,
+        "y": 5844,
+        "w": 25,
+        "h": 18
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/Treasure_map_-_black.svg/40px-Treasure_map_-_black.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(9) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 681,
+        "y": 5841,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Noun_project_-_Painting.svg/40px-Noun_project_-_Painting.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(11) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 777,
+        "y": 5842,
+        "w": 25,
+        "h": 23
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Noun_project_397.svg/40px-Noun_project_397.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(13) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 927,
+        "y": 5843,
+        "w": 25,
+        "h": 20
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Font_Awesome_5_solid_praying-hands.svg/40px-Font_Awesome_5_solid_praying-hands.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(15) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 471,
+        "y": 5867,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/Font_Awesome_5_solid_microscope.svg/40px-Font_Awesome_5_solid_microscope.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_conte"
+    },
+    {
+      "type": "img",
+      "selector": "dl > dd > b > span.skin-invert:nth-of-type(17) > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 611,
+        "y": 5867,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Paint_palette_icon_from_the_Noun_Project.svg/40px-Paint_palette_icon_from_the_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaig"
+    },
+    {
+      "type": "img",
+      "selector": "div#Wikimedia_Commons_-_Featured_pictures_(cat)_right&#124;18px > figure.mw-halign-right > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 900,
+        "y": 5984,
+        "w": 18,
+        "h": 18
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Cscr-featured.svg/20px-Cscr-featured.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 433,
+        "y": 6017,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cb/Spider_icon_%28Noun_Project%29.svg/40px-Spider_icon_%28Noun_Project%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 537,
+        "y": 6017,
+        "w": 19,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/Drosm3.svg/20px-Drosm3.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 618,
+        "y": 6017,
+        "w": 18,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Fourmi03.svg/20px-Fourmi03.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(4) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 737,
+        "y": 6022,
+        "w": 25,
+        "h": 14
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Butterfly_black.svg/40px-Butterfly_black.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(5) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 853,
+        "y": 6021,
+        "w": 25,
+        "h": 16
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Dragonfly_2_%28PSF%29.svg/40px-Dragonfly_2_%28PSF%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(6) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 948,
+        "y": 6017,
+        "w": 19,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/55/Bug_icon_-_Noun_project_198.svg/20px-Bug_icon_-_Noun_project_198.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumb"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 393,
+        "y": 6072,
+        "w": 25,
+        "h": 24
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Buteo_jamaicensis_2_silhouette.svg/40px-Buteo_jamaicensis_2_silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 526,
+        "y": 6071,
+        "w": 22,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Duck_on_Yeadon_Tarn_silhouette.svg/40px-Duck_on_Yeadon_Tarn_silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 646,
+        "y": 6074,
+        "w": 25,
+        "h": 19
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Chroicocephalus_scopulinus_-Marlborough%2C_New_Zealand_-adult-8_silhouette.svg/40px-Chroicocephalus_scopulinus_-Marlborough%2C_New_Zealand_-adu"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(4) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 788,
+        "y": 6071,
+        "w": 24,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Kingfisher_icon.svg/40px-Kingfisher_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(5) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 915,
+        "y": 6076,
+        "w": 25,
+        "h": 16
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Sparrow_Silhouette.svg/40px-Sparrow_Silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(6) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 495,
+        "y": 6097,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Australian_Pelican_Kioloa_silhouette.svg/40px-Australian_Pelican_Kioloa_silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(7) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 634,
+        "y": 6098,
+        "w": 25,
+        "h": 22
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Android_Emoji_1f426.svg/40px-Android_Emoji_1f426.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 421,
+        "y": 6126,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/Zebu_silhouette.svg/40px-Zebu_silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 535,
+        "y": 6126,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/Jaguar_head_icon.svg/40px-Jaguar_head_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 637,
+        "y": 6126,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/58/Monkey_icon_svg.svg/40px-Monkey_icon_svg.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(4) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 734,
+        "y": 6126,
+        "w": 24,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Rabbit_%2814798%29_-_The_Noun_Project.svg/40px-Rabbit_%2814798%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pars"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(4) > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 323,
+        "y": 6158,
+        "w": 25,
+        "h": 20
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Zusatzzeichen_1006_37_-_2.svg/40px-Zusatzzeichen_1006_37_-_2.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(4) > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 437,
+        "y": 6155,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Fish_icon_%28The_Noun_Project_27052%29.svg/40px-Fish_icon_%28The_Noun_Project_27052%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pa"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(4) > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 505,
+        "y": 6155,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Lizards.svg/40px-Lizards.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(4) > ul > li:nth-of-type(4) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 597,
+        "y": 6160,
+        "w": 25,
+        "h": 15
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/FP_Snail_icon.svg/40px-FP_Snail_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(4) > ul > li:nth-of-type(5) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 727,
+        "y": 6155,
+        "w": 22,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/Skull_Icon_%28Noun_Project%29.svg/40px-Skull_Icon_%28Noun_Project%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=t"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(4) > ul > li:nth-of-type(6) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 875,
+        "y": 6157,
+        "w": 25,
+        "h": 22
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e7/Android_Emoji_1f41a.svg/40px-Android_Emoji_1f41a.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(4) > ul > li:nth-of-type(7) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 955,
+        "y": 6155,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Cougar_%2828783%29_-_The_Noun_Project.svg/40px-Cougar_%2828783%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pars"
+    },
+    {
+      "type": "img",
+      "selector": "td.navbox-list > div > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 326,
+        "y": 6210,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/Arundina_graminifolia_%285%29_1200_vector_icon.svg/40px-Arundina_graminifolia_%285%29_1200_vector_icon.svg.png?utm_source=commons.wikimedia.org"
+    },
+    {
+      "type": "img",
+      "selector": "td.navbox-list > div > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 445,
+        "y": 6210,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/Gazania_rigens_var._rigens_vector_icon.svg/40px-Gazania_rigens_var._rigens_vector_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pa"
+    },
+    {
+      "type": "img",
+      "selector": "td.navbox-list > div > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 545,
+        "y": 6210,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b1/Maki-park-15.svg/40px-Maki-park-15.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "td.navbox-list > div > li:nth-of-type(4) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 636,
+        "y": 6210,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/Fluent_Emoji_high_contrast_1fab7.svg/40px-Fluent_Emoji_high_contrast_1fab7.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_con"
+    },
+    {
+      "type": "img",
+      "selector": "td.navbox-list > div > li:nth-of-type(5) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 763,
+        "y": 6211,
+        "w": 25,
+        "h": 22
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Android_Emoji_1f339.svg/40px-Android_Emoji_1f339.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "td.navbox-list > div > li:nth-of-type(6) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 855,
+        "y": 6210,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Leaf_icon_%28Noun_Project%29.svg/40px-Leaf_icon_%28Noun_Project%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thu"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 326,
+        "y": 6238,
+        "w": 23,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/FP_Mushroom_icon.svg/40px-FP_Mushroom_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 326,
+        "y": 6268,
+        "w": 16,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Microscope_icon_%28black%29.svg/20px-Microscope_icon_%28black%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumb"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 326,
+        "y": 6299,
+        "w": 25,
+        "h": 21
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/Noun_project_428.svg/40px-Noun_project_428.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 492,
+        "y": 6297,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/Weather_Icons_-_sct.svg/40px-Weather_Icons_-_sct.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 586,
+        "y": 6297,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Mountain_icon_%28Noun_Project%29.svg/40px-Mountain_icon_%28Noun_Project%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_con"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 195,
+        "y": 6327,
+        "w": 25,
+        "h": 24
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Noun_project_678.svg/40px-Noun_project_678.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 195,
+        "y": 6356,
+        "w": 25,
+        "h": 23
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Pillar_column_icon_%28Noun_Project%29.svg/40px-Pillar_column_icon_%28Noun_Project%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pars"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 340,
+        "y": 6355,
+        "w": 30,
+        "h": 24
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Adults_%28469396%29_-_The_Noun_Project.svg/40px-Adults_%28469396%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pa"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(1) > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 195,
+        "y": 6384,
+        "w": 23,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Noun_project_528.svg/40px-Noun_project_528.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(1) > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 379,
+        "y": 6384,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Noun_Project_-_Sculpture.svg/40px-Noun_Project_-_Sculpture.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(1) > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 487,
+        "y": 6384,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Simpleicons_Places_home-front.svg/40px-Simpleicons_Places_home-front.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=t"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(1) > ul > li:nth-of-type(4) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 667,
+        "y": 6384,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Money_-_The_Noun_Project.svg/40px-Money_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(1) > ul > li:nth-of-type(5) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 804,
+        "y": 6384,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/Noun_project_454.svg/40px-Noun_project_454.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 282,
+        "y": 6415,
+        "w": 25,
+        "h": 21
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Car_-_The_Noun_Project.svg/40px-Car_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 409,
+        "y": 6416,
+        "w": 25,
+        "h": 20
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Db-Schild.svg/40px-Db-Schild.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 530,
+        "y": 6413,
+        "w": 23,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Sailboat_symbol.svg/40px-Sailboat_symbol.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(4) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 666,
+        "y": 6413,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Airplane_silhouette.svg/40px-Airplane_silhouette.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(5) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 783,
+        "y": 6413,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Rocket_symbol.svg/40px-Rocket_symbol.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 195,
+        "y": 6444,
+        "w": 25,
+        "h": 21
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Noun_project_288.svg/40px-Noun_project_288.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 281,
+        "y": 6442,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Worker_%2813085%29_-_The_Noun_Project.svg/40px-Worker_%2813085%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pars"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 420,
+        "y": 6442,
+        "w": 21,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/User_%2850358%29_-_The_Noun_Project.svg/40px-User_%2850358%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&u"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(4) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 502,
+        "y": 6443,
+        "w": 30,
+        "h": 24
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c7/Adults_%28469396%29_-_The_Noun_Project.svg/40px-Adults_%28469396%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pa"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(5) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 662,
+        "y": 6443,
+        "w": 25,
+        "h": 24
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Noun_project_736.svg/40px-Noun_project_736.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 308,
+        "y": 6474,
+        "w": 25,
+        "h": 20
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Farm_-_The_Noun_Project.svg/40px-Farm_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 416,
+        "y": 6472,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Tree_beside_bench_with_backrest_Pinhead_icon.svg/40px-Tree_beside_bench_with_backrest_Pinhead_icon.svg.png?utm_source=commons.wikimedia.org&utm"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 578,
+        "y": 6472,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9e/Map_icons_by_Scott_de_Jonge_-_cemetery.svg/40px-Map_icons_by_Scott_de_Jonge_-_cemetery.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pa"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(4) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 691,
+        "y": 6477,
+        "w": 25,
+        "h": 15
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/Coastal_%288676%29_-_The_Noun_Project.svg/40px-Coastal_%288676%29_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=pars"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(5) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 854,
+        "y": 6472,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Mountain_icon_%28Noun_Project%29.svg/40px-Mountain_icon_%28Noun_Project%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_con"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(6) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 308,
+        "y": 6499,
+        "w": 25,
+        "h": 22
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/Noun_project_465.svg/40px-Noun_project_465.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(7) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 426,
+        "y": 6497,
+        "w": 23,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ec/Noun_project_756.svg/40px-Noun_project_756.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(8) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 532,
+        "y": 6497,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/27/FP_Satellite_icon.svg/40px-FP_Satellite_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 468,
+        "y": 6527,
+        "w": 22,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Eglise_icone.svg/40px-Eglise_icone.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 562,
+        "y": 6527,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Religious_interior.svg/40px-Religious_interior.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 655,
+        "y": 6527,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Emojione_BW_1F505.svg/40px-Emojione_BW_1F505.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(2) > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 305,
+        "y": 6556,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/57/Simpleicons_Places_building.svg/40px-Simpleicons_Places_building.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumb"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(2) > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 402,
+        "y": 6556,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Simpleicons_Places_home-front.svg/40px-Simpleicons_Places_home-front.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=t"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(2) > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 582,
+        "y": 6556,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Maki7-bridge.svg/40px-Maki7-bridge.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(2) > ul > li:nth-of-type(4) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 671,
+        "y": 6556,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Legenda_grodzisko.svg/40px-Legenda_grodzisko.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(2) > ul > li:nth-of-type(5) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 866,
+        "y": 6556,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/Map_icons_by_Scott_de_Jonge_-_museum.svg/40px-Map_icons_by_Scott_de_Jonge_-_museum.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(2) > ul > li:nth-of-type(6) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 957,
+        "y": 6556,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e0/City_icon_%28Noun_Project%29.svg/40px-City_icon_%28Noun_Project%29.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thu"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(2) > ul > li:nth-of-type(7) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 386,
+        "y": 6583,
+        "w": 25,
+        "h": 23
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Factory_icon.svg/40px-Factory_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(2) > ul > li:nth-of-type(8) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 478,
+        "y": 6582,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Observation-tower-a-black.svg/40px-Observation-tower-a-black.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(2) > ul > li:nth-of-type(9) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 564,
+        "y": 6582,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Q55488_noun_19262_ccPierreLucAuclair_train-station.svg/40px-Q55488_noun_19262_ccPierreLucAuclair_train-station.svg.png?utm_source=commons.wikim"
+    },
+    {
+      "type": "img",
+      "selector": "div:nth-of-type(2) > ul > li:nth-of-type(10) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 665,
+        "y": 6582,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Emojione_BW_1F6E3.svg/40px-Emojione_BW_1F6E3.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 395,
+        "y": 6611,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Noun_project_-_Door_to_behind_the_scenes.svg/40px-Noun_project_-_Door_to_behind_the_scenes.svg.png?utm_source=commons.wikimedia.org&utm_campaig"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 487,
+        "y": 6611,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4c/Religious_interior.svg/40px-Religious_interior.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 700,
+        "y": 6611,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Emojione_BW_1F505.svg/40px-Emojione_BW_1F505.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 195,
+        "y": 6640,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/Noun_project_1026.svg/40px-Noun_project_1026.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 303,
+        "y": 6640,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/27/FP_Satellite_icon.svg/40px-FP_Satellite_icon.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 440,
+        "y": 6640,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Rocket_symbol.svg/40px-Rocket_symbol.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 195,
+        "y": 6680,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f0/NotoSans_-_Empty_Note_Pad_-_1F5C7.svg/40px-NotoSans_-_Empty_Note_Pad_-_1F5C7.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_c"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 404,
+        "y": 6680,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Paint_Brush_-_The_Noun_Project.svg/40px-Paint_Brush_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 583,
+        "y": 6680,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Yin_yang.svg/40px-Yin_yang.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(1) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 195,
+        "y": 6727,
+        "w": 22,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/Noun_project_216.svg/40px-Noun_project_216.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(2) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 364,
+        "y": 6727,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4e/Arts_and_Culture_-_The_Noun_Project.svg/40px-Arts_and_Culture_-_The_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&u"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(3) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 493,
+        "y": 6728,
+        "w": 25,
+        "h": 22
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Android_Emoji_1f304.svg/40px-Android_Emoji_1f304.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(4) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 590,
+        "y": 6730,
+        "w": 25,
+        "h": 18
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/Treasure_map_-_black.svg/40px-Treasure_map_-_black.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(5) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 666,
+        "y": 6727,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Noun_project_-_Painting.svg/40px-Noun_project_-_Painting.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(6) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 751,
+        "y": 6728,
+        "w": 25,
+        "h": 23
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Noun_project_397.svg/40px-Noun_project_397.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(7) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 879,
+        "y": 6729,
+        "w": 25,
+        "h": 20
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Font_Awesome_5_solid_praying-hands.svg/40px-Font_Awesome_5_solid_praying-hands.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(8) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 195,
+        "y": 6752,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/Font_Awesome_5_solid_microscope.svg/40px-Font_Awesome_5_solid_microscope.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_conte"
+    },
+    {
+      "type": "img",
+      "selector": "div > ul > li:nth-of-type(9) > span.skin-invert > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 313,
+        "y": 6752,
+        "w": 25,
+        "h": 25
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2f/Paint_palette_icon_from_the_Noun_Project.svg/40px-Paint_palette_icon_from_the_Noun_Project.svg.png?utm_source=commons.wikimedia.org&utm_campaig"
+    },
+    {
+      "type": "img",
+      "selector": "li#footer-copyrightico > a.cdx-button > picture > img",
+      "box": {
+        "x": 1031,
+        "y": 7096,
+        "w": 84,
+        "h": 29
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://commons.wikimedia.org/static/images/footer/wikimedia-button.svg"
+    },
+    {
+      "type": "img",
+      "selector": "li#footer-poweredbyico > a.cdx-button > picture > img",
+      "box": {
+        "x": 1139,
+        "y": 7095,
+        "w": 88,
+        "h": 31
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://commons.wikimedia.org/w/resources/assets/poweredby_mediawiki.svg"
+    },
+    {
+      "type": "img",
+      "selector": "div.wpImageAnnotatorTexts > p:nth-of-type(4) > span.wpImageAnnotatorIndicatorIcon:nth-of-type(3) > span.mw-default-size > a.mw-file-description > img.mw-file-element",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Gtk-dialog-info-14px.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail_unscaled"
+    },
+    {
+      "type": "img",
+      "selector": "div#wpImageAnnotatorWrapper > div.wpImageAnnotatorTexts > div.wpImageAnnotatorCannotEditMsg:nth-of-type(3) > span > span > img.mw-file-element",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Gtk-dialog-info.svg/20px-Gtk-dialog-info.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail"
+    },
+    {
+      "type": "background",
+      "selector": "div#p-lang > div.vector-menu-content:nth-of-type(2) > ul.vector-menu-content-list > button.mw-interlanguage-selector",
+      "box": {
+        "x": 53,
+        "y": 845,
+        "w": 102,
+        "h": 32
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://commons.wikimedia.org/w/extensions/UniversalLanguageSelector/resources/images/language-base20.svg?65418"
+    },
+    {
+      "type": "background",
+      "selector": "table > tbody > tr:nth-of-type(1) > td.left-box:nth-of-type(1) > p:nth-of-type(7) > a.external",
+      "box": {
+        "x": 97,
+        "y": 1146,
+        "w": 435,
+        "h": 17
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://commons.wikimedia.org/w/skins/Vector/resources/skins.vector.styles/images/link-external-small-ltr-progressive.svg?fb64d"
+    },
+    {
+      "type": "background",
+      "selector": "div.mw-content-ltr:nth-of-type(2) > div.navbox:nth-of-type(2) > table.nowraplinks > tbody > tr:nth-of-type(1) > th.navbox-title",
+      "box": {
+        "x": 60,
+        "y": 5978,
+        "w": 940,
+        "h": 36
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/10/MediaWiki_Vector_skin_action_arrow.png"
+    },
+    {
+      "type": "background",
+      "selector": "div#wpImageAnnotatorWrapper > div.wpImageAnnotatorTexts > div.wpImageAnnotatorSaveError:nth-of-type(1) > span.wpImageAnnotatorOwnPageLink:nth-of-type(2) > a.external",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://commons.wikimedia.org/w/skins/Vector/resources/skins.vector.styles/images/link-external-small-ltr-progressive.svg?fb64d"
+    }
+  ],
+  "summary": {
+    "total": 244,
+    "people": 2,
+    "covered": 0,
+    "blocked": 2,
+    "review": 201
+  },
+  "verdict": "REVIEW",
+  "failures": [
+    "note: running as root, Chromium launched with --no-sandbox (sandbox would be on for a non-root user)"
+  ],
+  "ssrf_checks": [
+    {
+      "url": "https://commons.wikimedia.org/wiki/Commons:Featured_pictures",
+      "check": "initial-host",
+      "ok": true,
+      "reason": "public IP"
+    }
+  ],
+  "screenshot": "/home/hatch/workspace/filter-platform/scanner/results/commons-wikimedia-org-wiki-Commons-Featured-pictures.png"
+}

@@ -1,0 +1,1095 @@
+{
+  "url": "https://www.bbc.com/",
+  "final_url": "https://edigitalsurvey.com/l.php?id=INS-vt29-666188954&v=7291&x=1280&y=900&d=24&c=null&ck=1&p=%2F&fu=https%3A%2F%2Fwww.bbc.com%2F&xdm=edr&xdm_o=https%3A%2F%2Fwww.bbc.com&xdm_c=edr0",
+  "scanned_at": "2026-11-18T10:13:18.712Z",
+  "policy_version": "standard-v1",
+  "scan_ms": 120050,
+  "nav_ms": 21435,
+  "cpu_seconds": 88.409,
+  "peak_rss_mb": 2722.5,
+  "http_status": 200,
+  "redirects": 0,
+  "detector": {
+    "name": "face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
+    "backend": "cpu",
+    "loaded": true,
+    "error": null
+  },
+  "detection_candidates": 40,
+  "detection_skipped": 33,
+  "elements": [
+    {
+      "type": "img",
+      "selector": "div.Westminster-styles__CardWrapperStyled-sc-348bb4b5-4 > div.Westminster-styles__CardStyled-sc-348bb4b5-2 > div.Westminster-styles__MediaWrapperStyled-sc-348bb4b5-5:nth-of-type(1) > div.Westminster-styles__MediaStyled-sc-348bb4b5-1 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 332,
+        "y": 441,
+        "w": 616,
+        "h": 347
+      },
+      "detection": "person",
+      "confidence": 0.814,
+      "decision": "BLOCK",
+      "src": "https://ichef.bbci.co.uk/ace/standard/480/cpsprodpb/e1f8/live/94b217a0-e334-11f1-a094-5fdc692f3e33.jpg.webp",
+      "faces": 2
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 441,
+        "w": 300,
+        "h": 169
+      },
+      "detection": "person",
+      "confidence": 0.93,
+      "decision": "BLOCK",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/e20b/live/66ff6490-e323-11f1-a094-5fdc692f3e33.jpg.webp",
+      "faces": 3
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 837,
+        "w": 300,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/a56b/live/b9e12140-e2f5-11f1-910a-c953499d69d5.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Edinburgh-styles__CardStyled-sc-73f6adba-0 > div.Edinburgh-styles__MediaWrapperStyled-sc-73f6adba-1:nth-of-type(1) > div.Edinburgh-styles__MediaStyled-sc-73f6adba-2 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 1637,
+        "w": 616,
+        "h": 347
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/640x360/p0pn9srh.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Edinburgh-styles__CardStyled-sc-73f6adba-0 > div.Edinburgh-styles__MediaWrapperStyled-sc-73f6adba-1:nth-of-type(1) > div.Edinburgh-styles__MediaStyled-sc-73f6adba-2 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 648,
+        "y": 1637,
+        "w": 616,
+        "h": 347
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/640x360/p0pn9g0g.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 2255,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pncp70.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 212,
+        "y": 2255,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnjy15.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 408,
+        "y": 2255,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn78x6.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 604,
+        "y": 2255,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pj883s.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 800,
+        "y": 2255,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn9f4r.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 996,
+        "y": 2255,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnfsr9.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1192,
+        "y": 2255,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pndv8c.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1388,
+        "y": 2255,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0plf6yf.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1584,
+        "y": 2255,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pmxyfb.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1780,
+        "y": 2255,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn9j3t.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1976,
+        "y": 2255,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0j72y80.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 2172,
+        "y": 2255,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0plmxf1.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.GridItem-styles__GridItemStyled-sc-6cc20e4a-0:nth-of-type(1) > div.Windsor-styles__MediaStyled-sc-bfc65b29-1 > div > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 2663,
+        "w": 832,
+        "h": 468
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbc.co.uk/images/ic/raw/p0pnd8bm.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.IndexCard-styles__IndexCardStyled-sc-3a0d8802-0 > div > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ashford-styles__AshfordCardStyled-sc-648c73f6-0 > div.Ashford-styles__BackgroundImageWrapperStyled-sc-648c73f6-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 0,
+        "y": 3233,
+        "w": 1280,
+        "h": 426
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/1376xn/p0pgq43v.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.IndexCard-styles__IndexCardStyled-sc-3a0d8802-0 > div > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ashford-styles__AshfordCardStyled-sc-648c73f6-0 > div.Ashford-styles__BackgroundImageWrapperStyled-sc-648c73f6-1:nth-of-type(2) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480xn/p0pgq43s.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ashford-styles__AshfordCardStyled-sc-648c73f6-0 > div.Ashford-styles__OverlayWrapperStyled-sc-648c73f6-2:nth-of-type(3) > div.Ashford-styles__TitleWrapperStyled-sc-648c73f6-3:nth-of-type(1) > div.Ashford-styles__TitleImageWrapperStyled-sc-648c73f6-4:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 69,
+        "y": 3281,
+        "w": 458,
+        "h": 153
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480xn/p0pgq43q.png.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.GridItem-styles__GridItemStyled-sc-6cc20e4a-0:nth-of-type(1) > div.London-styles__LondonMediaStyled-sc-269f9f6d-3 > div > a.London-styles__LondonMediaAnchorStyled-sc-269f9f6d-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 332,
+        "y": 4103,
+        "w": 616,
+        "h": 347
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/news/640/cpsprodpb/b2fd/live/c9c932d0-e324-11f1-99a1-253766e7ad8b.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 964,
+        "y": 4103,
+        "w": 300,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/80ea/live/d55939e0-e31c-11f1-99a1-253766e7ad8b.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 4505,
+        "w": 221,
+        "h": 124
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/c96b/live/b14b3a60-d9c8-11f1-93e1-3b657b665bcf.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 253,
+        "y": 4505,
+        "w": 221,
+        "h": 124
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/5b0e/live/040fc640-dd79-11f1-93e1-3b657b665bcf.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 490,
+        "y": 4505,
+        "w": 221,
+        "h": 124
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/fb1d/live/c5d2fbf0-e330-11f1-9c56-6ffaf0e1e706.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 727,
+        "y": 4505,
+        "w": 221,
+        "h": 124
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/0369/live/387a8f10-e2ff-11f1-a094-5fdc692f3e33.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 4978,
+        "w": 405,
+        "h": 228
+      },
+      "detection": "person",
+      "confidence": 0.955,
+      "decision": "BLOCK",
+      "src": "https://ichef.bbci.co.uk/images/ic/320x180/p0p80lkj.jpg.webp",
+      "faces": 1
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 437,
+        "y": 4978,
+        "w": 405,
+        "h": 228
+      },
+      "detection": "uncertain",
+      "confidence": 0.62,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/320x180/p0l685z5.jpg.webp",
+      "faces": 1
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 859,
+        "y": 4978,
+        "w": 405,
+        "h": 228
+      },
+      "detection": "uncertain",
+      "confidence": 0.414,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/320x180/p0nqvr4k.jpg.webp",
+      "faces": 1
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Edinburgh-styles__CardStyled-sc-73f6adba-0 > div.Edinburgh-styles__MediaWrapperStyled-sc-73f6adba-1:nth-of-type(1) > div.Edinburgh-styles__MediaStyled-sc-73f6adba-2:nth-of-type(1) > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 5861,
+        "w": 270,
+        "h": 152
+      },
+      "detection": "person",
+      "confidence": 0.865,
+      "decision": "BLOCK",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/ac99/live/a44fd170-e2ad-11f1-a094-5fdc692f3e33.jpg.webp",
+      "faces": 2
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Edinburgh-styles__CardStyled-sc-73f6adba-0 > div.Edinburgh-styles__MediaWrapperStyled-sc-73f6adba-1:nth-of-type(1) > div.Edinburgh-styles__MediaStyled-sc-73f6adba-2:nth-of-type(1) > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 298,
+        "y": 5861,
+        "w": 270,
+        "h": 152
+      },
+      "detection": "person",
+      "confidence": 0.739,
+      "decision": "BLOCK",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/5a20/live/d8ac30b0-e2b4-11f1-a094-5fdc692f3e33.jpg.webp",
+      "faces": 1
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Edinburgh-styles__CardStyled-sc-73f6adba-0 > div.Edinburgh-styles__MediaWrapperStyled-sc-73f6adba-1:nth-of-type(1) > div.Edinburgh-styles__MediaStyled-sc-73f6adba-2:nth-of-type(1) > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 580,
+        "y": 5861,
+        "w": 270,
+        "h": 152
+      },
+      "detection": "uncertain",
+      "confidence": 0.63,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/ce0b/live/4f4097b0-e32e-11f1-9c56-6ffaf0e1e706.jpg.webp",
+      "faces": 1
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Edinburgh-styles__CardStyled-sc-73f6adba-0 > div.Edinburgh-styles__MediaWrapperStyled-sc-73f6adba-1:nth-of-type(1) > div.Edinburgh-styles__MediaStyled-sc-73f6adba-2:nth-of-type(1) > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 862,
+        "y": 5861,
+        "w": 270,
+        "h": 152
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/d0c8/live/56782010-e2e4-11f1-99b6-a35a62fa4264.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Edinburgh-styles__CardStyled-sc-73f6adba-0 > div.Edinburgh-styles__MediaWrapperStyled-sc-73f6adba-1:nth-of-type(1) > div.Edinburgh-styles__MediaStyled-sc-73f6adba-2:nth-of-type(1) > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1144,
+        "y": 5861,
+        "w": 270,
+        "h": 152
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/d203/live/4c50b1e0-e2b9-11f1-99a1-253766e7ad8b.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Edinburgh-styles__CardStyled-sc-73f6adba-0 > div.Edinburgh-styles__MediaWrapperStyled-sc-73f6adba-1:nth-of-type(1) > div.Edinburgh-styles__MediaStyled-sc-73f6adba-2:nth-of-type(1) > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1426,
+        "y": 5861,
+        "w": 270,
+        "h": 152
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/2025/live/a8f37f00-e2a4-11f1-99b6-a35a62fa4264.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Edinburgh-styles__CardStyled-sc-73f6adba-0 > div.Edinburgh-styles__MediaWrapperStyled-sc-73f6adba-1:nth-of-type(1) > div.Edinburgh-styles__MediaStyled-sc-73f6adba-2:nth-of-type(1) > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1708,
+        "y": 5861,
+        "w": 270,
+        "h": 152
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/4583/live/99273800-e263-11f1-a094-5fdc692f3e33.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Edinburgh-styles__CardStyled-sc-73f6adba-0 > div.Edinburgh-styles__MediaWrapperStyled-sc-73f6adba-1:nth-of-type(1) > div.Edinburgh-styles__MediaStyled-sc-73f6adba-2:nth-of-type(1) > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1990,
+        "y": 5861,
+        "w": 270,
+        "h": 152
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/0861/live/f40b1380-e200-11f1-ba8d-01314a590f72.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.GridItem-styles__GridItemStyled-sc-6cc20e4a-0:nth-of-type(1) > div.London-styles__LondonMediaStyled-sc-269f9f6d-3 > div > a.London-styles__LondonMediaAnchorStyled-sc-269f9f6d-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 6363,
+        "w": 827,
+        "h": 465
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/news/1536/cpsprodpb/3148/live/d7883600-e2a7-11f1-99b6-a35a62fa4264.png.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.GridItem-styles__GridItemStyled-sc-6cc20e4a-0:nth-of-type(1) > div.London-styles__LondonMediaStyled-sc-269f9f6d-3 > div > a.London-styles__LondonMediaAnchorStyled-sc-269f9f6d-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 437,
+        "y": 6954,
+        "w": 827,
+        "h": 465
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/1024xn/p0pmmhcy.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 7902,
+        "w": 296,
+        "h": 167
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/db6e/live/1044c2a0-e2d1-11f1-99ed-7de3e5932968.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 336,
+        "y": 7902,
+        "w": 296,
+        "h": 167
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/377e/live/9eb7bde0-e31b-11f1-81d5-99b8785f3e51.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 648,
+        "y": 7902,
+        "w": 296,
+        "h": 167
+      },
+      "detection": "person",
+      "confidence": 0.967,
+      "decision": "BLOCK",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/8241/live/e3e3a9c0-e2a7-11f1-8226-87dfa5049e9a.jpg.webp",
+      "faces": 1
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 968,
+        "y": 7902,
+        "w": 296,
+        "h": 167
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/ee74/live/b9842e30-e337-11f1-9479-d17d3e98c29d.png.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 9035,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnfzyh.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 212,
+        "y": 9035,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnbcz4.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 408,
+        "y": 9035,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnb830.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 604,
+        "y": 9035,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0lwzcxx.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 800,
+        "y": 9035,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0m6ztjd.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 996,
+        "y": 9035,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn4jy8.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1192,
+        "y": 9035,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0lwzcxx.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1388,
+        "y": 9035,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pkv97b.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1584,
+        "y": 9035,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pmwzbr.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1780,
+        "y": 9035,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pmwxgk.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 1976,
+        "y": 9035,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pmshrv.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.Ipswich-styles__IpswichCardStyled-sc-9e107448-4 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Ipswich-styles__ImageContainerStyled-sc-9e107448-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 2172,
+        "y": 9035,
+        "w": 180,
+        "h": 180
+      },
+      "detection": "uncertain",
+      "confidence": 0,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0m6ztjd.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 9447,
+        "w": 296,
+        "h": 167
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/1959/live/65173c80-e287-11f1-b166-176de21e2352.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 336,
+        "y": 9447,
+        "w": 296,
+        "h": 167
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/320x180/p0pnfmks.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 648,
+        "y": 9447,
+        "w": 296,
+        "h": 167
+      },
+      "detection": "person",
+      "confidence": 0.711,
+      "decision": "BLOCK",
+      "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/63ff/live/dc5ef950-e2d1-11f1-99ed-7de3e5932968.jpg.webp",
+      "faces": 1
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 968,
+        "y": 9447,
+        "w": 296,
+        "h": 167
+      },
+      "detection": "person",
+      "confidence": 0.786,
+      "decision": "BLOCK",
+      "src": "https://ichef.bbci.co.uk/images/ic/320x180/p0pmx46j.jpg.webp",
+      "faces": 1
+    },
+    {
+      "type": "img",
+      "selector": "div.GridItem-styles__GridItemStyled-sc-6cc20e4a-0:nth-of-type(1) > div.Windsor-styles__MediaStyled-sc-bfc65b29-1 > div:nth-of-type(1) > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 10503,
+        "w": 832,
+        "h": 468
+      },
+      "detection": "uncertain",
+      "confidence": 0.518,
+      "decision": "REVIEW",
+      "src": "https://ichef.bbci.co.uk/images/ic/1024x576/p0pcxdc3.jpg.webp",
+      "faces": 1
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 11105,
+        "w": 296,
+        "h": 167
+      },
+      "detection": "person",
+      "confidence": 0.749,
+      "decision": "BLOCK",
+      "src": "https://ichef.bbci.co.uk/images/ic/320x180/p0pm2ywn.jpg.webp",
+      "faces": 1
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 336,
+        "y": 11105,
+        "w": 296,
+        "h": 167
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/320x180/p0pmvpnc.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1:nth-of-type(1) > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 648,
+        "y": 11105,
+        "w": 296,
+        "h": 167
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/320x180/p0pd2mty.png.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 968,
+        "y": 11105,
+        "w": 296,
+        "h": 167
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/raw/p0pkbr8k.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "div.GridItem-styles__GridItemStyled-sc-6cc20e4a-0:nth-of-type(1) > div.Windsor-styles__MediaStyled-sc-bfc65b29-1 > div > a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 432,
+        "y": 11883,
+        "w": 832,
+        "h": 468
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/raw/p0nw7m52.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 12399,
+        "w": 300,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/raw/p0kkgb4b.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 332,
+        "y": 12399,
+        "w": 300,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/raw/p0jnr6hx.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 648,
+        "y": 12399,
+        "w": 300,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/raw/p0jq6tfl.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 964,
+        "y": 12399,
+        "w": 300,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/1920x1080/p0h74xp9.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 16,
+        "y": 12700,
+        "w": 300,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/raw/p0nkn8ny.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 332,
+        "y": 12700,
+        "w": 300,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/raw/p0nw860t.jpg.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 648,
+        "y": 12700,
+        "w": 300,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/raw/p0lr3t4c.png.webp"
+    },
+    {
+      "type": "img",
+      "selector": "a.Anchor-styles__AnchorStyled-sc-651d33db-0 > div.Dundee-styles__CardStyled-sc-50abbc98-1 > div.Dundee-styles__ImageWrapperStyled-sc-50abbc98-3:nth-of-type(1) > div.Dundee-styles__CardMediaStyled-sc-50abbc98-4 > div.Image-styles__ImageCardStyled-sc-8c99a12b-1 > img.Image-styles__ImageStyled-sc-8c99a12b-0",
+      "box": {
+        "x": 964,
+        "y": 12700,
+        "w": 300,
+        "h": 169
+      },
+      "detection": "none",
+      "confidence": 0,
+      "decision": "ALLOW",
+      "src": "https://ichef.bbci.co.uk/images/ic/raw/p0k21mq7.jpg.webp"
+    }
+  ],
+  "summary": {
+    "total": 74,
+    "people": 9,
+    "covered": 0,
+    "blocked": 9,
+    "review": 37
+  },
+  "verdict": "REVIEW",
+  "failures": [
+    "note: running as root, Chromium launched with --no-sandbox (sandbox would be on for a non-root user)",
+    "request failed: https://ping.chartbeat.net/ping?h=bbc.com&p=%2F&u=zg6wNC8IiFFCHuz5g&d=bbc.com&g=50924&g0=No%20Section&g1=NewsMediaOrgani (net::ERR_BLOCKED_BY_ORB)",
+    "networkidle not reached in 15s (page keeps loading)",
+    "request failed: https://ping.chartbeat.net/ping?h=bbc.com&p=%2F&u=zg6wNC8IiFFCHuz5g&d=bbc.com&g=50924&g0=No%20Section&g1=NewsMediaOrgani (net::ERR_BLOCKED_BY_ORB)",
+    "request failed: https://ping.chartbeat.net/ping?h=bbc.com&p=%2F&u=zg6wNC8IiFFCHuz5g&d=bbc.com&g=50924&g0=No%20Section&g1=NewsMediaOrgani (net::ERR_BLOCKED_BY_ORB)"
+  ],
+  "ssrf_checks": [
+    {
+      "url": "https://www.bbc.com/",
+      "check": "initial-host",
+      "ok": true,
+      "reason": "public IP"
+    }
+  ],
+  "screenshot": "/home/hatch/workspace/filter-platform/scanner/results/www-bbc-com.png"
+}

@@ -1,0 +1,41 @@
+{
+  "url": "https://example.com/",
+  "final_url": "https://example.com/",
+  "scanned_at": "2026-11-18T10:10:39.354Z",
+  "policy_version": "standard-v1",
+  "scan_ms": 3511,
+  "nav_ms": 1139,
+  "cpu_seconds": 0.656,
+  "peak_rss_mb": 543.9,
+  "http_status": 200,
+  "redirects": 0,
+  "detector": {
+    "name": "face-api.js tinyFaceDetector (vladmandic fork 1.7.15)",
+    "backend": "cpu",
+    "loaded": false,
+    "error": null
+  },
+  "detection_candidates": 0,
+  "detection_skipped": 0,
+  "elements": [],
+  "summary": {
+    "total": 0,
+    "people": 0,
+    "covered": 0,
+    "blocked": 0,
+    "review": 0
+  },
+  "verdict": "ALLOW",
+  "failures": [
+    "note: running as root, Chromium launched with --no-sandbox (sandbox would be on for a non-root user)"
+  ],
+  "ssrf_checks": [
+    {
+      "url": "https://example.com/",
+      "check": "initial-host",
+      "ok": true,
+      "reason": "public IP"
+    }
+  ],
+  "screenshot": "/home/hatch/workspace/filter-platform/scanner/results/example-com.png"
+}
