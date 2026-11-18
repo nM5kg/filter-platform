@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Scanner video test — Obama statement</title>
+<style>
+  body { font-family: sans-serif; margin: 20px; max-width: 900px; }
+  video { display: block; width: 854px; height: 480px; background: #000; }
+  #status { font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>Video test — Barack Obama, Chile earthquake statement (2010)</h1>
+<p>Source: Wikimedia Commons, <b>File:Barack Obama gives statement on 2010 Chile
+earthquake 2010-02-27.ogv</b> — 480p VP9 transcode
+(<code>…ogv.480p.vp9.webm</code>, 854×480, 140.9 s, 8,826,254 bytes),
+downloaded 2026-11-18 via the Commons API. Obama speaks at a podium, visible
+in frame for the whole clip, so any sampled frame shows a person.</p>
+<p>The page seeks to 5 s and pauses there, so the frame the scanner samples is
+deterministic.</p>
+<video id="v" src="assets/obama-chile-480p.webm" width="854" height="480"
+       muted playsinline preload="auto"></video>
+<p id="status">loading…</p>
+<script>
+const v = document.getElementById('v');
+const st = document.getElementById('status');
+v.addEventListener('loadedmetadata', () => { try { v.currentTime = 5; } catch (e) { st.textContent = 'SEEK ERROR: ' + e.message; } });
+v.addEventListener('seeked', () => {
+  v.pause();
+  st.textContent = 'paused at ' + v.currentTime.toFixed(2) + 's, ' + v.videoWidth + 'x' + v.videoHeight + ', readyState=' + v.readyState + ', paused=' + v.paused;
+  document.title = 'READY paused-at-5s';
+});
+v.addEventListener('error', () => { st.textContent = 'VIDEO ERROR: ' + (v.error ? v.error.code + ' ' + v.error.message : '?'); });
+</script>
+</body>
+</html>

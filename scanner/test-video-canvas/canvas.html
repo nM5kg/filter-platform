@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Scanner canvas test — drawImage + animation</title>
+<style>
+  body { font-family: sans-serif; margin: 20px; max-width: 900px; }
+  canvas, img { display: block; border: 1px solid #888; margin: 8px 0; }
+  #status { font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>Canvas test — real photos drawn with drawImage</h1>
+<p>All source images are real Wikimedia Commons photos already in the scanner
+test set (<code>../testset/</code>, copied to <code>assets/</code>):</p>
+<ul>
+  <li><b>Canvas A (person):</b> Jensen Huang portrait (<code>p1-huang-portrait.jpg</code>,
+      960×1279) drawn once with <code>drawImage</code>. The same photo as an
+      <code>&lt;img&gt;</code> control sits below it — the detector found a person
+      in this photo in the labeled test set, so canvas A should get the same
+      verdict as the img control if the canvas path works.</li>
+  <li><b>Canvas B (animated person):</b> the Obama statement video
+      (<code>obama-chile-480p.webm</code>, same file as <code>video.html</code>)
+      drawn frame-by-frame with <code>requestAnimationFrame</code>. The source
+      <code>&lt;video&gt;</code> is visible at the bottom of the page, so the
+      scanner collects it as a video element too.</li>
+  <li><b>Canvas C (control, no person):</b> glacier lake landscape
+      (<code>l1-glacier-lake.jpg</code>, 960×635) drawn once — should be ALLOW.</li>
+</ul>
+<canvas id="c-person" width="480" height="640"></canvas>
+<canvas id="c-video" width="854" height="480"></canvas>
+<canvas id="c-landscape" width="480" height="318"></canvas>
+<img id="img-control" src="assets/p1-huang-portrait.jpg" width="480" height="640" alt="Jensen Huang portrait (img control)">
+<video id="v" src="assets/obama-chile-480p.webm" width="427" height="240"
+       muted playsinline loop preload="auto"></video>
+<p id="status">loading…</p>
+<script>
+const st = document.getElementById('status');
+const done = {};
+function mark(k) { done[k] = true; st.textContent = 'ready: ' + Object.keys(done).sort().join(', '); if (Object.keys(done).length === 4) document.title = 'READY all-canvases-drawn'; }
+
+// Canvas A: static person portrait
+const imgA = new Image();
+imgA.onload = () => {
+  document.getElementById('c-person').getContext('2d').drawImage(imgA, 0, 0, 480, 640);
+  mark('canvas-person');
+};
+imgA.onerror = () => { st.textContent = 'ERROR loading p1 portrait'; };
+imgA.src = 'assets/p1-huang-portrait.jpg';
+
+// Canvas C: static landscape control
+const imgC = new Image();
+imgC.onload = () => {
+  document.getElementById('c-landscape').getContext('2d').drawImage(imgC, 0, 0, 480, 318);
+  mark('canvas-landscape');
+};
+imgC.onerror = () => { st.textContent = 'ERROR loading l1 landscape'; };
+imgC.src = 'assets/l1-glacier-lake.jpg';
+
+// Canvas B: animated — draw the playing video every frame
+const v = document.getElementById('v');
+const ctxB = document.getElementById('c-video').getContext('2d');
+let frames = 0;
+function loop() {
+  if (v.readyState >= 2) { ctxB.drawImage(v, 0, 0, 854, 480); frames++; if (frames === 5) mark('canvas-video-animating'); }
+  requestAnimationFrame(loop);
+}
+v.addEventListener('error', () => { st.textContent = 'VIDEO ERROR: ' + (v.error ? v.error.code : '?'); });
+v.play().then(() => { mark('video-playing'); requestAnimationFrame(loop); })
+ .catch((e) => { st.textContent = 'VIDEO PLAY ERROR: ' + e.message; });
+
+// img control load
+document.getElementById('img-control').addEventListener('load', () => mark('img-control'));
+</script>
+</body>
+</html>
