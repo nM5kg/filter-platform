@@ -5,15 +5,21 @@ side** of the Phase 1 API: a customer registers this phone, the phone gets a
 policy from the server, and the phone reports that it is online and filtering.
 
 > **Status 2026-11-18:** the app is written, its Kotlin compiles, its unit
-> tests pass (7/7), and a signed debug APK was built and verified here.
-> `./gradlew assembleDebug` does **NOT** run on this VM — see
-> [Why `./gradlew` cannot run on this VM](#why-gradlew-cannot-run-on-this-vm)
-> for the exact, proven reason and the one-line fix. On any normal machine
-> (or this VM once that permission is on) `./gradlew assembleDebug` is the
-> build to run. **No browser-engine code is in this app** — the
-> Cromite/GeckoView/raw-Chromium decision is still open with Yakob, so there
-> is no WebView-based filtering here yet; the app is registration + policy +
-> status only.
+> tests pass (22/22: 7 `ApiClientTest` + 15 `FilterEngineTest`), and a
+> signed debug APK with GeckoView was built and verified here
+> (200,066,826 bytes, arm64-v8a, v2+v3 signatures). The **GeckoView
+> browser prototype is built** — decision 2026-11-18 (Yakob): GeckoView
+> STABLE 160.0.20261116130455, own browser UI + own filter engine; see
+> [GECKOVIEW-PROTOTYPE.md](GECKOVIEW-PROTOTYPE.md). **Gradle cannot
+> build this module anywhere right now**: the sandbox still intercepts
+> all TCP data from JVM processes on this VM (proven byte-for-byte
+> 2026-11-18), AND SDK platform 37 — required by the GeckoView AAR's
+> `minCompileSdk=37` — does not exist for download (Google lists at most
+> platform-36). The installed Gradle 8.5 binary itself runs fine; only
+> `./gradlew`'s distribution download fails. There is NO "other_tcp"
+> setting to enable — it does not exist. On this VM the build is
+> `manual-build/build.sh`. The APK has never run: no Android device or
+> emulator exists here.
 
 ## What the app does
 
@@ -63,11 +69,17 @@ android/
     src/main/AndroidManifest.xml
     src/main/java/com/filterplatform/app/
       MainActivity.kt          the three screens + background-thread API calls
+      BrowserActivity.kt       GeckoView browser prototype (own UI + filter bridge)
+      FilterEngine.kt          pure-Kotlin filter engine (fail closed, unit-tested)
       ApiClient.kt             HttpURLConnection client + JSON parsing
       SecureStore.kt           EncryptedSharedPreferences wrapper
-    src/main/res/layout/activity_main.xml
-    src/main/res/values/strings.xml
+    src/main/assets/filter-extension/
+      manifest.json, background.js, content.js   built-in WebExtension (MV2)
+    src/main/res/layout/activity_browser.xml
     src/test/java/com/filterplatform/app/ApiClientTest.kt   (7 unit tests)
+    src/test/java/com/filterplatform/app/FilterEngineTest.kt (15 unit tests)
+  GECKOVIEW-PROTOTYPE.md       GeckoView prototype: version, build, device checklist
+  test-pages/                  8 test pages (01–08) + index + README for the 8 content types
   gradle-inprocess.sh          runs Gradle WITHOUT a daemon (see below)
   manual-build/
     build.sh                   builds the debug APK without Gradle (see below)
@@ -89,15 +101,21 @@ Deliberate simplifications (kept minimal on purpose):
 
 ```bash
 cd android
-./gradlew assembleDebug
+~/gradle-8.5/bin/gradle assembleDebug   # installed Gradle 8.5; do NOT use ./gradlew
 # APK: app/build/outputs/apk/debug/app-debug.apk
-./gradlew testDebugUnitTest   # unit tests (7 tests in ApiClientTest)
-./gradlew lintDebug           # Android Lint
+~/gradle-8.5/bin/gradle testDebugUnitTest   # unit tests (22 tests)
+~/gradle-8.5/bin/gradle lintDebug           # Android Lint
 ```
 
 Requirements: JDK 17, Android SDK with `platforms;android-34` and
-`build-tools;34.0.0`, Gradle 8.5 (via the wrapper). Set `sdk.dir` in
-`local.properties` or `ANDROID_HOME`.
+`build-tools;34.0.0`, Gradle 8.5 (installed binary — the wrapper's
+distribution download fails behind this sandbox's egress). Set `sdk.dir`
+in `local.properties` or `ANDROID_HOME`. **Caveat 2026-11-18: a Gradle
+build of this module fails on every machine right now** — the GeckoView
+AAR declares `minCompileSdk=37` and Google has no platform-37 package
+for download (repository2-1.xml lists at most platform-36; the
+platform-37 zip is a 404). Until platform 37 exists (or the GeckoView
+pin changes), the manual build below is the only working build.
 
 ## Environment setup on THIS VM (what was actually installed, 2026-11-18)
 
@@ -161,57 +179,82 @@ Disk first: `df -h` showed 148 GB free on `/home/hatch`; `/tmp` is a
    The committed `gradle-wrapper.properties` carries the standard
    `https://services.gradle.org/...` URL, not the file URL.
 5. **Proxy for Gradle** (local only, NOT in the repo): Gradle's user home
-   on this VM is `/root/.gradle` (Java's `user.home` for uid 0), NOT
-   `~/.gradle`. Proxy settings live in `/root/.gradle/gradle.properties`.
-   Two relays exist: the older one on `127.0.0.1:18080` (started by the
-   Phase 2 agent) is **stale** — it resets tunnels to Maven Central; a fresh
-   instance of the same script runs on **`127.0.0.1:18081`** (started by
-   this task, `RELAY_PORT=18081 node harness/egress-relay.js`) and works
-   for curl on all hosts. Gradle points at `127.0.0.1:18081` — but see the
-   blocker: Gradle still cannot use it, for a different reason than the
-   relay (below).
+   on this VM is `/home/hatch/.gradle` (Java's `user.home` here), NOT
+   `/root/.gradle`. As of 2026-11-18 ~13:30 EST **no proxy is configured
+   there** (`~/.gradle/gradle.properties` carries only a comment): direct
+   JVM HTTPS and JVM-via-proxy both fail the same way (the sandbox
+   intercepts all TCP data from JVM processes — see the blocker section),
+   so proxy settings cannot make Gradle download anything on this VM.
+   Two relays existed: the older one on `127.0.0.1:18080` (started by the
+   Phase 2 agent) is **stale and dead**; a fresh instance of the same
+   script (`harness/egress-relay.js`) was restarted on **`127.0.0.1:18081`**
+   for the 2026-11-18 re-test — curl through it returns 200, but a Java
+   Socket to it still receives the 193-byte interceptor message, so it
+   does not help the JVM either. Gradle points at no proxy now.
 
-## Why `./gradlew assembleDebug` cannot run on this VM
+## Why Gradle cannot build this (verified 2026-11-18)
 
-**Root cause (proven, not guessed): the sandbox intercepts and blocks every
-TCP connection made by a JVM process.** The message the interceptor returns
-is:
+Two independent blockers. Either one alone stops a Gradle build.
+
+### Blocker 1 — the sandbox still intercepts ALL TCP data from JVM processes
+
+**Root cause (proven, not guessed): the sandbox intercepts and blocks
+every TCP connection's DATA made by a JVM process.** The message the
+interceptor returns is:
 
 > `muse: Other TCP connections is turned off for this assistant. To allow
 > it, ask the user to open Muse settings -> Permissions -> Direct network
 > protocols and switch other_tcp from Deny to Ask.`
 
-Evidence (all 2026-11-18, same VM, same relay on 127.0.0.1:18081):
+**Correction 2026-11-18 ~13:30 EST: that setting does NOT exist.** It
+appears neither in the Permissions screen nor in the full permissions
+list (checked 2026-11-18 ~13:11 EST); there is no permission card to
+bring up and nothing pending. Do NOT tell Yakob to enable it. There is
+no one-line fix on this VM.
 
-- A Java program opening a raw socket to `127.0.0.1:18081` and sending a
-  byte-identical `CONNECT repo.maven.apache.org:443` request gets the
-  193-byte interceptor message. The same bytes from Python, from a compiled
-  C program, and from `curl` all reach the relay and get its proper
-  `HTTP/1.1 200 Connection Established` reply. Tested in the *same* exec
-  call, back to back: Java blocked, Python allowed.
-- Renaming/copying the JVM binary does not help (`~/jdkcopy/bin/java`,
-  `~/jdkrenamed/bin/runner`, `exec -a mytool`) — still blocked. It is not
-  the path or the process name.
+Also corrected: the 2026-11-18 ~13:11 EST check that "JVM TCP now
+works" was a **connect-only** test. A TCP connect succeeds; the data
+does not flow. Evidence (all 2026-11-18, re-verified ~13:30 EST):
+
+- A Java program opening a raw socket to `repo.maven.apache.org:443`
+  and reading gets the 193-byte interceptor message. The same bytes
+  from Python, from a compiled C program, and from `curl` all reach the
+  real host. Tested in the *same* exec call, back to back: Java blocked,
+  Python allowed.
+- A Java Socket to the **127.0.0.1:18081 egress relay** (Node process,
+  restarted for this test; curl through it returns 200) receives the
+  same 193-byte message; Python to the same relay receives the real
+  `HTTP/1.1 200 Connection Established`.
 - Consequences observed, each with its own log:
-  1. **Gradle daemon:** the daemon starts fine and listens on
-     `127.0.0.1:<port>`, the client TCP-connects, dispatches the Build
-     request — and the daemon never receives it ("Could not receive a
-     message from the daemon", client log; daemon log ends at "daemon is
-     running. Sleeping until state changes."). Raw TCP between two JVMs is
-     intercepted.
-  2. **Dependency downloads:** Gradle's Apache HttpClient gets
-     `SocketException: Connection reset` on every tunnel
-     (`{tls}->http://127.0.0.1:18081->https://repo.maven.apache.org:443`,
-     `dl.google.com`, `plugins.gradle.org`) — the JVM's CONNECT never
-     reaches the relay.
-  3. **`sdkmanager`:** `NoSuchElementException` in
-     `HttpURLConnection.doTunneling0` — Java parses the interceptor's
-     message as if it were the proxy's CONNECT response.
-  4. **Direct egress proxy:** Gradle pointed straight at
-     `hatch-egress-proxy:3128` with credentials also fails — the egress
-     proxy drops unauthenticated CONNECTs without a 407, and Java's
-     HttpClient only sends `Proxy-Authorization` *after* a 407 (this is
-     why `harness/egress-relay.js` exists at all).
+  1. **Gradle daemon:** the daemon starts fine, the client TCP-connects,
+     dispatches the Build request — and the client reads the interceptor
+     message off the loopback socket:
+     `Could not receive a message from the daemon.` /
+     `Caused by: java.lang.IllegalArgumentException: Unexpected type tag 109 found.`
+     (109 = `0x6D` = `'m'`, the first byte of `muse: ...`.)
+  2. **Direct JVM HTTPS:** `javax.net.ssl.SSLException: Unsupported or
+     unrecognized SSL message` — the interceptor's plain text is not TLS.
+  3. **JVM HTTPS via proxy** (egress proxy with auth, or the 18081
+     relay): `java.lang.RuntimeException: java.util.NoSuchElementException`
+     — Java's CONNECT-response parser chokes on the interceptor text.
+     (`sdkmanager` fails the same way: `NoSuchElementException` in
+     `HttpURLConnection.doTunneling0`.)
+  4. **In-process Gradle** (`gradle-inprocess.sh`): runs — and then fails
+     only on dependency downloads (`Plugin com.android.application 8.3.2
+     was not found in any of the following sources: ... Google /
+     MavenRepo / Gradle Central Plugin Repository`).
+- **The installed Gradle 8.5 binary itself runs fine**
+  (`gradle --version` → Gradle 8.5 / JVM 17.0.21, exit 0, daemon starts).
+  Only the **wrapper** fails: `./gradlew` dies downloading the
+  distribution in the SSL handshake (Broken pipe) — the same
+  interception. Use the installed binary, never `./gradlew`, and do NOT
+  claim `./gradlew` works.
+- **No CA import can fix this.** There is no egress CA to import: the
+  current egress proxy does plain CONNECT tunneling — `openssl s_client`
+  via the proxy shows a normal public chain (`issuer=C = US, O = Let's
+  Encrypt, CN = YE1`). The failure happens before TLS anyway: the JVM
+  never receives TLS bytes. (The older note about a "Hatch Sandbox
+  Egress CA" described a previous proxy setup; it does not apply now.)
 
 **Workaround that DOES work — in-process Gradle:** if the launcher JVM is
 started with exactly the JVM args Gradle would give the daemon
@@ -223,16 +266,25 @@ socket needed. That is `gradle-inprocess.sh` in this folder. (Found by
 decompiling `BuildProcess.configureForBuild`: the reuse check fails without
 the agent because the daemon is configured to apply the instrumentation
 agent and the launcher JVM doesn't have it.) With this, Gradle *starts* a
-build in-process — and then fails only on dependency downloads (blocker 2
-above). So in-process Gradle + a fully offline dependency cache would work;
-populating that cache by hand was out of scope for this task (AGP's
-transitive closure is ~100 artifacts).
+build in-process — and then fails only on dependency downloads (blocker 1
+above). So in-process Gradle + a fully offline dependency cache would work
+for downloads; populating that cache by hand was out of scope for this task
+(AGP's transitive closure is ~100 artifacts) — and blocker 2 below stops
+a Gradle build regardless.
 
-**The one-line fix:** in Muse settings → Permissions → Direct network
-protocols, switch `other_tcp` from Deny to Ask (and approve it). Then, on
-this VM, plain `./gradlew assembleDebug` should work: the daemon socket
-and the dependency downloads both become ordinary TCP. Nothing else in
-this project needs to change.
+### Blocker 2 — SDK platform 37 does not exist for download
+
+GeckoView 160's AAR declares `minCompileSdk=37`, so a Gradle build needs
+`compileSdk 37`. But Google has no platform-37 package:
+`https://dl.google.com/android/repository/platform-37_r01.zip` → **404**,
+and `repository2-1.xml` lists at most `platform-36-ext18_r01.zip`
+(checked 2026-11-18). Pre-downloading Maven artifacts with curl into the
+Gradle cache cannot fix this one. Until Google publishes platform 37 (or
+the GeckoView pin changes), a Gradle build of this module fails on every
+machine, not just this VM. The manual build sidesteps it by compiling
+against the already-installed `android.jar` 34 — a prototype-only
+compromise: the APK reports `compileSdkVersion: 34` while the GeckoView
+AAR asks for 37.
 
 ### Side fix shipped with this task: `harness/egress-relay.js`
 
@@ -250,61 +302,81 @@ returns 200 for Maven Central, Google Maven, and plugins.gradle.org.
 
 ## Verification (what was actually run, 2026-11-18)
 
-### VERIFIED — manual debug-APK build (`manual-build/build.sh`)
+### VERIFIED — manual debug-APK build with GeckoView (`manual-build/build.sh`)
 
 Same sources, same SDK tools Gradle would use (aapt2, d8, zipalign,
-apksigner from build-tools 34.0.0; kotlinc 1.9.23; every dependency
-downloaded by curl). Result:
+apksigner from build-tools 34.0.0; d8 from build-tools 36.0.0 — the
+34.0.0 d8 crashes on androidx.collection 1.7.0, see build.sh; kotlinc
+2.4.21; every dependency downloaded by curl via
+`manual-build/fetch-deps.py`). Result (rebuilt to completion 2026-11-18
+18:34 UTC after the previous run was cut off at 18:22 UTC during d8):
 
 ```
 == 1. aapt2 compile resources ==   OK
-== 2. aapt2 link (manifest + resources, R.java) ==   OK
-== 3. kotlinc (app sources + generated R.java) ==   OK
-== 4. d8 dex (app + library classes, min-api 26) ==   OK
-== 5. add classes.dex to the APK ==   OK
+== 2. aapt2 link (merged manifest + resources, R.java) ==   OK
+== 3. kotlinc (app sources + generated R.java) ==   OK (1 deprecation warning: onBackPressed)
+== 4. d8 dex (app + library classes, min-api 26) ==   OK (classes.dex 10,229,084 + classes2.dex 8,609,760 bytes)
+== 5. add dex + GeckoView .so libs (arm64-v8a) ==   OK (libxul.so 154,611,616 bytes, stored)
 == 6. zipalign + sign (generated debug key) ==   OK
 == 7. verify ==
-   Verified using v1 scheme (JAR signing): true
+   Verified using v1 scheme (JAR signing): false
    Verified using v2 scheme (APK Signature Scheme v2): true
    Verified using v3 scheme (APK Signature Scheme v3): true
    Number of signers: 1
 package: name='com.filterplatform.app' versionCode='1' versionName='0.1.0'
 sdkVersion:'26' targetSdkVersion:'34' compileSdkVersion:'34'
 launchable-activity: name='com.filterplatform.app.MainActivity'
-uses-permission: INTERNET, ACCESS_NETWORK_STATE
+uses-permission: INTERNET, ACCESS_NETWORK_STATE, WAKE_LOCK, MODIFY_AUDIO_SETTINGS
 ```
 
-Output: `manual-build/out/app-debug.apk` (848,343 bytes, `classes.dex`
-2,312,916 bytes). `dexdump` confirms all app classes are in the dex
-(`MainActivity`, `ApiClient`, `SecureStore`, `JsonParsing`, models) plus
-the security-crypto/Tink classes (1,775 classes total).
+Output: `manual-build/out/app-debug.apk` (**200,066,826 bytes**,
+arm64-v8a only; `GV_ABIS="arm64-v8a armeabi-v7a x86_64" ./build.sh`
+builds all ABIs, ~520 MB). Contents verified with `unzip -l` +
+`dexdump`: `assets/omni.ja` (15,252,607),
+`assets/filter-extension/{manifest.json, background.js, content.js}`,
+`lib/arm64-v8a/libxul.so`, `BrowserActivity` / `FilterEngine` /
+`StubPersonDetector` and all model classes in `classes.dex`, GeckoView
+classes in `classes2.dex`. The old skeleton-only APK (848,343 bytes,
+11:16 UTC) is replaced by this build. (The manual build compiles
+against `android.jar` 34 while the GeckoView AAR asks for
+`minCompileSdk=37` — a prototype-only compromise, see the Gradle
+blockers above.)
 
 Library versions used by the manual build (from the real POMs, curl):
 security-crypto 1.1.0-alpha06 (AAR) + annotation 1.1.0 + collection 1.1.0
 + tink-android 1.8.0 (JAR — its POM says `<packaging>jar</packaging>`,
-the `.aar` URL 404s) + gson 2.8.9. Note: collection 1.1.0 is a JAR too,
-not an AAR. The manual-build `libs/` folder is a build input, not
-committed source — delete it to re-download.
+the `.aar` URL 404s) + gson 2.8.9, plus the full GeckoView 160 closure
+(59 artifacts, `manual-build/libs/geckoview/DEPENDENCIES.md`). Note:
+collection 1.1.0 is a JAR too, not an AAR. The manual-build `libs/`
+folder is a build input, not committed source — delete it to
+re-download.
 
-### VERIFIED — unit tests, 7/7 pass
+### VERIFIED — unit tests, 22/22 pass
 
-`ApiClientTest` (pure JSON-parsing functions, no network) compiled with
-kotlinc 1.9.23 and run under JUnit 4.13.2 on the JVM (with the real
-`org.json:json:20240303` implementation on the classpath, because
-`android.jar`'s `org.json` classes are stubs that throw at runtime):
+`ApiClientTest` (7) + `FilterEngineTest` (15) — pure JVM code (JSON
+parsing, FilterEngine — no Android framework, no GeckoView runtime),
+compiled with kotlinc 2.4.21 and run under JUnit 4.13.2 on the JVM (with
+the real `org.json:json:20240303` implementation on the classpath,
+because `android.jar`'s `org.json` classes are stubs that throw at
+runtime):
 
 ```
 JUnit version 4.13.2
-.......
-Time: 0.026
-OK (7 tests)
+......................
+Time: 0.095
+OK (22 tests)
 ```
 
 Tests cover: pending device with activation code, registered device,
 Standard policy fields, `auto_decide_threshold` returned as a **string**
 (`"0.7000"` — that is what the live Worker actually returns; see below),
-null status row, online status row, server error message extraction.
-On a normal machine these same tests run via `./gradlew testDebugUnitTest`.
+null status row, online status row, server error message extraction;
+fail-closed engine property (stub detector never allows, no thumbnail
+never allows, low-confidence never allows), person→cover/block,
+confident no-person→allow, scan/decisions wire format (REVIEW sent as
+"cover"), navigation blocklist + scheme blocking, `hostOf` parsing.
+On a normal machine these same tests run via
+`gradle testDebugUnitTest` (installed Gradle 8.5, not `./gradlew`).
 
 ### VERIFIED — live API, read-only (2026-11-18 ~11:16 UTC)
 
@@ -324,13 +396,17 @@ With the real API token (read from `api_token.txt`, never printed):
 
 ### NOT verified (cannot be, on this VM)
 
-- **`./gradlew assembleDebug`** — blocked by the JVM-TCP sandbox
-  permission (see above). The Gradle project files are standard and
-  complete, but no Gradle build has run to completion here.
-- **Android Lint** (`./gradlew lintDebug`) — needs Gradle; not run.
+- **A Gradle build** — blocked two ways (see above): the sandbox still
+  intercepts all JVM TCP data on this VM, and SDK platform 37 does not
+  exist for download anywhere yet. The Gradle project files are standard
+  and complete, but no Gradle build has run to completion here.
+- **Android Lint** (`gradle lintDebug`) — needs Gradle; not run.
 - **Running the app on a phone** — no Android device or emulator exists
   on this VM. The APK is built, signed and verified, but it has never been
-  installed or launched anywhere.
+  installed or launched anywhere. In particular the GeckoView prototype
+  (browser Activity, extension install, native bridge, cover behaviour on
+  the 8 content types) is unproven until the checklist in
+  [GECKOVIEW-PROTOTYPE.md](GECKOVIEW-PROTOTYPE.md) is run on a real phone.
 - **Real device registration end-to-end from the app** — the registration
   flow (create customer → create device → code → register → heartbeat)
   was verified against the live API by the Phase 1 dogfood script, but
