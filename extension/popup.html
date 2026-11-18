@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="yi" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Filter Platform</title>
+<style>
+  * { box-sizing: border-box; }
+  body { width: 340px; margin: 0; padding: 14px; font: 14px/1.5 system-ui, sans-serif; background: #fff; color: #111827; direction: rtl; }
+  h1 { font-size: 17px; margin: 0 0 4px; }
+  .sub { color: #6b7280; font-size: 12px; margin: 0 0 12px; }
+  label { display: block; font-weight: 600; margin: 10px 0 3px; }
+  input, select { width: 100%; padding: 7px 9px; border: 1px solid #d1d5db; border-radius: 6px; font: inherit; direction: ltr; text-align: left; }
+  select { direction: rtl; text-align: right; }
+  button { width: 100%; margin-top: 12px; padding: 9px; border: 0; border-radius: 6px; background: #1d4ed8; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+  button.secondary { background: #e5e7eb; color: #111827; }
+  .status { margin-top: 12px; padding: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 13px; white-space: pre-wrap; word-break: break-word; }
+  .ok { color: #047857; } .bad { color: #b91c1c; }
+  .hint { font-size: 12px; color: #6b7280; margin-top: 6px; }
+</style>
+</head>
+<body>
+  <h1>🛡️ פֿילטער פּלאַטפאָרם</h1>
+  <p class="sub">Free kosher internet filter — Phase 2 (browser)</p>
+
+  <label for="token">API טאָוקן</label>
+  <input id="token" type="password" placeholder="paste your API token" autocomplete="off">
+  <label for="deviceId">דיווייס ID</label>
+  <input id="deviceId" type="text" placeholder="device UUID from dashboard">
+  <label for="customerId">קונה ID (optional)</label>
+  <input id="customerId" type="text" placeholder="customer UUID (optional)">
+
+  <label for="demoMode">בילד מאָדע (דעמאָ)</label>
+  <select id="demoMode">
+    <option value="policy">לויט פּאָליסי (Standard: בלאקירן)</option>
+    <option value="block">בלאקירן — אַראָפּנעמען דאָס בילד</option>
+    <option value="cover">באַדעקן — בלער + אָוווערליי</option>
+    <option value="strict">שטרענג — אומזיכער = באַדעקט</option>
+  </select>
+  <p class="hint">די מאָדע ווירקט אויף דעם בלעטערער דעמאָ. די פּאָליסי אויפן סערווער בלייבט ווי זי איז.</p>
+
+  <button id="save">שפּאָרן + סינק פּאָליסי</button>
+  <button id="refresh" class="secondary">↻ סינק נאָכאַמאָל</button>
+
+  <div class="status" id="status">לאָודט…</div>
+  <div class="status" id="stats">—</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
