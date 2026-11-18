@@ -1,0 +1,717 @@
+[
+  {
+    "mode": "block",
+    "ok": true,
+    "extensionId": "keibjodbjaonlckfkaejiiefaikphdfg",
+    "liveSync": {
+      "lastSync": "2026-11-18T10:25:10.515Z",
+      "policyFetched": true,
+      "policyName": "Standard — block images + explicit words, rest open",
+      "policyId": "179d3448-98d0-4eb4-8a2c-ac813a648e84",
+      "block_images": true,
+      "cover_images": false,
+      "filter_videos": false,
+      "filter_ads": false,
+      "auto_decide_threshold": "0.7000",
+      "deviceFound": true,
+      "deviceName": "Dogfood Phone",
+      "blocklistDomains": 11,
+      "rulesCount": 22,
+      "error": null,
+      "syncMs": 801
+    },
+    "syncPath": "live",
+    "policyFetch": {
+      "lastSync": "2026-11-18T10:25:10.515Z",
+      "policyFetched": true,
+      "policyName": "Standard — block images + explicit words, rest open",
+      "policyId": "179d3448-98d0-4eb4-8a2c-ac813a648e84",
+      "block_images": true,
+      "cover_images": false,
+      "filter_videos": false,
+      "filter_ads": false,
+      "auto_decide_threshold": "0.7000",
+      "deviceFound": true,
+      "deviceName": "Dogfood Phone",
+      "blocklistDomains": 11,
+      "rulesCount": 22,
+      "error": null,
+      "syncMs": 801
+    },
+    "dnrRuleCount": 22,
+    "dnrRules": [
+      "*://bet365.com/*",
+      "*://*.bet365.com/*",
+      "*://facebook.com/*",
+      "*://*.facebook.com/*",
+      "*://instagram.com/*",
+      "*://*.instagram.com/*",
+      "*://onlyfans.com/*",
+      "*://*.onlyfans.com/*",
+      "*://pornhub.com/*",
+      "*://*.pornhub.com/*",
+      "*://reddit.com/*",
+      "*://*.reddit.com/*",
+      "*://snapchat.com/*",
+      "*://*.snapchat.com/*",
+      "*://tiktok.com/*",
+      "*://*.tiktok.com/*",
+      "*://x.com/*",
+      "*://*.x.com/*",
+      "*://xnxx.com/*",
+      "*://*.xnxx.com/*",
+      "*://xvideos.com/*",
+      "*://*.xvideos.com/*"
+    ],
+    "scanMs": 25360,
+    "scanDone": true,
+    "failedRequests": [
+      {
+        "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Albert%20Einstein%20sticks%20his%20tongue.jpg?width=800",
+        "error": "net::ERR_CERT_AUTHORITY_INVALID"
+      },
+      {
+        "url": "https://www.facebook.com/",
+        "error": "net::ERR_BLOCKED_BY_CLIENT"
+      },
+      {
+        "url": "https://images.google.com/search?q=albert+einstein&tbm=isch",
+        "error": "net::ERR_CERT_AUTHORITY_INVALID"
+      }
+    ],
+    "testPage": {
+      "stats": {
+        "found": 9,
+        "scanned": 10,
+        "human": 6,
+        "blocked": 6,
+        "covered": 0,
+        "uncertain": 1,
+        "noHuman": 3,
+        "bgFound": 1,
+        "bgHuman": 1,
+        "skipped": 3
+      },
+      "log": [
+        {
+          "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-apple.jpg",
+          "kind": "img",
+          "faces": 0,
+          "result": "no-human",
+          "action": "none",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-cat.jpg",
+          "kind": "img",
+          "faces": 0,
+          "result": "no-human",
+          "action": "none",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-earth.jpg",
+          "kind": "img",
+          "faces": 0,
+          "result": "no-human",
+          "action": "none",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8124/person-einstein.jpg",
+          "kind": "img",
+          "faces": 0,
+          "result": "uncertain",
+          "action": "none",
+          "mode": "block",
+          "error": "cross-origin without CORS — pixels unreadable"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+          "kind": "background",
+          "faces": 1,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        }
+      ],
+      "mode": "block",
+      "blockedPlaceholders": 5,
+      "coveredImgs": 0,
+      "imgsRemaining": 6,
+      "imgStates": [
+        {
+          "id": "img-apple",
+          "action": "none"
+        },
+        {
+          "id": "img-cat",
+          "action": "none"
+        },
+        {
+          "id": "img-earth",
+          "action": "none"
+        },
+        {
+          "id": "img-xorigin",
+          "action": "none"
+        },
+        {
+          "id": "img-xorigin-local",
+          "action": "none"
+        },
+        {
+          "id": "img-facebook-probe",
+          "action": "none"
+        }
+      ],
+      "bgBlocked": 1,
+      "bgCoverOverlays": 0,
+      "facebookProbe": {
+        "complete": true,
+        "naturalWidth": 0
+      },
+      "dynamicImgPresent": false,
+      "dynamicImgAction": "absent",
+      "lazyImgAction": "absent",
+      "xoriginLocalAction": "none",
+      "xoriginAction": "none"
+    },
+    "facebookNav": {
+      "error": "Error: page.goto: net::ERR_BLOCKED_BY_CLIENT at https://www.facebook.com/"
+    },
+    "googleImages": {
+      "error": "Error: page.goto: net::ERR_CERT_AUTHORITY_INVALID at https://images.google.com/search?q=albert+einstein&tbm=isch"
+    }
+  },
+  {
+    "mode": "cover",
+    "ok": true,
+    "extensionId": "keibjodbjaonlckfkaejiiefaikphdfg",
+    "liveSync": {
+      "lastSync": "2026-11-18T10:25:54.373Z",
+      "policyFetched": true,
+      "policyName": "Standard — block images + explicit words, rest open",
+      "policyId": "179d3448-98d0-4eb4-8a2c-ac813a648e84",
+      "block_images": true,
+      "cover_images": false,
+      "filter_videos": false,
+      "filter_ads": false,
+      "auto_decide_threshold": "0.7000",
+      "deviceFound": true,
+      "deviceName": "Dogfood Phone",
+      "blocklistDomains": 11,
+      "rulesCount": 22,
+      "error": null,
+      "syncMs": 1354
+    },
+    "syncPath": "live",
+    "policyFetch": {
+      "lastSync": "2026-11-18T10:25:54.373Z",
+      "policyFetched": true,
+      "policyName": "Standard — block images + explicit words, rest open",
+      "policyId": "179d3448-98d0-4eb4-8a2c-ac813a648e84",
+      "block_images": true,
+      "cover_images": false,
+      "filter_videos": false,
+      "filter_ads": false,
+      "auto_decide_threshold": "0.7000",
+      "deviceFound": true,
+      "deviceName": "Dogfood Phone",
+      "blocklistDomains": 11,
+      "rulesCount": 22,
+      "error": null,
+      "syncMs": 1354
+    },
+    "dnrRuleCount": 22,
+    "dnrRules": [
+      "*://bet365.com/*",
+      "*://*.bet365.com/*",
+      "*://facebook.com/*",
+      "*://*.facebook.com/*",
+      "*://instagram.com/*",
+      "*://*.instagram.com/*",
+      "*://onlyfans.com/*",
+      "*://*.onlyfans.com/*",
+      "*://pornhub.com/*",
+      "*://*.pornhub.com/*",
+      "*://reddit.com/*",
+      "*://*.reddit.com/*",
+      "*://snapchat.com/*",
+      "*://*.snapchat.com/*",
+      "*://tiktok.com/*",
+      "*://*.tiktok.com/*",
+      "*://x.com/*",
+      "*://*.x.com/*",
+      "*://xnxx.com/*",
+      "*://*.xnxx.com/*",
+      "*://xvideos.com/*",
+      "*://*.xvideos.com/*"
+    ],
+    "scanMs": 25279,
+    "scanDone": true,
+    "failedRequests": [
+      {
+        "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Albert%20Einstein%20sticks%20his%20tongue.jpg?width=800",
+        "error": "net::ERR_CERT_AUTHORITY_INVALID"
+      },
+      {
+        "url": "https://www.facebook.com/",
+        "error": "net::ERR_BLOCKED_BY_CLIENT"
+      },
+      {
+        "url": "https://images.google.com/search?q=albert+einstein&tbm=isch",
+        "error": "net::ERR_CERT_AUTHORITY_INVALID"
+      }
+    ],
+    "testPage": {
+      "stats": {
+        "found": 9,
+        "scanned": 10,
+        "human": 6,
+        "blocked": 0,
+        "covered": 6,
+        "uncertain": 1,
+        "noHuman": 3,
+        "bgFound": 1,
+        "bgHuman": 1,
+        "skipped": 3
+      },
+      "log": [
+        {
+          "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "covered",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "covered",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "covered",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-apple.jpg",
+          "kind": "img",
+          "faces": 0,
+          "result": "no-human",
+          "action": "none",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-cat.jpg",
+          "kind": "img",
+          "faces": 0,
+          "result": "no-human",
+          "action": "none",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-earth.jpg",
+          "kind": "img",
+          "faces": 0,
+          "result": "no-human",
+          "action": "none",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8124/person-einstein.jpg",
+          "kind": "img",
+          "faces": 0,
+          "result": "uncertain",
+          "action": "none",
+          "mode": "cover",
+          "error": "cross-origin without CORS — pixels unreadable"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+          "kind": "background",
+          "faces": 1,
+          "result": "human",
+          "action": "covered",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "covered",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "covered",
+          "mode": "cover"
+        }
+      ],
+      "mode": "cover",
+      "blockedPlaceholders": 0,
+      "coveredImgs": 5,
+      "imgsRemaining": 11,
+      "imgStates": [
+        {
+          "id": "img-einstein",
+          "action": "covered"
+        },
+        {
+          "id": "img-obama",
+          "action": "covered"
+        },
+        {
+          "id": "img-curie",
+          "action": "covered"
+        },
+        {
+          "id": "img-apple",
+          "action": "none"
+        },
+        {
+          "id": "img-cat",
+          "action": "none"
+        },
+        {
+          "id": "img-earth",
+          "action": "none"
+        },
+        {
+          "id": "img-xorigin",
+          "action": "none"
+        },
+        {
+          "id": "img-xorigin-local",
+          "action": "none"
+        },
+        {
+          "id": "img-facebook-probe",
+          "action": "none"
+        },
+        {
+          "id": "img-dynamic",
+          "action": "covered"
+        },
+        {
+          "id": "img-lazy",
+          "action": "covered"
+        }
+      ],
+      "bgBlocked": 0,
+      "bgCoverOverlays": 1,
+      "facebookProbe": {
+        "complete": true,
+        "naturalWidth": 0
+      },
+      "dynamicImgPresent": true,
+      "dynamicImgAction": "covered",
+      "lazyImgAction": "covered",
+      "xoriginLocalAction": "none",
+      "xoriginAction": "none"
+    },
+    "facebookNav": {
+      "error": "Error: page.goto: net::ERR_BLOCKED_BY_CLIENT at https://www.facebook.com/"
+    },
+    "googleImages": {
+      "error": "Error: page.goto: net::ERR_CERT_AUTHORITY_INVALID at https://images.google.com/search?q=albert+einstein&tbm=isch"
+    }
+  },
+  {
+    "mode": "strict",
+    "ok": true,
+    "extensionId": "keibjodbjaonlckfkaejiiefaikphdfg",
+    "liveSync": {
+      "lastSync": "2026-11-18T10:26:37.410Z",
+      "policyFetched": true,
+      "policyName": "Standard — block images + explicit words, rest open",
+      "policyId": "179d3448-98d0-4eb4-8a2c-ac813a648e84",
+      "block_images": true,
+      "cover_images": false,
+      "filter_videos": false,
+      "filter_ads": false,
+      "auto_decide_threshold": "0.7000",
+      "deviceFound": true,
+      "deviceName": "Dogfood Phone",
+      "blocklistDomains": 11,
+      "rulesCount": 22,
+      "error": null,
+      "syncMs": 786
+    },
+    "syncPath": "live",
+    "policyFetch": {
+      "lastSync": "2026-11-18T10:26:37.410Z",
+      "policyFetched": true,
+      "policyName": "Standard — block images + explicit words, rest open",
+      "policyId": "179d3448-98d0-4eb4-8a2c-ac813a648e84",
+      "block_images": true,
+      "cover_images": false,
+      "filter_videos": false,
+      "filter_ads": false,
+      "auto_decide_threshold": "0.7000",
+      "deviceFound": true,
+      "deviceName": "Dogfood Phone",
+      "blocklistDomains": 11,
+      "rulesCount": 22,
+      "error": null,
+      "syncMs": 786
+    },
+    "dnrRuleCount": 22,
+    "dnrRules": [
+      "*://bet365.com/*",
+      "*://*.bet365.com/*",
+      "*://facebook.com/*",
+      "*://*.facebook.com/*",
+      "*://instagram.com/*",
+      "*://*.instagram.com/*",
+      "*://onlyfans.com/*",
+      "*://*.onlyfans.com/*",
+      "*://pornhub.com/*",
+      "*://*.pornhub.com/*",
+      "*://reddit.com/*",
+      "*://*.reddit.com/*",
+      "*://snapchat.com/*",
+      "*://*.snapchat.com/*",
+      "*://tiktok.com/*",
+      "*://*.tiktok.com/*",
+      "*://x.com/*",
+      "*://*.x.com/*",
+      "*://xnxx.com/*",
+      "*://*.xnxx.com/*",
+      "*://xvideos.com/*",
+      "*://*.xvideos.com/*"
+    ],
+    "scanMs": 25668,
+    "scanDone": true,
+    "failedRequests": [
+      {
+        "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Albert%20Einstein%20sticks%20his%20tongue.jpg?width=800",
+        "error": "net::ERR_CERT_AUTHORITY_INVALID"
+      },
+      {
+        "url": "https://www.facebook.com/",
+        "error": "net::ERR_BLOCKED_BY_CLIENT"
+      },
+      {
+        "url": "https://images.google.com/search?q=albert+einstein&tbm=isch",
+        "error": "net::ERR_CERT_AUTHORITY_INVALID"
+      }
+    ],
+    "testPage": {
+      "stats": {
+        "found": 9,
+        "scanned": 10,
+        "human": 6,
+        "blocked": 0,
+        "covered": 7,
+        "uncertain": 1,
+        "noHuman": 3,
+        "bgFound": 1,
+        "bgHuman": 1,
+        "skipped": 3
+      },
+      "log": [
+        {
+          "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "covered",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "covered",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "covered",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-apple.jpg",
+          "kind": "img",
+          "faces": 0,
+          "result": "no-human",
+          "action": "none",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-cat.jpg",
+          "kind": "img",
+          "faces": 0,
+          "result": "no-human",
+          "action": "none",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-earth.jpg",
+          "kind": "img",
+          "faces": 0,
+          "result": "no-human",
+          "action": "none",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8124/person-einstein.jpg",
+          "kind": "img",
+          "faces": 0,
+          "result": "uncertain",
+          "action": "covered",
+          "mode": "strict",
+          "error": "cross-origin without CORS — pixels unreadable"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+          "kind": "background",
+          "faces": 1,
+          "result": "human",
+          "action": "covered",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "covered",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+          "kind": "img",
+          "faces": 1,
+          "result": "human",
+          "action": "covered",
+          "mode": "strict"
+        }
+      ],
+      "mode": "strict",
+      "blockedPlaceholders": 0,
+      "coveredImgs": 6,
+      "imgsRemaining": 11,
+      "imgStates": [
+        {
+          "id": "img-einstein",
+          "action": "covered"
+        },
+        {
+          "id": "img-obama",
+          "action": "covered"
+        },
+        {
+          "id": "img-curie",
+          "action": "covered"
+        },
+        {
+          "id": "img-apple",
+          "action": "none"
+        },
+        {
+          "id": "img-cat",
+          "action": "none"
+        },
+        {
+          "id": "img-earth",
+          "action": "none"
+        },
+        {
+          "id": "img-xorigin",
+          "action": "none"
+        },
+        {
+          "id": "img-xorigin-local",
+          "action": "covered"
+        },
+        {
+          "id": "img-facebook-probe",
+          "action": "none"
+        },
+        {
+          "id": "img-dynamic",
+          "action": "covered"
+        },
+        {
+          "id": "img-lazy",
+          "action": "covered"
+        }
+      ],
+      "bgBlocked": 0,
+      "bgCoverOverlays": 1,
+      "facebookProbe": {
+        "complete": true,
+        "naturalWidth": 0
+      },
+      "dynamicImgPresent": true,
+      "dynamicImgAction": "covered",
+      "lazyImgAction": "covered",
+      "xoriginLocalAction": "covered",
+      "xoriginAction": "none"
+    },
+    "facebookNav": {
+      "error": "Error: page.goto: net::ERR_BLOCKED_BY_CLIENT at https://www.facebook.com/"
+    },
+    "googleImages": {
+      "error": "Error: page.goto: net::ERR_CERT_AUTHORITY_INVALID at https://images.google.com/search?q=albert+einstein&tbm=isch"
+    }
+  }
+]
