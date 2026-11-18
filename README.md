@@ -4,11 +4,18 @@ Phase 1 (Core Platform) of a free internet filter platform for the masses:
 DNS/domain filtering, page-level policy, an AI approval engine (automatic
 approve/reject/review), customer + admin dashboards, all managed from home.
 
-## Live (Phase 1)
+## Live (Phases 1–3)
 
 - API Worker: https://filter-platform-api.gavhah-copy.workers.dev
 - Dashboard (Yiddish RTL): https://filter-platform-dashboard.pages.dev
 - Database: Neon Postgres, project "Filter Platform", DB `filter`
+
+Phase 2 (overnight 2026-11-18): MV3 browser extension in `extension/`
+(on-device face detection, cover/block/strict, DNR blocklist, Yiddish popup)
+— verified live in Chromium; see `extension/verify/VERIFY.md`. Pre-rendering
+scanner in `scanner/` — verified on 4 real sites; see `scanner/SCAN_REPORT.md`.
+Phase 3 starters: `GET /api/v1/ads/blocklist` (26 real ad/tracker domains)
+and `GET /api/v1/safesearch` (Google/Bing/DuckDuckGo/YouTube rules).
 
 ## Default policy
 

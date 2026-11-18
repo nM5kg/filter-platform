@@ -254,8 +254,10 @@ export default {
 
       // ---- devices ----
       if (resource === "devices" && request.method === "GET" && !id) {
+        const customer_id = url.searchParams.get("customer_id") || "";
+        const where = customer_id && isUuid(customer_id) ? `WHERE d.customer_id = ${lit(customer_id)}` : "";
         const rows = await sql(env, `SELECT d.*, c.name AS customer_name, p.name AS policy_name
-          FROM devices d JOIN customers c ON c.id = d.customer_id LEFT JOIN policies p ON p.id = d.policy_id ORDER BY d.created_at DESC`);
+          FROM devices d JOIN customers c ON c.id = d.customer_id LEFT JOIN policies p ON p.id = d.policy_id ${where} ORDER BY d.created_at DESC`);
         return json({ data: rows });
       }
       if (resource === "devices" && request.method === "GET" && id && sub === "status") {
@@ -383,6 +385,50 @@ export default {
           ON CONFLICT (word) DO UPDATE SET category = EXCLUDED.category RETURNING *`);
         await audit(env, "blocked_word.upserted", "blocked_words", rows[0].id, { word: body.word });
         return json({ data: rows[0] }, 201);
+      }
+
+      // ---- Phase 3 starters: ad/tracker blocklist ----
+      // Separate from `domains`: enforced only when the device policy has
+      // filter_ads=true. The extension's declarativeNetRequest rules consume
+      // this list; the main domains/check flow is untouched.
+      if (resource === "ads" && request.method === "GET" && sub === "blocklist") {
+        const category = url.searchParams.get("category");
+        const where = ["ads", "tracking", "analytics"].includes(category) ? `WHERE category = ${lit(category)}` : "";
+        const rows = await sql(env, `SELECT domain, category, source FROM ad_domains ${where} ORDER BY domain`);
+        return json({ data: { domains: rows.map((r) => r.domain), entries: rows, count: rows.length } });
+      }
+
+      // ---- Phase 3 starters: SafeSearch enforcement config ----
+      // Returns the URL-param + DNS rules the extension/device applies when
+      // the resolved policy forces SafeSearch. URL params are best-effort
+      // (a user can remove them); the DNS CNAMEs lock it at the network.
+      if (resource === "safesearch" && request.method === "GET") {
+        const device_id = url.searchParams.get("device_id") || "";
+        const customer_id = url.searchParams.get("customer_id") || "";
+        let pol = null;
+        if (device_id && isUuid(device_id)) {
+          const r = await sql(env, `SELECT p.* FROM devices d JOIN policies p ON p.id = d.policy_id WHERE d.id = ${lit(device_id)}`);
+          if (r.length) pol = r[0];
+        }
+        if (!pol && customer_id && isUuid(customer_id)) {
+          const r = await sql(env, `SELECT p.* FROM devices d JOIN policies p ON p.id = d.policy_id WHERE d.customer_id = ${lit(customer_id)} AND d.status = 'active' ORDER BY d.created_at DESC LIMIT 1`);
+          if (r.length) pol = r[0];
+        }
+        if (!pol) {
+          const r = await sql(env, `SELECT * FROM policies WHERE is_default = true LIMIT 1`);
+          if (r.length) pol = r[0];
+        }
+        if (!pol) return json({ error: "No policy found" }, 404);
+        const engines = pol.force_safesearch ? [
+          { engine: "google", method: "url_param", rule: "safe=active", note: "Google Search SafeSearch strict" },
+          { engine: "google", method: "dns", rule: "CNAME forcesafesearch.google.com", note: "Network lock: map www.google.com (and country domains) to this CNAME" },
+          { engine: "bing", method: "url_param", rule: "adlt=strict", note: "Bing SafeSearch strict" },
+          { engine: "bing", method: "dns", rule: "CNAME strict.bing.com", note: "Network lock for Bing" },
+          { engine: "duckduckgo", method: "url_param", rule: "kp=1", note: "DuckDuckGo SafeSearch strict (kp=1 strict, -1 moderate, -2 off)" },
+          { engine: "duckduckgo", method: "dns", rule: "CNAME safe.duckduckgo.com", note: "Network lock for DuckDuckGo, disables the client controls" },
+          { engine: "youtube", method: "dns", rule: "CNAME restrict.youtube.com", note: "YouTube Restricted Mode lock (restrictmoderate.youtube.com for moderate)" },
+        ] : [];
+        return json({ data: { policy_id: pol.id, policy_name: pol.name, force_safesearch: !!pol.force_safesearch, engines } });
       }
 
       // ---- approval requests ----

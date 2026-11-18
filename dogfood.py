@@ -4,11 +4,14 @@ Uses curl (urllib hits a sandbox-proxy quirk on this host). Reads the API
 token from api_token.txt (0600). NEVER prints the token or any activation
 code — codes are shown only as 'issued (6 digits)'.
 Each step prints its real HTTP status and real result."""
-import json, os, subprocess, sys
+import json, os, subprocess, sys, time
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 API = "https://filter-platform-api.gavhah-copy.workers.dev"
 TOKEN = open(os.path.join(BASE, "api_token.txt")).read().strip()
+# Unique per run so the test is re-runnable (a fixed email collides with the
+# previous run's customer and the API rejects the duplicate).
+RUN_ID = str(int(time.time()))
 
 def call(method, path, body=None, token=True):
     cmd = ["curl", "-s", "--max-time", "40", "-X", method, API + path,
@@ -32,7 +35,7 @@ def step(n, label, data, show=None):
 
 # 1. Register a customer
 d = call("POST", "/api/v1/customers",
-         {"name": "Dogfood Family", "email": "dogfood@filter.local", "phone": "+1-555-0101"})
+         {"name": "Dogfood Family", "email": f"dogfood-{RUN_ID}@filter.local", "phone": "+1-555-0101"})
 step(1, "Register customer (POST /customers)",
      d, lambda x: f"HTTP 201 | id={x['data']['id']} | name={x['data']['name']} | email={x['data']['email']} | status={x['data']['status']}")
 CID = d["data"]["id"]
@@ -105,6 +108,12 @@ step("8b", "Latest device status (GET /devices/:id/status)",
 d = call("GET", "/api/v1/devices")
 step(9, "List devices (dashboard data)",
      d, lambda x: f"HTTP 200 | {len(x['data'])} device(s): " + ", ".join(f"{v['name']} [{v['status']}] policy={v['policy_name']}" for v in x["data"]))
+# 9a. Regression test for the customer_id filter fix: the filtered list must
+# return ONLY this run's device (exactly 1), not every device in the system.
+d = call("GET", f"/api/v1/devices?customer_id={CID}")
+step("9a", "List devices filtered by this run's customer (regression test)",
+     d, lambda x: f"HTTP 200 | {len(x['data'])} device(s) for this customer: " + ", ".join(f"{v['name']} [{v['status']}]" for v in x["data"]))
+assert len(d["data"]) == 1 and d["data"][0]["id"] == DID, "customer_id filter must return only this run's device"
 d = call("GET", "/api/v1/requests")
 step("9b", "List requests (dashboard data)",
      d, lambda x: f"HTTP 200 | {len(x['data'])} request(s): " + ", ".join(f"{v['target']} [{v['status']}] ai={v['ai_verdict']}/{v['ai_confidence']}" for v in x["data"]))

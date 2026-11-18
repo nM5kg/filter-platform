@@ -38,6 +38,7 @@ Platform, kolylt, or any existing Worker/database/repo.
 | `audit_logs` | Every create/decision/activation, with actor, action, entity, details JSONB. |
 | `device_status` | Heartbeat log per device (online/offline/unknown, filter_active, policy_version). Latest row = current status. |
 | `blocked_words` | Explicit-words text blocklist (global, Phase 1). Matched against real fetched page text by the classifier. |
+| `ad_domains` | Phase 3 starter: ad/tracker domains (category `ads`/`tracking`/`analytics`), seeded with 26 real domains. Separate from `domains`; enforced only when the policy has `filter_ads=true`. |
 
 Seed (`seed.sql`, real data only — no demo/sample rows): the default Standard
 policy + v1 snapshot, 16 global domains (5 allow, 11 block, real domains in
@@ -52,6 +53,8 @@ only through the real API flow.
   `cover_images = false`, `filter_videos = false`, `filter_ads = false`,
   `require_approval_for_new_sites = false` — blacklist mode: everything not
   on a block list stays open.
+- `force_safesearch = true` (Phase 3 starter, `policies` column added by
+  `migration-002-phase3.sql`).
 - `auto_decide_threshold = 0.70`.
 - More policies come later; new devices/customers take this one unless a
   policy is chosen explicitly. Add a policy via `POST /api/v1/policies`;
@@ -65,7 +68,10 @@ only through the real API flow.
 | `GET/POST /api/v1/customers` | List / create customers. |
 | `GET/POST /api/v1/users` | List (no hashes) / create staff users. |
 | `GET/POST /api/v1/policies`, `GET /api/v1/policies/:id` | List / create (creates v1 snapshot) / one + its versions. |
-| `GET /api/v1/devices` | List with customer + policy names. |
+| `GET /api/v1/devices` | List with customer + policy names. `?customer_id=` filters to one customer (fixed 2026-11-18 — it used to ignore the filter). |
+| `GET /api/v1/devices/:id/status` | Latest status row. |
+| `GET /api/v1/ads/blocklist` | Phase 3 starter: ad/tracker domains from the `ad_domains` table (`?category=ads|tracking|analytics`). Enforced only when the device policy has `filter_ads=true`; the main `domains/check` flow is untouched. |
+| `GET /api/v1/safesearch` | Phase 3 starter: SafeSearch enforcement config for the resolved policy (`?device_id=` / `?customer_id=`, else the default policy). Returns `force_safesearch` + per-engine URL-param and DNS-CNAME rules (Google `safe=active` / `forcesafesearch.google.com`, Bing `adlt=strict` / `strict.bing.com`, DuckDuckGo `kp=1` / `safe.duckduckgo.com`, YouTube `restrict.youtube.com`). |
 | `POST /api/v1/devices` | Create pending device; returns a 6-digit activation code; default policy applied when none is given. |
 | `POST /api/v1/devices/register` `{code}` | Activates a pending device (wrong/used code → 404). Writes a `device_status` row. |
 | `POST /api/v1/devices/:id/heartbeat` | Records a status heartbeat. |
@@ -157,13 +163,26 @@ updates.
 - **SafeSearch / ads / video:** new policy flags on `policies` + new list
   tables mirroring `domains`.
 
-## What is NOT built (Phases 2–6)
+## What is NOT built (Phases 4–6)
 
-Browser extension/custom browser, page-level image covering/blocking, video
-frame analysis, Google SafeSearch integration, ad filtering, the real
-open-source AI model, device apps, Android Enterprise / iOS MDM, production
+Custom Android browser (assessed only — see `CHROMIUM_ANDROID_ASSESSMENT.md`;
+do not start the browser build before the Cromite-vs-GeckoView-vs-raw-Chromium
+decision), full SafeSearch enforcement in the extension/device (the Worker
+config endpoints exist — Phase 3 starters), the real open-source AI model
+(Phase 4; the scanner and extension both use face detection as the
+placeholder detector), device apps, Android Enterprise / iOS MDM, production
 hardening (restricted CORS, rate limits, per-customer auth, password hashing
 for `users`, backups, monitoring, load testing).
+
+Built overnight 2026-11-18 (all verified live, see below): the MV3 browser
+extension (`extension/` — policy fetch, on-device face detection,
+cover/block/strict, DNR blocklist, test page with real photos; verification
+in `extension/verify/VERIFY.md` + `results.json`, and the relay re-run
+`results-relay.json` which proved the LIVE policy fetch in-browser);
+the pre-rendering scanner (`scanner/` — verified on 4 real sites, see
+`scanner/README.md` and `scanner/SCAN_REPORT.md`); the Phase 3 starters
+(`ad_domains` + `GET /api/v1/ads/blocklist`, `force_safesearch` +
+`GET /api/v1/safesearch`).
 
 ## Operational gotchas (verified)
 
