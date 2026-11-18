@@ -48,6 +48,22 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 0.1.0 died at launch with only the system's "keeps stopping"
+        // dialog — if startup throws again, show the real error on screen
+        // so it can be reported instead of guessed at.
+        try {
+            onCreateSafe(savedInstanceState)
+        } catch (e: Exception) {
+            val tv = TextView(this)
+            tv.text = "Filter Platform failed to start:\n\n" +
+                "${e.javaClass.simpleName}: ${e.message}\n\n" +
+                e.stackTrace.take(12).joinToString("\n")
+            tv.setPadding(32, 32, 32, 32)
+            setContentView(tv)
+        }
+    }
+
+    private fun onCreateSafe(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_main)
         store = SecureStore(this)
 

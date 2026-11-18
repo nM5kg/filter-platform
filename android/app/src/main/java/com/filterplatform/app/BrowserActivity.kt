@@ -115,33 +115,41 @@ class BrowserActivity : Activity() {
         addressInput.setOnEditorActionListener { _, _, _ -> goToAddress(); true }
 
         // --- GeckoView runtime + session (own settings, no Firefox defaults) ---
-        val settings = GeckoRuntimeSettings.Builder()
-            .javaScriptEnabled(true)      // the filter itself needs JS
-            .remoteDebuggingEnabled(false)
-            .consoleOutput(false)
-            .build()
-        runtime = GeckoRuntime.create(this, settings)
+        // 0.1.1: if the runtime fails to start, show the real error in the
+        // status line instead of crashing the whole app — the user can
+        // report it and the browser simply stays unusable until fixed.
+        try {
+            val settings = GeckoRuntimeSettings.Builder()
+                .javaScriptEnabled(true)      // the filter itself needs JS
+                .remoteDebuggingEnabled(false)
+                .consoleOutput(false)
+                .build()
+            runtime = GeckoRuntime.create(this, settings)
 
-        session = GeckoSession()
-        session.setNavigationDelegate(navigationDelegate)
-        session.setProgressDelegate(progressDelegate)
-        session.setContentDelegate(contentDelegate)
-        session.open(runtime)
+            session = GeckoSession()
+            session.setNavigationDelegate(navigationDelegate)
+            session.setProgressDelegate(progressDelegate)
+            session.setContentDelegate(contentDelegate)
+            session.open(runtime)
 
-        geckoView = org.mozilla.geckoview.GeckoView(this)
-        geckoView.setSession(session)
-        container.addView(
-            geckoView,
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
+            geckoView = org.mozilla.geckoview.GeckoView(this)
+            geckoView.setSession(session)
+            container.addView(
+                geckoView,
+                FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT
+                )
             )
-        )
 
-        installFilterExtension()
-        loadPolicy()
-        session.loadUri(HOME_URL)
-        updateFilterStatus()
+            installFilterExtension()
+            loadPolicy()
+            session.loadUri(HOME_URL)
+            updateFilterStatus()
+        } catch (e: Exception) {
+            filterStatusText.text =
+                "GeckoView failed to start: ${e.javaClass.simpleName}: ${e.message}"
+        }
     }
 
     override fun onDestroy() {

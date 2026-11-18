@@ -1,6 +1,7 @@
 package com.filterplatform.app
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
@@ -11,15 +12,24 @@ import androidx.security.crypto.MasterKey
  */
 class SecureStore(context: Context) {
 
-    private val prefs = EncryptedSharedPreferences.create(
-        context,
-        "filter_platform_secure",
-        MasterKey.Builder(context)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build(),
-        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-    )
+    // Encrypted storage when the device keystore works; plain
+    // SharedPreferences as a fallback. 0.1.0 crashed at launch on the
+    // user's BLU phone — EncryptedSharedPreferences.create() throwing in
+    // the constructor (before any UI can report it) is a prime suspect,
+    // so the constructor must never throw.
+    private val prefs: SharedPreferences = try {
+        EncryptedSharedPreferences.create(
+            context,
+            "filter_platform_secure",
+            MasterKey.Builder(context)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build(),
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    } catch (_: Exception) {
+        context.getSharedPreferences("filter_platform_plain", Context.MODE_PRIVATE)
+    }
 
     var baseUrl: String
         get() = prefs.getString(KEY_BASE_URL, DEFAULT_BASE_URL) ?: DEFAULT_BASE_URL
