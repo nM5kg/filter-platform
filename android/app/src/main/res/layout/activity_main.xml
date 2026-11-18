@@ -221,6 +221,13 @@
                 android:layout_marginTop="16dp" />
 
             <Button
+                android:id="@+id/browserButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Open filter browser (GeckoView prototype)"
+                android:layout_marginTop="8dp" />
+
+            <Button
                 android:id="@+id/resetButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
