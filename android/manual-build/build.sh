@@ -112,11 +112,18 @@ python3 "$ROOT/manual-build/merge_manifest.py" \
 rm -rf "$OUT/assets-staging" && mkdir -p "$OUT/assets-staging"
 cp -r "$APP/src/main/assets/"* "$OUT/assets-staging/"
 python3 - "$LIBS/geckoview-$GV_VERSION.aar" "$OUT/assets-staging" <<'EOF'
-import sys, zipfile
+import sys, zipfile, os
 aar, dest = sys.argv[1], sys.argv[2]
 with zipfile.ZipFile(aar) as z:
-    z.extract('assets/omni.ja', dest)
-print('staged assets/omni.ja')
+    # NOTE (0.1.1 fix): zipfile.extract('assets/omni.ja', dest) creates
+    # dest/assets/omni.ja -> APK asset "assets/assets/omni.ja", which
+    # GeckoView never finds (it reads assets/omni.ja). 0.1.0 shipped it
+    # nested, so GeckoRuntime.create() could not find omni.ja and the
+    # browser crashed. Write the bytes FLAT into dest/omni.ja instead.
+    data = z.read('assets/omni.ja')
+    with open(os.path.join(dest, 'omni.ja'), 'wb') as f:
+        f.write(data)
+print('staged omni.ja at assets root (%d bytes)' % len(data))
 EOF
 
 # --- 1. aapt2 compile resources (app + every AAR that ships res/) -----------
@@ -168,7 +175,7 @@ LINK_R_ARGS+=(-R "$OUT/compiled-res.zip")
   -A "$OUT/assets-staging" \
   --auto-add-overlay \
   --min-sdk-version 26 --target-sdk-version 34 \
-  --version-code 1 --version-name 0.1.0
+  --version-code 2 --version-name 0.1.1
 
 # --- 3. kotlinc ---------------------------------------------------------------
 echo "== 3. kotlinc (app sources + generated R.java) =="
