@@ -1,0 +1,4 @@
+database_url.txt
+api_token.txt
+__pycache__/
+*.pyc
