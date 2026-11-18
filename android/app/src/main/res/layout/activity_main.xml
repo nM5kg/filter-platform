@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Filter Platform"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Free kosher internet filter — Android app"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 1. Setup: API address + token + customer -->
+        <LinearLayout
+            android:id="@+id/setupSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Setup"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="API base URL" />
+
+            <EditText
+                android:id="@+id/baseUrlInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textUri"
+                android:hint="https://filter-platform-api.gavhah-copy.workers.dev" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="API token (stored encrypted on this phone, never in the app code)" />
+
+            <EditText
+                android:id="@+id/tokenInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="Paste the API token" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Customer name (the device belongs to this customer)" />
+
+            <EditText
+                android:id="@+id/customerNameInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="e.g. Yankel Green" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Customer email" />
+
+            <EditText
+                android:id="@+id/customerEmailInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:hint="name@example.com" />
+
+            <Button
+                android:id="@+id/saveSetupButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save setup &amp; create customer"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <!-- 2. Device registration -->
+        <LinearLayout
+            android:id="@+id/registerSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2. Register this device"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Device name" />
+
+            <EditText
+                android:id="@+id/deviceNameInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:hint="e.g. Yankel's phone" />
+
+            <Button
+                android:id="@+id/createDeviceButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create device &amp; get activation code"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/codeDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Activation code (6 digits)"
+                android:layout_marginTop="12dp" />
+
+            <EditText
+                android:id="@+id/codeInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="6"
+                android:hint="123456" />
+
+            <Button
+                android:id="@+id/registerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Register with this code"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <!-- 3. Device: policy + status + dashboard -->
+        <LinearLayout
+            android:id="@+id/deviceSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3. Your filter"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/policyText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Loading policy…"
+                android:layout_marginTop="8dp" />
+
+            <Button
+                android:id="@+id/refreshPolicyButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Refresh policy"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/heartbeatText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/checkStatusButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Check status (heartbeat)"
+                android:layout_marginTop="8dp" />
+
+            <Button
+                android:id="@+id/dashboardButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Open web dashboard"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:id="@+id/resetButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Reset (forget this phone)"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
