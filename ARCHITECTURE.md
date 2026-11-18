@@ -94,6 +94,80 @@ Platform, kolylt, or any existing Worker/database/repo.
 - There is NO `other_tcp` / "Direct network protocols" setting anywhere
   in Muse's permissions — do not send Yakob hunting for it.
 
+## Online-first finish (2026-11-18 — Yakob: online first, app last)
+
+Strategy change 2026-11-18 ~14:54 EST: before the Android app, make the
+filter usable ONLINE and test everything end-to-end; the app comes last
+and reuses the proven engine (§4 order of work still stands, but the
+online version is now step 1). What was built this round (extension
+v1.2.0, `extension/`; API `worker.js` redeployed, etag `35d543f9…`;
+dogfood green after every redeploy):
+
+- **Person detection in the extension** (was face-only): MediaPipe
+  ObjectDetector, EfficientDet-Lite0 (COCO person class), bundled in the
+  extension (`vendor-mediapipe/`, `models-mediapipe/`). It CANNOT run in
+  a content script's isolated world — MediaPipe injects its WASM runtime
+  as a classic `<script>` — so the detector lives in a hidden
+  extension-origin iframe (`detector.html` + `detector-page.js`),
+  bridged by `detector.js` via `postMessage`. Person OR face = human;
+  face-api stays as fallback; if both fail → uncertain → COVERED (fail
+  closed). MV3 CSP needed `'wasm-unsafe-eval'` for extension pages
+  (WASM only, not `eval()`). 16-photo labeled set: precision **1.000**,
+  recall **0.727** at threshold 0.50 (face-only baseline was 0.273);
+  at the scanner's 0.70 threshold recall is 0.455 — identical to the
+  scanner. **The 0.50 vs 0.70 threshold is an open product decision.**
+  Model ready ~5–6 s per page; ~1.3 s/image.
+- **Cross-origin refetch** (the real-site fix): `content.js` used to
+  short-circuit every cross-origin `<img>` without CORS straight to
+  uncertain — on real sites nearly all images are cross-origin, so
+  detection never ran (Wikipedia 0 human, BBC 0 human, all covered).
+  Now the bytes are re-fetched and detected on a probe image: the
+  content-script fetch does NOT work (host_permissions don't exempt
+  CORS — verified: no-CORS hosts fail with `Failed to fetch`), so the
+  fetch runs **through the detector iframe** (extension origin, not
+  CORS-gated). Verdicts cached per URL (max 500), 8 MiB cap, 15 s
+  timeout, credentials omitted, any failure → uncertain → covered.
+  Real sites after the fix: Wikipedia 24/24, **4 human blocked, 0
+  uncertain** (scanner's 3 still-present people all found; +1 FP:
+  Wikibooks logo SVG at 0.581); BBC 136/136, **44 human blocked, 2
+  uncertain** (weak 0.466/0.478 only); Commons 238/242, **13 human
+  blocked, 2 uncertain** — but `scanDone: false`, unsettled (>420 s
+  sequential). Exfiltration audit: the extension only GETs URLs the
+  page already loads; no data leaves the browser.
+- **Yiddish block page**: DNR redirect rules (ids 3000+) send blocked
+  main-frame navigations to `blocked.html` (Yiddish RTL, domain, policy
+  name, review request + dashboard links). Verified: facebook.com →
+  `blocked.html?d=facebook.com`. Subresources still hard-blocked.
+- **SafeSearch enforcement**: when `force_safesearch` is on, DNR param
+  rules (ids 8000+, fetched from `GET /api/v1/safesearch` with hardcoded
+  fallback) rewrite Google `safe=active`, Bing `adlt=strict`, DuckDuckGo
+  `kp=1`. Verified live on Bing/DDG; Google shows `/sorry` with
+  `safe=active` in `continue=`. Host-redirect SafeSearch does NOT work
+  (forcesafesearch.google.com etc. 404/loop — those hostnames only work
+  as DNS CNAME targets). **YouTube Restricted Mode is NOT enforced by
+  the extension — it needs the DNS/CNAME lock.**
+- **API bug fixed**: `POST /api/v1/policies` ignored `force_safesearch`
+  (same family as the earlier all-booleans-true bug). Fixed with `asBool`
+  in `worker.js`, verified live (false stays false, omitted defaults
+  true), Standard policy intact. Audit found two more ignored fields on
+  create — `is_default` (always false) and `auto_decide_threshold`
+  (always DB default 0.7000) — NOT fixed: they need default-uniqueness
+  logic / range validation, bigger than a one-line change.
+- **Strict mode** ≡ cover for images (documented, verified: 10/11, 8
+  covered, personHits 6).
+
+Still NOT done / unverified: Google Images (headless Chromium gets
+`/sorry` — bot-check, no CAPTCHA attempted); Commons scan never settles
+in this environment (needs a longer budget or scan concurrency);
+direct-path fallback when a page CSP blocks the extension iframe
+(implemented, 10 s fast-fail, not exercised); 8 MiB cap / 15 s timeout /
+non-image rejection (implemented, not live-tested); EfficientDet-Lite0
+weights license STILL unverified — **prototype-only**, needs Google
+confirmation or a verified model before any production/commercial
+shipment; Chrome Web Store publication (needs a developer account +
+review — the extension is currently sideload-only); the pilot with real
+users; the Android app (GeckoView) itself.
+
 ## Live endpoints
 
 - API Worker: `https://filter-platform-api.gavhah-copy.workers.dev`
