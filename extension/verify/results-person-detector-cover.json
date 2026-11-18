@@ -1,0 +1,474 @@
+{
+  "mode": "cover",
+  "extDir": "/home/hatch/workspace/filter-platform/extension",
+  "ok": true,
+  "startedAt": "2026-11-18T20:34:11.501Z",
+  "extensionId": "keibjodbjaonlckfkaejiiefaikphdfg",
+  "testPage": {
+    "stats": {
+      "found": 9,
+      "scanned": 10,
+      "human": 6,
+      "blocked": 0,
+      "covered": 7,
+      "uncertain": 1,
+      "noHuman": 3,
+      "bgFound": 1,
+      "bgHuman": 1,
+      "skipped": 3,
+      "personHits": 6
+    },
+    "personReady": true,
+    "log": [
+      {
+        "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+        "kind": "img",
+        "persons": 1,
+        "personBest": 0.935,
+        "faces": 1,
+        "faceBest": 0.956,
+        "best": 0.956,
+        "detectedBy": "person+face",
+        "ms": 4679,
+        "result": "human",
+        "action": "covered",
+        "mode": "cover"
+      },
+      {
+        "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+        "kind": "img",
+        "persons": 3,
+        "personBest": 0.808,
+        "faces": 4,
+        "faceBest": 0.811,
+        "best": 0.811,
+        "detectedBy": "person+face",
+        "ms": 1089,
+        "result": "human",
+        "action": "covered",
+        "mode": "cover"
+      },
+      {
+        "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+        "kind": "img",
+        "persons": 1,
+        "personBest": 0.915,
+        "faces": 1,
+        "faceBest": 0.927,
+        "best": 0.927,
+        "detectedBy": "person+face",
+        "ms": 1209,
+        "result": "human",
+        "action": "covered",
+        "mode": "cover"
+      },
+      {
+        "src": "http://127.0.0.1:8123/photos/nopeople-apple.jpg",
+        "kind": "img",
+        "persons": 0,
+        "personBest": 0,
+        "faces": 0,
+        "faceBest": 0,
+        "best": 0,
+        "detectedBy": null,
+        "ms": 1157,
+        "result": "no-human",
+        "action": "none",
+        "mode": "cover"
+      },
+      {
+        "src": "http://127.0.0.1:8123/photos/nopeople-cat.jpg",
+        "kind": "img",
+        "persons": 0,
+        "personBest": 0,
+        "faces": 0,
+        "faceBest": 0,
+        "best": 0,
+        "detectedBy": null,
+        "ms": 1223,
+        "result": "no-human",
+        "action": "none",
+        "mode": "cover"
+      },
+      {
+        "src": "http://127.0.0.1:8123/photos/nopeople-earth.jpg",
+        "kind": "img",
+        "persons": 0,
+        "personBest": 0,
+        "faces": 0,
+        "faceBest": 0,
+        "best": 0,
+        "detectedBy": null,
+        "ms": 1241,
+        "result": "no-human",
+        "action": "none",
+        "mode": "cover"
+      },
+      {
+        "src": "http://127.0.0.1:8124/person-einstein.jpg",
+        "kind": "img",
+        "persons": 0,
+        "personBest": 0,
+        "faces": 0,
+        "faceBest": 0,
+        "best": 0,
+        "detectedBy": null,
+        "result": "uncertain",
+        "action": "covered",
+        "mode": "cover",
+        "error": "cross-origin without CORS — pixels unreadable"
+      },
+      {
+        "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+        "kind": "background",
+        "persons": 1,
+        "personBest": 0.935,
+        "faces": 1,
+        "faceBest": 0.956,
+        "best": 0.956,
+        "detectedBy": "person+face",
+        "ms": 1181,
+        "result": "human",
+        "action": "covered",
+        "mode": "cover"
+      },
+      {
+        "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+        "kind": "img",
+        "persons": 3,
+        "personBest": 0.808,
+        "faces": 4,
+        "faceBest": 0.811,
+        "best": 0.811,
+        "detectedBy": "person+face",
+        "ms": 1133,
+        "result": "human",
+        "action": "covered",
+        "mode": "cover"
+      },
+      {
+        "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+        "kind": "img",
+        "persons": 1,
+        "personBest": 0.915,
+        "faces": 1,
+        "faceBest": 0.927,
+        "best": 0.927,
+        "detectedBy": "person+face",
+        "ms": 1198,
+        "result": "human",
+        "action": "covered",
+        "mode": "cover"
+      }
+    ],
+    "mode": "cover",
+    "personReadyAttr": "true",
+    "blockedPlaceholders": 0,
+    "coveredImgs": 6,
+    "imgStates": [
+      {
+        "id": "img-einstein",
+        "action": "covered"
+      },
+      {
+        "id": "img-obama",
+        "action": "covered"
+      },
+      {
+        "id": "img-curie",
+        "action": "covered"
+      },
+      {
+        "id": "img-apple",
+        "action": "none"
+      },
+      {
+        "id": "img-cat",
+        "action": "none"
+      },
+      {
+        "id": "img-earth",
+        "action": "none"
+      },
+      {
+        "id": "img-xorigin",
+        "action": "none"
+      },
+      {
+        "id": "img-xorigin-local",
+        "action": "covered"
+      },
+      {
+        "id": "img-facebook-probe",
+        "action": "none"
+      },
+      {
+        "id": "img-dynamic",
+        "action": "covered"
+      },
+      {
+        "id": "img-lazy",
+        "action": "covered"
+      }
+    ],
+    "bgBlocked": 0,
+    "bgCoverOverlays": 1,
+    "modelReadyMs": 6250,
+    "scanMs": 27977,
+    "scanDone": true,
+    "modelReady": true
+  },
+  "testset": {
+    "metrics": {
+      "n": 16,
+      "tp": 8,
+      "fp": 0,
+      "fn": 3,
+      "tn": 5,
+      "precision": 1,
+      "recall": 0.727,
+      "uncertainPersonImages": 0,
+      "missedToAllow": 3,
+      "missing": 0,
+      "meanDetectMs": 1354,
+      "medianDetectMs": 1191,
+      "testsetScanMs": 22738,
+      "testsetModelReadyMs": 5250
+    },
+    "perImage": [
+      {
+        "id": "b1-back-soldier",
+        "file": "b1-back-soldier.png",
+        "truth": true,
+        "verdict": "no-human",
+        "persons": 0,
+        "personBest": 0,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": null,
+        "ms": 4014,
+        "action": "none"
+      },
+      {
+        "id": "b2-behind-back",
+        "file": "b2-behind-back.jpg",
+        "truth": true,
+        "verdict": "no-human",
+        "persons": 0,
+        "personBest": 0,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": null,
+        "ms": 1102,
+        "action": "none"
+      },
+      {
+        "id": "b3-back-tattoo",
+        "file": "b3-back-tattoo.jpg",
+        "truth": true,
+        "verdict": "human",
+        "persons": 1,
+        "personBest": 0.885,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": "person",
+        "ms": 1172,
+        "action": "covered"
+      },
+      {
+        "id": "d1-crowd-funeral",
+        "file": "d1-crowd-funeral.jpg",
+        "truth": true,
+        "verdict": "human",
+        "persons": 5,
+        "personBest": 0.617,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": "person",
+        "ms": 1209,
+        "action": "covered"
+      },
+      {
+        "id": "d2-crowd-street-night",
+        "file": "d2-crowd-street-night.jpg",
+        "truth": true,
+        "verdict": "human",
+        "persons": 5,
+        "personBest": 0.627,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": "person",
+        "ms": 1213,
+        "action": "covered"
+      },
+      {
+        "id": "d3-lone-beach",
+        "file": "d3-lone-beach.jpg",
+        "truth": true,
+        "verdict": "no-human",
+        "persons": 0,
+        "personBest": 0,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": null,
+        "ms": 1202,
+        "action": "none"
+      },
+      {
+        "id": "g1-team-cincinnati",
+        "file": "g1-team-cincinnati.jpg",
+        "truth": true,
+        "verdict": "human",
+        "persons": 7,
+        "personBest": 0.661,
+        "faces": 1,
+        "faceBest": 0.522,
+        "detectedBy": "person+face",
+        "ms": 1263,
+        "action": "covered"
+      },
+      {
+        "id": "g2-imperial-family",
+        "file": "g2-imperial-family.jpg",
+        "truth": true,
+        "verdict": "human",
+        "persons": 6,
+        "personBest": 0.882,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": "person",
+        "ms": 1154,
+        "action": "covered"
+      },
+      {
+        "id": "g3-west-point-1899",
+        "file": "g3-west-point-1899.png",
+        "truth": true,
+        "verdict": "human",
+        "persons": 10,
+        "personBest": 0.734,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": "person",
+        "ms": 1120,
+        "action": "covered"
+      },
+      {
+        "id": "p1-huang-portrait",
+        "file": "p1-huang-portrait.jpg",
+        "truth": true,
+        "verdict": "human",
+        "persons": 1,
+        "personBest": 0.968,
+        "faces": 1,
+        "faceBest": 0.929,
+        "detectedBy": "person+face",
+        "ms": 1191,
+        "action": "covered"
+      },
+      {
+        "id": "p2-khrushchev-portrait",
+        "file": "p2-khrushchev-portrait.jpg",
+        "truth": true,
+        "verdict": "human",
+        "persons": 1,
+        "personBest": 0.98,
+        "faces": 1,
+        "faceBest": 0.987,
+        "detectedBy": "person+face",
+        "ms": 1232,
+        "action": "covered"
+      },
+      {
+        "id": "a1-dog-running",
+        "file": "a1-dog-running.jpg",
+        "truth": false,
+        "verdict": "no-human",
+        "persons": 0,
+        "personBest": 0,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": null,
+        "ms": 1195,
+        "action": "none"
+      },
+      {
+        "id": "a2-dog-stream",
+        "file": "a2-dog-stream.jpg",
+        "truth": false,
+        "verdict": "no-human",
+        "persons": 0,
+        "personBest": 0,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": null,
+        "ms": 1134,
+        "action": "none"
+      },
+      {
+        "id": "l1-glacier-lake",
+        "file": "l1-glacier-lake.jpg",
+        "truth": false,
+        "verdict": "no-human",
+        "persons": 0,
+        "personBest": 0,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": null,
+        "ms": 1155,
+        "action": "none"
+      },
+      {
+        "id": "l2-mountain-lake",
+        "file": "l2-mountain-lake.jpg",
+        "truth": false,
+        "verdict": "no-human",
+        "persons": 0,
+        "personBest": 0,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": null,
+        "ms": 1157,
+        "action": "none"
+      },
+      {
+        "id": "o1-vintage-camera",
+        "file": "o1-vintage-camera.jpg",
+        "truth": false,
+        "verdict": "no-human",
+        "persons": 0,
+        "personBest": 0,
+        "faces": 0,
+        "faceBest": 0,
+        "detectedBy": null,
+        "ms": 1157,
+        "action": "none"
+      }
+    ],
+    "stats": {
+      "found": 16,
+      "scanned": 16,
+      "human": 8,
+      "blocked": 0,
+      "covered": 8,
+      "uncertain": 0,
+      "noHuman": 8,
+      "bgFound": 0,
+      "bgHuman": 0,
+      "skipped": 0,
+      "personHits": 8
+    },
+    "personReady": "true"
+  },
+  "requests": {
+    "total": 43,
+    "byClass": {
+      "local-test-server": 26,
+      "page-xorigin-img": 1,
+      "extension-file": 16
+    },
+    "unexpected": [],
+    "nonGet": [],
+    "extensionRequests": 16
+  }
+}

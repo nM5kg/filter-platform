@@ -1,0 +1,405 @@
+{
+  "ranAt": "2026-11-18T20:30:45.488Z",
+  "syncPathNote": "live fetch from the extension service worker via egress relay 127.0.0.1:18080 (spawned by this harness)",
+  "cases": [
+    {
+      "case": "A-standard",
+      "deviceId": "eefbc8d5-07f7-4e43-bded-3ee1f6d2b32a",
+      "ok": true,
+      "extensionId": "keibjodbjaonlckfkaejiiefaikphdfg",
+      "liveSync": {
+        "lastSync": "2026-11-18T20:30:49.170Z",
+        "policyFetched": true,
+        "policyName": "Standard — block images + explicit words, rest open",
+        "policyId": "179d3448-98d0-4eb4-8a2c-ac813a648e84",
+        "block_images": true,
+        "cover_images": false,
+        "filter_videos": false,
+        "filter_ads": false,
+        "force_safesearch": true,
+        "auto_decide_threshold": "0.7000",
+        "deviceFound": true,
+        "deviceName": "Dogfood Phone",
+        "blocklistDomains": 11,
+        "rulesCount": 36,
+        "adBlocklistDomains": 26,
+        "adRulesCount": 0,
+        "adsEnforced": false,
+        "blockRedirectRules": 11,
+        "safeSearchEnforced": true,
+        "safeSearchRulesCount": 3,
+        "safeSearchEngines": [
+          "google",
+          "bing",
+          "duckduckgo"
+        ],
+        "safeSearchSource": "api",
+        "error": null,
+        "syncMs": 1954
+      },
+      "syncPath": "live",
+      "dnrTotal": 36,
+      "dnrByRange": {
+        "domainBlock": 22,
+        "blockRedirect": 11,
+        "ads": 0,
+        "safeSearch": 3,
+        "other": 0
+      },
+      "safeSearchRules": [
+        {
+          "id": 8000,
+          "regexFilter": "^https://(?:www\\.)?google\\.(?:com(?:\\.[a-z]{2})?|co\\.[a-z]{2}|[a-z]{2,3})/search",
+          "redirect": {
+            "transform": {
+              "queryTransform": {
+                "addOrReplaceParams": [
+                  {
+                    "key": "safe",
+                    "value": "active"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": 8001,
+          "regexFilter": "^https://(?:www\\.)?bing\\.com/search",
+          "redirect": {
+            "transform": {
+              "queryTransform": {
+                "addOrReplaceParams": [
+                  {
+                    "key": "adlt",
+                    "value": "strict"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": 8002,
+          "regexFilter": "^https://(?:www\\.)?duckduckgo\\.com/.*[?&]q=",
+          "redirect": {
+            "transform": {
+              "queryTransform": {
+                "addOrReplaceParams": [
+                  {
+                    "key": "kp",
+                    "value": "1"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "blockRedirectSample": [
+        {
+          "id": 3000,
+          "regexFilter": "^https?://(?:[^/]*\\.)?bet365\\.com(/.*)?$",
+          "redirect": {
+            "extensionPath": "/blocked.html?d=bet365.com"
+          }
+        },
+        {
+          "id": 3001,
+          "regexFilter": "^https?://(?:[^/]*\\.)?facebook\\.com(/.*)?$",
+          "redirect": {
+            "extensionPath": "/blocked.html?d=facebook.com"
+          }
+        },
+        {
+          "id": 3002,
+          "regexFilter": "^https?://(?:[^/]*\\.)?instagram\\.com(/.*)?$",
+          "redirect": {
+            "extensionPath": "/blocked.html?d=instagram.com"
+          }
+        }
+      ],
+      "probes": {
+        "facebook": {
+          "asked": "https://www.facebook.com/",
+          "finalUrl": "chrome-extension://keibjodbjaonlckfkaejiiefaikphdfg/blocked.html?d=facebook.com",
+          "title": "דער פּלאַץ איז בלאקירט — פֿילטער פּלאַטפאָרם",
+          "bodySnippet": "🛡️ | דער פּלאַץ איז בלאקירט | facebook.com | דער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס. | פּאָליסי: Standard — block images + explicit words, rest open | בעטן אַן איבערקוק פֿון דעם פּלאַץ | גיי צום דאַשבאָרד | ↩ צוריק צום פֿריערדיקן בלאַט | Filter Platform — Free kosher internet filter. דער פּלאַץ ווערט נישט געלאָדן; קיין אינהאַלט פֿון אים איז נישט געוויזן געוואָרן.",
+          "blockedText": "🛡️\nדער פּלאַץ איז בלאקירט\nfacebook.com\n\nדער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס.\n\nפּאָליסי: Standard — block images + explicit words, rest open\n\nבעטן אַן איבערקוק פֿון דעם פּלאַץ\nגיי צום דאַשבאָרד\n↩ צוריק צום פֿריערדיקן בלאַט\n\nFilter Platform — Free kosher internet filter. דער פּלאַץ ווערט נישט געלאָדן; קיין אינהאַלט פֿון אים איז נישט געוויזן געוואָרן.",
+          "shotBlocked": true
+        },
+        "bingSearch": {
+          "asked": "https://www.bing.com/search?q=albert+einstein",
+          "finalUrl": "https://www.bing.com/search?q=albert+einstein&adlt=strict",
+          "title": "albert einstein - Search",
+          "bodySnippet": ""
+        },
+        "ddgSearch": {
+          "asked": "https://duckduckgo.com/?q=albert+einstein",
+          "finalUrl": "https://duckduckgo.com/?q=albert+einstein&kp=1",
+          "title": "albert einstein at DuckDuckGo",
+          "bodySnippet": ""
+        },
+        "googleSearch": {
+          "asked": "https://www.google.com/search?q=albert+einstein",
+          "finalUrl": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dalbert%2Beinstein%26safe%3Dactive%26sei%3DBQv-apDECKKHp84PxdyEYQ&q=EhAqBE5BAExCkgAAAAD31UKSGIWW-NcGIjCq_T8KsAw-CfQTAfE9fAzpj5jGKIbpuCUBh4zKCoiij7iTeCXg37qxDW7txoLKIf4yAVJaAUNg0-7A66ikpf0Q",
+          "title": "https://www.google.com/search?q=albert+einstein&safe=active&sei=BQv-apDECKKHp84PxdyEYQ",
+          "bodySnippet": " | About this page | Our systems have detected unusual traffic from your computer network. This page checks to see if it's really you sending the requests, and not a robot. Why did this happen? | IP address: 2a04:4e41:4c:4292::f7d5:4292 | Time: 2026-11-18T20:31:02Z | URL: https://www.google.com/search?q=albert+einstein&safe=active&sei=BQv-apDECKKHp84PxdyEYQ | "
+        },
+        "youtube": {
+          "asked": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "finalUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "title": "Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster) - YouTube",
+          "bodySnippet": ""
+        }
+      },
+      "blockedPage": {
+        "url": "chrome-extension://keibjodbjaonlckfkaejiiefaikphdfg/blocked.html?d=facebook.com",
+        "showsBlockedWord": true,
+        "showsDomain": true,
+        "showsPolicy": true,
+        "textSnippet": "🛡️ | דער פּלאַץ איז בלאקירט | facebook.com | דער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס. | פּאָליסי: Standard — block images + explicit words, rest open | בעטן אַן איבערקוק פֿון דעם פּלאַץ | גיי צום דאַשבאָרד | ↩ צוריק צום פֿריערדיקן בלאַט | Filter Platform — Free kosher internet "
+      },
+      "expect": {
+        "liveSync": true,
+        "domainBlockRules": 22,
+        "blockRedirectRules": 11,
+        "adsRules": 0,
+        "safeSearchRules": 3,
+        "facebookLandsOn": "blocked.html?d=facebook.com",
+        "googleParam": "safe=active",
+        "bingParam": "adlt=strict",
+        "ddgParam": "kp=1",
+        "youtubeUnchangedHost": "www.youtube.com"
+      },
+      "pass": true,
+      "blockedPageRedirectFailed": false
+    },
+    {
+      "case": "B-ads-on",
+      "deviceId": "9ed1b2b4-7418-47d7-9b27-8ffae6eeb3b0",
+      "ok": true,
+      "extensionId": "keibjodbjaonlckfkaejiiefaikphdfg",
+      "liveSync": {
+        "lastSync": "2026-11-18T20:31:08.660Z",
+        "policyFetched": true,
+        "policyName": "Test — Blockpage Ads On",
+        "policyId": "94e72395-60c2-49e8-84c2-29bd80110bb3",
+        "block_images": true,
+        "cover_images": false,
+        "filter_videos": false,
+        "filter_ads": true,
+        "force_safesearch": true,
+        "auto_decide_threshold": "0.7000",
+        "deviceFound": true,
+        "deviceName": "Test Blockpage Device B",
+        "blocklistDomains": 11,
+        "rulesCount": 114,
+        "adBlocklistDomains": 26,
+        "adRulesCount": 52,
+        "adsEnforced": true,
+        "blockRedirectRules": 37,
+        "safeSearchEnforced": true,
+        "safeSearchRulesCount": 3,
+        "safeSearchEngines": [
+          "google",
+          "bing",
+          "duckduckgo"
+        ],
+        "safeSearchSource": "api",
+        "error": null,
+        "syncMs": 1732
+      },
+      "syncPath": "live",
+      "dnrTotal": 114,
+      "dnrByRange": {
+        "domainBlock": 22,
+        "blockRedirect": 37,
+        "ads": 52,
+        "safeSearch": 3,
+        "other": 0
+      },
+      "safeSearchRules": [
+        {
+          "id": 8000,
+          "regexFilter": "^https://(?:www\\.)?google\\.(?:com(?:\\.[a-z]{2})?|co\\.[a-z]{2}|[a-z]{2,3})/search",
+          "redirect": {
+            "transform": {
+              "queryTransform": {
+                "addOrReplaceParams": [
+                  {
+                    "key": "safe",
+                    "value": "active"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": 8001,
+          "regexFilter": "^https://(?:www\\.)?bing\\.com/search",
+          "redirect": {
+            "transform": {
+              "queryTransform": {
+                "addOrReplaceParams": [
+                  {
+                    "key": "adlt",
+                    "value": "strict"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": 8002,
+          "regexFilter": "^https://(?:www\\.)?duckduckgo\\.com/.*[?&]q=",
+          "redirect": {
+            "transform": {
+              "queryTransform": {
+                "addOrReplaceParams": [
+                  {
+                    "key": "kp",
+                    "value": "1"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "blockRedirectSample": [
+        {
+          "id": 3000,
+          "regexFilter": "^https?://(?:[^/]*\\.)?bet365\\.com(/.*)?$",
+          "redirect": {
+            "extensionPath": "/blocked.html?d=bet365.com"
+          }
+        },
+        {
+          "id": 3001,
+          "regexFilter": "^https?://(?:[^/]*\\.)?facebook\\.com(/.*)?$",
+          "redirect": {
+            "extensionPath": "/blocked.html?d=facebook.com"
+          }
+        },
+        {
+          "id": 3002,
+          "regexFilter": "^https?://(?:[^/]*\\.)?instagram\\.com(/.*)?$",
+          "redirect": {
+            "extensionPath": "/blocked.html?d=instagram.com"
+          }
+        }
+      ],
+      "probes": {
+        "doubleclick": {
+          "asked": "https://doubleclick.net/",
+          "finalUrl": "chrome-extension://keibjodbjaonlckfkaejiiefaikphdfg/blocked.html?d=doubleclick.net",
+          "title": "דער פּלאַץ איז בלאקירט — פֿילטער פּלאַטפאָרם",
+          "bodySnippet": "🛡️ | דער פּלאַץ איז בלאקירט | doubleclick.net | דער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס. | פּאָליסי: Test — Blockpage Ads On | בעטן אַן איבערקוק פֿון דעם פּלאַץ | גיי צום דאַשבאָרד | ↩ צוריק צום פֿריערדיקן בלאַט | Filter Platform — Free kosher internet filter. דער פּלאַץ ווערט נישט געלאָדן; קיין אינהאַלט פֿון אים איז נישט געוויזן געוואָרן.",
+          "blockedText": "🛡️\nדער פּלאַץ איז בלאקירט\ndoubleclick.net\n\nדער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס.\n\nפּאָליסי: Test — Blockpage Ads On\n\nבעטן אַן איבערקוק פֿון דעם פּלאַץ\nגיי צום דאַשבאָרד\n↩ צוריק צום פֿריערדיקן בלאַט\n\nFilter Platform — Free kosher internet filter. דער פּלאַץ ווערט נישט געלאָדן; קיין אינהאַלט פֿון אים איז נישט געוויזן געוואָרן.",
+          "shotBlocked": true
+        }
+      },
+      "blockedPage": {
+        "url": "chrome-extension://keibjodbjaonlckfkaejiiefaikphdfg/blocked.html?d=doubleclick.net",
+        "showsBlockedWord": true,
+        "showsDomain": true,
+        "showsPolicy": true,
+        "textSnippet": "🛡️ | דער פּלאַץ איז בלאקירט | doubleclick.net | דער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס. | פּאָליסי: Test — Blockpage Ads On | בעטן אַן איבערקוק פֿון דעם פּלאַץ | גיי צום דאַשבאָרד | ↩ צוריק צום פֿריערדיקן בלאַט | Filter Platform — Free kosher internet filter. דער פּלאַץ ווערט "
+      },
+      "expect": {
+        "adsRules": 52,
+        "doubleclickLandsOn": "blocked.html?d=doubleclick.net"
+      },
+      "pass": true
+    },
+    {
+      "case": "C-safesearch-off",
+      "deviceId": "ede2355e-628a-48be-ba15-9f8b41f6fd90",
+      "ok": true,
+      "extensionId": "keibjodbjaonlckfkaejiiefaikphdfg",
+      "liveSync": {
+        "lastSync": "2026-11-18T20:31:16.182Z",
+        "policyFetched": true,
+        "policyName": "Test — SafeSearch Off",
+        "policyId": "48c9ac6f-0e63-45b5-b755-b4b28266170b",
+        "block_images": true,
+        "cover_images": false,
+        "filter_videos": false,
+        "filter_ads": false,
+        "force_safesearch": false,
+        "auto_decide_threshold": "0.7000",
+        "deviceFound": true,
+        "deviceName": "Test Blockpage Device C",
+        "blocklistDomains": 11,
+        "rulesCount": 33,
+        "adBlocklistDomains": 26,
+        "adRulesCount": 0,
+        "adsEnforced": false,
+        "blockRedirectRules": 11,
+        "safeSearchEnforced": false,
+        "safeSearchRulesCount": 0,
+        "safeSearchEngines": [
+          "google",
+          "bing",
+          "duckduckgo"
+        ],
+        "safeSearchSource": "api",
+        "error": null,
+        "syncMs": 2030
+      },
+      "syncPath": "live",
+      "dnrTotal": 33,
+      "dnrByRange": {
+        "domainBlock": 22,
+        "blockRedirect": 11,
+        "ads": 0,
+        "safeSearch": 0,
+        "other": 0
+      },
+      "safeSearchRules": [],
+      "blockRedirectSample": [
+        {
+          "id": 3000,
+          "regexFilter": "^https?://(?:[^/]*\\.)?bet365\\.com(/.*)?$",
+          "redirect": {
+            "extensionPath": "/blocked.html?d=bet365.com"
+          }
+        },
+        {
+          "id": 3001,
+          "regexFilter": "^https?://(?:[^/]*\\.)?facebook\\.com(/.*)?$",
+          "redirect": {
+            "extensionPath": "/blocked.html?d=facebook.com"
+          }
+        },
+        {
+          "id": 3002,
+          "regexFilter": "^https?://(?:[^/]*\\.)?instagram\\.com(/.*)?$",
+          "redirect": {
+            "extensionPath": "/blocked.html?d=instagram.com"
+          }
+        }
+      ],
+      "probes": {
+        "googleSearch": {
+          "asked": "https://www.google.com/search?q=albert+einstein",
+          "finalUrl": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dalbert%2Beinstein%26sei%3DFQv-aoG4HeqgkPIPqaCWsAg&q=EhAqBE5BABQypQAAAAB0QzKlGJWW-NcGIjADa3wtg7FYDATR0zFPftV3XbdqJEeyCgkKuOL0a1WlQQENxyF6uDe8Var7yuGPJe4yAVJaAUNg-5Tpifr9jbHMAQ",
+          "title": "https://www.google.com/search?q=albert+einstein&sei=FQv-aoG4HeqgkPIPqaCWsAg",
+          "bodySnippet": " | About this page | Our systems have detected unusual traffic from your computer network. This page checks to see if it's really you sending the requests, and not a robot. Why did this happen? | IP address: 2a04:4e41:14:32a5::7443:32a5 | Time: 2026-11-18T20:31:18Z | URL: https://www.google.com/search?q=albert+einstein&sei=FQv-aoG4HeqgkPIPqaCWsAg | "
+        }
+      },
+      "expect": {
+        "safeSearchRules": 0,
+        "googleStaysOn": "www.google.com"
+      },
+      "pass": true
+    }
+  ],
+  "cleanupCheck": {
+    "testPoliciesGone": true,
+    "policyCount": 1
+  }
+}

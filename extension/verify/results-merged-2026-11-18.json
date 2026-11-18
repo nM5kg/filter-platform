@@ -1,0 +1,3834 @@
+{
+  "ranAt": "2026-11-18T20:39:59.655Z",
+  "extensionDir": "/home/hatch/workspace/filter-platform/extension",
+  "manifest": {
+    "action": {
+      "default_popup": "popup.html",
+      "default_title": "Filter Platform"
+    },
+    "background": {
+      "service_worker": "background.js",
+      "type": "module"
+    },
+    "content_scripts": [
+      {
+        "all_frames": false,
+        "js": [
+          "vendor/face-api.js",
+          "detector.js",
+          "content.js"
+        ],
+        "matches": [
+          "http://*/*",
+          "https://*/*"
+        ],
+        "run_at": "document_idle"
+      }
+    ],
+    "description": "Free kosher internet filter: blocks human pictures per policy (on-device person + face detection) and blocks listed domains. Phase 2.",
+    "host_permissions": [
+      "http://*/*",
+      "https://*/*"
+    ],
+    "manifest_version": 3,
+    "name": "Filter Platform — Kosher Browser Filter",
+    "permissions": [
+      "storage",
+      "declarativeNetRequest",
+      "alarms"
+    ],
+    "short_name": "Filter Platform",
+    "version": "1.1.0",
+    "content_security_policy": {
+      "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+    },
+    "web_accessible_resources": [
+      {
+        "matches": [
+          "http://*/*",
+          "https://*/*"
+        ],
+        "resources": [
+          "models/*",
+          "detector.html",
+          "blocked.html"
+        ]
+      }
+    ]
+  },
+  "cases": {
+    "load": {
+      "extensionId": "keibjodbjaonlckfkaejiiefaikphdfg",
+      "loaded": true,
+      "manifestVersion": "1.1.0",
+      "manifestName": "Filter Platform — Kosher Browser Filter",
+      "popupConsoleErrors": [],
+      "liveSync": {
+        "lastSync": "2026-11-18T20:40:05.671Z",
+        "policyFetched": true,
+        "policyName": "Standard — block images + explicit words, rest open",
+        "policyId": "179d3448-98d0-4eb4-8a2c-ac813a648e84",
+        "block_images": true,
+        "cover_images": false,
+        "filter_videos": false,
+        "filter_ads": false,
+        "force_safesearch": true,
+        "auto_decide_threshold": "0.7000",
+        "deviceFound": true,
+        "deviceName": "Dogfood Phone",
+        "blocklistDomains": 11,
+        "rulesCount": 36,
+        "adBlocklistDomains": 26,
+        "adRulesCount": 0,
+        "adsEnforced": false,
+        "blockRedirectRules": 11,
+        "safeSearchEnforced": true,
+        "safeSearchRulesCount": 3,
+        "safeSearchEngines": [
+          "google",
+          "bing",
+          "duckduckgo"
+        ],
+        "safeSearchSource": "api",
+        "error": null,
+        "syncMs": 1316
+      },
+      "syncPath": "live",
+      "dnrTotal": 36,
+      "dnrByRange": {
+        "domainBlock": 22,
+        "blockRedirect": 11,
+        "ads": 0,
+        "safeSearch": 3,
+        "other": 0
+      }
+    },
+    "testPageStandard": {
+      "stats": {
+        "found": 9,
+        "scanned": 10,
+        "human": 6,
+        "blocked": 6,
+        "covered": 1,
+        "uncertain": 1,
+        "noHuman": 3,
+        "bgFound": 1,
+        "bgHuman": 1,
+        "skipped": 3,
+        "personHits": 6
+      },
+      "personReady": true,
+      "log": [
+        {
+          "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.935,
+          "faces": 1,
+          "faceBest": 0.956,
+          "best": 0.956,
+          "detectedBy": "person+face",
+          "ms": 4763,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+          "kind": "img",
+          "persons": 3,
+          "personBest": 0.808,
+          "faces": 4,
+          "faceBest": 0.811,
+          "best": 0.811,
+          "detectedBy": "person+face",
+          "ms": 1098,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.915,
+          "faces": 1,
+          "faceBest": 0.927,
+          "best": 0.927,
+          "detectedBy": "person+face",
+          "ms": 1187,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-apple.jpg",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "ms": 1272,
+          "result": "no-human",
+          "action": "none",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-cat.jpg",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "ms": 1222,
+          "result": "no-human",
+          "action": "none",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-earth.jpg",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "ms": 1849,
+          "result": "no-human",
+          "action": "none",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8124/person-einstein.jpg",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "result": "uncertain",
+          "action": "covered",
+          "mode": "block",
+          "error": "cross-origin without CORS — pixels unreadable"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+          "kind": "background",
+          "persons": 1,
+          "personBest": 0.935,
+          "faces": 1,
+          "faceBest": 0.956,
+          "best": 0.956,
+          "detectedBy": "person+face",
+          "ms": 1179,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+          "kind": "img",
+          "persons": 3,
+          "personBest": 0.808,
+          "faces": 4,
+          "faceBest": 0.811,
+          "best": 0.811,
+          "detectedBy": "person+face",
+          "ms": 1185,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.915,
+          "faces": 1,
+          "faceBest": 0.927,
+          "best": 0.927,
+          "detectedBy": "person+face",
+          "ms": 1114,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        }
+      ],
+      "mode": "block",
+      "personReadyAttr": "true",
+      "modelReadyAttr": "true",
+      "scanDoneAttr": "true",
+      "imgCount": 6,
+      "imgStates": [
+        {
+          "id": "img-apple",
+          "action": "none"
+        },
+        {
+          "id": "img-cat",
+          "action": "none"
+        },
+        {
+          "id": "img-earth",
+          "action": "none"
+        },
+        {
+          "id": "img-xorigin",
+          "action": "none"
+        },
+        {
+          "id": "img-xorigin-local",
+          "action": "covered"
+        },
+        {
+          "id": "img-facebook-probe",
+          "action": "none"
+        }
+      ],
+      "blockedPlaceholders": 5,
+      "coveredImgs": 1,
+      "bgBlocked": 1,
+      "bgCoverOverlays": 0,
+      "modelReady": true,
+      "modelReadyMs": 6362,
+      "scanDone": true,
+      "scanMs": 28945,
+      "consoleErrors": [
+        "pageerror: ReferenceError: solveSimpleChallenge is not defined",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #418; visit https://reactjs.org/docs/error-decoder.html?invariant=418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+        "pageerror: Uncaught Error: Minified React error #423; visit https://reactjs.org/docs/error-decoder.html?invariant=423 for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+      ]
+    },
+    "facebook": {
+      "asked": "https://www.facebook.com/",
+      "finalUrl": "chrome-extension://keibjodbjaonlckfkaejiiefaikphdfg/blocked.html?d=facebook.com",
+      "title": "דער פּלאַץ איז בלאקירט — פֿילטער פּלאַטפאָרם",
+      "bodySnippet": "🛡️ | דער פּלאַץ איז בלאקירט | facebook.com | דער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס. | פּאָליסי: Standard — block images + explicit words, rest open | בעטן אַן איבערקוק פֿון דעם פּלאַץ | גיי צום דאַשבאָרד | ↩ צוריק צום פֿריערדיקן בלאַט | Filter Platform — Free kosher internet filter. דער פּלאַץ ווערט נישט געלאָדן; קיין אינהאַלט פֿון אים איז נישט געוויזן געוואָרן.",
+      "blockedText": "🛡️\nדער פּלאַץ איז בלאקירט\nfacebook.com\n\nדער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס.\n\nפּאָליסי: Standard — block images + explicit words, rest open\n\nבעטן אַן איבערקוק פֿון דעם פּלאַץ\nגיי צום דאַשבאָרד\n↩ צוריק צום פֿריערדיקן בלאַט\n\nFilter Platform — Free kosher internet filter. דער פּלאַץ ווערט נישט געלאָדן; קיין אינהאַלט פֿון אים איז נישט געוויזן געוואָרן.",
+      "shotBlocked": true
+    },
+    "blockedPage": {
+      "url": "chrome-extension://keibjodbjaonlckfkaejiiefaikphdfg/blocked.html?d=facebook.com",
+      "showsBlockedWord": true,
+      "showsDomain": true,
+      "showsPolicy": true,
+      "textSnippet": "🛡️ | דער פּלאַץ איז בלאקירט | facebook.com | דער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס. | פּאָליסי: Standard — block images + explicit words, rest open | בעטן אַן איבערקוק פֿון דעם פּלאַץ | גיי צום דאַשבאָרד | ↩ צוריק צום פֿריערדיקן בלאַט | Filter Platform — Free kosher internet filter. דער פּלאַץ ווערט נישט געלאָדן; קיין אינהאַלט פֿון אים איז נישט געוויזן געוואָרן."
+    },
+    "safeSearch": {
+      "bing": {
+        "asked": "https://www.bing.com/search?q=albert+einstein",
+        "finalUrl": "https://www.bing.com/search?q=albert+einstein&adlt=strict",
+        "title": "albert einstein - Search",
+        "bodySnippet": ""
+      },
+      "ddg": {
+        "asked": "https://duckduckgo.com/?q=albert+einstein",
+        "finalUrl": "https://duckduckgo.com/?q=albert+einstein&kp=1",
+        "title": "albert einstein at DuckDuckGo",
+        "bodySnippet": ""
+      },
+      "google": {
+        "asked": "https://www.google.com/search?q=albert+einstein",
+        "finalUrl": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dalbert%2Beinstein%26safe%3Dactive%26sei%3DXQ3-apbUIdfQkPIPq7WC4Qg&q=EhAqBE5BABRFswAAAABDM8WzGN6a-NcGIjCmxEFeSKsCIuoK1Mju5KuklGGGlmgQKwITe3-i-PjLg5uSpTcMaGI5tFp3yIw3KKkyAVJaAUNg8o2TpbSllfUS",
+        "title": "https://www.google.com/search?q=albert+einstein&safe=active&sei=XQ3-apbUIdfQkPIPq7WC4Qg",
+        "bodySnippet": " | About this page | Our systems have detected unusual traffic from your computer network. This page checks to see if it's really you sending the requests, and not a robot. Why did this happen? | IP address: 2a04:4e41:14:45b3::4333:c5b3 | Time: 2026-11-18T20:41:02Z | URL: https://www.google.com/search?q=albert+einstein&safe=active&sei=XQ3-apbUIdfQkPIPq7WC4Qg | "
+      },
+      "youtube": {
+        "asked": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "finalUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "title": "",
+        "bodySnippet": ""
+      }
+    },
+    "googleImages": {
+      "httpStatus": 200,
+      "url": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dalbert%2Beinstein%26safe%3Dactive%26udm%3D2%26sei%3DYg3-av2aI9zMkPIPpLCVmQI&q=EhAqBE5BABRFswAAAABDM8WzGOKa-NcGIjADvvO3zA_RwPm74sMHcJ7i7weX83xVX-t2HH6WE0qBbXXZ64Z692zFiyN1oLaZMrQyAVJaAUNg_MmJqPHnl-v7AQ",
+      "title": "https://www.google.com/search?q=albert+einstein&safe=active&udm=2&sei=Yg3-av2aI9zMkPIPpLCVmQI",
+      "bodySnippet": " | About this page | Our systems have detected unusual traffic from your computer network. This page checks to see if it's really you sending the requests, and not a robot. Why did this happen? | IP address: 2a04:4e41:14:45b3::4333:c5b3 | Time: 2026-11-18T20:41:07Z | URL: https://www.google.com/search?q=",
+      "stats": {
+        "found": 0,
+        "scanned": 0,
+        "human": 0,
+        "blocked": 0,
+        "covered": 0,
+        "uncertain": 0,
+        "noHuman": 0,
+        "bgFound": 0,
+        "bgHuman": 0,
+        "skipped": 0,
+        "personHits": 0
+      }
+    },
+    "realSites": {
+      "wikipedia": {
+        "url": "https://en.wikipedia.org/wiki/Main_Page",
+        "finalUrl": "https://en.wikipedia.org/wiki/Main_Page",
+        "navError": null,
+        "modelReady": true,
+        "scanDone": true,
+        "elapsedMs": 88481,
+        "stats": {
+          "found": 9,
+          "scanned": 9,
+          "human": 0,
+          "blocked": 0,
+          "covered": 6,
+          "uncertain": 6,
+          "noHuman": 3,
+          "bgFound": 0,
+          "bgHuman": 0,
+          "skipped": 15,
+          "personHits": 0
+        },
+        "personReady": true,
+        "log": [
+          {
+            "src": "https://en.wikipedia.org/static/images/icons/enwiki-25.svg",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "ms": 4175,
+            "result": "no-human",
+            "action": "none",
+            "mode": "block"
+          },
+          {
+            "src": "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-wordmark-en-25.svg",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "ms": 1118,
+            "result": "no-human",
+            "action": "none",
+            "mode": "block"
+          },
+          {
+            "src": "https://en.wikipedia.org/static/images/mobile/copyright/wikipedia-tagline-en-25.svg",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "ms": 1092,
+            "result": "no-human",
+            "action": "none",
+            "mode": "block"
+          },
+          {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Gilbert-GS-Big.JPG/120px-Gilbert-GS-Big.JPG?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/OpenFlexure_Microscope_V7-beta4.webp/120px-OpenFlexure_Microscope_V7-beta4.webp?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thu",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/2021-05-22_Bald_geht_die_Party_richtig_los.jpg/250px-2021-05-22_Bald_geht_die_Party_richtig_los.jpg?utm_source=en.wikipedia.org&utm_campaign=pa",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Jensen_Huang_Stanford_2026-04-30_010_%28cropped%29.jpg/250px-Jensen_Huang_Stanford_2026-04-30_010_%28cropped%29.jpg?utm_source=en.wikipedia.org",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/1956_Press_Photo_Communist_Party_Secretary_Nikita_Khrushchev_in_Moscow_%283x4_cropped%29.jpg/250px-1956_Press_Photo_Communist_Party_Secretary_N",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Przewalskis_horse.jpg/250px-Przewalskis_horse.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          }
+        ],
+        "mode": "block",
+        "personReadyAttr": "true",
+        "modelReadyAttr": "true",
+        "scanDoneAttr": "true",
+        "imgCount": 24,
+        "imgStates": [
+          {
+            "id": "ia.org/static/images/icons/enwiki-25.svg",
+            "action": "none"
+          },
+          {
+            "id": "e/copyright/wikipedia-wordmark-en-25.svg",
+            "action": "none"
+          },
+          {
+            "id": "le/copyright/wikipedia-tagline-en-25.svg",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "covered"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "covered"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "covered"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "covered"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "covered"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "covered"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "tm_campaign=parser&utm_content=thumbnail",
+            "action": "none"
+          },
+          {
+            "id": "a.org/static/images/footer/wikimedia.svg",
+            "action": "none"
+          },
+          {
+            "id": "w/resources/assets/mediawiki_compact.svg",
+            "action": "none"
+          }
+        ],
+        "blockedPlaceholders": 0,
+        "coveredImgs": 6,
+        "bgBlocked": 0,
+        "bgCoverOverlays": 0,
+        "humanLog": [
+          {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Gilbert-GS-Big.JPG/120px-Gilbert-GS-Big.JPG?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/OpenFlexure_Microscope_V7-beta4.webp/120px-OpenFlexure_Microscope_V7-beta4.webp?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thu",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/2021-05-22_Bald_geht_die_Party_richtig_los.jpg/250px-2021-05-22_Bald_geht_die_Party_richtig_los.jpg?utm_source=en.wikipedia.org&utm_campaign=pa",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Jensen_Huang_Stanford_2026-04-30_010_%28cropped%29.jpg/250px-Jensen_Huang_Stanford_2026-04-30_010_%28cropped%29.jpg?utm_source=en.wikipedia.org",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/1956_Press_Photo_Communist_Party_Secretary_Nikita_Khrushchev_in_Moscow_%283x4_cropped%29.jpg/250px-1956_Press_Photo_Communist_Party_Secretary_N",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Przewalskis_horse.jpg/250px-Przewalskis_horse.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          }
+        ]
+      },
+      "bbc": {
+        "url": "https://www.bbc.com/",
+        "finalUrl": "https://www.bbc.com/",
+        "navError": null,
+        "modelReady": true,
+        "scanDone": true,
+        "elapsedMs": 284995,
+        "stats": {
+          "found": 58,
+          "scanned": 58,
+          "human": 0,
+          "blocked": 0,
+          "covered": 58,
+          "uncertain": 58,
+          "noHuman": 0,
+          "bgFound": 0,
+          "bgHuman": 0,
+          "skipped": 109,
+          "personHits": 0
+        },
+        "personReady": true,
+        "log": [
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/news/480/cpsprodpb/7a52/live/a0e1e280-e36b-11f1-99b6-a35a62fa4264.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/b0a9/live/16401180-e337-11f1-9479-d17d3e98c29d.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/e20b/live/66ff6490-e323-11f1-a094-5fdc692f3e33.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/1024x576/p0pnmcms.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/640x360/p0pnfmks.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/640x360/p0pnfhcn.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnkmpl.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnndmv.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0j72y80.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnlh2b.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pj883s.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn9f4r.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnfsr9.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pndv8c.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0plf6yf.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pmxyfb.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn9j3t.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0j72y80.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/1376xn/p0pkjx8q.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/news/480/cpsprodpb/7a52/live/a0e1e280-e36b-11f1-99b6-a35a62fa4264.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/b0a9/live/16401180-e337-11f1-9479-d17d3e98c29d.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/e20b/live/66ff6490-e323-11f1-a094-5fdc692f3e33.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/1024x576/p0pnmcms.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/640x360/p0pnfmks.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/640x360/p0pnfhcn.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnkmpl.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnndmv.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0j72y80.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnlh2b.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pj883s.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn9f4r.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnfsr9.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pndv8c.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0plf6yf.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pmxyfb.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn9j3t.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0j72y80.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/1376xn/p0pkjx8q.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480xn/p0pkjx8n.png.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          }
+        ],
+        "mode": "block",
+        "personReadyAttr": "true",
+        "modelReadyAttr": "true",
+        "scanDoneAttr": "true",
+        "imgCount": 127,
+        "imgStates": [
+          {
+            "id": "280-e36b-11f1-99b6-a35a62fa4264.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "180-e337-11f1-9479-d17d3e98c29d.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "490-e323-11f1-a094-5fdc692f3e33.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnmcms.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnfmks.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnfhcn.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnkmpl.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnndmv.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0j72y80.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnlh2b.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pj883s.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pn9f4r.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnfsr9.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pndv8c.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0plf6yf.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pmxyfb.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pn9j3t.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0j72y80.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": ".co.uk/images/ic/480xn/p0pkjx8q.jpg.webp",
+            "action": "covered"
+          },
+          {
+            "id": ".co.uk/images/ic/480xn/p0pkjx8l.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": ".co.uk/images/ic/480xn/p0pkjx8n.png.webp",
+            "action": "covered"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "covered"
+          },
+          {
+            "id": "1e0-e2b7-11f1-a094-5fdc692f3e33.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "df0-e366-11f1-9f51-4bfc31543510.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "990-e382-11f1-a094-5fdc692f3e33.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "be0-e36d-11f1-99a1-253766e7ad8b.png.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "280-e38e-11f1-bc86-33d7d6275eba.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "9e0-e31c-11f1-99a1-253766e7ad8b.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0p80lkj.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0l685z5.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0kfyl58.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "170-e2ad-11f1-a094-5fdc692f3e33.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "0b0-e2b4-11f1-a094-5fdc692f3e33.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "900-e369-11f1-a094-5fdc692f3e33.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "000-e35b-11f1-99b6-a35a62fa4264.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "7b0-e32e-11f1-9c56-6ffaf0e1e706.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "010-e2e4-11f1-99b6-a35a62fa4264.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "1e0-e2b9-11f1-99a1-253766e7ad8b.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "f00-e2a4-11f1-99b6-a35a62fa4264.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "600-e2a7-11f1-99b6-a35a62fa4264.png.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pn9srh.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "220-e38a-11f1-a8ca-d7dfade8c64d.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "cc0-e34f-11f1-99aa-0f40b013ad11.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "ea0-e385-11f1-a094-5fdc692f3e33.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "030-e2d7-11f1-99a1-253766e7ad8b.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnqgby.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0lwzcxx.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnlrss.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnfzyh.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnbcz4.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnb830.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0lwzcxx.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0m6ztjd.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pn4jy8.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0lwzcxx.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pkv97b.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pmwzbr.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "740-e35f-11f1-a898-e7da1c1ebbf0.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pm6h4f.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "600-e342-11f1-99aa-0f40b013ad11.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "co.uk/images/ic/1024xn/p0pmmhcy.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pnkz0v.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pm2ywn.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pmvpnc.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "o.uk/images/ic/480x270/p0pcxdc3.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "ci.co.uk/images/ic/raw/p0pkbr8k.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "ci.co.uk/images/ic/raw/p0nw7m52.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "ci.co.uk/images/ic/raw/p0ncb748.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "ci.co.uk/images/ic/raw/p0jnr6hx.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "ci.co.uk/images/ic/raw/p0jq6tfl.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "uk/images/ic/1920x1080/p0h74xp9.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "ci.co.uk/images/ic/raw/p0nkn8ny.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "ci.co.uk/images/ic/raw/p0nw860t.jpg.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "ci.co.uk/images/ic/raw/p0lr3t4c.png.webp",
+            "action": "none"
+          },
+          {
+            "id": "d0afea-web-3.28.0-4/grey-placeholder.png",
+            "action": "none"
+          },
+          {
+            "id": "ci.co.uk/images/ic/raw/p0k21mq7.jpg.webp",
+            "action": "none"
+          }
+        ],
+        "blockedPlaceholders": 0,
+        "coveredImgs": 21,
+        "bgBlocked": 0,
+        "bgCoverOverlays": 0,
+        "humanLog": [
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/news/480/cpsprodpb/7a52/live/a0e1e280-e36b-11f1-99b6-a35a62fa4264.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/b0a9/live/16401180-e337-11f1-9479-d17d3e98c29d.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/e20b/live/66ff6490-e323-11f1-a094-5fdc692f3e33.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/1024x576/p0pnmcms.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/640x360/p0pnfmks.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/640x360/p0pnfhcn.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnkmpl.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnndmv.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0j72y80.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnlh2b.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pj883s.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn9f4r.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnfsr9.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pndv8c.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0plf6yf.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pmxyfb.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn9j3t.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0j72y80.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/1376xn/p0pkjx8q.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/news/480/cpsprodpb/7a52/live/a0e1e280-e36b-11f1-99b6-a35a62fa4264.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/b0a9/live/16401180-e337-11f1-9479-d17d3e98c29d.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/e20b/live/66ff6490-e323-11f1-a094-5fdc692f3e33.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/1024x576/p0pnmcms.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/640x360/p0pnfmks.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/640x360/p0pnfhcn.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnkmpl.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnndmv.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0j72y80.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnlh2b.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pj883s.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn9f4r.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnfsr9.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pndv8c.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0plf6yf.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pmxyfb.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn9j3t.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0j72y80.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/1376xn/p0pkjx8q.jpg.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://ichef.bbci.co.uk/images/ic/480xn/p0pkjx8n.png.webp",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://static.files.bbci.co.uk/bbcdotcom/web/20261110-133831-0053d0afea-web-3.28.0-4/grey-placeholder.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          }
+        ]
+      },
+      "commons": {
+        "url": "https://commons.wikimedia.org/wiki/Commons:Featured_pictures",
+        "finalUrl": "https://commons.wikimedia.org/wiki/Commons:Featured_pictures",
+        "navError": null,
+        "modelReady": true,
+        "scanDone": true,
+        "elapsedMs": 9293,
+        "stats": {
+          "found": 2,
+          "scanned": 2,
+          "human": 0,
+          "blocked": 0,
+          "covered": 2,
+          "uncertain": 2,
+          "noHuman": 0,
+          "bgFound": 0,
+          "bgHuman": 0,
+          "skipped": 0,
+          "personHits": 0
+        },
+        "personReady": true,
+        "log": [
+          {
+            "src": "https://www.wikimedia.org/static/images/footer/wikimedia.svg",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://www.wikimedia.org/static/images/wmf.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          }
+        ],
+        "mode": "block",
+        "personReadyAttr": "true",
+        "modelReadyAttr": "true",
+        "scanDoneAttr": "true",
+        "imgCount": 2,
+        "imgStates": [
+          {
+            "id": "logo",
+            "action": "covered"
+          },
+          {
+            "id": "wmfLogo",
+            "action": "covered"
+          }
+        ],
+        "blockedPlaceholders": 0,
+        "coveredImgs": 2,
+        "bgBlocked": 0,
+        "bgCoverOverlays": 0,
+        "humanLog": [
+          {
+            "src": "https://www.wikimedia.org/static/images/footer/wikimedia.svg",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          },
+          {
+            "src": "https://www.wikimedia.org/static/images/wmf.png",
+            "kind": "img",
+            "persons": 0,
+            "personBest": 0,
+            "faces": 0,
+            "faceBest": 0,
+            "best": 0,
+            "detectedBy": null,
+            "result": "uncertain",
+            "action": "covered",
+            "mode": "block",
+            "error": "cross-origin without CORS — pixels unreadable"
+          }
+        ]
+      }
+    },
+    "testPage_cover": {
+      "stats": {
+        "found": 10,
+        "scanned": 11,
+        "human": 6,
+        "blocked": 0,
+        "covered": 8,
+        "uncertain": 2,
+        "noHuman": 3,
+        "bgFound": 1,
+        "bgHuman": 1,
+        "skipped": 2,
+        "personHits": 6
+      },
+      "personReady": true,
+      "log": [
+        {
+          "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.935,
+          "faces": 1,
+          "faceBest": 0.956,
+          "best": 0.956,
+          "detectedBy": "person+face",
+          "ms": 4775,
+          "result": "human",
+          "action": "covered",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+          "kind": "img",
+          "persons": 3,
+          "personBest": 0.808,
+          "faces": 4,
+          "faceBest": 0.811,
+          "best": 0.811,
+          "detectedBy": "person+face",
+          "ms": 1058,
+          "result": "human",
+          "action": "covered",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.915,
+          "faces": 1,
+          "faceBest": 0.927,
+          "best": 0.927,
+          "detectedBy": "person+face",
+          "ms": 1170,
+          "result": "human",
+          "action": "covered",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-apple.jpg",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "ms": 1245,
+          "result": "no-human",
+          "action": "none",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-cat.jpg",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "ms": 1185,
+          "result": "no-human",
+          "action": "none",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-earth.jpg",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "ms": 1252,
+          "result": "no-human",
+          "action": "none",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8124/person-einstein.jpg",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "result": "uncertain",
+          "action": "covered",
+          "mode": "cover",
+          "error": "cross-origin without CORS — pixels unreadable"
+        },
+        {
+          "src": "https://www.facebook.com/favicon.ico",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "result": "uncertain",
+          "action": "covered",
+          "mode": "cover",
+          "error": "cross-origin without CORS — pixels unreadable"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+          "kind": "background",
+          "persons": 1,
+          "personBest": 0.935,
+          "faces": 1,
+          "faceBest": 0.956,
+          "best": 0.956,
+          "detectedBy": "person+face",
+          "ms": 1166,
+          "result": "human",
+          "action": "covered",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+          "kind": "img",
+          "persons": 3,
+          "personBest": 0.808,
+          "faces": 4,
+          "faceBest": 0.811,
+          "best": 0.811,
+          "detectedBy": "person+face",
+          "ms": 1376,
+          "result": "human",
+          "action": "covered",
+          "mode": "cover"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.915,
+          "faces": 1,
+          "faceBest": 0.927,
+          "best": 0.927,
+          "detectedBy": "person+face",
+          "ms": 1112,
+          "result": "human",
+          "action": "covered",
+          "mode": "cover"
+        }
+      ],
+      "mode": "cover",
+      "personReadyAttr": "true",
+      "modelReadyAttr": "true",
+      "scanDoneAttr": "true",
+      "imgCount": 11,
+      "imgStates": [
+        {
+          "id": "img-einstein",
+          "action": "covered"
+        },
+        {
+          "id": "img-obama",
+          "action": "covered"
+        },
+        {
+          "id": "img-curie",
+          "action": "covered"
+        },
+        {
+          "id": "img-apple",
+          "action": "none"
+        },
+        {
+          "id": "img-cat",
+          "action": "none"
+        },
+        {
+          "id": "img-earth",
+          "action": "none"
+        },
+        {
+          "id": "img-xorigin",
+          "action": "none"
+        },
+        {
+          "id": "img-xorigin-local",
+          "action": "covered"
+        },
+        {
+          "id": "img-facebook-probe",
+          "action": "covered"
+        },
+        {
+          "id": "img-dynamic",
+          "action": "covered"
+        },
+        {
+          "id": "img-lazy",
+          "action": "covered"
+        }
+      ],
+      "blockedPlaceholders": 0,
+      "coveredImgs": 7,
+      "bgBlocked": 0,
+      "bgCoverOverlays": 1,
+      "modelReady": true,
+      "modelReadyMs": 6291,
+      "scanDone": true,
+      "scanMs": 23505,
+      "consoleErrors": []
+    },
+    "testPage_strict": {
+      "stats": {
+        "found": 10,
+        "scanned": 11,
+        "human": 6,
+        "blocked": 0,
+        "covered": 8,
+        "uncertain": 2,
+        "noHuman": 3,
+        "bgFound": 1,
+        "bgHuman": 1,
+        "skipped": 2,
+        "personHits": 6
+      },
+      "personReady": true,
+      "log": [
+        {
+          "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.935,
+          "faces": 1,
+          "faceBest": 0.956,
+          "best": 0.956,
+          "detectedBy": "person+face",
+          "ms": 4490,
+          "result": "human",
+          "action": "covered",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+          "kind": "img",
+          "persons": 3,
+          "personBest": 0.808,
+          "faces": 4,
+          "faceBest": 0.811,
+          "best": 0.811,
+          "detectedBy": "person+face",
+          "ms": 1078,
+          "result": "human",
+          "action": "covered",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.915,
+          "faces": 1,
+          "faceBest": 0.927,
+          "best": 0.927,
+          "detectedBy": "person+face",
+          "ms": 1153,
+          "result": "human",
+          "action": "covered",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-apple.jpg",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "ms": 1125,
+          "result": "no-human",
+          "action": "none",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-cat.jpg",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "ms": 1156,
+          "result": "no-human",
+          "action": "none",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/nopeople-earth.jpg",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "ms": 1463,
+          "result": "no-human",
+          "action": "none",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8124/person-einstein.jpg",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "result": "uncertain",
+          "action": "covered",
+          "mode": "strict",
+          "error": "cross-origin without CORS — pixels unreadable"
+        },
+        {
+          "src": "https://www.facebook.com/favicon.ico",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0,
+          "detectedBy": null,
+          "result": "uncertain",
+          "action": "covered",
+          "mode": "strict",
+          "error": "cross-origin without CORS — pixels unreadable"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-einstein.jpg",
+          "kind": "background",
+          "persons": 1,
+          "personBest": 0.935,
+          "faces": 1,
+          "faceBest": 0.956,
+          "best": 0.956,
+          "detectedBy": "person+face",
+          "ms": 1029,
+          "result": "human",
+          "action": "covered",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-obama-family.jpg",
+          "kind": "img",
+          "persons": 3,
+          "personBest": 0.808,
+          "faces": 4,
+          "faceBest": 0.811,
+          "best": 0.811,
+          "detectedBy": "person+face",
+          "ms": 1081,
+          "result": "human",
+          "action": "covered",
+          "mode": "strict"
+        },
+        {
+          "src": "http://127.0.0.1:8123/photos/person-marie-curie.jpg",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.915,
+          "faces": 1,
+          "faceBest": 0.927,
+          "best": 0.927,
+          "detectedBy": "person+face",
+          "ms": 1184,
+          "result": "human",
+          "action": "covered",
+          "mode": "strict"
+        }
+      ],
+      "mode": "strict",
+      "personReadyAttr": "true",
+      "modelReadyAttr": "true",
+      "scanDoneAttr": "true",
+      "imgCount": 11,
+      "imgStates": [
+        {
+          "id": "img-einstein",
+          "action": "covered"
+        },
+        {
+          "id": "img-obama",
+          "action": "covered"
+        },
+        {
+          "id": "img-curie",
+          "action": "covered"
+        },
+        {
+          "id": "img-apple",
+          "action": "none"
+        },
+        {
+          "id": "img-cat",
+          "action": "none"
+        },
+        {
+          "id": "img-earth",
+          "action": "none"
+        },
+        {
+          "id": "img-xorigin",
+          "action": "none"
+        },
+        {
+          "id": "img-xorigin-local",
+          "action": "covered"
+        },
+        {
+          "id": "img-facebook-probe",
+          "action": "covered"
+        },
+        {
+          "id": "img-dynamic",
+          "action": "covered"
+        },
+        {
+          "id": "img-lazy",
+          "action": "covered"
+        }
+      ],
+      "blockedPlaceholders": 0,
+      "coveredImgs": 7,
+      "bgBlocked": 0,
+      "bgCoverOverlays": 1,
+      "modelReady": true,
+      "modelReadyMs": 5498,
+      "scanDone": true,
+      "scanMs": 22784,
+      "consoleErrors": []
+    },
+    "testsetBlock": {
+      "metrics": {
+        "n": 16,
+        "tp": 8,
+        "fp": 0,
+        "fn": 3,
+        "tn": 5,
+        "precision": 1,
+        "recall": 0.727,
+        "uncertainPersonImages": 0,
+        "missedToAllow": 3,
+        "missing": 0,
+        "scanMs": 25293,
+        "modelReady": true,
+        "scanDone": true
+      },
+      "perImage": [
+        {
+          "id": "b1-back-soldier",
+          "file": "b1-back-soldier.png",
+          "truth": true,
+          "verdict": "no-human",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": null,
+          "ms": 4536,
+          "action": "none"
+        },
+        {
+          "id": "b2-behind-back",
+          "file": "b2-behind-back.jpg",
+          "truth": true,
+          "verdict": "no-human",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": null,
+          "ms": 1186,
+          "action": "none"
+        },
+        {
+          "id": "b3-back-tattoo",
+          "file": "b3-back-tattoo.jpg",
+          "truth": true,
+          "verdict": "human",
+          "persons": 1,
+          "personBest": 0.885,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": "person",
+          "ms": 1191,
+          "action": "blocked"
+        },
+        {
+          "id": "d1-crowd-funeral",
+          "file": "d1-crowd-funeral.jpg",
+          "truth": true,
+          "verdict": "human",
+          "persons": 5,
+          "personBest": 0.617,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": "person",
+          "ms": 1106,
+          "action": "blocked"
+        },
+        {
+          "id": "d2-crowd-street-night",
+          "file": "d2-crowd-street-night.jpg",
+          "truth": true,
+          "verdict": "human",
+          "persons": 5,
+          "personBest": 0.627,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": "person",
+          "ms": 1079,
+          "action": "blocked"
+        },
+        {
+          "id": "d3-lone-beach",
+          "file": "d3-lone-beach.jpg",
+          "truth": true,
+          "verdict": "no-human",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": null,
+          "ms": 1119,
+          "action": "none"
+        },
+        {
+          "id": "g1-team-cincinnati",
+          "file": "g1-team-cincinnati.jpg",
+          "truth": true,
+          "verdict": "human",
+          "persons": 7,
+          "personBest": 0.661,
+          "faces": 1,
+          "faceBest": 0.522,
+          "detectedBy": "person+face",
+          "ms": 1368,
+          "action": "blocked"
+        },
+        {
+          "id": "g2-imperial-family",
+          "file": "g2-imperial-family.jpg",
+          "truth": true,
+          "verdict": "human",
+          "persons": 6,
+          "personBest": 0.882,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": "person",
+          "ms": 1060,
+          "action": "blocked"
+        },
+        {
+          "id": "g3-west-point-1899",
+          "file": "g3-west-point-1899.png",
+          "truth": true,
+          "verdict": "human",
+          "persons": 10,
+          "personBest": 0.734,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": "person",
+          "ms": 1280,
+          "action": "blocked"
+        },
+        {
+          "id": "p1-huang-portrait",
+          "file": "p1-huang-portrait.jpg",
+          "truth": true,
+          "verdict": "human",
+          "persons": 1,
+          "personBest": 0.968,
+          "faces": 1,
+          "faceBest": 0.929,
+          "detectedBy": "person+face",
+          "ms": 1102,
+          "action": "blocked"
+        },
+        {
+          "id": "p2-khrushchev-portrait",
+          "file": "p2-khrushchev-portrait.jpg",
+          "truth": true,
+          "verdict": "human",
+          "persons": 1,
+          "personBest": 0.98,
+          "faces": 1,
+          "faceBest": 0.987,
+          "detectedBy": "person+face",
+          "ms": 1102,
+          "action": "blocked"
+        },
+        {
+          "id": "a1-dog-running",
+          "file": "a1-dog-running.jpg",
+          "truth": false,
+          "verdict": "no-human",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": null,
+          "ms": 1409,
+          "action": "none"
+        },
+        {
+          "id": "a2-dog-stream",
+          "file": "a2-dog-stream.jpg",
+          "truth": false,
+          "verdict": "no-human",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": null,
+          "ms": 1115,
+          "action": "none"
+        },
+        {
+          "id": "l1-glacier-lake",
+          "file": "l1-glacier-lake.jpg",
+          "truth": false,
+          "verdict": "no-human",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": null,
+          "ms": 1009,
+          "action": "none"
+        },
+        {
+          "id": "l2-mountain-lake",
+          "file": "l2-mountain-lake.jpg",
+          "truth": false,
+          "verdict": "no-human",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": null,
+          "ms": 1112,
+          "action": "none"
+        },
+        {
+          "id": "o1-vintage-camera",
+          "file": "o1-vintage-camera.jpg",
+          "truth": false,
+          "verdict": "no-human",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 0,
+          "faceBest": 0,
+          "detectedBy": null,
+          "ms": 1146,
+          "action": "none"
+        }
+      ],
+      "stats": {
+        "found": 16,
+        "scanned": 16,
+        "human": 8,
+        "blocked": 8,
+        "covered": 0,
+        "uncertain": 0,
+        "noHuman": 8,
+        "bgFound": 0,
+        "bgHuman": 0,
+        "skipped": 0,
+        "personHits": 8
+      },
+      "personReady": "true"
+    },
+    "safeSearchOff": {
+      "policyId": "29640720-affe-4610-a8d4-9d8a223ed8f4",
+      "deviceId": "abd68b33-debe-4ca6-a1b1-8556796e2d79",
+      "forceOffConfirmed": true,
+      "liveSync": {
+        "lastSync": "2026-11-18T20:49:17.696Z",
+        "policyFetched": true,
+        "policyName": "Test — Merged SafeSearch Off",
+        "policyId": "29640720-affe-4610-a8d4-9d8a223ed8f4",
+        "block_images": true,
+        "cover_images": false,
+        "filter_videos": false,
+        "filter_ads": false,
+        "force_safesearch": false,
+        "auto_decide_threshold": "0.7000",
+        "deviceFound": true,
+        "deviceName": "Test Merged Device C",
+        "blocklistDomains": 11,
+        "rulesCount": 33,
+        "adBlocklistDomains": 26,
+        "adRulesCount": 0,
+        "adsEnforced": false,
+        "blockRedirectRules": 11,
+        "safeSearchEnforced": false,
+        "safeSearchRulesCount": 0,
+        "safeSearchEngines": [
+          "google",
+          "bing",
+          "duckduckgo"
+        ],
+        "safeSearchSource": "api",
+        "error": null,
+        "syncMs": 1148
+      },
+      "dnrTotal": 33,
+      "safeSearchRules": 0,
+      "googleProbe": {
+        "asked": "https://www.google.com/search?q=albert+einstein",
+        "finalUrl": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dalbert%2Beinstein%26sei%3DTg_-auKuN5qmptQP9qG14A4&q=EhAqBE5BAAR3mwAAAAAjlHebGM-e-NcGIjA15NJVxVLcu1jY-oXFabNKVJEuBOZo8XIxg4BElniAFvi1jmAUlBo0i_F_lTt8uY0yAVJaAUNgvfP1heq2mPNg",
+        "title": "https://www.google.com/search?q=albert+einstein&sei=Tg_-auKuN5qmptQP9qG14A4",
+        "bodySnippet": " | About this page | Our systems have detected unusual traffic from your computer network. This page checks to see if it's really you sending the requests, and not a robot. Why did this happen? | IP address: 2a04:4e41:4:779b::2394:779b | Time: 2026-11-18T20:49:19Z | URL: https://www.google.com/search?q=albert+einstein&sei=Tg_-auKuN5qmptQP9qG14A4 | "
+      },
+      "pass": true
+    },
+    "adsOn": {
+      "policyId": "c2280d5e-d82b-45a8-afe4-6df0353df5c8",
+      "deviceId": "ef7357a4-6c7d-4875-95c6-07eb48cbab16",
+      "liveSync": {
+        "lastSync": "2026-11-18T20:49:24.288Z",
+        "policyFetched": true,
+        "policyName": "Test — Merged Ads On",
+        "policyId": "c2280d5e-d82b-45a8-afe4-6df0353df5c8",
+        "block_images": true,
+        "cover_images": false,
+        "filter_videos": false,
+        "filter_ads": true,
+        "force_safesearch": true,
+        "auto_decide_threshold": "0.7000",
+        "deviceFound": true,
+        "deviceName": "Test Merged Device B",
+        "blocklistDomains": 11,
+        "rulesCount": 114,
+        "adBlocklistDomains": 26,
+        "adRulesCount": 52,
+        "adsEnforced": true,
+        "blockRedirectRules": 37,
+        "safeSearchEnforced": true,
+        "safeSearchRulesCount": 3,
+        "safeSearchEngines": [
+          "google",
+          "bing",
+          "duckduckgo"
+        ],
+        "safeSearchSource": "api",
+        "error": null,
+        "syncMs": 1130
+      },
+      "dnrTotal": 114,
+      "adsRules": 52,
+      "doubleclickProbe": {
+        "asked": "https://doubleclick.net/",
+        "finalUrl": "chrome-extension://keibjodbjaonlckfkaejiiefaikphdfg/blocked.html?d=doubleclick.net",
+        "title": "דער פּלאַץ איז בלאקירט — פֿילטער פּלאַטפאָרם",
+        "bodySnippet": "🛡️ | דער פּלאַץ איז בלאקירט | doubleclick.net | דער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס. | פּאָליסי: Test — Merged Ads On | בעטן אַן איבערקוק פֿון דעם פּלאַץ | גיי צום דאַשבאָרד | ↩ צוריק צום פֿריערדיקן בלאַט | Filter Platform — Free kosher internet filter. דער פּלאַץ ווערט נישט געלאָדן; קיין אינהאַלט פֿון אים איז נישט געוויזן געוואָרן.",
+        "blockedText": "🛡️\nדער פּלאַץ איז בלאקירט\ndoubleclick.net\n\nדער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס.\n\nפּאָליסי: Test — Merged Ads On\n\nבעטן אַן איבערקוק פֿון דעם פּלאַץ\nגיי צום דאַשבאָרד\n↩ צוריק צום פֿריערדיקן בלאַט\n\nFilter Platform — Free kosher internet filter. דער פּלאַץ ווערט נישט געלאָדן; קיין אינהאַלט פֿון אים איז נישט געוויזן געוואָרן.",
+        "shotBlocked": true
+      },
+      "pass": true
+    }
+  },
+  "cleanup": {
+    "deviceB": "deleted",
+    "policyB": "deleted",
+    "deviceC": "deleted",
+    "policyC": "deleted",
+    "testPoliciesGoneApi": true,
+    "policyCountApi": 1,
+    "selectVerified": "single-statement SELECTs after run: SELECT id,name FROM policies WHERE name LIKE Test% -> 0 rows; SELECT id,name FROM devices WHERE name LIKE Test% -> 0 rows; SELECT count(*) FROM policies -> 1; SELECT count(*) FROM devices -> 8",
+    "selectEmpty": true,
+    "note": "harness multi-statement SELECT failed (fpsql.py takes one statement); re-verified with single statements, all temp rows gone"
+  }
+}
