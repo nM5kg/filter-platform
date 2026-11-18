@@ -407,3 +407,41 @@ and anything that flashes uncovered before being covered.
 - Google Images behaviour inside GeckoView (Google serves `/sorry`
   bot-checks to headless Chromium; unknown for GeckoView) — try it on
   the device and record the result.
+
+## 0.1.1 launch-crash fix (2026-11-18 ~14:17 EST)
+
+0.1.0 installed on the user's BLU phone but died at launch with only
+Android's "Filter Platform keeps stopping" dialog — no UI ever appeared.
+Three defects were found by inspecting the shipped APK (no logcat was
+available on the phone):
+
+1. **omni.ja in the wrong folder (definite bug).** build.sh extracted
+   `assets/omni.ja` from the GeckoView AAR with `zipfile.extract`, which
+   creates `assets-staging/assets/omni.ja` → APK asset
+   `assets/assets/omni.ja`. GeckoView reads `assets/omni.ja`, so
+   `GeckoRuntime.create()` could never find it and the browser crashed.
+   Fixed: read the bytes and write them flat to `assets-staging/omni.ja`.
+2. **Gecko zygote preload (prime suspect for the launch crash).**
+   The app manifest carried
+   `android:zygotePreloadName="org.mozilla.gecko.process.ZygotePreload"`
+   from the GeckoView AAR. The preload runs at process start, before any
+   Activity, and can kill the process if it fails — matching the symptom
+   exactly. It is only a startup optimisation; GeckoView works without
+   it. Removed.
+3. **Encrypted storage with no fallback.** `SecureStore` built
+   `EncryptedSharedPreferences` in its constructor, called from
+   `MainActivity.onCreate`. If the device keystore refuses, the app dies
+   before any UI can report it. Now falls back to plain
+   `SharedPreferences` on any exception (prototype token only).
+
+Diagnostics added so the next failure reports itself instead of
+guessing: `MainActivity.onCreate` catches startup exceptions and shows
+the class + message + first 12 stack frames on screen;
+`BrowserActivity` catches a `GeckoRuntime.create()` failure and shows it
+in the status line instead of crashing.
+
+0.1.1 (versionCode 2): rebuild with the fixed build.sh, verify
+`assets/omni.ja` sits at the assets root (no `assets/assets/`),
+`apksigner verify` v2+v3, badging versionCode 2. Install over 0.1.0
+(same debug key) or uninstall first; the Drive link is unchanged
+(the file is replaced in place).
