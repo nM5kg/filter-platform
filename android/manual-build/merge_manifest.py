@@ -8,8 +8,12 @@ libs/extracted/*/AndroidManifest.xml,
   * <uses-permission>, <uses-feature> and <queries> entries (deduped),
   * <application> children: <service>, <provider>, <receiver>, <activity>
     (deduped by android:name) — this is how GeckoView's ~85 child-process
-    services and its clipboard provider get into the APK,
-  * the application attribute android:zygotePreloadName (GeckoView),
+    services and its clipboard provider get into the APK.
+  * NOTE (0.1.1 fix): the GeckoView AAR's
+    android:zygotePreloadName is deliberately NOT merged. 0.1.0 shipped
+    it and died at process start on the user's BLU phone ("keeps
+    stopping" before any Activity); the preload runs before any app code
+    and can kill the process. GeckoView works without it.
 and replaces ${applicationId} with the real package. tools:* attributes
 are dropped (lint hints only).
 
@@ -78,11 +82,11 @@ def merge(app_manifest, out_manifest, extracted_root):
         for el in lib.findall("queries"):
             root.append(el)
         if lib_app is not None:
-            for key, val in lib_app.attrib.items():
-                # Only the GeckoView zygote preload name is a library-owned
-                # application attribute; everything else stays the app's.
-                if key == f"{{{ANDROID_NS}}}zygotePreloadName" and key not in app.attrib:
-                    app.set(key, val)
+            # 0.1.1 fix: NEVER merge android:zygotePreloadName from a
+            # library. The GeckoView AAR declares it; 0.1.0 shipped it and
+            # the app died at process start on the user's phone ("keeps
+            # stopping" before any Activity). The preload is only a
+            # startup optimisation and GeckoView works without it.
             for child in lib_app:
                 if child.tag in ("service", "provider", "receiver", "activity"):
                     if android_name(child) not in seen_app_children:
