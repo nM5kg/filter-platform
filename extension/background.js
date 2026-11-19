@@ -5,6 +5,34 @@
 // the real token is NEVER bundled in this extension.
 
 const API_BASE = 'https://filter-platform-api.gavhah-copy.workers.dev';
+const VERSIONS_URL = 'https://filter-platform-dashboard.pages.dev/versions.json';
+const UPDATE_CHECK_MINUTES = 360; // every 6 hours
+
+// Update check (v1.2.1): our own website is the Download Center — no
+// Chrome Web Store. Fetch the public versions.json, compare with this
+// extension's manifest version, and store an updateAvailable flag for
+// the popup banner. A failed fetch (offline, site down) leaves the
+// previous flag alone and never shows a false update.
+async function checkForUpdates() {
+  try {
+    const res = await fetch(VERSIONS_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('versions.json HTTP ' + res.status);
+    const data = await res.json();
+    const latest = data && data.extension && data.extension.version;
+    const current = chrome.runtime.getManifest().version;
+    const available = !!(latest && latest !== current);
+    await chrome.storage.local.set({
+      fpUpdateAvailable: available,
+      fpLatestVersion: latest || null,
+      fpUpdateCheckedAt: new Date().toISOString()
+    });
+    console.log('[fp] update check: current', current, 'latest', latest, 'updateAvailable', available);
+    return available;
+  } catch (err) {
+    console.warn('[fp] update check failed (kept previous flag):', err.message);
+    return null;
+  }
+}
 const RULE_ID_START = 1000;
 const ADS_RULE_ID_START = 5000; // ads/tracker rules live in their own id range
 const BLOCK_REDIRECT_ID_START = 3000; // main-frame redirect -> blocked.html
@@ -135,11 +163,11 @@ async function fetchPolicyAndBlocklist() {
   }
 
   // 5. SafeSearch rules (Phase 3b) — enforced only when the device policy
-  // has force_safesearch=true (see sync). A failure here must not break
-  // the domains sync above, so it degrades to the hardcoded fallback list.
+  // has force_safesearch=true (see sync). Scoped to THIS device so the
+  // device's own policy is used, not the default (2026-11-19 fix).
   let safeSearch = { engines: SAFESEARCH_FALLBACK, source: 'fallback' };
   try {
-    const ss = await apiGet('/api/v1/safesearch', token);
+    const ss = await apiGet('/api/v1/safesearch' + (deviceId ? '?device_id=' + encodeURIComponent(deviceId) : ''), token);
     const fromApi = safeSearchEnginesFromApi(ss);
     if (fromApi.length) safeSearch = { engines: fromApi, source: 'api' };
   } catch (e) {
@@ -354,9 +382,12 @@ function resolveMode(policy, demoMode) {
 chrome.runtime.onInstalled.addListener(() => {
   console.log('[fp] installed — open the popup to paste token + device id.');
   chrome.alarms.create('fp-sync', { periodInMinutes: 60 });
+  chrome.alarms.create('fp-update-check', { periodInMinutes: UPDATE_CHECK_MINUTES });
+  checkForUpdates();
 });
 
 chrome.runtime.onStartup.addListener(async () => {
+  checkForUpdates();
   const { token } = await getSettings();
   if (token) await sync();
 });
@@ -365,6 +396,8 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === 'fp-sync') {
     const { token } = await getSettings();
     if (token) await sync();
+  } else if (alarm.name === 'fp-update-check') {
+    await checkForUpdates();
   }
 });
 
@@ -392,6 +425,10 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
       });
     } else if (msg && msg.type === 'refresh') {
       sendResponse(await sync());
+    } else if (msg && msg.type === 'checkUpdate') {
+      // Manual trigger for the update check (used by the popup refresh and
+      // by verification); the scheduled path is onStartup + the 6h alarm.
+      sendResponse({ updateAvailable: await checkForUpdates() });
     } else if (msg && msg.type === 'report') {
       // Content script page stats (per-page, merged into totals).
       const prev = (await chrome.storage.local.get(['fpStats'])).fpStats || {

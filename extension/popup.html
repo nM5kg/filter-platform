@@ -16,11 +16,14 @@
   .status { margin-top: 12px; padding: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 13px; white-space: pre-wrap; word-break: break-word; }
   .ok { color: #047857; } .bad { color: #b91c1c; }
   .hint { font-size: 12px; color: #6b7280; margin-top: 6px; }
+  .update-banner { display: none; margin-top: 10px; padding: 10px; background: #fef7e0; border: 1px solid #d9a400; border-radius: 6px; font-size: 13px; font-weight: 600; color: #7a5a00; }
+  .update-banner a { color: #174ea6; }
 </style>
 </head>
 <body>
   <h1>🛡️ פֿילטער פּלאַטפאָרם</h1>
   <p class="sub">Free kosher internet filter — Phase 2 (browser)</p>
+  <div class="update-banner" id="updateBanner">⬆️ אַ נײַע ווערסיע איז דאָ (<span id="updateVersion"></span>) — <a href="https://filter-platform-dashboard.pages.dev/download.html" target="_blank">לאָדט זי אַראָפּ פֿון אונדזער וועבזײַטל</a></div>
 
   <label for="token">API טאָוקן</label>
   <input id="token" type="password" placeholder="paste your API token" autocomplete="off">
@@ -43,6 +46,25 @@
 
   <div class="status" id="status">לאָודט…</div>
   <div class="status" id="stats">—</div>
+
+  <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0 4px">
+  <h2 style="font-size:15px;margin:8px 0 4px">👤 ווער פֿאַרוואַלט דעם דיווייס?</h2>
+  <div class="status" id="managedBy">לאָודט…</div>
+  <button id="unlink" class="secondary" style="display:none">אָפּקאַפּלען פֿון מאַנאַדזשער</button>
+
+  <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0 4px">
+  <h2 style="font-size:15px;margin:8px 0 4px">✉️ רעגיסטרירן מיט אַ מאַנאַדזשערס קאָד</h2>
+  <p class="hint">האָט אַ מאַנאַדזשער (למשל אַן עלטערן) אײַך געגעבן אַ 6־ציפֿער קאָד? גיט אים אַרײַן דאָ — דאָס איז אײַער הסכמה אַז ער/זי זאָל פֿאַרוואַלטן דעם דיווייס.</p>
+  <label for="regCode">קאָד (6 ציפֿערן)</label>
+  <input id="regCode" type="text" inputmode="numeric" maxlength="6" placeholder="123456" autocomplete="off">
+  <label for="regName">אײַער נאָמען</label>
+  <input id="regName" type="text" placeholder="שם" autocomplete="off" style="direction:rtl;text-align:right">
+  <label for="regEmail">אײַער אימעיל</label>
+  <input id="regEmail" type="email" placeholder="you@example.com" autocomplete="off">
+  <label for="regDeviceName">נאָמען פֿונעם דיווייס</label>
+  <input id="regDeviceName" type="text" placeholder="מײַן קאָמפּיוטער" autocomplete="off" style="direction:rtl;text-align:right">
+  <button id="registerBtn">רעגיסטרירן</button>
+  <div class="status" id="regResult" style="display:none"></div>
 
 <script src="popup.js"></script>
 </body>

@@ -169,6 +169,31 @@ dedicated detector page), and `detector.js` bridges to it over
   strict), sync button, policy + rule-count + stats display. The status
   lines now include the ads filter (`אָן` with rule/domain counts, or
   `אויס (פּאָליטיק filter_ads=ניין)`).
+  **Managed devices (2026-11-19):** the popup shows a "ווער פֿאַרוואַלט
+  דעם דיווייס?" box on every load/refresh — it fetches
+  `GET /api/v1/devices/:id` and, when `managed_by_name` is set, names the
+  manager and the enforced policy and says plainly that the manager can
+  see the device's online status and change its policy (nothing the
+  manager can see or do is hidden here), with an "אָפּקאַפּלען" button
+  (`POST /api/v1/devices/:id/unlink`) so the managed person can remove
+  the management themselves. An unmanaged device shows a one-line
+  "not managed by anyone" note. Below that, "רעגיסטרירן מיט אַ
+  מאַנאַדזשערס קאָד" takes the manager's 6-digit code + your name +
+  email + device name and calls `POST /api/v1/devices/managed-register`
+  (platform fixed to `windows` for the computer version); entering the
+  code is the consent step. On success it saves the returned customer id
+  (`fpCustomerId`) and device id (`fpDeviceId`), keeps the pasted token,
+  triggers a sync, and shows the manager name + policy. A bad or
+  already-used code shows a plain-Yiddish error. The manager side lives
+  on the dashboard (Customer tab): create a managed invite (code shown
+  big — give the code **plus the API token** to the other person),
+  pending-invites list, "דעוויסעס וואָס איך פֿאַרוואַלט" table with a
+  per-device policy dropdown (`PATCH /api/v1/devices/:id`) and Unlink,
+  kept separate from "מײַנע אייגענע דעוויסעס".
+  **SafeSearch fix (2026-11-19):** `background.js` now fetches
+  `GET /api/v1/safesearch?device_id=<deviceId>` so SafeSearch follows
+  the device's own policy instead of falling back to the default policy
+  (one-line change in `fetchPolicyAndBlocklist`).
 - `vendor/face-api.js` — bundled face-api.js (+ tfjs), MIT.
 - `models/` — tinyFaceDetector weights (MIT).
 - `test-page/index.html` + `test-page/photos/` — local test page (see below).
