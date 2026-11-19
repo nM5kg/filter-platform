@@ -262,12 +262,59 @@ export default {
         if (isDefault) {
           await sql(env, `UPDATE policies SET is_default = false WHERE is_default = true`);
         }
-        const rows = await sql(env, `INSERT INTO policies (name, description, strictness, cover_images, block_images, filter_videos, filter_ads, require_approval_for_new_sites, force_safesearch, is_default, auto_decide_threshold)
-          VALUES (${lit(body.name)}, ${lit(b("description", null))}, ${strictness}, ${asBool(b("cover_images", true), true)}, ${asBool(b("block_images", false), false)}, ${asBool(b("filter_videos", true), true)}, ${asBool(b("filter_ads", true), true)}, ${asBool(b("require_approval_for_new_sites", true), true)}, ${asBool(b("force_safesearch", true), true)}, ${isDefault}, ${threshold}) RETURNING *`);
+        const humanImageMode = body.human_image_mode === undefined || body.human_image_mode === null ? "paint" : body.human_image_mode;
+        if (!["paint", "block"].includes(humanImageMode)) return json({ error: "human_image_mode must be 'paint' or 'block'" }, 400);
+        const rows = await sql(env, `INSERT INTO policies (name, description, strictness, cover_images, block_images, filter_videos, filter_ads, require_approval_for_new_sites, force_safesearch, is_default, auto_decide_threshold, human_image_mode)
+          VALUES (${lit(body.name)}, ${lit(b("description", null))}, ${strictness}, ${asBool(b("cover_images", true), true)}, ${asBool(b("block_images", false), false)}, ${asBool(b("filter_videos", true), true)}, ${asBool(b("filter_ads", true), true)}, ${asBool(b("require_approval_for_new_sites", true), true)}, ${asBool(b("force_safesearch", true), true)}, ${isDefault}, ${threshold}, ${lit(humanImageMode)}) RETURNING *`);
         const p = rows[0];
         await sql(env, `INSERT INTO policy_versions (policy_id, version, snapshot) VALUES (${lit(p.id)}, 1, ${lit(JSON.stringify(p))}::jsonb)`);
         await audit(env, "policy.created", "policies", p.id, { name: p.name });
         return json({ data: p }, 201);
+      }
+
+      // ---- review decisions ----
+      // One recorded decision per image_key (upsert — latest decision wins).
+      // Written by the review engine (web browser shim / Android) when a
+      // human picture is reviewed. GET looks up by ?image_key= only.
+      if (resource === "review-decisions" && request.method === "GET") {
+        const image_key = url.searchParams.get("image_key") || "";
+        if (!image_key) return json({ error: "image_key query param is required" }, 400);
+        const rows = await sql(env, `SELECT * FROM review_decisions WHERE image_key = ${lit(image_key)}`);
+        if (!rows.length) return json({ error: "not found" }, 404);
+        return json({ data: rows[0] });
+      }
+      if (resource === "review-decisions" && request.method === "POST") {
+        if (!body.image_key || typeof body.image_key !== "string" || !body.image_key.trim()) {
+          return json({ error: "image_key is required" }, 400);
+        }
+        if (!["allow", "allow_painted", "block", "uncertain"].includes(body.decision)) {
+          return json({ error: "decision must be allow, allow_painted, block or uncertain" }, 400);
+        }
+        const him = body.human_image_mode === undefined || body.human_image_mode === null ? "paint" : body.human_image_mode;
+        if (!["paint", "block"].includes(him)) return json({ error: "human_image_mode must be 'paint' or 'block'" }, 400);
+        let bestScore = null;
+        if (body.best_score !== undefined && body.best_score !== null) {
+          const t = typeof body.best_score === "number" ? body.best_score : Number(body.best_score);
+          if (!Number.isFinite(t) || t < 0 || t > 1) return json({ error: "best_score must be a number between 0 and 1" }, 400);
+          bestScore = t;
+        }
+        const boxes = body.boxes === undefined || body.boxes === null ? [] : body.boxes;
+        if (!Array.isArray(boxes)) return json({ error: "boxes must be an array" }, 400);
+        for (const bx of boxes) {
+          if (!bx || typeof bx !== "object" || !["x", "y", "w", "h", "score"].every((k) => typeof bx[k] === "number" && bx[k] >= 0 && bx[k] <= 1)) {
+            return json({ error: "each box must have x, y, w, h and score as numbers between 0 and 1" }, 400);
+          }
+        }
+        const firstDetector = body.first_detector === undefined ? null : body.first_detector;
+        if (firstDetector !== null && (typeof firstDetector !== "object" || Array.isArray(firstDetector))) {
+          return json({ error: "first_detector must be an object or null" }, 400);
+        }
+        const rows = await sql(env, `INSERT INTO review_decisions (image_key, image_url, page_url, decision, model, best_score, boxes, human_image_mode, first_detector)
+          VALUES (${lit(body.image_key.trim())}, ${lit(body.image_url || null)}, ${lit(body.page_url || null)}, ${lit(body.decision)}, ${lit(body.model || null)}, ${bestScore === null ? "NULL" : bestScore}, ${lit(JSON.stringify(boxes))}::jsonb, ${lit(him)}, ${firstDetector === null ? "NULL" : lit(JSON.stringify(firstDetector)) + "::jsonb"})
+          ON CONFLICT (image_key) DO UPDATE SET image_url = EXCLUDED.image_url, page_url = EXCLUDED.page_url, decision = EXCLUDED.decision, model = EXCLUDED.model, best_score = EXCLUDED.best_score, boxes = EXCLUDED.boxes, human_image_mode = EXCLUDED.human_image_mode, first_detector = EXCLUDED.first_detector, updated_at = now()
+          RETURNING *`);
+        await audit(env, "review_decision.recorded", "review_decisions", rows[0].id, { image_key: body.image_key.trim(), decision: body.decision });
+        return json({ data: rows[0] }, 201);
       }
 
       // ---- managed invites ----

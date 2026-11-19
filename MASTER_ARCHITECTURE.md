@@ -306,6 +306,43 @@ the Android browser sees — that proof now lives inside GeckoView.
   EfficientDet JS detector, not the native RF-DETR path. It proves the
   filter pipeline; it **cannot** prove the GeckoView app launches on
   his phone. Logins/cookies on proxied sites mostly fail.
+  **Review + paint — LIVE + VERIFIED 2026-11-19 (Yakob's 13:36 EST
+  requirements):** a covered image has a "בעטן אַ באַשלוס" button; the
+  request runs a real second opinion — on-demand client-side RF-DETR
+  Nano (onnxruntime-web 1.22.0, model split into 8 chunks ~14.7 MB,
+  lazy-loaded only on request, cached in IndexedDB after first load;
+  first load ~150 MB, 23–56 s live; cached inference ~2.5 s/image).
+  Decision bands: ≥0.50 person confirmed, [0.30, 0.50) uncertain,
+  <0.30 allow. When approved, the person is **painted over**
+  (bounding-box overlay on just the person region, default) or the
+  whole picture **blocked** — a policy setting (see below); a person
+  covering >60% of the image area blocks the whole picture even in
+  paint mode. **No over-covering:** an image with no person signal is
+  left visible, even when its pixels cannot be read (static kinds
+  only); the one exception is unreadable dynamic surfaces (WebGL /
+  video / stream), which stay covered. Every review is recorded
+  (Neon `review_decisions`, upsert by image key, via the proxy Worker)
+  so a reviewed image is not re-asked. **Live verification 2026-11-19
+  (Playwright, run 7, OVERALL PASS):** test page 01 — first scan
+  covered 3 / allowed 1 / unscanned 0; crowd photo painted after a
+  real button click (18 paint divs, 18/18 fractions match, decision
+  `allow_painted` / 0.7041 in Neon + localStorage); painted and
+  covered downloads both blocked (`verdict-painted` /
+  `verdict-cover`), allowed image downloads for real; paint/block
+  setting flipped both ways and verified in Neon; Wikipedia 61
+  allowed / 61 scanned / 0 unscanned; BBC 6 covered / 57 allowed /
+  36 unscanned (cross-origin unreadable — pre-existing). Regression
+  harness 12/13 (one pre-existing desktop-toggle read flake,
+  unrelated). 7 integration bugs found + fixed + re-verified live
+  (review.js injection, cache-key double prefix, `first_detector`
+  object shape, review-applied status, face-load timeout, policy
+  race, unloaded-image deferral). Pages deployment `a94ceaa9…`;
+  web-browser Worker etag `994e84d1…`, cache v10. **Policy setting
+  (how Yakob changes it):** browser Settings → "מענטש־בילדער ווען
+  געעפֿנט" — "מאָלן דעם מענטש (דיפֿאָלט)" / "בלאָקירן דאָס גאַנצע
+  בילד", stored in `fp_settings_v1.humanImageMode`; the same setting
+  exists in the app's Settings. Full detail: `harness/
+  verify-review-live-results.json` (run 7 PASS).
 - **0.2.0** (versionCode 5, 211 MB): real v1.2.0 engine in the app
   (EfficientDet + face fallback, Yiddish block page, SafeSearch). **Still
   crashes on Yakob's BLU B1680V** ("keeps stopping / not responding") —
@@ -342,6 +379,29 @@ the Android browser sees — that proof now lives inside GeckoView.
   untouched. **PARKED as app-phase work — do NOT install before the
   0.2.1-test verdict** (same launch path; if 0.2.1-test still crashes,
   0.3.0 will almost certainly crash the same way).
+- **0.3.1** (versionCode 9, **364,391,692 bytes**, sha256
+  `4c2b6ba9…e524b`, v2+v3 signed, **136/136 tests**): the review/paint
+  requirements ported to the app — kind-aware no-overcover decide()
+  (static unscanned → allow, dynamic unreadable → review), no-data vs
+  weak-signal vote fix, native RF-DETR review on the thumbnail
+  (boxes decoded, cxcywh verified empirically), `Policy.
+  humanImageMode` (paint default, server mode wins when present),
+  Yiddish paint/block radio in Settings, review recorded via
+  `ApiClient` + local store (capped 500), painted images not
+  downloadable. `content.js` re-synced byte-identical to the live web
+  file (sha256 `df4be010…d808e`, incl. D's integration fixes 2/3/5/6/7).
+  **Local only, PARKED** — Drive instruction at
+  `android/DRIVE-INSTRUCTION-0.3.1.txt` (new file
+  `FilterPlatform-0.3.1.apk`; never replace the main APK or the
+  0.2.1-test file; do NOT send to the phone before the 0.2.1-test
+  verdict). Known limit: the `fp-policy-request` handshake could not
+  be wired natively (content.js posts it via `window.parent.
+  postMessage`, which has no shell in the app, and the native delegate
+  only sees `runtime.sendMessage` traffic) — verdict-neutral, because
+  the native review uses the effective policy mode; content.js's
+  stale `paint` default only touches cache metadata. E's first 0.3.1
+  build (sha256 `14989da1…`) is SUPERSEDED by this one. The app has
+  still never run on a device.
 - **Canvas + video in the app:** done in code — video frame sampling +
   re-pause when a covered video is restarted, hash-gated re-sampling of
   animated canvases, dynamic-video listeners; WebGL stays covered

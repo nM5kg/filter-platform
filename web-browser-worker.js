@@ -353,51 +353,103 @@ function errorPage(title, message) {
 //                                  for the models / WASM / detector iframe)
 //   browser.runtime.sendMessage(m)-> the in-page filter engine below.
 //
-// The in-page engine is a direct JS translation of FilterEngine.decide +
-// JsReportedPersonDetector + DEFAULT_POLICY (FilterEngine.kt):
-//   default policy: blockImages=true, coverImages=true, threshold 0.70
-//   PERSON           -> cover (blockImages + coverImages => COVER)
-//   NO_PERSON, conf >= 0.70 -> allow
-//   UNKNOWN / low confidence  -> cover (fail closed; REVIEW is sent as cover,
-//                                exactly like FilterEngine.buildDecisionsMessage)
+// The in-page engine is a kind-aware JS translation of
+// FilterEngine.decide + JsReportedPersonDetector + DEFAULT_POLICY
+// (FilterEngine.kt), extended 2026-11-19 with the review contract:
+// cached review decisions are honoured verbatim (allow_painted ->
+// 'painted'), static images with NO detection signal are left visible
+// (no-overcover, Yakob req 4), and only unreadable DYNAMIC surfaces
+// (canvas/webgl/video/stream) still fail closed to cover. The full
+// rules live in the comment block at the top of SHIM_JS itself.
+// Default policy: blockImages=true, coverImages=true, threshold 0.70,
+// humanImageMode 'paint' (a person region is painted over; the whole
+// picture is blocked only when the person covers > 60% of it — that
+// 60% rule lives in the review engine, FpReview).
 // It also reports live status to the demo shell (the parent frame) via
 // postMessage, because the shell cannot read inside the cross-origin iframe.
 const SHIM_JS = `(function () {
   'use strict';
+  // DECIDE RULES (kind-aware, no-overcover — Yakob 2026-11-19).
+  // Verdicts: allow | cover | block | painted. painted only ever comes
+  // from a cached review decision; this shim never paints by itself.
+  //   (a) f.cachedDecision present -> honour it verbatim: allow maps
+  //       to allow, allow_painted to painted, block to block, uncertain
+  //       to cover. Boxes ride along for painted.
+  //   (b) A person signal (persons > 0 or faces > 0): best >= 0.70 ->
+  //       cover (person confirmed); best < 0.70 -> cover too (weak but
+  //       REAL signal — the review can paint or block it later).
+  //   (c) No person signal, detection ran (f.detected), best < 0.40 ->
+  //       allow (no human found). best >= 0.40 with no persons/faces
+  //       is a genuinely uncertain signal -> cover.
+  //   (d) No detection at all (f.detected false — no pixels, both
+  //       detectors failed): static kinds (img, css, svg) -> allow
+  //       with unscanned true. There is NO person signal, so Yakob
+  //       req 4 forbids covering: an image whose pixels cannot be
+  //       read is left visible. TRADE-OFF, stated plainly: a person
+  //       picture that cannot be read (cross-origin, tainted) will be
+  //       visible until a readable signal exists. Dynamic kinds
+  //       (canvas, webgl, video, stream, dynamic) -> cover (fail
+  //       closed: a dynamic surface that cannot be snapshotted cannot
+  //       be proven clean). This is the ONE exception to no-overcover.
+  //   (e) Decisions carry id, verdict, reason, and boxes when the
+  //       verdict is painted, plus unscanned when true. counts adds
+  //       painted + unscanned; postStatus carries them and the current
+  //       humanImageMode to the shell.
+  //   (f) Policy: the shim listens for window message
+  //       type fp-policy with humanImageMode (paint or block, default
+  //       paint) from the parent shell, same pattern as fp-find, and
+  //       stores it. The shim does NOT call FpReview itself — reviews
+  //       happen in content.js (web) or natively (app).
+  //   (g) Review outcomes: content.js tells the shim when a web review
+  //       lands (msg type 'review-applied', {id, source, verdict,
+  //       boxes}) so the shell's verdict map + status counts stay true
+  //       WITHOUT a reload: a painted image must read 'painted' (not
+  //       the stale 'cover' from the first scan) for the status line
+  //       and for the shell's download policy (verdict-painted). The
+  //       shim still NEVER decides a review itself — this only records
+  //       an outcome content.js already reached.
   var THRESHOLD = 0.70;   // FilterEngine.DEFAULT_POLICY.autoDecideThreshold
   var SCORE_FLOOR = 0.40; // JsReportedPersonDetector.SCORE_FLOOR
-  var verdicts = {};      // element id -> latest verdict ('allow'/'cover'/'block')
+  var STATIC_KINDS = { img: 1, css: 1, svg: 1 };
+  var humanImageMode = 'paint'; // set by fp-policy from the shell
+  var verdicts = {};      // element id -> latest verdict
   var verdictsBySource = {}; // element source URL -> latest verdict (for the shell's download policy)
+  var unscannedById = {}; // element id -> true when allowed without a readable detection
   var readyPosted = false;
 
-  // JsReportedPersonDetector.detect, translated from FilterEngine.kt.
-  function detect(f) {
-    if (!f.detected) return { outcome: 'UNKNOWN', confidence: 0 };
-    var best = Math.max(f.personBest || 0, f.faceBest || 0);
-    if ((f.persons || 0) > 0 || (f.faces || 0) > 0) {
-      if (best >= THRESHOLD) return { outcome: 'PERSON', confidence: best };
-      return { outcome: 'UNKNOWN', confidence: 0 };
-    }
-    if (best >= SCORE_FLOOR) return { outcome: 'UNKNOWN', confidence: 0 };
-    return { outcome: 'NO_PERSON', confidence: 1.0 };
-  }
+  function bestOf(f) { return Math.max(f.personBest || 0, f.faceBest || 0); }
 
-  // FilterEngine.decide, translated from FilterEngine.kt (DEFAULT_POLICY:
-  // blockImages=true, coverImages=true, threshold 0.70).
+  // Kind-aware decide — see the rules block above.
   function decide(f) {
-    var r = detect(f);
-    if (r.outcome === 'PERSON') return 'cover';
-    if (r.outcome === 'NO_PERSON' && r.confidence >= THRESHOLD) return 'allow';
-    return 'cover'; // UNKNOWN / low confidence -> REVIEW -> cover (fail closed)
+    var cached = f.cachedDecision;
+    if (cached && cached.decision) {
+      var map = { allow: 'allow', allow_painted: 'painted', block: 'block', uncertain: 'cover' };
+      var v = map[cached.decision] || 'cover';
+      return { verdict: v, boxes: cached.boxes || [], reason: 'cached-review' };
+    }
+    var best = bestOf(f);
+    var hasSignal = (f.persons || 0) > 0 || (f.faces || 0) > 0;
+    if (hasSignal) {
+      if (best >= THRESHOLD) return { verdict: 'cover', reason: 'person' };
+      return { verdict: 'cover', reason: 'weak-person-signal' };
+    }
+    if (f.detected) {
+      if (best < SCORE_FLOOR) return { verdict: 'allow', unscanned: false, reason: 'no-person' };
+      return { verdict: 'cover', reason: 'weak-signal' };
+    }
+    if (STATIC_KINDS[f.kind]) return { verdict: 'allow', unscanned: true, reason: 'no-signal-unscanned' };
+    return { verdict: 'cover', reason: 'unreadable-dynamic' };
   }
 
   function counts() {
-    var c = { covered: 0, allowed: 0, blocked: 0, scanned: 0 };
+    var c = { covered: 0, allowed: 0, blocked: 0, painted: 0, unscanned: 0, scanned: 0 };
     for (var id in verdicts) {
       c.scanned++;
       if (verdicts[id] === 'allow') c.allowed++;
       else if (verdicts[id] === 'block') c.blocked++;
+      else if (verdicts[id] === 'painted') c.painted++;
       else c.covered++;
+      if (unscannedById[id]) c.unscanned++;
     }
     return c;
   }
@@ -414,7 +466,9 @@ const SHIM_JS = `(function () {
         detectorReady: !!window.__fpPersonReady,
         verdicts: verdictsBySource,
         verdictsById: verdicts,
-        covered: c.covered, allowed: c.allowed, blocked: c.blocked, scanned: c.scanned
+        covered: c.covered, allowed: c.allowed, blocked: c.blocked, scanned: c.scanned,
+        painted: c.painted, unscanned: c.unscanned,
+        humanImageMode: humanImageMode
       }, '*');
     } catch (e) { /* parent gone */ }
   }
@@ -443,16 +497,54 @@ const SHIM_JS = `(function () {
   }, 1000);
   setTimeout(function () { clearInterval(readyTimer); }, 120000);
 
+  // Policy from the parent shell (same pattern as the fp-find handler
+  // in content.js). Re-post status so the shell can show the mode.
+  window.addEventListener('message', function (e) {
+    try {
+      if (!e || e.source !== window.parent) return;
+      var d = e.data;
+      if (d && d.type === 'fp-policy' && (d.humanImageMode === 'paint' || d.humanImageMode === 'block')) {
+        humanImageMode = d.humanImageMode;
+        postStatus();
+      }
+    } catch (err) { /* a policy message must never break the shim */ }
+  });
+
   window.browser = { runtime: {
     getURL: function (p) { return '/browser-assets/' + p; },
     sendMessage: function (msg) {
       try {
+        // Review requests are NOT decided here: on the web the review
+        // runs in content.js via window.FpReview, in the app natively.
+        // A review message reaching this shim means FpReview is absent
+        // on the web path — report it unavailable, never decide here.
+        if (msg && msg.type === 'review') {
+          return Promise.resolve({ type: 'review-unavailable', id: msg.id });
+        }
+        // A review OUTCOME (decided by content.js) is recorded, not
+        // decided: update the verdict maps + status so the shell sees
+        // the painted/blocked/allowed state live, without a reload.
+        if (msg && msg.type === 'review-applied' && msg.id &&
+            (msg.verdict === 'allow' || msg.verdict === 'cover' ||
+             msg.verdict === 'block' || msg.verdict === 'painted')) {
+          verdicts[msg.id] = msg.verdict;
+          unscannedById[msg.id] = false;
+          if (msg.source) {
+            var srcKey = msg.source;
+            var m = /\\/browse\\?u=([^&]+)/.exec(msg.source);
+            if (m) { try { srcKey = decodeURIComponent(m[1]); } catch (e) {} }
+            verdictsBySource[srcKey] = msg.verdict;
+          }
+          postStatus();
+          return Promise.resolve({ type: 'review-applied-ok', id: msg.id });
+        }
         var out = { type: 'decisions', decisions: [] };
         if (msg && msg.type === 'scan' && Array.isArray(msg.findings)) {
           for (var i = 0; i < msg.findings.length; i++) {
             var f = msg.findings[i];
-            var v = decide(f);
-            verdicts[f.id] = v;
+            var d = decide(f);
+            verdicts[f.id] = d.verdict;
+            unscannedById[f.id] = !!d.unscanned;
             if (f.source) {
               // Unwrap proxied /browse?u=<original> sources back to the
               // ORIGINAL URL: the shell's download requests carry original
@@ -471,9 +563,12 @@ const SHIM_JS = `(function () {
               // inside this template literal — it would end the literal.
               var m = /\\/browse\\?u=([^&]+)/.exec(f.source);
               if (m) { try { srcKey = decodeURIComponent(m[1]); } catch (e) {} }
-              verdictsBySource[srcKey] = v;
+              verdictsBySource[srcKey] = d.verdict;
             }
-            out.decisions.push({ id: f.id, verdict: v });
+            var dec = { id: f.id, verdict: d.verdict, reason: d.reason };
+            if (d.boxes && d.boxes.length) dec.boxes = d.boxes;
+            if (d.unscanned) dec.unscanned = true;
+            out.decisions.push(dec);
           }
         }
         postStatus();
@@ -489,12 +584,19 @@ const SHIM_JS = `(function () {
 const DETECTOR_SHIM_JS = `window.browser={runtime:{getURL:function(p){return '/browser-assets/'+p;}}};`;
 
 // Scripts injected at the end of every proxied HTML page, in order:
-// shim (defines window.browser) -> face-api -> detector bridge -> content script.
+// shim (defines window.browser) -> face-api -> detector bridge ->
+// review engine (window.FpReview, RF-DETR — MUST load before
+// content.js: content.js calls FpReview.review on the web path, and
+// without this script tag it silently fell back to the native review,
+// which the shim answers 'review-unavailable', so every web review
+// failed with "נישט פֿאַראַן". Fixed 2026-11-19, integration.)
+// -> content script.
 function injectionHtml(proxyInfoJson) {
   return '<script>window.__fpProxy=' + proxyInfoJson + ';</script>'
     + '<script>' + SHIM_JS + '</script>'
     + '<script src="/browser-assets/vendor/face-api.js"></script>'
     + '<script src="/browser-assets/detector.js"></script>'
+    + '<script src="/browser-assets/review.js"></script>'
     + '<script src="/browser-assets/content.js"></script>';
 }
 
@@ -615,6 +717,7 @@ const ASSET_TYPES = {
   '.json': 'application/json; charset=utf-8',
   '.wasm': 'application/wasm',
   '.tflite': 'application/octet-stream',
+  '.bin': 'application/octet-stream',
   '.html': 'text/html; charset=utf-8',
   '.md': 'text/markdown; charset=utf-8',
 };
@@ -624,7 +727,7 @@ const ASSET_TYPES = {
 // would otherwise stay stale for up to 24h (Cache-Control max-age).
 // BUMP THIS whenever a file under public/browser-assets/ changes and
 // the Worker is redeployed; the new key fetches fresh from Pages.
-const ASSET_CACHE_VERSION = '2';
+const ASSET_CACHE_VERSION = '10';
 
 async function serveAsset(path, request, ctx) {
   const assetUrl = PAGES_ORIGIN + '/browser-assets/' + path;
@@ -692,6 +795,70 @@ async function fetchTarget(env, startUrl, request, uaMode) {
   return { blocked: true, reason: 'too many redirects (>' + MAX_REDIRECTS + ')' };
 }
 
+// ---------------------------------------------------------------- review decisions
+// POST /review-decision {image_key, image_url, page_url, decision,
+// model, best_score, boxes, human_image_mode, first_detector} and
+// GET /review-decision?image_key=... — thin proxy to the filter API's
+// /api/v1/review-decisions (sibling C owns the server side). The API
+// token is used server-side only, exactly like checkOneDomain; the
+// token never appears in any client-side file, URL, or injected
+// script. CORS: same addCors as /browse (Pages dashboard origin only).
+const REVIEW_DECISIONS = new Set(['allow', 'allow_painted', 'block', 'uncertain']);
+
+function jsonError(status, message) {
+  return new Response(JSON.stringify({ error: message }), {
+    status,
+    headers: addCors(new Headers({ 'Content-Type': 'application/json' })),
+  });
+}
+
+async function forwardReviewDecision(env, method, apiUrl, body) {
+  const headers = { Authorization: 'Bearer ' + env.API_TOKEN, 'User-Agent': BROWSER_UA };
+  if (body) headers['Content-Type'] = 'application/json';
+  const init = { method, headers };
+  if (body) init.body = JSON.stringify(body);
+  let res;
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+    try {
+      if (env.FILTER_API && typeof env.FILTER_API.fetch === 'function') {
+        res = await env.FILTER_API.fetch(new Request('https://filter-api' + apiUrl, { ...init, signal: ctrl.signal }));
+      } else {
+        res = await fetch(API_BASE + apiUrl, { ...init, signal: ctrl.signal });
+      }
+    } finally { clearTimeout(timer); }
+  } catch (e) {
+    return jsonError(502, 'api-unavailable: ' + String(e && e.message ? e.message : e).slice(0, 200));
+  }
+  const text = await res.text();
+  return new Response(text, {
+    status: res.status,
+    headers: addCors(new Headers({ 'Content-Type': 'application/json' })),
+  });
+}
+
+async function handleReviewDecision(request, env) {
+  if (request.method === 'GET') {
+    const key = new URL(request.url).searchParams.get('image_key');
+    if (!key) return jsonError(400, 'missing image_key');
+    return forwardReviewDecision(env, 'GET', '/api/v1/review-decisions?image_key=' + encodeURIComponent(key), null);
+  }
+  if (request.method !== 'POST') return jsonError(405, 'method not allowed');
+  let body;
+  try { body = await request.json(); } catch (e) { return jsonError(400, 'invalid JSON'); }
+  if (!body || typeof body.image_key !== 'string' || !body.image_key) {
+    return jsonError(400, 'image_key is required');
+  }
+  if (!REVIEW_DECISIONS.has(body.decision)) {
+    return jsonError(400, 'decision must be allow, allow_painted, block or uncertain');
+  }
+  if (body.boxes !== undefined && !Array.isArray(body.boxes)) {
+    return jsonError(400, 'boxes must be an array');
+  }
+  return forwardReviewDecision(env, 'POST', '/api/v1/review-decisions', body);
+}
+
 // ---------------------------------------------------------------- main
 export default {
   async fetch(request, env, ctx) {
@@ -710,6 +877,19 @@ export default {
       const asset = path.slice('/browser-assets/'.length);
       if (!asset || asset.includes('..')) return new Response('not found', { status: 404 });
       return serveAsset(asset, request, ctx);
+    }
+    if (path === '/review-decision') {
+      // CORS preflight for the content script's fire-and-forget POST.
+      if (request.method === 'OPTIONS') {
+        return new Response(null, {
+          status: 204,
+          headers: addCors(new Headers({
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+          })),
+        });
+      }
+      return handleReviewDecision(request, env);
     }
     if (path !== '/browse') return new Response('Not found', { status: 404 });
 

@@ -30,6 +30,7 @@ CONTENT_TYPES = {
     ".mjs": "text/javascript; charset=utf-8",
     ".wasm": "application/wasm",
     ".tflite": "application/octet-stream",
+    ".bin": "application/octet-stream",
     ".jpg": "image/jpeg",
     ".jpeg": "image/jpeg",
     ".png": "image/png",
