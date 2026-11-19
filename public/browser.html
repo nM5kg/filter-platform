@@ -139,8 +139,8 @@
 </div>
 
 <div class="status" id="statusLine">
-  <span>פֿילטער: <b id="stCovered">0</b> באַדעקט • <b id="stAllowed">0</b> דערלויבט • <b id="stBlocked">0</b> בלאָקירט</span>
-  <span>געטשעקט: <b id="stScanned">0</b> עלעמענטן</span>
+  <span>פֿילטער: <b id="stCovered">0</b> באַדעקט • <b id="stAllowed">0</b> דערלויבט • <b id="stBlocked">0</b> בלאָקירט • <b id="stPainted">0</b> געמאָלט</span>
+  <span>געטשעקט: <b id="stScanned">0</b> עלעמענטן • <b id="stUnscanned">0</b> אָן דעטעקציע געוויזן</span>
   <span id="stDetector">דעטעקטאָר: לאָדט זיך…</span>
   <span id="stApi">דאָמעין־טשעק: …</span>
 </div>
@@ -173,7 +173,7 @@
 
   <div class="card">
     <h2>טעסט־בלעטער — איין קליק</h2>
-    <p>די 8 טעסט־בלעטער פֿון דער אַנדרויד־אַפּ (אַלע מיט עכטע פֿאָטאָס / ווידעאָ). מיט אַן אַרבעטנדיקן דעטעקטאָר איז דער ערוואַרטעטער רעזולטאַט: <b>מענטשן → באַדעקט</b>, <b>לאַנדשאַפֿט אָן מענטשן → דערלויבט</b>. אויב אַלץ בלײַבט באַדעקט אויף יעדן בלאַט, אַרבעט דער דעטעקטאָר נישט (דער פֿילטער פֿאַרמאַכט דעמאָלט אַלץ — זיכער, אָבער נישט קיין עכטע דעטעקציע).</p>
+    <p>די 8 טעסט־בלעטער פֿון דער אַנדרויד־אַפּ (אַלע מיט עכטע פֿאָטאָס / ווידעאָ). מיט אַן אַרבעטנדיקן דעטעקטאָר איז דער ערוואַרטעטער רעזולטאַט: <b>מענטשן → באַדעקט</b>, <b>לאַנדשאַפֿט אָן מענטשן → דערלויבט</b>. אַ באַדעקט בילד האָט אַ קנעפּל „בעטן אַ באַשלוס“ — דער צווייטער מאָדעל באַשלאָסט צי עס קען עפֿענען, און ווען יאָ ווערט דער מענטש געמאָלט (אָדער דאָס גאַנצע בילד בלאָקירט, לויט דער סעטטינג). אַ בילד אָן קיין מענטש־סיגנאַל ווערט קיינמאָל נישט באַדעקט — אויך נישט ווען מען קען זײַנע פּיקסלען נישט לייענען. אויסנאַם: WebGL / ווידעאָ / סטרים וואָס מען קען נישט סנאַפּשאָטן בלײַבט באַדעקט.</p>
     <div class="tests" id="testList"></div>
   </div>
 
@@ -181,6 +181,8 @@
     <h2>וואָס די וועב־דעמאָ קען — און וואָס נישט</h2>
     <ul>
       <li><b>קען:</b> טעסטן דעם פֿילטער־מאָטאָר (באַדעקן / דערלויבן / בלאָקירן), דעם מעדיאַפּײַפּ־דעטעקטאָר, די SafeSearch־כּללים און די ייִדישע בלאָק־בלעטער — אויף עפֿנטלעכן אינהאַלט.</li>
+      <li><b>קיין איבער־באַדעקן:</b> אַ בילד אָן קיין מענטש־סיגנאַל ווערט נישט באַדעקט — אויך נישט ווען די פּיקסלען זענען נישט לעזלעך. די איינציקע אויסנאַם: WebGL־Canvas, ווידעאָ און לעבעדיקע סטרימס וואָס מען קען נישט סנאַפּשאָטן בלײַבן באַדעקט, ווײַל מען קען זיי נישט באַווײַזן ריין.</li>
+      <li><b>בעטן אַ באַשלוס / מאָלן:</b> אויף אַ באַדעקט בילד קען מען בעטן אַ באַשלוס פֿונעם צווייטן מאָדעל; ווען געעפֿנט, ווערט דער מענטש געמאָלט (דיפֿאָלט) אָדער דאָס גאַנצע בילד בלאָקירט — זעט סעטטינגס → מענטש־בילדער ווען געעפֿנט. אַ געמאָלט בילד קען מען קיינמאָל נישט אַראָפּלאָדן (די רויע בילד־דאַטן אַנטהאַלטן נאָך דעם מענטש).</li>
       <li><b>קען נישט באַווײַזן:</b> צי די GeckoView־אַפּ עפֿנט זיך אויף אײַער טעלעפֿאָן — דער טעלעפֿאָן־טעסט איז נאָך נייטיק דערפֿאַר.</li>
       <li><b>אונטערשייד:</b> דאָ לויפֿט עס אין Chromium, נישט אין GeckoView; און דער דעטעקטאָר דאָ איז דער JavaScript־EfficientDet, נישט דער געבוירענער RF-DETR־וועג פֿונעם טעלעפֿאָן.</li>
       <li><b>לאָגין / קוקיס:</b> אַרײַנלאָגירן אויף זײַטלעך דורך דעם פּראָקסי אַרבעט מערסטנס נישט — די דעמאָ איז פֿאַר טעסטן דעם פֿילטער אויף עפֿנטלעכן אינהאַלט.</li>
@@ -226,6 +228,7 @@ function saveJson(key, value) { try { localStorage.setItem(key, JSON.stringify(v
 var settings = loadJson('fp_settings_v1', {});
 if (!settings.searchEngine) settings.searchEngine = 'duckduckgo';
 if (!settings.homepage) settings.homepage = Core.DEFAULT_HOMEPAGE;
+if (!settings.humanImageMode) settings.humanImageMode = 'paint';
 function saveSettings() { saveJson('fp_settings_v1', settings); }
 
 function getHistory() { return loadJson('fp_history_v1', []); }
@@ -251,7 +254,7 @@ function newTabState(opts) {
     desktop: false,
     stack: [],
     index: -1,
-    counts: { covered: 0, allowed: 0, blocked: 0, scanned: 0 },
+    counts: { covered: 0, allowed: 0, blocked: 0, scanned: 0, painted: 0, unscanned: 0 },
     detectorReady: false,
     apiCheck: '…',
     dohUnavailable: false,
@@ -349,6 +352,18 @@ function closeTab(id) {
 }
 
 // ---------------------------------------------------------------- navigation
+// Tell every tab's iframe the current human-image policy (paint/block).
+// The iframe may load after the message, so this is also re-posted on
+// fp-loaded and on every navigation (loadTarget / loadIndex).
+function postPolicyTo(tab) {
+  try {
+    if (tab && tab.iframe && tab.iframe.contentWindow) {
+      tab.iframe.contentWindow.postMessage({ type: 'fp-policy', humanImageMode: settings.humanImageMode || 'paint' }, PROXY);
+    }
+  } catch (e) { /* iframe not ready yet — fp-loaded re-posts */ }
+}
+function postPolicy() { tabs.forEach(postPolicyTo); }
+
 function proxyUrl(target, tab) {
   var u = PROXY + '/browse?u=' + encodeURIComponent(target);
   // Desktop-site toggle is per-tab; only the desktop flag adds a param
@@ -361,7 +376,9 @@ function setStatus(counts, detectorReady, apiCheck, dohUnavailable) {
   document.getElementById('stCovered').textContent = counts.covered || 0;
   document.getElementById('stAllowed').textContent = counts.allowed || 0;
   document.getElementById('stBlocked').textContent = counts.blocked || 0;
+  document.getElementById('stPainted').textContent = counts.painted || 0;
   document.getElementById('stScanned').textContent = counts.scanned || 0;
+  document.getElementById('stUnscanned').textContent = counts.unscanned || 0;
   var d = document.getElementById('stDetector');
   d.textContent = 'דעטעקטאָר: ' + (detectorReady ? 'גרייט ✓' : 'לאָדט זיך…');
   d.className = detectorReady ? 'ok' : '';
@@ -413,7 +430,7 @@ function loadTarget(input, push) {
   tab.ntp = false;
   tab.title = '';
   try { tab.title = new URL(target).hostname; } catch (e) {}
-  tab.counts = { covered: 0, allowed: 0, blocked: 0, scanned: 0 };
+  tab.counts = { covered: 0, allowed: 0, blocked: 0, scanned: 0, painted: 0, unscanned: 0 };
   tab.detectorReady = false;
   tab.apiCheck = '…';
   tab.verdicts = {};
@@ -421,6 +438,7 @@ function loadTarget(input, push) {
   addr.value = target;
   setStatus(tab.counts, false, '…', false);
   tab.iframe.src = proxyUrl(target, tab);
+  postPolicyTo(tab);
   if (push !== false) {
     tab.stack = tab.stack.slice(0, tab.index + 1);
     tab.stack.push(target);
@@ -442,7 +460,7 @@ function loadIndex(i) {
   tab.url = target;
   tab.ntp = false;
   try { tab.title = new URL(target).hostname; } catch (e) {}
-  tab.counts = { covered: 0, allowed: 0, blocked: 0, scanned: 0 };
+  tab.counts = { covered: 0, allowed: 0, blocked: 0, scanned: 0, painted: 0, unscanned: 0 };
   tab.detectorReady = false;
   tab.apiCheck = '…';
   tab.verdicts = {};
@@ -450,6 +468,7 @@ function loadIndex(i) {
   addr.value = target;
   setStatus(tab.counts, false, '…', false);
   tab.iframe.src = proxyUrl(target, tab);
+  postPolicyTo(tab);
   updateNavButtons();
   updateBookmarkStar();
   renderTabStrip();
@@ -832,6 +851,34 @@ function renderSettings() {
   };
   body.appendChild(lab2);
   body.appendChild(home);
+  var labHuman = document.createElement('label');
+  labHuman.textContent = 'מענטש־בילדער ווען געעפֿנט';
+  body.appendChild(labHuman);
+  [['paint', 'מאָלן דעם מענטש (דיפֿאָלט)'], ['block', 'בלאָקירן דאָס גאַנצע בילד']].forEach(function (opt) {
+    var wrap = document.createElement('div');
+    wrap.style.padding = '4px 0';
+    var radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = 'fp-human-image-mode';
+    radio.value = opt[0];
+    radio.checked = (settings.humanImageMode || 'paint') === opt[0];
+    radio.onchange = function () {
+      settings.humanImageMode = opt[0];
+      saveSettings();
+      postPolicy();
+      toast('מענטש־בילדער: ' + opt[1]);
+    };
+    var span = document.createElement('span');
+    span.textContent = ' ' + opt[1];
+    span.style.fontSize = '14px';
+    wrap.appendChild(radio);
+    wrap.appendChild(span);
+    body.appendChild(wrap);
+  });
+  var humanNote = document.createElement('p');
+  humanNote.className = 'muted';
+  humanNote.textContent = 'אויב דער מענטש נעמט מער ווי 60% פֿון בילד, ווערט דאָס גאַנצע בילד בלאָקירט אפֿילו אין מאָלן־מאָדוס.';
+  body.appendChild(humanNote);
   var lab3 = document.createElement('label');
   lab3.textContent = 'פֿילטער־סעטטינגס';
   var link = document.createElement('a');
@@ -864,7 +911,7 @@ function renderSettings() {
   about.innerHTML = '<h3 style="margin:0 0 6px;">וועגן דער וועב־דעמאָ</h3>' +
     '<p class="muted">וועב־דעמאָ ווערסיע 0.2.0 (multi-tab shell). דעטעקטאָר: EfficientDet JS (MediaPipe tasks-vision, Apache 2.0). ' +
     'די דעמאָ לויפֿט אין Chromium, נישט אין GeckoView, און נוצט דעם EfficientDet־JS־דעטעקטאָר, נישט דעם RF-DETR־וועג פֿונעם טעלעפֿאָן. ' +
-    'פֿילטער־פּאָליסי: שוועל 0.70; מענטש → באַדעקט; קיין מענטש ≥ 0.70 → דערלויבט; אומבאַקאַנט → באַדעקט (fail closed). ' +
+    'פֿילטער־פּאָליסי: שוועל 0.70; מענטש → באַדעקט (מיט „בעטן אַ באַשלוס“־קנעפּל); קיין מענטש־סיגנאַל → דערלויבט (קיין איבער־באַדעקן); אומבאַקאַנטער דינאַמישער אינהאַלט (WebGL/ווידעאָ/סטרים) → באַדעקט. מענטש־בילדער ווען געעפֿנט: מאָלן (דיפֿאָלט) אָדער בלאָקירן — זעט די סעטטינג אויבן. ' +
     'אַלע דאַטן (געשיכטע, בוקמאַרקס, אַראָפּלאָדס, בלעטער) זענען לאָקאַל אויף דעם דעווייס בלויז — קיין אַקאַונט־סינק.</p>';
   body.appendChild(about);
 }
@@ -972,20 +1019,29 @@ window.addEventListener('message', function (event) {
       recordHistory(msg.target, tab.title);
       persistTabs();
     }
-    tab.counts = { covered: 0, allowed: 0, blocked: 0, scanned: 0 };
+    tab.counts = { covered: 0, allowed: 0, blocked: 0, scanned: 0, painted: 0, unscanned: 0 };
     tab.detectorReady = false;
     tab.apiCheck = msg.apiCheck;
     tab.dohUnavailable = !!msg.dohUnavailable;
+    postPolicyTo(tab); // the iframe just loaded — (re-)send the policy
     if (tab === activeTab()) { updateStatusLine(); renderTabStrip(); }
+  } else if (msg.type === 'fp-policy-request') {
+    // content.js asks once its own listener exists: the posts at
+    // navigation time and on fp-loaded both arrive before content.js
+    // (last injected script) registers its listener, so without this
+    // ask a reloaded tab reviews in the default 'paint' mode even when
+    // the setting is 'block' (found live 2026-11-19).
+    postPolicyTo(tab);
   } else if (msg.type === 'fp-status') {
     if (msg.target) {
       tab.url = msg.target;
       if (tab === activeTab()) addr.value = msg.target;
     }
-    tab.counts = { covered: msg.covered || 0, allowed: msg.allowed || 0, blocked: msg.blocked || 0, scanned: msg.scanned || 0 };
+    tab.counts = { covered: msg.covered || 0, allowed: msg.allowed || 0, blocked: msg.blocked || 0, scanned: msg.scanned || 0, painted: msg.painted || 0, unscanned: msg.unscanned || 0 };
     tab.detectorReady = !!msg.detectorReady;
     tab.apiCheck = msg.apiCheck;
     tab.dohUnavailable = !!msg.dohUnavailable;
+    if (msg.humanImageMode) tab.humanImageMode = msg.humanImageMode;
     if (msg.verdicts && typeof msg.verdicts === 'object') tab.verdicts = msg.verdicts;
     if (msg.verdictsById && typeof msg.verdictsById === 'object') tab.verdictsById = msg.verdictsById;
     if (tab === activeTab()) updateStatusLine();

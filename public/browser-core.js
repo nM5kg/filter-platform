@@ -106,10 +106,13 @@
   // Gate a download request from the iframe.
   //   url            - the requested download URL
   //   blockedHosts   - array of blocked hostnames (exact host or subdomain)
-  //   elementVerdict - 'allow' | 'cover' | 'block' | 'review' | null/undefined
-  // BLOCK when: host is blocked; verdict is cover/block/review; verdict is
-  // null/unknown AND the URL looks like an image (extension before ?/# —
-  // URL.pathname already excludes query/fragment); scheme is not http(s).
+  //   elementVerdict - 'allow' | 'cover' | 'block' | 'review' | 'painted' | null/undefined
+  // BLOCK when: host is blocked; verdict is cover/block/review/painted;
+  // verdict is null/unknown AND the URL looks like an image (extension
+  // before ?/# — URL.pathname already excludes query/fragment); scheme
+  // is not http(s). 'painted' is blocked even though the image is
+  // visible: the paint overlays only hide the person on screen, the
+  // raw bytes still contain the person, so they must never download.
   // Otherwise ALLOW.
   function decideDownload(url, blockedHosts, elementVerdict) {
     var parsed;
@@ -126,7 +129,7 @@
         return { allowed: false, reason: 'blocked-host' };
       }
     }
-    if (elementVerdict === 'cover' || elementVerdict === 'block' || elementVerdict === 'review') {
+    if (elementVerdict === 'cover' || elementVerdict === 'block' || elementVerdict === 'review' || elementVerdict === 'painted') {
       return { allowed: false, reason: 'verdict-' + elementVerdict };
     }
     if ((elementVerdict === null || elementVerdict === undefined || elementVerdict === '') &&
