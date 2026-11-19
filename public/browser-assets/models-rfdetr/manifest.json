@@ -1,0 +1,51 @@
+{
+  "model": "rf-detr-nano",
+  "format": "onnx",
+  "opset": 17,
+  "input": "input [1,3,384,384] float32",
+  "totalBytes": 116607449,
+  "sha256": "26728b72ccbb264678566993bc63007d48622490d547aff950814c9f9bee0851",
+  "chunkBytes": 14680064,
+  "chunks": [
+    {
+      "file": "rfdetr-nano.onnx.part00.bin",
+      "bytes": 14680064,
+      "sha256": "c02a665fe1b6dd7c68830e03cafa964e4c922f74a7bc7cf18036f28fcfc20de4"
+    },
+    {
+      "file": "rfdetr-nano.onnx.part01.bin",
+      "bytes": 14680064,
+      "sha256": "34379a0298f80eba2aa09bfccc8812ac5e02ba7cd8bddc9d8307576231166da7"
+    },
+    {
+      "file": "rfdetr-nano.onnx.part02.bin",
+      "bytes": 14680064,
+      "sha256": "5a9962c959f3cba1f0636fd375d7a8fb51e5564ba25f9f5fd8808161b3a291ed"
+    },
+    {
+      "file": "rfdetr-nano.onnx.part03.bin",
+      "bytes": 14680064,
+      "sha256": "8dc09a4f17c4bd8a7adb37ca542fb42d0e4c6f0d70a212a043a7b287c70a9a61"
+    },
+    {
+      "file": "rfdetr-nano.onnx.part04.bin",
+      "bytes": 14680064,
+      "sha256": "1085a0ae15ead3069eda00b9713296a975176f081f69827ce784f75716579684"
+    },
+    {
+      "file": "rfdetr-nano.onnx.part05.bin",
+      "bytes": 14680064,
+      "sha256": "e3b3fc3e19f573fa81e6e0cc7ea469714e0cb19a8094fcf5d59d0d50d3837a88"
+    },
+    {
+      "file": "rfdetr-nano.onnx.part06.bin",
+      "bytes": 14680064,
+      "sha256": "96a93b35c398d8b6a54a59e246624a3eb31b4fcbc64b79d4a90af7cc5daa2b61"
+    },
+    {
+      "file": "rfdetr-nano.onnx.part07.bin",
+      "bytes": 13847001,
+      "sha256": "da447beb7a3afb1d4120120e72d71071a17c6e8bbdacfac496e69006dedbed87"
+    }
+  ]
+}
