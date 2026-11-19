@@ -1,11 +1,33 @@
 # Filter Platform — Master Architecture Plan (updated)
 
 **Status:** updated 2026-11-18 ~12:54 EST per Yakob's five decisions (see
-Decisions log below). This is the single authoritative plan for the whole
+Decisions log below). Updated 2026-11-19: tech list folded in from
+`TECH-STACK.md` (Yakob's authoritative list, 2026-11-19) and the model
+choice decided — **RF-DETR is the officially agreed model** (Yakob,
+2026-11-19 ~02:28–02:30 EST, "אונזער נייע אפמאך. אפיציעלע"), pending
+CPU measurements. This is the single authoritative plan for the whole
 platform. Where an older doc disagrees with this file, **this file wins** —
 the older doc is marked stale in place where noted. Corrected 2026-11-18
 ~19:15 EST: decision 4 (the `other_tcp` setting does not exist — nothing
 for Yakob to do) and the extension bullets (now v1.2.0) updated.
+
+**Precedence rule (Yakob, 2026-11-19):** ALWAYS use this updated plan
+first. Where it does NOT cover something, use the LATEST version of the
+original Master Technical Architecture (the document re-sent 2026-11-19,
+including its testing plan in `TESTING-PLAN.md`). If the two ever
+disagree, this updated plan wins — and the disagreement must be flagged,
+not silently picked. Known disagreements flagged: (1) the original says
+"Browser Foundation: Chromium" (§3, §15) — this plan says GeckoView
+Stable (decision 1). (2) The original lists a longer stack (Chromium,
+OpenVINO, Hugging Face, PyTorch, Queues, R2, WAF, Turnstile) — the
+authoritative tech list is now `TECH-STACK.md` (Yakob, 2026-11-19; see
+"Technology list" below): those are the **chosen** technologies, and
+only GitHub / Cloudflare / Neon (+ Playwright as test tooling) are
+**live-connected** today; Queues/R2 are deferred until the scanner
+becomes a deployed service, WAF/Turnstile until production hardening;
+GeckoView/Kotlin are the app stack (phone work parked); OpenVINO/ONNX/
+OpenCV/OMZ/Hugging Face/PyTorch are model tooling and research sources,
+not accounts to connect.
 
 **What this plan covers:** the free kosher internet filter platform —
 own Android browser app + own Filtering Engine, AI Visual Protection
@@ -76,25 +98,58 @@ upstream is concretely exposed, and Cromite's current Chromium version
 could not even be verified that day (in October it was 4 behind: 153 vs
 157).
 
-### 2. EfficientDet-Lite0: prototype and first testing ONLY
+### 2. Person-detection model — DECIDED 2026-11-19: RF-DETR (official agreement)
 
-- Keep EfficientDet-Lite0 for **prototype and first testing**.
-- **Do NOT confirm it as the production model** until the exact model
+- **RF-DETR is the officially agreed model** (Yakob, 2026-11-19
+  ~02:28–02:30 EST: "אונזער נייע אפמאך. אפיציעלע"). Apache 2.0, free
+  for commercial use; weights run on our own hardware; **no API
+  credits, no per-image or per-customer payment**; Nano, Small, Base,
+  Medium and Large versions; CPU + ONNX support. One shared AI server
+  serves all 10,000 customers — the server, electricity and
+  infrastructure still cost money; only the model/API is $0.
+  Roboflow's own hosted inference is **NOT** used — self-hosted only.
+  Not every model in Roboflow's system has the same license: RF-DETR's
+  own license must be verified from its own repo (see
+  `scanner/models/PRODUCTION-MODELS.md` §3 — repo LICENSE + README
+  already verified Apache 2.0 there on 2026-11-18; the CPU benchmark
+  re-verifies it from the repo and records hashes).
+- **CPU proof DONE 2026-11-19 (measured, not claimed):** RF-DETR Nano
+  + Small benchmarked on CPU on the 16-photo labeled set (ONNX Runtime,
+  2 threads, this VM): **Nano — 327 ms infer / 422 ms end-to-end,
+  2.37 img/s, recall 1.000 @0.50 / 0.909 @0.70, precision 1.000,
+  0.71 GB peak RSS; Small — 572 ms / 658 ms, 1.52 img/s, recall
+  1.000 @0.50 / 0.727 @0.70, precision 1.000.** Both beat the
+  EfficientDet-Lite0 baseline (recall 0.727 @0.50 / 0.455 @0.70) with
+  zero false positives; Nano fixes the baseline's worst gap (the two
+  back-view photos score 0.974 and 0.832). **Nano is the recommendation**
+  — Small costs 1.75× the compute for no gain here. Honest capacity:
+  one Nano stream ≈ 2.4 img/s; a 20-image page is ~8.5 s single-stream,
+  ~2–3 s with 4 workers — fine for cover-until-decided still-image
+  scanning with caching/dedup, not live video. Full numbers, sources,
+  hashes: `scanner/models/RF-DETR-BENCHMARK.md`. Limits: n=16 only;
+  no real-site validation yet; INT8, batching, video not tested.
+- Keep EfficientDet-Lite0 for **prototype and first testing ONLY**.
+  **Do NOT confirm it as the production model** until the exact model
   weights, hash, source and license are confirmed.
-- For production, research **Intel Person Detection** and other
-  clearly-licensed models.
+- Intel person-detection-0202 stays a **candidate** (Apache 2.0
+  verified from the repo, but published checksums do not match the
+  served files and Intel recommends written confirmation before
+  commercial shipment).
 - Check **all upstream dependencies AND model weights**, not just the
   program license.
 
 **Current evidence (2026-11-18):** Google's own docs name the model but
-give no weights license — there is no Google page to confirm from. Three
-independent second sources say **Apache 2.0** (pub.dev: files byte-for-byte
-identical to Google's official builds; PitchOverlay; KTag SBOM). The
+give no weights license — there is no Google page to confirm from. Two
+second sources say **Apache 2.0** (pub.dev: files byte-for-byte
+identical to Google's official builds — strictly the float32 build, not
+our float16 file; PitchOverlay). A third claimed source ("KTag SBOM")
+could not be located at all and is treated as non-existent. The
 TF Hub page itself cannot be read (redirects to Kaggle behind a wall).
 Record it as Apache 2.0 on the second sources, verify before commercial
-sale — or plan the Intel transition for the commercial version. Intel OMZ
-person-detection-0202 is **Apache 2.0, verified**, but not chosen (IR-only,
-needs an ONNX/TFLite path). YOLO is **excluded** (AGPL-3.0).
+sale — moot for production now that RF-DETR is agreed, unless RF-DETR
+fails on CPU. Intel OMZ person-detection-0202 is **Apache 2.0,
+verified**, but not chosen (IR-only, needs an ONNX/TFLite path). YOLO is
+**excluded** (AGPL-3.0).
 
 **Measured today (scanner v0.2.0, labeled test set of 16 real photos):**
 precision 1.000, recall 0.455 (face-only would be 0.18); 3 missed outright
@@ -204,18 +259,138 @@ the Android browser sees — that proof now lives inside GeckoView.
 
 ---
 
+## Technology list — chosen vs live-connected (Yakob, 2026-11-19)
+
+Source: `TECH-STACK.md` — Yakob's authoritative tech list (latest
+version, 2026-11-19). **Nuance he stressed: these are the CHOSEN
+technologies, NOT all confirmed active connections or paid accounts.**
+Do not claim a live connection for anything in the "chosen" column.
+
+| Technology | Role | Status today |
+|---|---|---|
+| GitHub | Code, versions, tests, CI/CD | **Live-connected** (nM5kg/filter-platform) |
+| Cloudflare | Workers, DNS, Queues, R2, WAF, security | **Live-connected** (Workers + Pages; Queues/R2/WAF/Turnstile deferred — see below) |
+| Neon | Postgres — customers, policies, settings, logs | **Live-connected** (filter DB) |
+| Playwright | Automated website tests | **Live-connected as test tooling** (in use) |
+| Mozilla GeckoView | Foundation of the own Android browser | **Chosen app stack** — phone work parked; computer first |
+| Kotlin | Building the Android app + browser | **Chosen app stack** — phone work parked |
+| OpenVINO | Optimizing AI models on CPU | Model tooling / research source, not an account |
+| ONNX Runtime | Running AI models | Model tooling (runtime for the RF-DETR ONNX export) |
+| OpenCV | Image processing | Model tooling / research source, not an account |
+| Intel Open Model Zoo | Trying open-source models | Research source (person-detection-0202 candidate) |
+| Hugging Face | Finding and checking models | Research source (model cards / weights) |
+| PyTorch | Training or adapting models, if needed | Model tooling, not an account |
+
+How it fits together: own Android browser (Kotlin + GeckoView); our own
+Filter Engine (DNS + Website Scanner + AI Visual Filter + Ad Filter);
+Cloudflare for infrastructure and security; Neon for the database;
+GitHub for the code and development. Stay with GeckoView — do not build
+an own browser engine from scratch (Mozilla confirms GeckoView is made
+for building own Android browsers).
+
+**Still open (2026-11-19):** which CPU server will run the models;
+which model licenses are safe for commercial use (RF-DETR's own license
+is verified from its repo; commercial-use confirmation still prudent);
+the final GeckoView tests. The exact AI model question is **decided**
+(RF-DETR, decision 2 above) — what remains is proving it on CPU.
+
+---
+
+---
+
+## Distribution — own website Download Center (decided by Yakob, 2026-11-19 ~02:39 EST)
+
+**Our own website is the central Download Center. NO Chrome Web Store,
+NO Google Play. Do NOT open those accounts — this saves the $5
+(Chrome Web Store developer account, one-time) + $25 (Google Play
+developer account, one-time). Cost of both stores: $0, because neither
+is used.** Distribution is: extension ZIP + (later) Android APK, served
+from our own site, with `public/versions.json` as the version manifest.
+
+**Version / update-check design:** the site knows the current version.
+`public/versions.json` lists each product (extension, android) with
+`version`, `status`, `download_url` (or `null` when not downloadable),
+`sha256`, `size_bytes` and a Yiddish note. The extension and (later) the
+app check against `versions.json` to learn the current version — no store
+does the update check for us. The extension ZIP (`public/our-filter-
+extension-1.2.1.zip`, ~11 MB) is served from Cloudflare Pages, which
+allows it; the APK is not (see hosting below).
+
+**Release-signing rule:** a debug key is **NOT** for distribution. Only
+a release-signed build is distributed. The current Android test build
+(0.2.0, versionCode 5) is signed with a self-generated debug key
+(`CN=Filter Platform Debug, OU=Dev, O=Filter Platform`, RSA 2048,
+self-signed, created by `android/manual-build/build.sh` step 6) — it
+must never be offered as a public download. Before the app ships, a
+separate release key is created and kept safe, the app is rebuilt and
+signed with it, and the Download Center publishes that build's SHA-256
+and size. Until then the Android section of the Download Center shows
+"test build — not for public download yet" and no download button points
+at the debug APK. Android section content lives in
+`public/download-android-snippet.html` (Yiddish RTL, incl. the
+"Install unknown apps" steps for a non-technical customer).
+
+**Honest limitations (tell the customer, don't hide them):**
+- Chrome "Load unpacked" (developer-mode) install of the extension
+  shows Chrome's own warnings; that is the sideload path while there is
+  no store listing.
+- Android "Install unknown apps" warning: because the APK does not come
+  from Google Play, Android asks the user to allow installs from the
+  browser once. The Download Center explains the steps in Yiddish.
+- No store means no store review, no store auto-update, no store trust
+  badge — the site itself (versions.json + SHA-256 on the page) is the
+  trust mechanism. Customers must download only from our site, never
+  from a stranger's link.
+
+**APK hosting path + status (measured 2026-11-19 ~02:41–02:45 EST):**
+the APK is 211,176,487 bytes — Cloudflare Pages cannot serve it (25 MB
+per-file limit), so Pages is out for the APK. Cloudflare R2 would fit
+it (free tier 10 GB storage, $0 egress) but **R2 is not enabled on the
+account**: both `GET /accounts/{id}/r2/buckets` and `POST` (bucket
+create attempt) return 403 error 10042, "Please enable R2 through the
+Cloudflare Dashboard." This is an **account capability, not a token
+scope** — the same token returns 200 for accounts and Workers. There
+is **no API path** to enable R2; it needs Yakob (account owner) in the
+dashboard (dash.cloudflare.com → R2 → Enable/Purchase R2) and Cloudflare
+requires a payment method (card/PayPal) on file to enable it, even for
+the free tier ($0 charged inside the free tier). That is a Yakob
+decision — no payment was made and no bucket was created.
+**Recommended path: R2 once Yakob enables it** (own infrastructure,
+$0 at our size). Until then the only copy is the private Google Drive
+file (`FilterPlatform-GeckoView-prototype.apk`, id
+`1kM62lnbYwCIf41f8gGhQ3ki5Ra_i2DMW`, owner-only — NOT publicly
+shared; size 211,176,487 bytes and MD5
+`948758d35de69213d708490df94a658e` verified identical to the local
+build) — it is a backup, not a public download. GitHub Release asset
+would also fit (2 GB limit) but needs a release created by hand / by
+the coordinator (no GitHub token on this VM) and a public repo means a
+public file, so only ever for a release-signed build.
+**APK build facts (0.2.0, measured):** package `com.filterplatform.app`,
+versionCode 5, versionName 0.2.0, minSdk 26, targetSdk 34; SHA-256
+`a355e65353d53006d32eac78669c72636deabc314562368e7a378c1a22e1ea09`;
+`apksigner verify`: v2 true, v3 true, v1 false; one signer, cert
+SHA-256 `2363a49c3b052f4363b3d08f5634fba35a2f6397a435ba4914b21703428053b6`.
+Phone work stays parked: 0.2.0 crashes on Yakob's phone ("same as
+before") until the computer version is proper.
+
+**`CHROME-WEB-STORE-PILOT.md` is SUPERSEDED by this decision** (kept in
+the repo as a record, not deleted): its $5 account, review timeline and
+submission checklist no longer describe the plan. Do not act on it
+without a new decision from Yakob.
+
 ## What stays unchanged
 
 - **Phase 1 Core Platform** (`ARCHITECTURE.md`): Neon + Cloudflare Worker
   + Pages dashboard, 13 tables, default Standard policy (block images +
   explicit words, rest open), auto-decide threshold 0.70, uncertain stays
   blocked. All verified live; dogfood green.
-- **Browser extension** (`extension/`): v1.2.0, MV3, policy fetch, DNR
+- **Browser extension** (`extension/`): v1.2.1, MV3, policy fetch, DNR
   blocklist (domains 1000+, ads 5000+ gated on `filter_ads`), on-device
   **person** detection (MediaPipe EfficientDet-Lite0 + face fallback,
   fail-closed), Yiddish block page, SafeSearch enforcement
-  (Google/Bing/DuckDuckGo). The desktop/Android-via-Vivaldi path until
-  the own browser ships. Verified on real sites (BBC 44 human blocked,
+  (Google/Bing/DuckDuckGo), own-website update check (v1.2.1, checks
+  `versions.json`, popup banner). The desktop/Android-via-Vivaldi path
+  until the own browser ships. Verified on real sites (BBC 41 human blocked,
   Wikipedia 4, test page 7).
 - **Server-side scanner** (`scanner/`): stays as the pre-rendering /
   approval-engine check; its Chromium results no longer stand in for
@@ -233,10 +408,93 @@ the Android browser sees — that proof now lives inside GeckoView.
   queue only for the small uncertain remainder. Who reviews that
   remainder (Yakob alone or a team) is still undecided.
 
+## Testing plan — acceptance checklist (computer version first)
+
+Source: `TESTING-PLAN.md` (from the re-sent Master Technical Architecture,
+Yakob 2026-11-19). This is the acceptance checklist for the computer
+version first, and later for the app. **Base note:** the re-sent document
+still says "Browser Foundation: Chromium" (§3, §15) — decision 1 above
+(GeckoView Stable) wins where it disagrees; GeckoView stays the base.
+
+**Work instructions (§16 of the plan):** review the existing
+GitHub/Cloudflare/Neon work first; do NOT rebuild what already exists;
+do NOT create unnecessary second services; do NOT claim any feature is
+finished until it is actually built and tested.
+
+**What to test:** big websites, small websites, dynamic websites,
+images, videos, Canvas, WebGL, CSS backgrounds, animations, lazy
+loading, live content, slow internet, CPU overload, cache, 10,000
+customer simulation.
+
+**Measures for each test:** website load time, scan time, AI inference
+time, CPU usage, RAM usage, detection accuracy, false positives, false
+negatives, cache hit rate.
+
+**Results so far (2026-11-19 — re-run done, see
+`extension/verify/VERIFY-rereun-2026-11-19.md`):**
+- Big websites (extension v1.2.1, re-verified 2026-11-19): Wikipedia
+  23/23 scanned, 2 human blocked; BBC 134/134 scanned, **41 human
+  blocked**; Commons **unmeasured this run** (only 2 footer logos
+  rendered — galleries didn't load, flaky rendering, not a detector
+  change); example.com ALLOW.
+- Small websites: example.com ALLOW (v1.2.0/v1.2.1).
+- 16-photo test set (extension): precision 1.000, recall **0.727** @0.50
+  / 0.455 @0.70, 0 FP, 3 FN (back-view soldier, behind-back, lone beach
+  walker — missed to ALLOW, as before).
+- Images / video / Canvas (scanner v0.2.0, real media): Obama video
+  BLOCK paused + playing; canvas drawImage + animated frames BLOCK;
+  landscape control ALLOW. **Extension Canvas/video: NOT HANDLED —
+  the largest gap found 2026-11-19.** The Huang portrait drawn with
+  `drawImage` stays visible; the animated canvas and the Obama video
+  (paused and playing) stay visible; only the same portrait as a plain
+  `<img>` gets blocked. The extension has no canvas/video code at all.
+  Needs a build decision from Yakob — not a re-test.
+- Dynamic content: extension covers it via MutationObserver (Phase 2
+  test page: dynamic + lazy images correct). CSS backgrounds: Einstein
+  background-image blocked correctly. Per-case test page: all HTML
+  images, CSS-background, dynamic and lazy cases correct.
+- WebGL / live streams / animations: NO test page exists — recorded as
+  gaps, nothing invented.
+- Live content / live streams: not verified anywhere yet.
+- Slow internet (slow-3G Wikipedia): page loads in 4.1 s, same verdicts
+  as unthrottled (2 human blocked).
+- CPU overload (4x-throttled BBC): verdicts byte-identical to
+  unthrottled (41 human), just slower (model ready 27 s vs ~6.5 s).
+  Inference ~1.1–1.8 s per image. Chromium ~1.2–1.8 GB total RSS
+  (rough snapshot, not profiling).
+- Cache: classify twice — first `cached: false`, second `cached: true`,
+  same approve 0.95 verdict (example.com and example.org). The 24h
+  cache works; repeat-classify hit rate 2/2.
+- 10,000-customer simulation: not run yet — no load-test setup here,
+  and hammering the live free-tier Worker + Neon would risk the real
+  service. Needs a staged load-test plan with rate limits.
+- Google Images: still unverified — Google serves `/sorry` (bot-check)
+  to headless Chromium (HTTP 429 this run; no CAPTCHA attempted);
+  needs a real-browser test.
+- **RF-DETR CPU benchmark (2026-11-19, `scanner/models/
+  RF-DETR-BENCHMARK.md`):** Nano 327 ms infer / 422 ms e2e, 2.37 img/s,
+  recall 1.000 @0.50 / 0.909 @0.70, precision 1.000; Small 572 ms /
+  658 ms, 1.52 img/s, recall 1.000 @0.50 / 0.727 @0.70. Both beat the
+  EfficientDet baseline. **Nano recommended.**
+
 ## Open items / caveats (carried over — do not lose these)
 
-1. EfficientDet weights license unconfirmed from Google (second sources
-   say Apache 2.0); production-model research (Intel + others) still open.
+1. **Model decision made 2026-11-19: RF-DETR is the officially agreed
+   model** (decision 2 above). CPU proof DONE: Nano recommended
+   (327 ms infer, recall 1.000 @0.50 / 0.909 @0.70, precision 1.000 —
+   see `scanner/models/RF-DETR-BENCHMARK.md`). Still open: real-site
+   validation of RF-DETR, INT8/batching/video, DINOv2 backbone
+   provenance (not separately traced). EfficientDet weights license
+   still unconfirmed from Google (second sources say Apache 2.0) —
+   prototype-only, moot for production unless RF-DETR fails. Intel
+   person-detection-0202 stays a candidate (written confirmation +
+   hash mismatch still open).
+2. **Extension Canvas + video NOT handled (found 2026-11-19 — the
+   largest gap).** The scanner blocks canvas/video; the extension has
+   no canvas/video code at all (drawImage portrait, animated canvas,
+   Obama video paused + playing all stay visible). Needs a build
+   decision from Yakob: frame sampling (canvas `toDataURL`, video
+   frame grabs) + performance/correctness design — not a re-test.
 2. Person-detection recall 0.455 — back views and distant walkers missed.
 3. Google Images unverified — Google serves `/sorry` (bot-check) to
    headless Chromium; needs a real browser test (the GeckoView prototype
@@ -254,8 +512,12 @@ the Android browser sees — that proof now lives inside GeckoView.
    source — test in the prototype.
 8. `compileSdk`/`targetSdk` for GeckoView 160 unverified (skeleton at 34).
 9. Cloudflare Queues/R2 not wired (scanner is still a local prototype,
-   not a service). Phase 5 (device apps/MDM) and Phase 6 (production)
-   not started.
+   not a service). **R2 status determined 2026-11-19:** not enabled on
+   the account — API returns 403 error 10042 for both list and create;
+   enabling needs Yakob in the dashboard + a payment method on file
+   (free tier, $0 inside it); no API path. See "Distribution" above for
+   the APK hosting path. Phase 5 (device apps/MDM) and Phase 6
+   (production) not started.
 10. Transitive-license check of the final Gradle dependency tree before
     commercial shipment; a lawyer's look at LICENSES.md before sale is
     the safer step (not legal advice).
@@ -278,6 +540,11 @@ the Android browser sees — that proof now lives inside GeckoView.
   still open with Yakob, so there is no WebView-based filtering here yet"
   — **decided: GeckoView**; no engine code in the app yet, prototype is
   the next step.
+- `CHROME-WEB-STORE-PILOT.md` — the whole file is **SUPERSEDED**
+  (decision 2026-11-19 ~02:39 EST): no Chrome Web Store, no Google Play;
+  distribution is the own-website Download Center. Kept as a record, not
+  deleted; do not act on its $5-account / submission checklist without a
+  new decision from Yakob.
 - `scanner/README.md` framing of the scanner as the proof of what users
   see — it proves the server-side pipeline; the in-browser proof now
   belongs to the GeckoView prototype (decision 3).

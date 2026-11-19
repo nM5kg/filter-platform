@@ -1,0 +1,122 @@
+diff -ru extension/background.js extension-staging/background.js
+--- extension/background.js	2026-11-19 07:23:23.421940950 +0000
++++ extension-staging/background.js	2026-11-19 07:43:39.839992724 +0000
+@@ -5,6 +5,34 @@
+ // the real token is NEVER bundled in this extension.
+ 
+ const API_BASE = 'https://filter-platform-api.gavhah-copy.workers.dev';
++const VERSIONS_URL = 'https://filter-platform-dashboard.pages.dev/versions.json';
++const UPDATE_CHECK_MINUTES = 360; // every 6 hours
++
++// Update check (v1.2.1): our own website is the Download Center — no
++// Chrome Web Store. Fetch the public versions.json, compare with this
++// extension's manifest version, and store an updateAvailable flag for
++// the popup banner. A failed fetch (offline, site down) leaves the
++// previous flag alone and never shows a false update.
++async function checkForUpdates() {
++  try {
++    const res = await fetch(VERSIONS_URL, { cache: 'no-store' });
++    if (!res.ok) throw new Error('versions.json HTTP ' + res.status);
++    const data = await res.json();
++    const latest = data && data.extension && data.extension.version;
++    const current = chrome.runtime.getManifest().version;
++    const available = !!(latest && latest !== current);
++    await chrome.storage.local.set({
++      fpUpdateAvailable: available,
++      fpLatestVersion: latest || null,
++      fpUpdateCheckedAt: new Date().toISOString()
++    });
++    console.log('[fp] update check: current', current, 'latest', latest, 'updateAvailable', available);
++    return available;
++  } catch (err) {
++    console.warn('[fp] update check failed (kept previous flag):', err.message);
++    return null;
++  }
++}
+ const RULE_ID_START = 1000;
+ const ADS_RULE_ID_START = 5000; // ads/tracker rules live in their own id range
+ const BLOCK_REDIRECT_ID_START = 3000; // main-frame redirect -> blocked.html
+@@ -354,9 +382,12 @@
+ chrome.runtime.onInstalled.addListener(() => {
+   console.log('[fp] installed — open the popup to paste token + device id.');
+   chrome.alarms.create('fp-sync', { periodInMinutes: 60 });
++  chrome.alarms.create('fp-update-check', { periodInMinutes: UPDATE_CHECK_MINUTES });
++  checkForUpdates();
+ });
+ 
+ chrome.runtime.onStartup.addListener(async () => {
++  checkForUpdates();
+   const { token } = await getSettings();
+   if (token) await sync();
+ });
+@@ -365,6 +396,8 @@
+   if (alarm.name === 'fp-sync') {
+     const { token } = await getSettings();
+     if (token) await sync();
++  } else if (alarm.name === 'fp-update-check') {
++    await checkForUpdates();
+   }
+ });
+ 
+@@ -392,6 +425,10 @@
+       });
+     } else if (msg && msg.type === 'refresh') {
+       sendResponse(await sync());
++    } else if (msg && msg.type === 'checkUpdate') {
++      // Manual trigger for the update check (used by the popup refresh and
++      // by verification); the scheduled path is onStartup + the 6h alarm.
++      sendResponse({ updateAvailable: await checkForUpdates() });
+     } else if (msg && msg.type === 'report') {
+       // Content script page stats (per-page, merged into totals).
+       const prev = (await chrome.storage.local.get(['fpStats'])).fpStats || {
+diff -ru extension/popup.html extension-staging/popup.html
+--- extension/popup.html	2026-11-19 07:23:11.635940448 +0000
++++ extension-staging/popup.html	2026-11-19 07:43:29.370992279 +0000
+@@ -16,11 +16,14 @@
+   .status { margin-top: 12px; padding: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 13px; white-space: pre-wrap; word-break: break-word; }
+   .ok { color: #047857; } .bad { color: #b91c1c; }
+   .hint { font-size: 12px; color: #6b7280; margin-top: 6px; }
++  .update-banner { display: none; margin-top: 10px; padding: 10px; background: #fef7e0; border: 1px solid #d9a400; border-radius: 6px; font-size: 13px; font-weight: 600; color: #7a5a00; }
++  .update-banner a { color: #174ea6; }
+ </style>
+ </head>
+ <body>
+   <h1>🛡️ פֿילטער פּלאַטפאָרם</h1>
+   <p class="sub">Free kosher internet filter — Phase 2 (browser)</p>
++  <div class="update-banner" id="updateBanner">⬆️ אַ נײַע ווערסיע איז דאָ (<span id="updateVersion"></span>) — <a href="https://filter-platform-dashboard.pages.dev/download.html" target="_blank">לאָדט זי אַראָפּ פֿון אונדזער וועבזײַטל</a></div>
+ 
+   <label for="token">API טאָוקן</label>
+   <input id="token" type="password" placeholder="paste your API token" autocomplete="off">
+diff -ru extension/popup.js extension-staging/popup.js
+--- extension/popup.js	2026-11-19 07:23:21.684940876 +0000
++++ extension-staging/popup.js	2026-11-19 07:44:18.574994373 +0000
+@@ -110,6 +110,21 @@
+   }
+ }
+ 
++// Update banner (v1.2.1): shown when background.js found a newer version
++// in versions.json on our own website. Hidden when versions match.
++async function loadUpdateBanner() {
++  const s = await chrome.storage.local.get(['fpUpdateAvailable', 'fpLatestVersion']);
++  const banner = $('updateBanner');
++  if (s.fpUpdateAvailable && s.fpLatestVersion) {
++    $('updateVersion').textContent = 'ווערסיע ' + s.fpLatestVersion;
++    // 'block', not '' — the .update-banner CSS rule sets display:none,
++    // so clearing the inline style would keep it hidden.
++    banner.style.display = 'block';
++  } else {
++    banner.style.display = 'none';
++  }
++}
++
+ async function loadState() {
+   const s = await chrome.storage.local.get([
+     'fpToken', 'fpDeviceId', 'fpCustomerId', 'fpDemoMode', 'fpStatus', 'fpStats'
+@@ -120,6 +135,7 @@
+   $('demoMode').value = s.fpDemoMode || 'policy';
+   renderStatus(s.fpStatus, s.fpStats);
+   loadManagedInfo();
++  loadUpdateBanner();
+ }
+ 
+ function renderStatus(st, stats) {

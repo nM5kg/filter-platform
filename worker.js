@@ -249,21 +249,72 @@ export default {
         // the actual value instead; a false flag now really stays false.
         const asBool = (v, d) => (v === undefined ? d : !!v);
         const strictness = isInt(body.strictness) && body.strictness >= 1 && body.strictness <= 3 ? body.strictness : 2;
-        const rows = await sql(env, `INSERT INTO policies (name, description, strictness, cover_images, block_images, filter_videos, filter_ads, require_approval_for_new_sites, force_safesearch)
-          VALUES (${lit(body.name)}, ${lit(b("description", null))}, ${strictness}, ${asBool(b("cover_images", true), true)}, ${asBool(b("block_images", false), false)}, ${asBool(b("filter_videos", true), true)}, ${asBool(b("filter_ads", true), true)}, ${asBool(b("require_approval_for_new_sites", true), true)}, ${asBool(b("force_safesearch", true), true)}) RETURNING *`);
+        const isDefault = asBool(b("is_default", false), false);
+        let threshold = 0.70;
+        if (body.auto_decide_threshold !== undefined && body.auto_decide_threshold !== null) {
+          const t = typeof body.auto_decide_threshold === "number" ? body.auto_decide_threshold : Number(body.auto_decide_threshold);
+          if (typeof body.auto_decide_threshold === "boolean" || !Number.isFinite(t) || t <= 0 || t > 1) {
+            return json({ error: "auto_decide_threshold must be a number greater than 0 and at most 1" }, 400);
+          }
+          threshold = t;
+        }
+        // Exactly one default policy: clear the flag everywhere first.
+        if (isDefault) {
+          await sql(env, `UPDATE policies SET is_default = false WHERE is_default = true`);
+        }
+        const rows = await sql(env, `INSERT INTO policies (name, description, strictness, cover_images, block_images, filter_videos, filter_ads, require_approval_for_new_sites, force_safesearch, is_default, auto_decide_threshold)
+          VALUES (${lit(body.name)}, ${lit(b("description", null))}, ${strictness}, ${asBool(b("cover_images", true), true)}, ${asBool(b("block_images", false), false)}, ${asBool(b("filter_videos", true), true)}, ${asBool(b("filter_ads", true), true)}, ${asBool(b("require_approval_for_new_sites", true), true)}, ${asBool(b("force_safesearch", true), true)}, ${isDefault}, ${threshold}) RETURNING *`);
         const p = rows[0];
         await sql(env, `INSERT INTO policy_versions (policy_id, version, snapshot) VALUES (${lit(p.id)}, 1, ${lit(JSON.stringify(p))}::jsonb)`);
         await audit(env, "policy.created", "policies", p.id, { name: p.name });
         return json({ data: p }, 201);
       }
 
+      // ---- managed invites ----
+      // A manager issues a 6-digit invite code; the managed person redeems
+      // it via POST /api/v1/devices/managed-register (consent step).
+      if (resource === "managed-invites" && request.method === "GET") {
+        const manager_id = url.searchParams.get("manager_customer_id") || "";
+        if (manager_id && !isUuid(manager_id)) return json({ error: "manager_customer_id must be a valid UUID" }, 400);
+        const where = manager_id ? `WHERE manager_customer_id = ${lit(manager_id)}` : "";
+        const rows = await sql(env, `SELECT * FROM managed_invites ${where} ORDER BY created_at DESC`);
+        return json({ data: rows });
+      }
+      if (resource === "managed-invites" && request.method === "POST") {
+        if (!body.manager_customer_id || !isUuid(body.manager_customer_id)) return json({ error: "manager_customer_id (a valid UUID) is required" }, 400);
+        if (body.policy_id && !isUuid(body.policy_id)) return json({ error: "policy_id must be a valid UUID" }, 400);
+        const mgr = await sql(env, `SELECT id FROM customers WHERE id = ${lit(body.manager_customer_id)}`);
+        if (!mgr.length) return json({ error: "Manager customer not found" }, 404);
+        let policyId = null;
+        if (body.policy_id) {
+          const pol = await sql(env, `SELECT id FROM policies WHERE id = ${lit(body.policy_id)}`);
+          if (!pol.length) return json({ error: "Policy not found" }, 404);
+          policyId = body.policy_id;
+        }
+        const code = String(Math.floor(100000 + Math.random() * 900000));
+        const rows = await sql(env, `INSERT INTO managed_invites (manager_customer_id, code, device_name, policy_id)
+          VALUES (${lit(body.manager_customer_id)}, ${lit(code)}, ${lit(body.device_name ? String(body.device_name) : null)}, ${policyId ? lit(policyId) : "NULL"}) RETURNING *`);
+        await audit(env, "managed_invite.created", "managed_invites", rows[0].id, { manager_customer_id: body.manager_customer_id });
+        return json({ data: rows[0] }, 201);
+      }
+
       // ---- devices ----
       if (resource === "devices" && request.method === "GET" && !id) {
         const customer_id = url.searchParams.get("customer_id") || "";
-        const where = customer_id && isUuid(customer_id) ? `WHERE d.customer_id = ${lit(customer_id)}` : "";
-        const rows = await sql(env, `SELECT d.*, c.name AS customer_name, p.name AS policy_name
-          FROM devices d JOIN customers c ON c.id = d.customer_id LEFT JOIN policies p ON p.id = d.policy_id ${where} ORDER BY d.created_at DESC`);
+        const managed_by = url.searchParams.get("managed_by") || "";
+        const conds = [];
+        if (customer_id && isUuid(customer_id)) conds.push(`d.customer_id = ${lit(customer_id)}`);
+        if (managed_by && isUuid(managed_by)) conds.push(`d.managed_by_customer_id = ${lit(managed_by)}`);
+        const where = conds.length ? `WHERE ${conds.join(" AND ")}` : "";
+        const rows = await sql(env, `SELECT d.*, c.name AS customer_name, p.name AS policy_name, d.managed_by_customer_id, m.name AS managed_by_name
+          FROM devices d JOIN customers c ON c.id = d.customer_id LEFT JOIN policies p ON p.id = d.policy_id LEFT JOIN customers m ON m.id = d.managed_by_customer_id ${where} ORDER BY d.created_at DESC`);
         return json({ data: rows });
+      }
+      if (resource === "devices" && request.method === "GET" && id && !sub) {
+        const rows = await sql(env, `SELECT d.*, c.name AS customer_name, p.name AS policy_name, d.managed_by_customer_id, m.name AS managed_by_name
+          FROM devices d JOIN customers c ON c.id = d.customer_id LEFT JOIN policies p ON p.id = d.policy_id LEFT JOIN customers m ON m.id = d.managed_by_customer_id WHERE d.id = ${lit(id)}`);
+        if (!rows.length) return json({ error: "Device not found" }, 404);
+        return json({ data: rows[0] });
       }
       if (resource === "devices" && request.method === "GET" && id && sub === "status") {
         const rows = await sql(env, `SELECT * FROM device_status WHERE device_id = ${lit(id)} ORDER BY checked_at DESC LIMIT 1`);
@@ -278,6 +329,55 @@ export default {
         await sql(env, `INSERT INTO device_status (device_id, status, filter_active, policy_version) VALUES (${lit(d.id)}, 'online', true, 1)`);
         await audit(env, "device.activated", "devices", d.id, { name: d.name });
         return json({ data: upd[0] });
+      }
+      // Managed-device registration (consent step): a managed person enters
+      // the 6-digit invite code a manager issued. The invite is consumed.
+      // Placed BEFORE the generic POST /devices create handler below.
+      if (resource === "devices" && request.method === "POST" && sub === "managed-register") {
+        if (!body.code || !body.name || !body.email) return json({ error: "code, name and email are required" }, 400);
+        const platform = body.platform || "windows";
+        if (!["android", "ios", "windows", "macos", "other"].includes(platform)) return json({ error: "platform must be android, ios, windows, macos or other" }, 400);
+        const invites = await sql(env, `SELECT * FROM managed_invites WHERE code = ${lit(String(body.code).trim())} AND status = 'pending'`);
+        if (!invites.length) return json({ error: "Invalid or already-used invite code" }, 404);
+        const invite = invites[0];
+        // Find-or-create the managed customer by email.
+        let cust = await sql(env, `SELECT * FROM customers WHERE email = ${lit(String(body.email).toLowerCase().trim())}`);
+        if (!cust.length) {
+          cust = await sql(env, `INSERT INTO customers (name, email) VALUES (${lit(body.name)}, ${lit(String(body.email).toLowerCase().trim())}) RETURNING *`);
+        }
+        const customer = cust[0];
+        let policyId = invite.policy_id || null;
+        if (!policyId) {
+          const def = await sql(env, `SELECT id FROM policies WHERE is_default = true LIMIT 1`);
+          policyId = def.length ? def[0].id : null;
+        }
+        const deviceName = body.device_name ? String(body.device_name) : String(body.name);
+        const dev = await sql(env, `INSERT INTO devices (customer_id, name, platform, status, activation_code, policy_id, managed_by_customer_id, activated_at, last_seen_at)
+          VALUES (${lit(customer.id)}, ${lit(deviceName)}, ${lit(platform)}, 'active', NULL, ${policyId ? lit(policyId) : "NULL"}, ${lit(invite.manager_customer_id)}, now(), now()) RETURNING *`);
+        const device = dev[0];
+        await sql(env, `UPDATE managed_invites SET status = 'used', used_device_id = ${lit(device.id)}, used_at = now() WHERE id = ${lit(invite.id)}`);
+        await sql(env, `INSERT INTO device_status (device_id, status, filter_active, policy_version) VALUES (${lit(device.id)}, 'online', true, 1)`);
+        const mgr = await sql(env, `SELECT name FROM customers WHERE id = ${lit(invite.manager_customer_id)}`);
+        const pol = policyId ? await sql(env, `SELECT * FROM policies WHERE id = ${lit(policyId)}`) : [];
+        await audit(env, "device.managed-activated", "devices", device.id, { name: device.name, manager_customer_id: invite.manager_customer_id, invite_id: invite.id });
+        return json({ data: { device, customer, manager_name: mgr.length ? mgr[0].name : null, policy: pol.length ? pol[0] : null } }, 201);
+      }
+      if (resource === "devices" && request.method === "POST" && id && sub === "unlink") {
+        const cur = await sql(env, `SELECT * FROM devices WHERE id = ${lit(id)}`);
+        if (!cur.length) return json({ error: "Device not found" }, 404);
+        const rows = await sql(env, `UPDATE devices SET managed_by_customer_id = NULL WHERE id = ${lit(id)} RETURNING *`);
+        await audit(env, "device.unlinked", "devices", id, { name: rows[0].name });
+        return json({ data: rows[0] });
+      }
+      if (resource === "devices" && request.method === "PATCH" && id) {
+        if (!body.policy_id || !isUuid(body.policy_id)) return json({ error: "policy_id (a valid UUID) is required" }, 400);
+        const pol = await sql(env, `SELECT id FROM policies WHERE id = ${lit(body.policy_id)}`);
+        if (!pol.length) return json({ error: "Policy not found" }, 404);
+        const cur = await sql(env, `SELECT * FROM devices WHERE id = ${lit(id)}`);
+        if (!cur.length) return json({ error: "Device not found" }, 404);
+        const rows = await sql(env, `UPDATE devices SET policy_id = ${lit(body.policy_id)} WHERE id = ${lit(id)} RETURNING *`);
+        await audit(env, "device.policy-changed", "devices", id, { policy_id: body.policy_id });
+        return json({ data: rows[0] });
       }
       if (resource === "devices" && request.method === "POST" && sub === "heartbeat" && id) {
         if (!["online", "offline", "unknown"].includes(body.status)) return json({ error: "valid status is required" }, 400);
