@@ -175,7 +175,7 @@ LINK_R_ARGS+=(-R "$OUT/compiled-res.zip")
   -A "$OUT/assets-staging" \
   --auto-add-overlay \
   --min-sdk-version 26 --target-sdk-version 34 \
-  --version-code 2 --version-name 0.1.1
+  --version-code 5 --version-name 0.2.0
 
 # --- 3. kotlinc ---------------------------------------------------------------
 echo "== 3. kotlinc (app sources + generated R.java) =="
