@@ -52,7 +52,11 @@
 //   * Closed shadow-DOM content is not traversed.
 //   * A live stream is sampled as single frames; one clean frame does not
 //     decide a stream — streams are re-reported (and re-detected) while
-//     playing. Detection now runs on-device (v0.2.0), but a stream's
+//     playing, and re-covered on any later frame that shows a person.
+//     Animated canvases are re-sampled the same way (hash-gated: only
+//     when their pixels changed — see pixelHashFor / entry.lastHash),
+//     because MutationObserver never fires on a canvas redraw.
+//     Detection now runs on-device (v0.2.0), but a stream's / canvas's
 //     verdict still comes from the native engine per frame.
 //   * EfficientDet-Lite0 weights are PROTOTYPE-ONLY (license unverified —
 //     see models-mediapipe/LICENSES.md); do not treat this model as
@@ -121,10 +125,19 @@
   // Cover an element now. `kind` decides how: CSS-background elements keep
   // their text visible (only the background image is stripped); everything
   // else is hidden and gets an overlay. Covered videos are paused so a
-  // hidden video does not keep playing audio.
+  // hidden video does not keep playing audio — including when a covered
+  // video is (re)started by the page after it was covered: re-covering
+  // an already-covered video pauses it again, so audio can never leak
+  // out of a hidden video.
   function cover(entry) {
     var el = entry.el;
-    if (entry.state === 'covered') { placeOverlay(entry); return; }
+    if (entry.state === 'covered') {
+      placeOverlay(entry);
+      if (entry.kind === 'video' || entry.kind === 'stream') {
+        try { el.pause(); } catch (e) { /* not pausable — overlay still covers it */ }
+      }
+      return;
+    }
     if (entry.kind === 'css') {
       if (el.dataset.fpOrigBg === undefined) {
         el.dataset.fpOrigBg = el.style.backgroundImage || '';
@@ -192,6 +205,33 @@
     } catch (e) { return true; }
   }
 
+  // Cheap pixel-change hash for the resample gate (see pixelHashFor).
+  // Walks every pixel of the (<=320px) thumbnail, quantised to 4 bits
+  // per channel and folded with FNV-1a, so a static canvas/video frame
+  // hashes the same every time and detection is never re-run on it,
+  // while any real content change (new frame, swapped picture, moving
+  // object) changes the hash. Quantisation means sub-threshold shimmer
+  // (one pixel flickering a few levels) does not count as a change.
+  // Returns null when the pixels cannot be read at all (tainted canvas
+  // / unreadable video) — null never counts as "unchanged", so
+  // unreadable content is re-reported, never skipped.
+  function hashPixels(canvas) {
+    try {
+      var ctx = canvas.getContext('2d');
+      if (!ctx) return null;
+      var w = canvas.width, h = canvas.height;
+      if (!w || !h) return null;
+      var d = ctx.getImageData(0, 0, w, h).data;
+      var hash = 0x811c9dc5;
+      for (var i = 0; i < d.length; i += 4) {
+        hash ^= (d[i] >> 4); hash = Math.imul(hash, 0x01000193) >>> 0;
+        hash ^= (d[i + 1] >> 4); hash = Math.imul(hash, 0x01000193) >>> 0;
+        hash ^= (d[i + 2] >> 4); hash = Math.imul(hash, 0x01000193) >>> 0;
+      }
+      return String(hash >>> 0);
+    } catch (e) { return null; }
+  }
+
   function thumbDataUrl(canvas) {
     if (!canvas) return null;
     try {
@@ -210,22 +250,50 @@
   function thumbOfCanvas(canvas) {
     try {
       var c = drawThumb(canvas, canvas.width, canvas.height);
+      var hash = thumbIsBlank(c) ? null : hashPixels(c);
       var url = thumbDataUrl(c);
       // Readable pixels but the canvas paints nothing readable: the classic
       // WebGL-without-preserveDrawingBuffer signature. Flag it so the
       // engine (and the device checklist) can tell it apart from a 2D canvas.
       if (url === null && canvas.width > 0 && canvas.height > 0) {
-        return { thumb: null, webglSuspected: true };
+        return { thumb: null, webglSuspected: true, hash: null };
       }
-      return { thumb: url, webglSuspected: false };
-    } catch (e) { return { thumb: null, webglSuspected: true }; }
+      return { thumb: url, webglSuspected: false, hash: hash };
+    } catch (e) { return { thumb: null, webglSuspected: true, hash: null }; }
   }
 
   function thumbOfVideo(video) {
-    if (video.readyState < 2 || !video.videoWidth) return null;
+    if (video.readyState < 2 || !video.videoWidth) return { thumb: null, hash: null };
     try {
-      return thumbDataUrl(drawThumb(video, video.videoWidth, video.videoHeight));
+      var c = drawThumb(video, video.videoWidth, video.videoHeight);
+      var hash = thumbIsBlank(c) ? null : hashPixels(c);
+      return { thumb: thumbDataUrl(c), hash: hash };
+    } catch (e) { return { thumb: null, hash: null }; }
+  }
+
+  // Pixel hash of an element's CURRENT frame, without running detection
+  // and without JPEG-encoding a thumbnail. Used by the resample timer
+  // in boot(): cheap (~1 getImageData on a <=320px thumb), so it can run
+  // every 3 s over every covered canvas/video/stream. Returns null for
+  // a blank/unreadable frame — blank never counts as a change, so an
+  // unreadable WebGL canvas does not re-trigger a report every 3 s;
+  // a blank canvas that later gets painted returns a real hash and IS
+  // caught (null -> hash counts as a change in the timer).
+  function pixelHashFor(entry) {
+    try {
+      if (entry.kind === 'canvas') {
+        if (!entry.el.width || !entry.el.height) return null;
+        var c = drawThumb(entry.el, entry.el.width, entry.el.height);
+        return thumbIsBlank(c) ? null : hashPixels(c);
+      }
+      if (entry.kind === 'video' || entry.kind === 'stream') {
+        var v = entry.el;
+        if (v.readyState < 2 || !v.videoWidth) return null;
+        var vc = drawThumb(v, v.videoWidth, v.videoHeight);
+        return thumbIsBlank(vc) ? null : hashPixels(vc);
+      }
     } catch (e) { return null; }
+    return null;
   }
 
   function thumbOfSvg(svgEl) {
@@ -593,11 +661,27 @@
     if (!el || el.dataset.fpId) return null;
     var id = nextId();
     el.dataset.fpId = id;
-    var entry = { id: id, el: el, kind: kind, overlay: null, state: 'new' };
+    // lastHash: pixel hash of the frame detection last RAN on (only set
+    // when detected=true). findingFor() skips re-detection while the
+    // hash is unchanged, so a static canvas / paused video costs one
+    // detection ever; an animated canvas / playing video re-detects
+    // only when its pixels actually changed.
+    var entry = { id: id, el: el, kind: kind, overlay: null, state: 'new', lastHash: undefined };
     tracked.set(id, entry);
     cover(entry); // cover FIRST, report second — never the other way round
     if (kind === 'img' && el.tagName === 'IMG' && !el.complete) {
       el.addEventListener('load', function () { scheduleReport(); }, { once: true });
+    }
+    if (kind === 'video' || kind === 'stream') {
+      // Wired here (not in collectVideo) so videos added later by the
+      // MutationObserver get the same listeners as ones present at load.
+      // playing: (re)started; seeked: jumped / looped round; pause:
+      // stopped — capture the final frame; ended: finished (non-loop).
+      // Each only schedules a report; the hash gate in findingFor()
+      // decides whether detection actually re-runs.
+      ['playing', 'seeked', 'pause', 'ended'].forEach(function (ev) {
+        el.addEventListener(ev, function () { scheduleReport(); });
+      });
     }
     return entry;
   }
@@ -634,12 +718,9 @@
   function collectVideo(root) {
     var list = (root || document).querySelectorAll('video');
     list.forEach(function (el) {
-      var kind = (el.srcObject instanceof MediaStream) ? 'stream' : 'video';
-      var entry = track(el, kind);
-      if (entry) {
-        el.addEventListener('playing', function () { scheduleReport(); });
-        el.addEventListener('seeked', function () { scheduleReport(); });
-      }
+      // Listeners are wired inside track(), so dynamically added videos
+      // (MutationObserver path) get them too.
+      track(el, (el.srcObject instanceof MediaStream) ? 'stream' : 'video');
     });
   }
 
@@ -662,10 +743,14 @@
   //   css: probe Image (crossOrigin anonymous), iframe refetch on
   //     failure (detectCssBackground).
   //   canvas: thumbnail data URL -> probe Image -> detect; thumb null
-  //     -> detected=false. WebGL-suspected -> detected=false.
+  //     -> detected=false. WebGL-suspected -> detected=false. A canvas
+  //     whose pixels are unchanged since detection last ran on them
+  //     (hash gate, entry.lastHash) returns null and is skipped —
+  //     animated canvases re-detect only on changed pixels.
   //   video/stream: thumbnail -> probe -> detect; keep resampling while
-  //     playing (the interval in boot() re-reports). Thumb null ->
-  //     detected=false.
+  //     playing (the interval in boot() re-reports on changed pixels).
+  //     Thumb null -> detected=false. Unchanged frames are skipped by
+  //     the same hash gate as canvas.
   //   svg: thumbOfSvg -> probe -> detect; thumb null -> detected=false.
   //   webgl-suspected (canvas with no readable pixels) -> detected=false.
   // This script NEVER pre-decides human / uncertain / no-human — the
@@ -695,10 +780,28 @@
       return base;
     };
     if (entry.kind === 'video' || entry.kind === 'stream') {
+      // Late srcObject: a <video> tracked as 'video' may gain a
+      // MediaStream later (captureStream / getUserMedia assigned after
+      // load, as on test page 07) — refresh the kind every report so
+      // the native side sees 'stream', and vice versa if the stream
+      // is removed. Both kinds are treated identically here and in
+      // Kotlin (VIDEO_FRAME vs LIVE_STREAM, same fail-closed rule).
+      if (el.srcObject instanceof MediaStream) { entry.kind = 'stream'; base.kind = 'stream'; }
+      else if (entry.kind === 'stream') { entry.kind = 'video'; base.kind = 'video'; }
       base.playing = !el.paused;
-      base.thumb = thumbOfVideo(el);
+      var vt = thumbOfVideo(el);
+      base.thumb = vt.thumb;
       if (!base.thumb) return attach(noDetection('video frame unreadable'));
-      return attach(await detectFromDataUrl(base.thumb));
+      // Hash gate: same pixels as the frame detection already ran on —
+      // skip (return null; report() drops it). A changed frame, a seek,
+      // a loop-round or a pause on a new frame all change the hash and
+      // re-run detection. Only a frame detection RAN on sets lastHash,
+      // so a failed detection is retried on the next report, not
+      // skipped forever.
+      if (vt.hash !== null && entry.lastHash === vt.hash) return null;
+      var vResult = attach(await detectFromDataUrl(base.thumb));
+      if (vResult.detected) entry.lastHash = vt.hash;
+      return vResult;
     }
     if (entry.kind === 'img') {
       base.thumb = thumbOfImage(el);
@@ -712,7 +815,14 @@
         return attach(noDetection('canvas pixels unreadable (WebGL suspected)'));
       }
       if (!base.thumb) return attach(noDetection('canvas produced no readable pixels'));
-      return attach(await detectFromDataUrl(base.thumb));
+      // Hash gate (see video branch): an animated canvas redrawn by
+      // requestAnimationFrame re-detects only when its pixels changed;
+      // a static canvas costs one detection ever. lastHash is set only
+      // when detection actually ran, so a failed detection is retried.
+      if (r.hash !== null && entry.lastHash === r.hash) return null;
+      var cResult = attach(await detectFromDataUrl(base.thumb));
+      if (cResult.detected) entry.lastHash = r.hash;
+      return cResult;
     }
     if (entry.kind === 'svg') {
       base.thumb = await thumbOfSvg(el);
@@ -748,8 +858,15 @@
     try {
       var findings = [];
       for (var i = 0; i < entries.length; i++) {
-        findings.push(await findingFor(entries[i]));
+        // findingFor() returns null for a canvas/video/stream whose
+        // pixels are unchanged since detection last ran on them (hash
+        // gate) — drop it: the element keeps its last verdict (covered)
+        // and the native side is not bothered with a duplicate.
+        var f = await findingFor(entries[i]);
+        if (f) findings.push(f);
       }
+      // Nothing changed since the last check: no native round-trip.
+      if (!findings.length) return;
       var reply = await sendToNative({
         type: 'scan',
         pageUrl: location.href,
@@ -838,16 +955,37 @@
       attributes: true, attributeFilter: ['src', 'style', 'class', 'data-src']
     });
 
-    // Live streams / playing video: re-sample while playing so a future
-    // detector can re-decide on fresh frames. A stream stays covered
-    // until the native engine allows it on a fresh frame's numbers.
+    // Live streams / playing video / animated canvas: re-sample while
+    // the pixels keep changing, so a future frame can re-decide. The
+    // check itself is cheap (one <=320px thumbnail hash per element,
+    // no detection, no JPEG encode — see pixelHashFor), and a report
+    // is scheduled only when something actually changed:
+    //   * a video/stream is playing (fresh frames keep coming), or
+    //   * a canvas/video/stream hash differs from the hash detection
+    //     last ran on (animated canvas redraw, seek, loop-round,
+    //     pause on a new frame, a blank canvas getting painted).
+    // A static canvas or paused video therefore costs nothing after
+    // its first detection. A stream stays covered until the native
+    // engine allows it on a fresh frame's numbers — one clean frame
+    // never decides a stream, because the next changed frame is
+    // re-detected and can re-cover it. Unreadable (blank) frames hash
+    // to null and never trigger a report on their own.
     setInterval(function () {
-      var playing = false;
+      var needReport = false;
       tracked.forEach(function (entry) {
-        if ((entry.kind === 'video' || entry.kind === 'stream') &&
-            !entry.el.paused && entry.state === 'covered') playing = true;
+        if (entry.state !== 'covered' && entry.state !== 'new') return;
+        if (entry.kind === 'video' || entry.kind === 'stream') {
+          // Late srcObject (see findingFor): refresh the kind here too.
+          if (entry.el.srcObject instanceof MediaStream) entry.kind = 'stream';
+          else if (entry.kind === 'stream') entry.kind = 'video';
+          if (!entry.el.paused) needReport = true;
+        }
+        if (entry.kind === 'canvas' || entry.kind === 'video' || entry.kind === 'stream') {
+          var h = pixelHashFor(entry);
+          if (h !== null && h !== entry.lastHash) needReport = true;
+        }
       });
-      if (playing) scheduleReport();
+      if (needReport) scheduleReport();
     }, STREAM_RESAMPLE_MS);
   }
 
