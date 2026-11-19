@@ -29,7 +29,29 @@
 //   --reply--> background.js --sendMessage response--> here.
 //
 // What is sent per element: {id, kind, source, thumb, playing,
-// persons, personBest, faces, faceBest, detected, detectError}.
+// persons, personBest, faces, faceBest, detected, detectError, boxes,
+// image_key, cachedDecision}.
+// `boxes` are NORMALIZED person/face box fractions {x,y,w,h,score}
+// (0..1, relative to the image): person boxes from FpPersonDetector
+// (pixels in the 960-downscaled image — divided by the downscaled
+// dims), face boxes from face-api .box (divided by the image dims).
+// Person boxes win when present; face boxes are the fallback.
+// `image_key` is 'u:' + sha256(canonical URL) when the source is an
+// http(s) URL, else null. `cachedDecision` is the locally cached
+// review outcome for that key ({decision, boxes}), so the shim can
+// honour an earlier review without re-asking.
+//
+// Review flow (Yakob 2026-11-19): a covered image carries a REQUEST
+// BUTTON ("בעטן אַ באַשלוס"). Clicking it runs the second-stage
+// review — window.FpReview on the web (RF-DETR), or a native review
+// via browser.runtime.sendMessage {type:'review'} in the Android app.
+// Outcomes: allow -> uncover; allow_painted -> paint overlays over
+// just the person boxes; block -> block; uncertain -> stays covered.
+// Every outcome is recorded locally (localStorage
+// 'fp_review_decisions_v1', under the 'u:' key and, when the review
+// returns a contentHash, under the 'b:' key too) and, on the web
+// path only, POSTed fire-and-forget to '/review-decision' (a failed
+// POST never blocks or undoes the UI decision).
 // `thumb` is a downscaled JPEG data URL (max 320px) ONLY when the pixels
 // could actually be read. Cross-origin/tainted images, WebGL canvases
 // (no preserveDrawingBuffer) and live streams yield thumb=null, which the
@@ -95,6 +117,10 @@
   var MAX_RETRIES = 10;         // then give up (content stays covered)
   var MUTATION_DEBOUNCE_MS = 250;
   var STREAM_RESAMPLE_MS = 3000;
+  var REVIEW_CACHE_KEY = 'fp_review_decisions_v1';
+  var REVIEW_TIMEOUT_MS = 60000;
+  var DETECTOR_MAX_DIM = 960;   // same downscale as detector.js imgToDataUrl
+  var humanImageMode = 'paint'; // 'paint' | 'block'; set by fp-policy from the shell/shim
 
   var seq = 0;
   var tracked = new Map();      // id -> {el, kind, overlay, state, source}
@@ -144,8 +170,49 @@
   function repositionAll() {
     tracked.forEach(function (entry) {
       if (entry.state === 'covered') placeOverlay(entry);
+      else if (entry.state === 'painted') placePaintOverlays(entry);
       else if (entry.state === 'allowed') placeDownloadButton(entry);
     });
+  }
+
+  // ---------------------------------------------------------------- review cache
+  // Local decision cache: image_key -> {decision, boxes, mode, best, at}.
+  // decision is the REVIEW decision ('allow' | 'allow_painted' | 'block'
+  // | 'uncertain'); the shim maps it to a verdict. Guarded: localStorage
+  // may be unavailable (private mode, sandbox) — then reviews still
+  // apply to the live page, they just are not remembered.
+  function loadReviewCache() {
+    try { return JSON.parse(localStorage.getItem(REVIEW_CACHE_KEY) || '{}') || {}; }
+    catch (e) { return {}; }
+  }
+  function saveReviewCache(cache) {
+    try { localStorage.setItem(REVIEW_CACHE_KEY, JSON.stringify(cache)); } catch (e) { /* unremembered, not fatal */ }
+  }
+  function lookupReviewDecision(key) {
+    if (!key) return null;
+    var cache = loadReviewCache();
+    return cache[key] || null;
+  }
+  function storeReviewDecision(key, value) {
+    if (!key || !value) return;
+    var cache = loadReviewCache();
+    cache[key] = value;
+    saveReviewCache(cache);
+  }
+
+  function sha256hex(text) {
+    try {
+      if (!crypto || !crypto.subtle || typeof TextEncoder === 'undefined') return Promise.resolve(null);
+      return crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)).then(function (buf) {
+        return Array.from(new Uint8Array(buf)).map(function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+      }).catch(function () { return null; });
+    } catch (e) { return Promise.resolve(null); }
+  }
+
+  // Clamp a box to normalized fractions 0..1.
+  function normalizeBox(b) {
+    function cl(v) { v = Number(v); if (isNaN(v)) return 0; return Math.min(1, Math.max(0, v)); }
+    return { x: cl(b.x), y: cl(b.y), w: cl(b.w), h: cl(b.h), score: cl(b.score == null ? 0 : b.score) };
   }
 
   // ---------------------------------------------------------------- downloads
@@ -226,11 +293,51 @@
   // Cover an element now. `kind` decides how: CSS-background elements keep
   // their text visible (only the background image is stripped); everything
   // else is hidden and gets an overlay. Covered videos are paused so a
-  // hidden video does not keep playing audio.
+  // hidden video does not keep playing audio. A covered element also gets
+  // the REQUEST BUTTON (Yakob req 2): the user can ask the second-stage
+  // review (RF-DETR on the web, native review in the app) to decide
+  // whether the image may open. The button is a real <button> with
+  // pointer-events:auto inside the pointer-events:none overlay.
+  function makeRequestButton(entry) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.setAttribute('data-fp-review-btn', '1');
+    btn.textContent = 'בעטן אַ באַשלוס';
+    var s = btn.style;
+    s.position = 'absolute';
+    s.left = '50%';
+    s.bottom = '8px';
+    s.transform = 'translateX(-50%)';
+    s.zIndex = '2';
+    s.padding = '6px 12px';
+    s.font = '600 13px/1.4 system-ui, sans-serif';
+    s.color = '#fff';
+    s.background = '#1d4ed8';
+    s.border = '1px solid rgba(255,255,255,0.7)';
+    s.borderRadius = '8px';
+    s.cursor = 'pointer';
+    s.pointerEvents = 'auto';
+    s.whiteSpace = 'nowrap';
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      requestReview(entry);
+    });
+    return btn;
+  }
+
+  function ensureRequestButton(entry) {
+    if (!entry.overlay) return;
+    if (entry.reviewBtn && entry.overlay.contains(entry.reviewBtn)) return;
+    entry.reviewBtn = makeRequestButton(entry);
+    entry.overlay.appendChild(entry.reviewBtn);
+  }
+
   function cover(entry) {
     var el = entry.el;
     removeDownloadButton(entry);
-    if (entry.state === 'covered') { placeOverlay(entry); return; }
+    removePaintOverlays(entry);
+    if (entry.state === 'covered') { placeOverlay(entry); ensureRequestButton(entry); return; }
     if (entry.kind === 'css') {
       if (el.dataset.fpOrigBg === undefined) {
         el.dataset.fpOrigBg = el.style.backgroundImage || '';
@@ -248,10 +355,13 @@
     entry.overlay = makeOverlay(el.getBoundingClientRect());
     (document.body || document.documentElement).appendChild(entry.overlay);
     entry.state = 'covered';
+    ensureRequestButton(entry);
   }
 
   function uncover(entry) {
     if (entry.overlay) { entry.overlay.remove(); entry.overlay = null; }
+    entry.reviewBtn = null;
+    removePaintOverlays(entry);
     var el = entry.el;
     if (entry.kind === 'css') {
       el.style.backgroundImage = el.dataset.fpOrigBg || '';
@@ -265,9 +375,89 @@
 
   function block(entry) {
     removeDownloadButton(entry);
+    removePaintOverlays(entry);
     if (entry.overlay) { entry.overlay.remove(); entry.overlay = null; }
+    entry.reviewBtn = null;
     entry.el.style.display = 'none';
     entry.state = 'blocked';
+  }
+
+  // ---------------------------------------------------------------- paint
+  // Paint overlays (Yakob req 3, default mode 'paint'): the image stays
+  // visible, and one opaque overlay div is placed over JUST each person
+  // box (fractions x the image's displayed rect, fixed positioning like
+  // the cover overlay). A small "געמאָלט" tag marks the first box.
+  // Paint overlays are repositioned in repositionAll (scroll/resize)
+  // and removed on uncover / block / repaint / cover.
+  function removePaintOverlays(entry) {
+    if (entry.paintOverlays) {
+      entry.paintOverlays.forEach(function (o) { o.remove(); });
+    }
+    entry.paintOverlays = [];
+    entry.paintBoxes = [];
+  }
+
+  function placePaintOverlays(entry) {
+    if (!entry.paintOverlays || !entry.paintOverlays.length) return;
+    var r = entry.el.getBoundingClientRect();
+    entry.paintOverlays.forEach(function (o, idx) {
+      var b = (entry.paintBoxes && entry.paintBoxes[idx]) || { x: 0, y: 0, w: 0, h: 0 };
+      var s = o.style;
+      // No Math.max(0, ...) clamp on left/top here (unlike the cover
+      // overlay): the paint box must track the image exactly, even
+      // when the image has scrolled partly off the viewport top.
+      s.left = (r.left + (b.x || 0) * r.width) + 'px';
+      s.top = (r.top + (b.y || 0) * r.height) + 'px';
+      s.width = Math.max(0, (b.w || 0) * r.width) + 'px';
+      s.height = Math.max(0, (b.h || 0) * r.height) + 'px';
+      s.display = (r.width > 0 && r.height > 0 && (b.w || 0) > 0 && (b.h || 0) > 0) ? 'block' : 'none';
+    });
+  }
+
+  function paint(entry, boxes) {
+    removePaintOverlays(entry);
+    removeDownloadButton(entry);
+    if (entry.overlay) { entry.overlay.remove(); entry.overlay = null; }
+    entry.reviewBtn = null;
+    var el = entry.el;
+    // Restore the image itself (same as uncover, minus the download
+    // button — a painted image's raw bytes still contain the person,
+    // so it must never download; see browser-core decideDownload).
+    if (entry.kind === 'css') {
+      el.style.backgroundImage = el.dataset.fpOrigBg || '';
+      delete el.dataset.fpOrigBg;
+    } else {
+      el.style.visibility = el.dataset.fpOrigVis || '';
+      delete el.dataset.fpOrigVis;
+    }
+    entry.state = 'painted';
+    entry.paintBoxes = (boxes || []).map(normalizeBox);
+    entry.paintOverlays = [];
+    var rect = el.getBoundingClientRect();
+    entry.paintBoxes.forEach(function (b, idx) {
+      var o = document.createElement('div');
+      o.setAttribute('data-fp-paint', '1');
+      var s = o.style;
+      s.position = 'fixed';
+      s.left = (rect.left + b.x * rect.width) + 'px';
+      s.top = (rect.top + b.y * rect.height) + 'px';
+      s.width = Math.max(0, b.w * rect.width) + 'px';
+      s.height = Math.max(0, b.h * rect.height) + 'px';
+      s.zIndex = '2147483647';
+      s.background = '#1d1d1f';
+      s.boxSizing = 'border-box';
+      s.pointerEvents = 'none';
+      s.overflow = 'hidden';
+      if (idx === 0) {
+        var tag = document.createElement('span');
+        tag.textContent = 'געמאָלט';
+        tag.style.cssText = 'position:absolute;top:2px;inset-inline-start:2px;padding:1px 6px;font:600 10px/1.5 system-ui,sans-serif;color:#fff;background:rgba(20,50,79,0.92);border-radius:4px;';
+        o.appendChild(tag);
+      }
+      (document.body || document.documentElement).appendChild(o);
+      entry.paintOverlays.push(o);
+    });
+    placePaintOverlays(entry);
   }
 
   // ---------------------------------------------------------------- thumbs
@@ -383,6 +573,18 @@
   var SCORE_FLOOR = 0.40; // same floor as detector-page.js / extension
   var HUMAN_THRESHOLD = 0.50; // face scoreThreshold, as in the extension
   var DETECT_TIMEOUT_MS = 20000; // per-element detection race, as in the extension
+  // Face-model load timeout: loadFromUri has NO timeout of its own, so a
+  // hung fetch / stalled tfjs init would leave warmUpDetectors() pending
+  // FOREVER (Promise.all never settles) — personReady is only set after
+  // it resolves, so a hung face load silently kills PERSON detection
+  // too: every finding comes back detected=false while the shell still
+  // shows the detector ready (the person warmup alone succeeded).
+  // Seen live 2026-11-19: post-review reloads came back covered 0 /
+  // allowed 7 / unscanned 7 with detector ready. The timeout bounds the
+  // damage: after 45 s the warmup resolves with face=false and person
+  // detection proceeds; a late face model still works for later
+  // elements (faceP checks isLoaded, not faceReady).
+  var FACE_LOAD_TIMEOUT_MS = 45000;
   var MODEL_URL = browser.runtime.getURL('models');
 
   var faceReady = false;
@@ -403,7 +605,25 @@
           return false;
         }
         try {
-          await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+          // Race the load against FACE_LOAD_TIMEOUT_MS (see above): a
+          // hung load must resolve false, never hang the warmup.
+          var loaded = await Promise.race([
+            faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL).then(
+              function () { return true; },
+              function () { return false; }),
+            new Promise(function (resolve) {
+              setTimeout(function () { resolve('timeout'); }, FACE_LOAD_TIMEOUT_MS);
+            })
+          ]);
+          if (loaded === 'timeout') {
+            console.warn('[fp] face model load timed out (' + (FACE_LOAD_TIMEOUT_MS / 1000) +
+              's) — continuing with person detector only; face may still come up later');
+            return false;
+          }
+          if (!loaded) {
+            console.warn('[fp] face model load failed');
+            return false;
+          }
           console.log('[fp] tinyFaceDetector model loaded from', MODEL_URL);
           return true;
         } catch (e) {
@@ -433,7 +653,16 @@
   }
 
   function noDetection(error) {
-    return { persons: 0, personBest: 0, faces: 0, faceBest: 0, detected: false, detectError: error || '' };
+    return { persons: 0, personBest: 0, faces: 0, faceBest: 0, detected: false, detectError: error || '', boxes: [] };
+  }
+
+  // Downscaled dims detector.js imgToDataUrl uses for this image
+  // (scale min(1, 960/max) — same formula here, so person boxes in
+  // downscaled pixels divide back to fractions of the full image).
+  function downscaledDims(img) {
+    var w = img.naturalWidth || 0, h = img.naturalHeight || 0;
+    var scale = Math.min(1, DETECTOR_MAX_DIM / Math.max(w, h));
+    return { w: Math.max(1, Math.round(w * scale)), h: Math.max(1, Math.round(h * scale)) };
   }
 
   // Detect humans in an <img> element (or a probe Image). Runs BOTH
@@ -450,6 +679,7 @@
       var persons = 0, personBest = 0;
       var faces = 0, faceBest = 0;
       var personError = null, faceError = null;
+      var personBoxes = [], faceBoxes = [];
       var personP = (async function () {
         if (!personReady || typeof FpPersonDetector === 'undefined') {
           personError = 'person detector not ready';
@@ -459,6 +689,15 @@
           var r = await FpPersonDetector.detect(img);
           persons = r.persons || 0;
           personBest = r.personBest || 0;
+          // Boxes are pixels in the 960-downscaled image: divide by the
+          // downscaled dims to get fractions of the full image.
+          var dd = downscaledDims(img);
+          personBoxes = (r.boxes || []).map(function (b) {
+            return normalizeBox({
+              x: (b.x || 0) / dd.w, y: (b.y || 0) / dd.h,
+              w: (b.w || 0) / dd.w, h: (b.h || 0) / dd.h, score: b.score || 0
+            });
+          });
         } catch (e) {
           personError = String(e && e.message ? e.message : e);
         }
@@ -473,6 +712,16 @@
           var detections = await faceapi.detectAllFaces(img, opts);
           faces = detections.length;
           if (faces) faceBest = +Math.max.apply(null, detections.map(function (d) { return d.score; })).toFixed(3);
+          // face-api .box is in pixels of the image passed in: divide
+          // by the image dims to get fractions.
+          var iw = img.naturalWidth || 1, ih = img.naturalHeight || 1;
+          faceBoxes = detections.map(function (d) {
+            var b = d.box || {};
+            return normalizeBox({
+              x: (b.x || 0) / iw, y: (b.y || 0) / ih,
+              w: (b.width || 0) / iw, h: (b.height || 0) / ih, score: d.score || 0
+            });
+          });
         } catch (e) {
           // Cross-origin image without CORS: canvas is tainted, pixels unreadable.
           faceError = String(e && e.message ? e.message : e);
@@ -483,7 +732,10 @@
       return {
         persons: persons, personBest: personBest, faces: faces, faceBest: faceBest,
         detected: !bothFailed,
-        detectError: bothFailed ? ('person: ' + personError + ' ; face: ' + faceError) : ''
+        detectError: bothFailed ? ('person: ' + personError + ' ; face: ' + faceError) : '',
+        // Prefer person boxes; fall back to face boxes when the person
+        // detector found no body (a face is still a person region).
+        boxes: personBoxes.length ? personBoxes : faceBoxes
       };
     })();
     return Promise.race([run, timeout]);
@@ -645,9 +897,21 @@
   // fetch as fallback), decode into a probe Image, detect on the probe.
   // Cross-origin non-http(s) URLs cannot be refetched: noDetection.
   // Verdicts cached per URL (max 500) — see cachedDetection.
+  // NOT_LOADED_MSG: the image has no pixels YET. findingFor marks such
+  // a finding deferred and report() does not send it — deciding now
+  // would record allow+unscanned (detected=false) and the entry would
+  // never be re-checked (report() skips 'allowed' entries). That is the
+  // reload all-unscanned failure AND the lazy-image gap, both seen live
+  // 2026-11-19: a reload right after a heavy download (or a below-fold
+  // lazy image) is scanned before its bytes arrive, and every image
+  // comes back allowed+unscanned forever. The entry stays covered; the
+  // image's load listener (track()) re-schedules a report when its
+  // bytes arrive, and only then is it decided. An image that never
+  // loads stays covered — fail closed.
+  var NOT_LOADED_MSG = 'image not loaded (no pixels yet)';
   async function detectImgElement(img) {
     if (!img.complete || !img.naturalWidth) {
-      return noDetection('image not loaded (no pixels yet)');
+      return noDetection(NOT_LOADED_MSG);
     }
     var srcUrl = img.currentSrc || img.src || '';
     var crossOrigin = false;
@@ -790,7 +1054,10 @@
       faces: 0,
       faceBest: 0,
       detected: false,
-      detectError: ''
+      detectError: '',
+      boxes: [],
+      image_key: null,
+      cachedDecision: null
     };
     var attach = function (r) {
       base.persons = r.persons || 0;
@@ -799,41 +1066,254 @@
       base.faceBest = r.faceBest || 0;
       base.detected = !!r.detected;
       base.detectError = r.detectError || '';
+      base.boxes = (r.boxes || []).map(normalizeBox);
+      return base;
+    };
+    // First detector for the review record: which first-stage detector
+    // produced the signal (the review record names it), plus the
+    // first-stage signal numbers — the API stores first_detector as a
+    // JSON object (a plain string is rejected 400).
+    var setFirstDetector = function () {
+      entry.firstDetector = base.persons > 0 ? 'efficientdet' : (base.faces > 0 ? 'face-api' : 'none');
+      entry.firstSignal = {
+        persons: base.persons || 0, personBest: base.personBest || 0,
+        faces: base.faces || 0, faceBest: base.faceBest || 0,
+        detected: !!base.detected
+      };
+    };
+    // Image key + cached review decision, attached AFTER detection so
+    // the shim can honour an earlier review without re-asking.
+    var attachKeyAndCache = async function () {
+      var canonical = originalUrl(base.source || '');
+      if (canonical && /^https?:\/\//i.test(canonical)) {
+        var hex = await sha256hex(canonical);
+        if (hex) base.image_key = 'u:' + hex;
+      }
+      entry.imageKey = base.image_key;
+      if (base.image_key) {
+        var cached = lookupReviewDecision(base.image_key);
+        if (cached) base.cachedDecision = { decision: cached.decision, boxes: cached.boxes || [] };
+      }
+      setFirstDetector();
       return base;
     };
     if (entry.kind === 'video' || entry.kind === 'stream') {
       base.playing = !el.paused;
       base.thumb = thumbOfVideo(el);
-      if (!base.thumb) return attach(noDetection('video frame unreadable'));
-      return attach(await detectFromDataUrl(base.thumb));
+      if (!base.thumb) { attach(noDetection('video frame unreadable')); return attachKeyAndCache(); }
+      attach(await detectFromDataUrl(base.thumb));
+      return attachKeyAndCache();
     }
     if (entry.kind === 'img') {
       base.thumb = thumbOfImage(el);
-      return attach(await detectImgElement(el));
+      attach(await detectImgElement(el));
+      // No pixels yet: defer — do not decide this image (see
+      // NOT_LOADED_MSG above). report() leaves deferred findings out
+      // of the batch it sends, so the entry stays covered until its
+      // bytes arrive.
+      if (base.detectError === NOT_LOADED_MSG) base.deferred = true;
+      return attachKeyAndCache();
     }
     if (entry.kind === 'canvas') {
       var r = thumbOfCanvas(el);
       base.thumb = r.thumb;
       if (r.webglSuspected) {
         base.kind = 'webgl';
-        return attach(noDetection('canvas pixels unreadable (WebGL suspected)'));
+        attach(noDetection('canvas pixels unreadable (WebGL suspected)'));
+        return attachKeyAndCache();
       }
-      if (!base.thumb) return attach(noDetection('canvas produced no readable pixels'));
-      return attach(await detectFromDataUrl(base.thumb));
+      if (!base.thumb) { attach(noDetection('canvas produced no readable pixels')); return attachKeyAndCache(); }
+      attach(await detectFromDataUrl(base.thumb));
+      return attachKeyAndCache();
     }
     if (entry.kind === 'svg') {
       base.thumb = await thumbOfSvg(el);
-      if (!base.thumb) return attach(noDetection('SVG thumbnail unreadable'));
-      return attach(await detectFromDataUrl(base.thumb));
+      if (!base.thumb) { attach(noDetection('SVG thumbnail unreadable')); return attachKeyAndCache(); }
+      attach(await detectFromDataUrl(base.thumb));
+      return attachKeyAndCache();
     }
     // css: detect on the background image URL.
     var m = (entry.source || '').match(/url\(["']?([^"')]+)["']?\)/);
-    if (!m) return attach(noDetection('no background image URL'));
-    return attach(await detectCssBackground(m[1]));
+    if (!m) { attach(noDetection('no background image URL')); return attachKeyAndCache(); }
+    attach(await detectCssBackground(m[1]));
+    return attachKeyAndCache();
   }
 
   function sendToNative(message) {
     return browser.runtime.sendMessage(message);
+  }
+
+  // ---------------------------------------------------------------- review flow
+  // Second-stage review for a covered image (Yakob req 2 + 3).
+  // Two paths, same outcome shape {decision, boxes, best, model}:
+  //   WEB: window.FpReview (sibling A — RF-DETR, lazy-loaded via
+  //     ensure(progressCb), review(bytes, humanImageMode)).
+  //   APP: browser.runtime.sendMessage {type:'review'} to the native
+  //     bridge (sibling E — native RF-DETR); reply
+  //     {type:'review-decision', id, decision, boxes, reason}.
+  // Neither available -> the button says "נישט פֿאַראַן" briefly and
+  // the image stays covered. The review NEVER unblocks by itself on
+  // failure: any error leaves the image covered.
+  function fmtProgress(p) {
+    if (typeof p === 'number') return Math.round(p * 100);
+    if (p && typeof p.progress === 'number') return Math.round(p.progress * 100);
+    if (p && typeof p.loaded === 'number' && typeof p.total === 'number' && p.total > 0) {
+      return Math.round((p.loaded / p.total) * 100);
+    }
+    return null;
+  }
+
+  // Bytes for the review: re-fetch http(s) images (same refetch as
+  // detection), fetch data:/blob: URLs directly, else snapshot the
+  // readable element pixels to a JPEG blob.
+  async function getReviewBytes(entry) {
+    var src = originalUrl(entry.source || sourceOf(entry.el));
+    if (/^https?:\/\//i.test(src)) {
+      var fetched = await fetchImageBytes(src);
+      return fetched.blob;
+    }
+    if (/^(data|blob):/i.test(src)) {
+      var res = await fetch(src);
+      return await res.blob();
+    }
+    var el = entry.el;
+    var w = el.naturalWidth || el.videoWidth || el.width || 0;
+    var h = el.naturalHeight || el.videoHeight || el.height || 0;
+    if (!w || !h) throw new Error('no readable pixels for review');
+    var c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    var ctx = c.getContext('2d');
+    if (!ctx) throw new Error('no canvas context for review');
+    ctx.drawImage(el, 0, 0, w, h);
+    var blob = await new Promise(function (resolve) { c.toBlob(function (b) { resolve(b); }, 'image/jpeg', 0.85); });
+    if (!blob) throw new Error('canvas snapshot failed');
+    return blob;
+  }
+
+  // Record a review decision on the server (web path ONLY — the native
+  // app path records it on the native side). Fire-and-forget: a failed
+  // POST must NEVER block or undo the UI decision (log only).
+  function postReviewDecision(body) {
+    if (!body || !body.image_key) return;
+    try {
+      fetch('/review-decision', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        credentials: 'omit'
+      }).catch(function (e) { console.warn('[fp] review-decision POST failed:', e); });
+    } catch (e) { console.warn('[fp] review-decision POST failed:', e); }
+  }
+
+  async function applyReviewResult(entry, result, mode) {
+    var decision = result.decision;
+    var boxes = (result.boxes || []).map(normalizeBox);
+    var best = typeof result.best === 'number' ? result.best : 0;
+    var record = { decision: decision, boxes: boxes, mode: mode, best: best, at: Date.now() };
+    // Local cache under the 'u:' key and, when the review ran on
+    // fetched bytes, under the content-hash key too. NOTE: the review
+    // engine's contentHash ALREADY carries the 'b:' prefix ('b:' +
+    // sha256) — use it verbatim; prepending 'b:' again stored dead
+    // 'b:b:…' keys that nothing ever looks up (fixed 2026-11-19).
+    if (entry.imageKey) storeReviewDecision(entry.imageKey, record);
+    if (result.contentHash) storeReviewDecision(result.contentHash, record);
+    if (result.via === 'web') {
+      postReviewDecision({
+        image_key: entry.imageKey || result.contentHash || null,
+        image_url: originalUrl(entry.source || sourceOf(entry.el)),
+        page_url: location.href,
+        decision: decision,
+        model: result.model || 'rf-detr-nano',
+        best_score: best,
+        boxes: boxes,
+        human_image_mode: mode,
+        // first_detector MUST be an object (or null): the API rejects a
+        // plain string with 400 ("must be an object or null"). Same
+        // shape as the Android app: {detector: <name>} plus the
+        // first-stage signal numbers. The web copy used to send the
+        // bare string and every web POST was rejected (found 2026-11-19
+        // by the live proxy round-trip; enriched to the full shape
+        // per the integration follow-up the same day).
+        first_detector: Object.assign({ detector: entry.firstDetector || 'none' },
+          entry.firstSignal || {})
+      });
+    }
+    if (decision === 'allow') { uncover(entry); addDownloadButton(entry); }
+    else if (decision === 'allow_painted') { paint(entry, boxes); }
+    else if (decision === 'block') { removeDownloadButton(entry); block(entry); }
+    else { // 'uncertain' (and anything unknown): stays covered.
+      if (entry.reviewBtn) entry.reviewBtn.textContent = 'נאָך אומבאַקאַנט — בלייבט באַדעקט';
+    }
+    // Tell the shim the outcome (web path only — the native app has no
+    // shim to tell): without this the shell's verdict map + status
+    // line keep the stale 'cover' from the first scan until a reload,
+    // and a painted image's download would read verdict-cover instead
+    // of verdict-painted. Fire-and-forget: a failed notify must never
+    // undo the UI decision.
+    if (result.via === 'web') {
+      try {
+        var shimVerdict = decision === 'allow' ? 'allow' :
+          decision === 'allow_painted' ? 'painted' :
+          decision === 'block' ? 'block' : 'cover';
+        var notify = sendToNative({
+          type: 'review-applied', id: entry.id,
+          source: entry.source || sourceOf(entry.el),
+          verdict: shimVerdict, boxes: boxes
+        });
+        if (notify && typeof notify.catch === 'function') {
+          notify.catch(function () { /* notify only */ });
+        }
+      } catch (e) { /* notify only */ }
+    }
+    repositionAll();
+  }
+
+  async function requestReview(entry) {
+    if (!entry || entry.reviewing || entry.state !== 'covered') return;
+    entry.reviewing = true;
+    var btn = entry.reviewBtn;
+    function setBtn(t) { if (btn) btn.textContent = t; }
+    try {
+      var mode = humanImageMode;
+      var bytes = await getReviewBytes(entry);
+      var result = null;
+      if (typeof window.FpReview !== 'undefined' && window.FpReview) {
+        setBtn('לאָדט דעם צווייטן מאָדעל…');
+        await window.FpReview.ensure(function (p) {
+          var pct = fmtProgress(p);
+          setBtn(pct === null ? 'לאָדט דעם צווייטן מאָדעל…' : 'לאָדט דעם צווייטן מאָדעל… ' + pct + '%');
+        });
+        setBtn('טשעקט…');
+        result = await window.FpReview.review(bytes, mode);
+        result = result || {};
+        result.via = 'web';
+      } else {
+        setBtn('טשעקט…');
+        var reply = await Promise.race([
+          sendToNative({ type: 'review', id: entry.id, source: entry.source || sourceOf(entry.el), imageKey: entry.imageKey || null }),
+          new Promise(function (resolve, reject) {
+            setTimeout(function () { reject(new Error('review timeout')); }, REVIEW_TIMEOUT_MS);
+          })
+        ]);
+        if (!reply || reply.type !== 'review-decision' || !reply.decision) {
+          throw new Error('review unavailable');
+        }
+        result = {
+          decision: reply.decision, boxes: reply.boxes || [],
+          best: reply.best || 0, model: reply.model || 'native',
+          reason: reply.reason || '', via: 'native'
+        };
+      }
+      await applyReviewResult(entry, result, mode);
+    } catch (e) {
+      // Review unavailable / failed: stay covered, say so briefly.
+      setBtn('נישט פֿאַראַן');
+      setTimeout(function () {
+        if (entry.reviewBtn) entry.reviewBtn.textContent = 'בעטן אַ באַשלוס';
+      }, 2500);
+    } finally {
+      entry.reviewing = false;
+    }
   }
 
   var reportRunning = false;
@@ -848,7 +1328,7 @@
     pendingReport = false;
     if (reportRunning) { scheduleReport(); return; }
     var entries = Array.from(tracked.values()).filter(function (e) {
-      return e.state !== 'allowed' && e.state !== 'blocked';
+      return e.state !== 'allowed' && e.state !== 'blocked' && e.state !== 'painted';
     });
     if (!entries.length) return;
     reportRunning = true;
@@ -857,10 +1337,19 @@
       for (var i = 0; i < entries.length; i++) {
         findings.push(await findingFor(entries[i]));
       }
+      // Deferred findings (image not loaded yet) are NOT sent: deciding
+      // them now would record allow+unscanned and they would never be
+      // re-checked. They stay covered; each image's load listener
+      // re-schedules a report when its bytes arrive (see
+      // NOT_LOADED_MSG). If every finding is deferred, send nothing —
+      // do not re-schedule here, or the report would spin forever on
+      // images that never load (they correctly stay covered).
+      var readyFindings = findings.filter(function (f) { return !f.deferred; });
+      if (!readyFindings.length) return;
       var reply = await sendToNative({
         type: 'scan',
         pageUrl: location.href,
-        findings: findings
+        findings: readyFindings
       });
       retriesLeft = MAX_RETRIES;
       applyDecisions(reply);
@@ -881,6 +1370,7 @@
       if (!entry) return;
       if (d.verdict === 'allow') { uncover(entry); addDownloadButton(entry); }
       else if (d.verdict === 'block') { removeDownloadButton(entry); block(entry); }
+      else if (d.verdict === 'painted') { removeDownloadButton(entry); paint(entry, d.boxes || []); }
       else { removeDownloadButton(entry); cover(entry); } // 'cover' and anything unknown: stay covered
     });
     repositionAll();
@@ -929,6 +1419,32 @@
         }, '*');
       } catch (err) { /* never break the page's own clicks */ }
     }, true);
+
+    // Human-image policy from the shell (same pattern as the shim's
+    // fp-policy listener): 'paint' (default) or 'block'. The review
+    // call passes the current mode to FpReview / the native side.
+    window.addEventListener('message', function (e) {
+      try {
+        if (!e || e.source !== window.parent) return;
+        var d = e.data;
+        if (d && d.type === 'fp-policy' &&
+            (d.humanImageMode === 'paint' || d.humanImageMode === 'block')) {
+          humanImageMode = d.humanImageMode;
+        }
+      } catch (err) { /* a policy message must never break the filter */ }
+    });
+
+    // Ask the shell for the current policy now that the listener above
+    // exists. The shell's posts at navigation time and on fp-loaded
+    // both arrive BEFORE this script (last injected) registers its
+    // listener, so without this ask a reloaded tab reviews in the
+    // default 'paint' mode even when the setting is 'block' — found
+    // live 2026-11-19 (case-3 review upserted allow_painted with
+    // human_image_mode 'paint' while the setting was 'block'). The
+    // app ignores the unknown message type.
+    try {
+      window.parent.postMessage({ source: 'filter-platform-web', type: 'fp-policy-request' }, '*');
+    } catch (err) { /* no shell to ask */ }
 
     // Find in page, driven by the shell. Only messages from the parent
     // frame (the shell) are accepted. Everything is guarded so a find
