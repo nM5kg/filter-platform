@@ -1,0 +1,94 @@
+{
+  "ranAt": "2026-11-19T07:27:25.679Z",
+  "run": "73245679",
+  "steps": {
+    "setup": {
+      "managerId": "cc6779b8-6f8d-40ef-9da0-754a08089b18",
+      "managerEmail": "e2e-manager-73245679@filter.local",
+      "stdPolicyId": "179d3448-98d0-4eb4-8a2c-ac813a648e84",
+      "stdPolicyName": "Standard — block images + explicit words, rest open",
+      "secondPolicyId": "c0a9231d-8816-4f04-802a-83749951ea2d",
+      "secondPolicyStored": {
+        "force_safesearch": false,
+        "block_images": false,
+        "cover_images": true
+      }
+    },
+    "1a_manager_invite": {
+      "dashboardUrl": "https://filter-platform-dashboard.pages.dev/",
+      "dashboardTitle": "פילטער פּלאַטפאָרמע — דאַשבאָרד",
+      "inviteCreated": true,
+      "codeFormat6Digits": true,
+      "managedTableBefore": "איר פֿאַרוואַלט קיין פֿרעמדע דעוויסעס נישט — שאַפֿט אַן אײַנלאַדונג אונטן צו אָנהייבן.",
+      "invitesListShowsDevice": false
+    },
+    "1b_managed_register": {
+      "extensionId": "keibjodbjaonlckfkaejiiefaikphdfg",
+      "regResult": "✅ רעגיסטרירט! דער דיווייס \"E2E Managed Laptop\" ווערט איצט פֿאַרוואַלט פֿון E2E Manager, מיט דער פּאָליסי \"Standard — block images + explicit words, rest open\".",
+      "deviceIdSaved": true,
+      "managedByBox": "קיין דיווייס ID נישטאָ — רעגיסטרירט זיך מיט אַ קאָד אונטן, אָדער שפּאָרט אַ דיווייס ID אויבן.",
+      "unlinkButtonVisible": false,
+      "popupErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "apiDevice": {
+        "name": "E2E Managed Laptop",
+        "status": "active",
+        "managed_by_name": "E2E Manager",
+        "policy_name": "Standard — block images + explicit words, rest open"
+      }
+    },
+    "1b_sync_standard_baseline": {
+      "policyName": "Standard — block images + explicit words, rest open",
+      "policyFetched": true,
+      "force_safesearch": true,
+      "safeSearchEnforced": true,
+      "safeSearchRulesCount": 3,
+      "dnrSafeSearchRules": 3,
+      "statusText": "✅ פּאָליסי: Standard — block images + explicit words, rest open\nבילדער: בלאקירן\nבלאקירטע דאמיינען: 11  •  DNR כּללים: 36\nאַדס־פֿילטער: אויס (פּאָליטיק filter_ads=ניין)\nלעצטע סינק: 2026-11-19T07:27:41.602Z"
+    },
+    "1c_manager_policy_change_dashboard": {
+      "dashboardRowBeforeHasDevice": true,
+      "statusAfterChange": "פּאָליטיק געטוישט.",
+      "apiPolicyNow": "E2E Test — SafeSearch Off",
+      "apiPolicyId": "c0a9231d-8816-4f04-802a-83749951ea2d",
+      "dashboardRowAfterShowsNewPolicy": true
+    },
+    "2_safesearch_off_policy_sync": {
+      "popupStatusPolicy": "E2E Test — SafeSearch Off",
+      "policyFetched": true,
+      "block_images": false,
+      "cover_images": true,
+      "force_safesearch": false,
+      "safeSearchEnforced": false,
+      "safeSearchRulesCount": 0,
+      "dnrSafeSearchRules": 0,
+      "statusText": "✅ פּאָליסי: Standard — block images + explicit words, rest open\nבילדער: בלאקירן\nבלאקירטע דאמיינען: 11  •  DNR כּללים: 36\nאַדס־פֿילטער: אויס (פּאָליטיק filter_ads=ניין)\nלעצטע סינק: 2026-11-19T07:27:41.602Z",
+      "storedAfterRefreshClick": {
+        "policyName": "E2E Test — SafeSearch Off",
+        "force_safesearch": false,
+        "safeSearchEnforced": false
+      },
+      "dnrSafeSearchRulesAfterRefreshClick": 0,
+      "apiSafeSearchForDevice": {
+        "force_safesearch": false,
+        "policy_name": "E2E Test — SafeSearch Off"
+      },
+      "pass": true
+    },
+    "2b_safesearch_back_to_standard": {
+      "policyName": "Standard — block images + explicit words, rest open",
+      "force_safesearch": true,
+      "safeSearchEnforced": true,
+      "safeSearchRulesCount": 3,
+      "dnrSafeSearchRules": 3,
+      "pass": true
+    },
+    "1d_managed_unlink_popup": {
+      "managedByBoxAfter": "✅ דער דיווייס איז מער נישט פֿאַרוואַלט פֿון קיינעם.",
+      "apiManagedByName": null,
+      "apiManagedById": null,
+      "pass": true
+    }
+  }
+}

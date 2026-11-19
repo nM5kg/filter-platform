@@ -1,0 +1,57 @@
+{
+  "ranAt": "2026-11-19T07:28:50.548Z",
+  "run": "73245679",
+  "steps": {
+    "resume_state": {
+      "popupStillHoldsDevice1": true,
+      "storedDeviceId": "db2125b6-7672-460c-9206-91a875a2d239"
+    },
+    "1e_invite2b": {
+      "inviteCreated6Digits": true,
+      "pendingInvitesListShowsDevice": true
+    },
+    "1e_register_device2": {
+      "regResult2": "✅ רעגיסטרירט! דער דיווייס \"E2E Managed Laptop 2\" ווערט איצט פֿאַרוואַלט פֿון E2E Manager, מיט דער פּאָליסי \"Standard — block images + explicit words, rest open\".",
+      "managedByBox": "⚠️ דעם דיווייס פֿאַרוואַלט: E2E Manager\nפּאָליסי וואָס ווערט אָנגעווענדט: Standard — block images + explicit words, rest open\nדער מאַנאַדזשער קען זען צי דער דיווייס איז אָנליין, און טוישן זײַן פּאָליטיק. ער/זי קען נישט זען אײַערע בלעטער אָדער פּאַסווערטער.",
+      "device2IdSaved": true,
+      "device2IsNew": true,
+      "apiDevice2": {
+        "name": "E2E Managed Laptop 2",
+        "status": "active",
+        "managed_by_name": "E2E Manager",
+        "policy_name": "Standard — block images + explicit words, rest open"
+      }
+    },
+    "1e_manager_unlink_dashboard": {
+      "dashboardRowHadDevice2": true,
+      "dashboardStatusAfter": "דעוויס אָפּגעקאַפּלט.",
+      "apiManagedByAfter": null,
+      "popupManagedByAfterRefresh": "דער דיווייס איז נישט פֿאַרוואַלט פֿון קיינעם — נאָר איר אַליין באַשטימט די פּאָליסי.",
+      "pass": true
+    },
+    "1f_negative_checks": {
+      "spentCodePopupError": "❌ טעות: דער קאָד איז נישט גילטיק אָדער שוין גענוצט — בעט דעם מאַנאַדזשער פֿאַר אַ נײַעם קאָד.",
+      "spentCodeApiStatus": 404,
+      "wrongCodePopupError": "❌ טעות: דער קאָד איז נישט גילטיק אָדער שוין גענוצט — בעט דעם מאַנאַדזשער פֿאַר אַ נײַעם קאָד.",
+      "devicesForManagedCustomerBefore": 1,
+      "devicesForManagedCustomerAfter": 1,
+      "popupStillHoldsDevice2": true,
+      "pass": true
+    }
+  },
+  "cleanupIds": {
+    "managerId": "cc6779b8-6f8d-40ef-9da0-754a08089b18",
+    "deviceId1": "db2125b6-7672-460c-9206-91a875a2d239",
+    "deviceId2": "8ac888bf-02f5-4f70-8057-ad3781790f1f",
+    "managedCustomerIds": [
+      "60d24b6c-dd97-4120-84a0-e1df0e4d9333",
+      "e069e55f-9837-42e7-95c8-c3769f218ef9"
+    ],
+    "pol2Id": "c0a9231d-8816-4f04-802a-83749951ea2d",
+    "pendingInvite2Id": "24651a5d-55bc-4994-996e-68068f641d7a",
+    "managedEmails": [
+      "e2e-managed-73245679@filter.local",
+      "e2e-managed2-73245679@filter.local"
+    ]
+  }
+}

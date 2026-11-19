@@ -1,0 +1,83 @@
+{
+  "ranAt": "2026-11-19T07:55:24.842Z",
+  "steps": {
+    "manifest": {
+      "version": "1.2.1",
+      "name": "Filter Platform — Kosher Browser Filter"
+    },
+    "load": {
+      "extensionId": "ocjhaggdhohgcmahnjlocmbioajdekho",
+      "swFound": true
+    },
+    "popup": {
+      "opened": true,
+      "consoleErrors": []
+    },
+    "updateCheckLive": {
+      "checkResult": {
+        "updateAvailable": false
+      },
+      "stored": {
+        "fpLatestVersion": "1.2.1",
+        "fpUpdateAvailable": false,
+        "fpUpdateCheckedAt": "2026-11-19T07:55:34.013Z"
+      }
+    },
+    "bannerWhenMatching": {
+      "display": "none"
+    },
+    "bannerWhenForced": {
+      "display": "block",
+      "text": "⬆️ אַ נײַע ווערסיע איז דאָ (ווערסיע 9.9.9) — לאָדט זי אַראָפּ פֿון אונדזער וועבזײַטל"
+    },
+    "tempDevice": {
+      "created": true,
+      "activated": true
+    },
+    "sync": {
+      "status": {
+        "adBlocklistDomains": 26,
+        "adRulesCount": 0,
+        "adsEnforced": false,
+        "auto_decide_threshold": "0.7000",
+        "blockRedirectRules": 11,
+        "block_images": true,
+        "blocklistDomains": 11,
+        "cover_images": false,
+        "deviceFound": true,
+        "deviceName": "Verify121 Laptop",
+        "error": null,
+        "filter_ads": false,
+        "filter_videos": false,
+        "force_safesearch": true,
+        "lastSync": "2026-11-19T07:55:39.435Z",
+        "policyFetched": true,
+        "policyId": "179d3448-98d0-4eb4-8a2c-ac813a648e84",
+        "policyName": "Standard — block images + explicit words, rest open",
+        "rulesCount": 36,
+        "safeSearchEnforced": true,
+        "safeSearchEngines": [
+          "google",
+          "bing",
+          "duckduckgo"
+        ],
+        "safeSearchRulesCount": 3,
+        "safeSearchSource": "api",
+        "syncMs": 1012
+      },
+      "dnrRules": {
+        "total": 36,
+        "byRange": {
+          "domain": 22,
+          "redirect": 11,
+          "ads": 0,
+          "safesearch": 3,
+          "other": 0
+        }
+      }
+    },
+    "cleanup": {
+      "devicesLeftForCustomer": 0
+    }
+  }
+}
