@@ -6,9 +6,11 @@ upload-token -> check-missing -> assets/upload -> upsert-hashes -> deployments.
 Hash: blake3(base64(content) + ext) hex, first 32 chars.
 Auth: custom.cloudflare connector surrogate (API token, never read directly).
 
-Deploys EVERYTHING in public/: index.html, download.html, versions.json,
-and the extension ZIP (our-filter-extension-*.zip). Add a file to public/
-and it ships on the next run; remove it and it stops being deployed.
+Deploys EVERYTHING in public/ recursively: index.html, download.html,
+versions.json, browser.html, browser-assets/ (content.js, detector.js,
+models, WASM, .tflite), test-pages/ (8 test pages + assets), and the
+extension ZIP. Add a file under public/ and it ships on the next run;
+remove it and it stops being deployed.
 """
 import base64, json, mimetypes, os, sys, time, urllib.request, uuid
 sys.path.insert(0, "/opt/muse/skills/custom-connector-setup/bin")
@@ -24,6 +26,17 @@ CONTENT_TYPES = {
     ".html": "text/html; charset=utf-8",
     ".json": "application/json; charset=utf-8",
     ".zip": "application/zip",
+    ".js": "text/javascript; charset=utf-8",
+    ".mjs": "text/javascript; charset=utf-8",
+    ".wasm": "application/wasm",
+    ".tflite": "application/octet-stream",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+    ".svg": "image/svg+xml",
+    ".webm": "video/webm",
+    ".css": "text/css; charset=utf-8",
+    ".md": "text/markdown; charset=utf-8",
 }
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -45,20 +58,21 @@ def cf_request(method, path, body=None, bearer_jwt=None):
 
 def main():
     files = []
-    for name in sorted(os.listdir(PUBLIC_DIR)):
-        p = os.path.join(PUBLIC_DIR, name)
-        if not os.path.isfile(p):
-            continue
-        ext = os.path.splitext(name)[1].lower()
-        if ext not in CONTENT_TYPES:
-            print(f"skip (unknown type): {name}")
-            continue
-        content = open(p, "rb").read()
-        file_hash = blake3.blake3(base64.b64encode(content) + ext.lstrip(".").encode()).hexdigest()[:32]
-        files.append({"name": name, "path": "/" + name, "content": content,
-                      "ext": ext, "hash": file_hash,
-                      "content_type": CONTENT_TYPES[ext]})
-        print(f"{name}: {len(content)} bytes, hash {file_hash}")
+    for dirpath, dirnames, filenames in os.walk(PUBLIC_DIR):
+        dirnames.sort()
+        for name in sorted(filenames):
+            p = os.path.join(dirpath, name)
+            rel = os.path.relpath(p, PUBLIC_DIR).replace(os.sep, "/")
+            ext = os.path.splitext(name)[1].lower()
+            if ext not in CONTENT_TYPES:
+                print(f"skip (unknown type): {rel}")
+                continue
+            content = open(p, "rb").read()
+            file_hash = blake3.blake3(base64.b64encode(content) + ext.lstrip(".").encode()).hexdigest()[:32]
+            files.append({"name": rel, "path": "/" + rel, "content": content,
+                          "ext": ext, "hash": file_hash,
+                          "content_type": CONTENT_TYPES[ext]})
+            print(f"{rel}: {len(content)} bytes, hash {file_hash}")
 
     tok = cf_request("GET", f"/accounts/{ACCOUNT}/pages/projects/{PROJECT}/upload-token")
     jwt = tok["result"]["jwt"]
@@ -92,7 +106,7 @@ def main():
         parts.append(f"--{boundary}\r\nContent-Disposition: form-data; name=\"{name}\"\r\nContent-Type: {ctype}\r\n\r\n{value}\r\n".encode())
     field("manifest", json.dumps(manifest), "application/json")
     field("branch", "main")
-    field("commit_message", "Deploy Filter Platform dashboard + Download Center (direct upload)")
+    field("commit_message", "Deploy Filter Platform dashboard + web browser demo (direct upload)")
     body = b"".join(parts) + f"--{boundary}--\r\n".encode()
     req = urllib.request.Request(
         f"{BASE}/accounts/{ACCOUNT}/pages/projects/{PROJECT}/deployments",
