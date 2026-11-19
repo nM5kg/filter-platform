@@ -394,11 +394,10 @@ and anything that flashes uncovered before being covered.
   content-script injection, the native bridge round-trip, and cover
   behaviour on the 8 content types are all unproven until the checklist
   above is run on a phone.
-- No person detection runs on device yet (stub detector only). Detecting
-  people on real sites inside GeckoView is NOT proven — the scanner's
-  EfficientDet-Lite0 results (Playwright + headless Chromium) do not
-  transfer automatically: the prototype must be re-proven inside
-  GeckoView per content type, per the checklist.
+- Person detection on device is bundled (0.2.0, see below) but NOT
+  proven — the scanner's and the desktop extension's EfficientDet-Lite0
+  results do not transfer automatically: the detector must be re-proven
+  inside GeckoView per content type, per the checklist.
 - Real device registration end-to-end from the app UI (create customer →
   create device → code → register → heartbeat) was verified against the
   live API by the Phase 1 dogfood script, but never from this app's UI.
@@ -445,3 +444,108 @@ in the status line instead of crashing.
 `apksigner verify` v2+v3, badging versionCode 2. Install over 0.1.0
 (same debug key) or uninstall first; the Drive link is unchanged
 (the file is replaced in place).
+
+## 0.2.0 — real v1.2.0 engine in the app (2026-11-19 ~01:58 EST)
+
+Yakob asked to put the work done so far onto the app, so the app
+filters with the real engine instead of the stub. 0.2.0 ports the
+proven online-first extension v1.2.0 into the GeckoView prototype.
+versionCode 5 (3 and 4 were used by the minimal-test and nogecko-test
+APKs with the same package — 5 is the next free code and upgrades over
+anything installed), versionName 0.2.0, 211,176,487 bytes. Same Drive
+link as before (file replaced in place).
+
+### What changed
+
+- **Real person detector (stub replaced).** The built-in extension now
+  bundles the MediaPipe ObjectDetector EfficientDet-Lite0
+  (`assets/filter-extension/models-mediapipe/efficientdet_lite0.tflite`,
+  sha256 `4b591000…80993`, 7,254,339 bytes) + the tasks-vision runtime
+  + WASM (`vendor-mediapipe/`, ~15 MB), running in a hidden
+  extension-origin iframe (`detector.html` + `detector-page.js`,
+  bridged by `detector.js`) exactly like the desktop extension v1.2.0.
+  PROTOTYPE-ONLY weights: the EfficientDet weights license is still
+  unverified (see `models-mediapipe/LICENSES.md`) — do not treat this
+  model as production-licensed.
+- **Face fallback.** `vendor/face-api.js` + `models/` (tinyFaceDetector)
+  run in the content script, same as v1.2.0. Person OR face counts as
+  human; both failing means uncertain → covered.
+- **Detection numbers, native decisions.** The content script computes
+  detection NUMBERS only (`persons`, `personBest`, `faces`, `faceBest`,
+  `detected`, `detectError`) and sends them to native; `FilterEngine`
+  decides with the new `JsReportedPersonDetector` (mirrors the
+  extension's `detectImg`, with the policy threshold in place of its
+  hardcoded 0.50). `StubPersonDetector` is tests-only now. Threshold
+  comes from the policy (`autoDecideThreshold`, default 0.70 — Yakob's
+  0.50-vs-0.70 decision is still open).
+- **Cross-origin images are actually checked now.** The content script
+  refetches cross-origin images through the detector iframe (extension-
+  origin fetch, not CORS-gated — same mechanism as v1.2.0), with a
+  direct content-script fetch as fallback; verdicts cached per URL
+  (max 500). CSS backgrounds, canvas, video frames and SVG are
+  detected on probe images the same way. Anything unreadable stays
+  covered (fail closed).
+- **Yiddish block page.** A top-level navigation to a blocked host no
+  longer just dies: `BrowserActivity` denies it and loads the Yiddish
+  block page (`filter-extension/blocked.html`, domain + policy name
+  substituted by Kotlin) as a `data:` URL.
+- **SafeSearch enforcement.** `BrowserActivity` rewrites search
+  navigations when the policy enforces SafeSearch (Google `safe=active`,
+  Bing `adlt=strict`, DuckDuckGo `kp=1`; idempotent, pure function
+  `FilterEngine.rewriteSafeSearch`, unit-tested). YouTube Restricted
+  Mode still needs DNS — not attempted.
+- **Extension manifest is MV2, version 0.2.0**, with
+  `web_accessible_resources: ["detector.html"]` and
+  `content_security_policy: "script-src 'self' 'unsafe-eval';
+  object-src 'self'"` (WASM needs `unsafe-eval`).
+
+### What is still a stub / not done
+
+- Nothing is a stub any more in the engine path — but **none of this
+  has run on a phone**. See "What is NOT verified" above.
+- Ad/tracker *subresource* blocking (DNR in the desktop extension) has
+  no equivalent in the app yet — the app blocks only top-level
+  navigations to blocked hosts. Subresource ads still load.
+- The 0.1.1 crash fixes are all kept: `assets/omni.ja` flat at the
+  assets root, `zygotePreloadName` count 0 in the merged manifest,
+  `SecureStore` plain-prefs fallback, `MainActivity.onCreateSafe`,
+  `BrowserActivity` try/catch around GeckoView startup.
+
+### Verification (this VM, 2026-11-19)
+
+- Unit tests: `run-tests.sh` → **OK (37 tests)** (22 existing + 15
+  new: detector mapping incl. 0.50/0.70 boundaries, SafeSearch rewrite,
+  block-host matching, scan-message parsing).
+- Manual build: exit 0; `apksigner verify` v2 true, v3 true, 1 signer;
+  badging versionCode 5 / versionName 0.2.0; `lib/arm64-v8a/libxul.so`
+  present; `assets/omni.ja` at root only; `zygotePreloadName` 0; all 16
+  filter-extension assets in the APK (incl. the .tflite, the 14.7 MB
+  WASM, face-api.js, detector files, block page); `JsReportedPersonDetector`,
+  `showBlockPage`, `rewriteSafeSearch` present in `classes.dex`;
+  no secrets found in the APK's text assets.
+- Drive: file replaced in place, size verified 211,176,487 bytes =
+  the built APK.
+
+### How Yakob tests it on his phone
+
+1. **Uninstall the old app first** (0.1.1, or the minimal/nogecko test
+   APK if that is what is installed — same package name).
+2. Install from the same Drive link as before
+   (`FilterPlatform-GeckoView-prototype.apk`, now 0.2.0).
+3. Open the app. If it opens, tap **"Open filter browser"**.
+4. The browser home page is the filter dashboard. Type a real site in
+   the address bar — e.g. `bbc.com`, `wikipedia.org` — and watch the
+   status line: it counts covered / allowed / blocked.
+   - A page with people in photos should show images covered (dark
+     overlays); a page with no people (e.g. `example.com`) should show
+     its content uncovered.
+   - If EVERYTHING stays covered on every page, the detector is probably
+     down on the device (WASM/CSP) — the engine fails closed, which is
+     safe but means no real detection is happening. Report exactly that.
+   - Try `facebook.com`: the Yiddish block page should appear instead
+     of the site.
+   - Try a Google search: the URL should gain `safe=active`.
+5. Report back: does the app open? Does the browser open? What does
+   the status line say on bbc.com / wikipedia.org / example.com? Does
+   the facebook block page appear? Anything that kicks out or shows an
+   on-screen error — copy the exact text.
