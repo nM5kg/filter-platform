@@ -816,3 +816,214 @@ filter engine (RF-DETR Nano + EfficientDet/face, threshold from policy —
   (8) Settings — change the search engine, clear history, check About
   shows 0.3.0; (9) close the app fully and reopen — non-private tabs
   are back, private tabs are gone.
+
+## 0.3.1 — review / paint browser requirements (2026-11-19, versionCode 9)
+
+Yakob's requirements (2026-11-19): (2) for unconfirmed/uncertain content
+the user can REQUEST a decision — a visible request control on a covered
+image, the AI decides, approve opens it, reject leaves it blocked;
+(3) when approved/opened, human pictures are blocked OR the person is
+painted over (bounding-box overlay on just the person region) — BOTH as
+a policy setting, default paint; the whole picture is blocked when the
+person region covers most of it (area threshold 0.60); (4) NON-human
+pictures must NEVER be blocked or covered. Built in parallel with the
+web review engine (sibling A), the web browser UI/shim (sibling B) and
+the API+Neon recording (sibling C); this build is the Android port only
+(`android/` files).
+
+### What changed
+
+- **Review decision bands (FIXED, identical to the web engine):**
+  RF-DETR best person score >= 0.50 -> person confirmed: mode `block`
+  -> `block`; else largest single person-box area > 0.60 of the image
+  area OR sum of person-box areas > 0.60 -> `block`; else
+  `allow_painted`. Best in [0.30, 0.50) -> `uncertain` (stays covered).
+  Best < 0.30 -> `allow`. Boxes are `{x,y,w,h,score}` FRACTIONS 0..1.
+  One deliberate deviation from the literal bands: a confirmed person
+  with NO boxes to paint is `block`, not `allow_painted` — painting
+  nothing would show the person unpainted. (In practice RF-DETR always
+  returns a box for a score >= 0.50, since boxes decode at 0.30.)
+- **New `decide()` rules** (`FilterEngine.kt`): (a) a recorded review
+  decision (`cachedDecision`) is returned VERBATIM — a reviewed image
+  is never re-decided; (b) persons/faces > 0 with best >= threshold ->
+  PERSON -> COVER (initial; the paint/block choice is made by the
+  review, not by `decide()`); best < threshold -> UNKNOWN -> REVIEW
+  (weak but REAL signal); (c) no persons/faces, detection ran, best <
+  0.40 -> NO_PERSON -> ALLOW; (d) NO detection signal at all
+  (`!detectionRan` / no-data UNKNOWN): HTML_IMAGE / CSS_BACKGROUND /
+  SVG -> ALLOW with `unscanned=true`; CANVAS / WEBGL / VIDEO_FRAME /
+  LIVE_STREAM / DYNAMIC -> REVIEW (cover).
+- **The no-overcover trade-off (req 4, deliberate):** an image whose
+  pixels cannot be read is left visible when there is NO person signal,
+  because covering it would block a picture nothing ever said was
+  human. A cross-origin picture of a person that neither detector could
+  read WILL be shown. A dynamic surface that cannot be snapshotted
+  cannot be proven clean, so it stays covered. The distinction is
+  carried explicitly as `DetectionResult.noData` — a no-data UNKNOWN
+  never vetoes another detector's clean verdict and never counts as a
+  signal; only a WEAK-signal UNKNOWN vetoes (`CombinedPersonDetector`).
+  Behaviour changes vs 0.2.2 (old tests updated, each marked in
+  `FilterEngineTest.kt`): JS-clean + RF-no-thumbnail now ALLOWs; a
+  no-detector-ran static image now ALLOWs unscanned (was REVIEW); a
+  weak signal from either side still vetoes clean.
+- **Review flow (`BrowserActivity`):** the native bridge now routes
+  two message types. `{"type":"scan",...}` -> decisions as before
+  (now also honouring locally cached decisions: findings are enriched
+  from `ReviewDecisionStore` before deciding, and `buildDecisionsMessage`
+  emits verdict `painted` + boxes + `reason` + `unscanned`).
+  `{"type":"review", id, source, imageKey}` (sent when the user taps
+  the request button on a covered image) -> the handler looks the
+  finding up by id, checks the local store then the server
+  (GET /api/v1/review-decisions) for an earlier decision, otherwise
+  runs RF-DETR on the finding's thumbnail (best score + boxes) and
+  replies `{"type":"review-decision", id, decision, boxes, best,
+  model:"rf-detr-nano", reason, contentHash}`. A review NEVER unblocks
+  by itself on failure — unknown id / no thumbnail / model unavailable
+  replies `uncertain` (stays covered). Every outcome is recorded
+  locally (always) and on the server (when registered; a failed POST
+  never blocks or undoes the UI decision).
+- **RF-DETR boxes (`RfDetrOrtBackend.kt` + pure decoder in
+  `FilterEngine.kt`):** `personDetections()` returns best score +
+  person boxes. The `dets` format is normalised **cxcywh** — VERIFIED
+  empirically 2026-11-19 against the shipped asset with the official
+  decode: the p1 portrait's top query (0.981) decodes as cxcywh to
+  x=0.001 y=0.027 w=0.998 h=0.965 (the full-frame portrait; read as
+  xyxy it would be a bottom-right quadrant box); on the no-person lake
+  photo the top query read as xyxy gives a NEGATIVE width —
+  impossible for xyxy. Boxes decode at score >= 0.30, sorted best
+  first, clipped to the frame.
+- **Human-image mode setting:** `Policy.humanImageMode` (nullable —
+  null = server did not specify, local setting applies; a server mode,
+  when present, wins — `BrowserActivity.effectivePolicy()`).
+  `BrowserSettings.humanImageMode` (default PAINT, persisted).
+  `SettingsActivity` has a Yiddish radio in the Filter section
+  ("מאָלן דעם מענטש (דיפֿאָלט)" / "בלאָקירן דאָס גאַנצע בילד") with the
+  note "אויב דער מענטש נעמט מער ווי 60% פֿון בילד, ווערט דאָס גאַנצע בילד
+  בלאָקירט אפֿילו אין מאָלן־מאָדוס". The policy row shows the effective
+  mode and where it came from. `DownloadPolicy`: a PAINTED image is
+  NOT downloadable — its raw bytes still contain the person.
+- **Review record:** `ApiClient.recordReviewDecision` /
+  `getReviewDecision` (POST/GET /api/v1/review-decisions, matching
+  the server validation: decision allow|allow_painted|block|uncertain,
+  boxes 0..1, human_image_mode paint|block, `first_detector` an OBJECT
+  — the app sends `{"detector":"rf-detr-nano","first_signal":
+  "efficientdet"|"face-api"|"none"}`). Local store
+  `ReviewDecisionStore` (`BrowserData.kt`, key `review_decisions`,
+  capped at 500, oldest evicted; corrupt file loads as empty).
+  Image keys: `u:<sha256 of canonical URL>` / `b:<sha256 of image
+  bytes>` (see `FilterEngine.imageKeyForUrl` /
+  `imageKeyForContent`).
+
+### content.js sync (done in this build, 2026-11-19 ~19:06 EST)
+
+- BEFORE the sync the two copies had diverged: web
+  `public/browser-assets/content.js` 61,893 bytes (1,416 lines,
+  with B's review flow: request button "בעטן אַ באַשלוס", paint
+  overlays, review cache `fp_review_decisions_v1`, web-only POST)
+  vs app `android/app/src/main/assets/filter-extension/content.js`
+  44,200 bytes (997 lines, with the app's hash-gated resampling and
+  video re-pause, no review code at all). 788 differing lines.
+- COPIED B's final web content.js verbatim into the app assets
+  (62,076 bytes — B saved once more after the 61,893-byte version
+  quoted in the brief; the copy is of the latest file).
+  sha256 `b1b03828ab86f1cec7c3ebbd6934e8ebd236a57a641dcafae5c722b4ade47c38`
+  on BOTH sides (`cmp` clean, byte-identical).
+- `detector.js` and `detector-page.js` were already byte-identical
+  between the two locations (sha256 `f36c94b9…` and `54d79648…`) —
+  NOT copied, nothing to sync.
+- In the app `window.FpReview` is ABSENT (no `review.js` in the app
+  assets; the manifest loads only face-api + `detector.js` +
+  `content.js`), so the synced script takes the native
+  `sendMessage {type:'review'}` path and the Kotlin review handler
+  answers it (60 s timeout in the script). The web-only POST to
+  `/review-decision` fires ONLY on the `FpReview` path
+  (`result.via === 'web'`), so it never fires in the app — the app
+  records via `ApiClient` + the local store instead.
+- KNOWN WARTS of the verbatim copy (not blockers): (1) the synced
+  script's Download button posts `fp-download-request` to
+  `window.parent` — in the app there is no demo shell, so the button
+  does nothing; the app's download path stays the long-press menu
+  (which enforces the verdict, including PAINTED = blocked).
+  (2) The script's local cache record stores `mode` from its own
+  `humanImageMode` variable (default `paint` in the app — nothing
+  sends it `fp-policy`), while the native decision uses the
+  effective policy mode; the recorded `mode` field can therefore say
+  `paint` when the decision was made in `block` mode. The honoured
+  part of the cache (`{decision, boxes}`) is unaffected, and the
+  server record carries the correct mode.
+
+### content.js re-sync (D's integration fixes ported, 2026-11-19 ~20:28 EST)
+
+- Sibling D fixed 4 integration bugs in the WEB copy after E's sync,
+  so the app copy went stale (web 67,894 bytes vs app 62,076).
+  Re-synced verbatim: web `public/browser-assets/content.js`
+  sha256 `df4be010521bbb330683b049aba82edbae65ccef919be7981f62320dd87d808e`
+  on BOTH sides (`cmp` clean, byte-identical, 67,894 bytes).
+  `detector.js` and `detector-page.js` re-checked byte-identical —
+  NOT copied again.
+- D's fixes now in the app copy: (2) `b:b:` double-prefix cache key
+  fix — `result.contentHash` used verbatim; (3) `first_detector`
+  sent as an OBJECT `{detector, persons, personBest, faces,
+  faceBest, detected}`; (5) `FACE_LOAD_TIMEOUT_MS = 45000` race so
+  `warmUpDetectors()` can never hang forever (bounds at ≤70 s);
+  (6) policy race fix — content.js posts `fp-policy-request` on
+  boot and the shell answers with the current policy; (7) deferral
+  — findings with `detectError === 'image not loaded (no pixels
+  yet)'` are marked `deferred`, left out of the batch sent to the
+  decider, stay covered, and their `load` listener re-triggers a
+  report when bytes arrive; an image that never loads stays covered
+  (fail closed). (Fix (1), review.js injection, is web-Worker only.)
+- Bug 3 re-verified in the copied file: the `/review-decision` POST
+  fires ONLY inside `if (result.via === 'web')` in
+  `applyReviewResult()` — in the app `result.via` is always
+  `'native'`, so the POST can never fire and the string-vs-object
+  issue cannot occur. The app records via `ApiClient` + local
+  store, with `first_detector` as an object already.
+- Bug 6 native side — HONEST LIMIT, no handler added: content.js
+  posts `fp-policy-request` via `window.parent.postMessage`, a DOM
+  window message. In the app there is no shell window to hear it,
+  and the native `MessageDelegate` only ever sees
+  `browser.runtime.sendMessage` traffic relayed by `background.js`
+  — the request never reaches Kotlin, so a delegate branch for it
+  would be dead code and was NOT added. Answering it for real needs
+  a bigger refactor (a native Port push channel + `background.js`
+  forwarding into the page, or content.js sending the request over
+  `runtime.sendMessage` — a shared-file change owned by D).
+  The fallback is provably harmless in the app: the native review
+  handler decides with the effective policy mode
+  (`policy.humanImageMode ?: settingsStore.settings.humanImageMode`,
+  server mode wins when present, else the local setting —
+  `BrowserActivity.effectivePolicy()`), and content.js's stale
+  `paint` default only lands in local-cache metadata and the
+  web-only POST, neither of which affects a verdict (see wart (2)
+  above). No new unit test: there is no handler to cover, and the
+  effective-mode resolution is already exercised through the review
+  handler path.
+
+### Tests and APK (this build — FINAL, re-synced content.js)
+
+- `run-tests.sh`: **136/136 pass** (unchanged — no Kotlin changed
+  in the re-sync; the fp-policy-request handler was not added, see
+  the honest limit above). No warnings.
+- **APK (FINAL):** `manual-build/out/app-debug.apk`,
+  364,391,692 bytes, sha256
+  `4c2b6ba925c9f4342c4c4b55fc586a73c71989d131601cf3df65811a418e524b`,
+  package `com.filterplatform.app`, versionCode 9, versionName
+  0.3.1, apksigner v2+v3 true (1 signer). Model in assets:
+  `assets/rfdetr-nano.onnx`, 116,607,449 bytes, sha256
+  `26728b72…bee0851` (matches the asset). Synced content.js in
+  assets: 67,894 bytes, sha256 `df4be010…d808e` (matches the web
+  file). No `review.js` in the APK.
+- E's 0.3.1 build (pre-D-fixes) produced `out/app-debug.apk`
+  364,387,596 bytes, sha256
+  `14989da1bf4fc4af5e7b66afce4eb96d67345de1c5ebaebcc192206a56b93781`
+  — SUPERSEDED by the rebuild above; do not upload E's APK.
+- The FIRST 0.3.1 build (pre-sync content.js) produced
+  `out/app-debug.apk` 364,383,500 bytes, sha256
+  `7675bd36fb9f1881030f403cc8995a0f7d3c1078486be64e5b49d1fbd51a1e58`
+  — SUPERSEDED by the final build above; do not upload the first one.
+- PARKED, as instructed: do NOT install on Yakob's phone and do NOT
+  upload to Drive from here — the 0.3.1 APK waits on the 0.2.1-test
+  phone verdict, like 0.3.0 before it. Only the phone can prove:
+  launch, the review button + native reply round-trip, paint
+  overlays on a real page, and RF-DETR review speed on the BLU.
