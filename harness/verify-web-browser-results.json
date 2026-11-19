@@ -1,5 +1,5 @@
 {
-  "ranAt": "2026-11-19T11:15:44.938Z",
+  "ranAt": "2026-11-19T20:35:31.540Z",
   "shell": "https://filter-platform-dashboard.pages.dev/browser.html",
   "cases": [
     {
@@ -97,10 +97,10 @@
       "detectorReady": true,
       "countsSettled": true,
       "status": {
-        "covered": "6",
+        "covered": "3",
         "allowed": "1",
         "blocked": "0",
-        "scanned": "7",
+        "scanned": "4",
         "detector": "דעטעקטאָר: גרייט ✓",
         "api": "דאָמעין־טשעק: אַקטיוו ✓",
         "addr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images"
@@ -114,10 +114,10 @@
       },
       "wikiCounts": true,
       "wikiStatus": {
-        "covered": "20",
+        "covered": "0",
         "allowed": "3",
         "blocked": "0",
-        "scanned": "23",
+        "scanned": "3",
         "detector": "דעטעקטאָר: גרייט ✓",
         "api": "דאָמעין־טשעק: אַקטיוו ✓",
         "addr": "https://en.wikipedia.org/wiki/Main_Page"
@@ -135,60 +135,60 @@
         {
           "url": "https://en.wikipedia.org/wiki/Main_Page",
           "title": "en.wikipedia.org",
-          "time": 1795086979383
+          "time": 1795120592010
         },
         {
           "url": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images",
           "title": "filter-platform-dashboard.pages.dev",
-          "time": 1795086976827
-        },
-        {
-          "url": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images.html",
-          "title": "filter-platform-dashboard.pages.dev",
-          "time": 1795086976709
+          "time": 1795120580966
         },
         {
           "url": "https://filter-platform-dashboard.pages.dev/test-pages/",
           "title": "filter-platform-dashboard.pages.dev",
-          "time": 1795086976023
+          "time": 1795120578166
+        },
+        {
+          "url": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images.html",
+          "title": "filter-platform-dashboard.pages.dev",
+          "time": 1795120569939
         },
         {
           "url": "https://filter-platform-dashboard.pages.dev/test-pages/index.html",
           "title": "filter-platform-dashboard.pages.dev",
-          "time": 1795086972043
+          "time": 1795120568431
         },
         {
           "url": "https://duckduckgo.com/?q=how%20to%20bake%20bread&kp=1",
           "title": "duckduckgo.com",
-          "time": 1795086968180
+          "time": 1795120563320
         },
         {
           "url": "https://example.com/",
           "title": "example.com",
-          "time": 1795086962048
+          "time": 1795120557302
         },
         {
           "url": "https://example.com",
           "title": "example.com",
-          "time": 1795086961278
+          "time": 1795120553082
         },
         {
           "url": "https://www.wikipedia.org/",
           "title": "www.wikipedia.org",
-          "time": 1795086954514
+          "time": 1795120541248
         },
         {
           "url": "https://wikipedia.org",
           "title": "wikipedia.org",
-          "time": 1795086952997
+          "time": 1795120539581
         }
       ],
       "panelTitle": "געשיכטע",
       "rows": [
         "en.wikipedia.org | https://en.wikipedia.org/wiki/Main_Page | 11/19/2026",
         "filter-platform-dashboard.pages.dev | https://filter-platform-dashboard.pages.dev/test-pages/01-html-images | 11/19/2026",
-        "filter-platform-dashboard.pages.dev | https://filter-platform-dashboard.pages.dev/test-pages/01-html-images.html | 11/19/2026",
         "filter-platform-dashboard.pages.dev | https://filter-platform-dashboard.pages.dev/test-pages/ | 11/19/2026",
+        "filter-platform-dashboard.pages.dev | https://filter-platform-dashboard.pages.dev/test-pages/01-html-images.html | 11/19/2026",
         "filter-platform-dashboard.pages.dev | https://filter-platform-dashboard.pages.dev/test-pages/index.html | 11/19/2026",
         "duckduckgo.com | https://duckduckgo.com/?q=how%20to%20bake%20bread&kp=1 | 11/19/2026",
         "example.com | https://example.com/ | 11/19/2026",
@@ -218,7 +218,7 @@
         {
           "url": "https://example.com/",
           "title": "example.com",
-          "time": 1795086988291
+          "time": 1795120606742
         }
       ],
       "rows": [
@@ -237,24 +237,22 @@
       "detectorReady": true,
       "countsSettled": true,
       "status": {
-        "covered": "6",
+        "covered": "3",
         "allowed": "1",
         "blocked": "0",
-        "scanned": "7",
+        "scanned": "4",
         "detector": "דעטעקטאָר: גרייט ✓",
         "api": "דאָמעין־טשעק: אַקטיוו ✓",
         "addr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images"
       },
       "lastFpStatus": {
-        "covered": 6,
+        "covered": 3,
         "allowed": 1,
-        "scanned": 7,
+        "scanned": 4,
         "verdicts": {
           "https://filter-platform-dashboard.pages.dev/test-pages/assets/p1-huang-portrait.jpg": "cover",
           "https://filter-platform-dashboard.pages.dev/test-pages/assets/d1-crowd-funeral.jpg": "cover",
-          "https://filter-platform-dashboard.pages.dev/test-pages/assets/l1-glacier-lake.jpg": "cover",
-          "assets/p1-huang-portrait.jpg": "cover",
-          "https://filter-platform-web-browser.gavhah-copy.workers.dev/assets/p1-huang-portrait.jpg": "cover"
+          "https://filter-platform-dashboard.pages.dev/test-pages/assets/l1-glacier-lake.jpg": "allow"
         }
       },
       "buttons": {
@@ -286,11 +284,11 @@
       "allowedHasButton": true,
       "coveredHasNoButton": true,
       "downloadFilename": "l1-glacier-lake.jpg",
-      "downloadPath": "/tmp/fp-browser-downloads-1795086945255/a18c1d39-8388-474d-918c-e3d62fffe168",
+      "downloadPath": "/tmp/fp-browser-downloads-1795120531568/10acba06-9e99-4533-90b5-bed6d5b04009",
       "downloadFileExists": true,
       "downloadsAfterAllowed": [
         {
-          "time": 1795086997829,
+          "time": 1795120621988,
           "url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/l1-glacier-lake.jpg",
           "kind": "image",
           "status": "completed",
@@ -305,7 +303,7 @@
       "downloadsDuringForced": 0,
       "downloadsAfterForced": [
         {
-          "time": 1795087002036,
+          "time": 1795120626185,
           "url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/p1-huang-portrait.jpg",
           "kind": "image",
           "status": "blocked",
@@ -313,7 +311,7 @@
           "verdict": "cover"
         },
         {
-          "time": 1795086997829,
+          "time": 1795120621988,
           "url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/l1-glacier-lake.jpg",
           "kind": "image",
           "status": "completed",
@@ -342,21 +340,21 @@
       "desktopOnToast": "דעסקטאָפּ־זײַטל אָן",
       "uaDesktopOk": true,
       "uaDesktopText": "{\n  \"user-agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\"\n}\n",
-      "uaDefaultOk": true,
-      "uaDefaultText": "{\n  \"user-agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 FilterPlatformWebBrowser/0.1\"\n}\n",
+      "uaDefaultOk": false,
+      "uaDefaultText": "Jump to content\n Main menu\nMain menu\nmove to sidebar hide\nNavigation\nMain page\nContents\nCurrent events\nRandom article\nAbout Wikipedia\nContact us\nContribute\nHelp\nLearn to edit\nCommunity portal\nRecent changes\nUpload file\nSpecial pages\n  \nSearch\nSearch\n Appearance\nDonate\nCreate account\nLog in\n Personal",
       "uaNewTabDefault": true,
       "uaNewTabText": "{\n  \"user-agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 FilterPlatformWebBrowser/0.1\"\n}\n",
-      "ok": true
+      "ok": false
     },
     {
       "case": "k-settings",
       "engineAfterGoogle": "google",
       "googleAddrOk": true,
-      "googleAddr": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dhow%2520to%2520bake%2520bread%26safe%3Dactive&q=EgSinru0GLK1-9cGIjAfSZsU3ZJuUauYxyLMTLyS32PW7XPCoBXwZYNLEm0A8awR5mdGOLKud_EqNtQJr_gyAnJSWgFDYPOqr4Dq6-LT8AE",
+      "googleAddr": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dhow%2520to%2520bake%2520bread%26safe%3Dactive&q=EgSsRAMJGM28_dcGIjCby1Ws5XZiaHbQjaxa15brSF7oI3YHNja0fux0swobb7bfJ33DimCujdhr7bxhEugyAnJSWgFDYNDb4YDerNeghwE",
       "googleSafeActive": true,
       "googleBotChecked": true,
       "engineAfterDuck": "duckduckgo",
-      "aboutText": "זוך־מאָטאָר\nDuckDuckGo (דיפֿאָלט)\nGoogle\nBing\nהיים־בלאַט\nפֿילטער־סעטטינגס\nעפֿענען דעם פֿילטער־דאַשבאָרד (פּאָליסי, דעווייסעס)\nפֿאַרמעקן געשיכטע\nפֿאַרמעקן בוקמאַרקס\nפֿאַרמעקן אַראָפּלאָד־רשימה\nפֿאַרמאַכן אַלע בלעטער (און אָנהייבן פֿריש)\nוועגן דער וועב־דעמאָ\n\nוועב־דעמאָ ווערסיע 0.2.0 (multi-tab shell). דעטעקטאָר: EfficientDet JS (MediaPipe tasks-vision, Apache 2.0). די דעמאָ לויפֿט אין Chromium, נישט אין GeckoView, און נוצט דעם EfficientDet־JS־דעטעקטאָר, נישט דעם RF-DETR־וועג פֿונעם טעלעפֿאָן. פֿילטער־פּאָליסי: שוועל 0.70; מענטש → באַדעקט; קיין מענטש ≥ 0.70 → דערלויבט; אומבאַקאַנט → באַדעקט (fail closed). אַלע דאַטן (געשיכטע, בוקמאַרקס, אַראָפּלאָדס, בלעטער) זענען לאָקאַל אויף דעם דעווייס בלויז — קיין אַקאַונט־סינק.",
+      "aboutText": "זוך־מאָטאָר\nDuckDuckGo (דיפֿאָלט)\nGoogle\nBing\nהיים־בלאַט\nמענטש־בילדער ווען געעפֿנט\n מאָלן דעם מענטש (דיפֿאָלט)\n בלאָקירן דאָס גאַנצע בילד\n\nאויב דער מענטש נעמט מער ווי 60% פֿון בילד, ווערט דאָס גאַנצע בילד בלאָקירט אפֿילו אין מאָלן־מאָדוס.\n\nפֿילטער־סעטטינגס\nעפֿענען דעם פֿילטער־דאַשבאָרד (פּאָליסי, דעווייסעס)\nפֿאַרמעקן געשיכטע\nפֿאַרמעקן בוקמאַרקס\nפֿאַרמעקן אַראָפּלאָד־רשימה\nפֿאַרמאַכן אַלע בלעטער (און אָנהייבן פֿריש)\nוועגן דער וועב־דעמאָ\n\nוועב־דעמאָ ווערסיע 0.2.0 (multi-tab shell). דעטעקטאָר: EfficientDet JS (MediaPipe tasks-vision, Apache 2.0). די דעמאָ לויפֿט אין Chromium, נישט אין GeckoView, און נוצט דעם EfficientDet־JS־דעטעקטאָר, נישט דעם RF-DETR־וועג פֿונעם טעלעפֿאָן. פֿילטער־פּאָליסי: שוועל 0.70; מענטש → באַדעקט (מיט „בעטן אַ באַשלוס“־קנעפּל); קיין מענטש־סיגנאַל → דערלויבט (קיין איבער־באַדעקן); אומבאַקאַנטער דינאַמישער אינהאַלט (WebGL/ווידעאָ/סטרים) → באַדעקט. מענטש־בילדער ווען געעפֿנט: מאָלן (דיפֿאָלט) אָדער בלאָקירן — זעט די סעטטינג אויבן. אַלע דאַטן (געשיכטע, בוקמאַרקס, אַראָפּלאָדס, בלעטער) זענען לאָקאַל אויף דעם דעווייס בלויז — קיין אַקאַונט־סינק.",
       "aboutHasVersion": true,
       "aboutHasLicense": true,
       "historyAfterClear": [],
@@ -365,7 +363,7 @@
     },
     {
       "case": "l-safesearch-block",
-      "googleTarget": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcats%26safe%3Dactive&q=EgSinru0GLm1-9cGIjBFclEbIXgcp_sdwpqNlhVxXbQ9WusfBmRW-EjJh3sjwI60DuuqR4LIyd4BeZ8TvO4yAnJSWgFDYIqQg8b4mvLB3AE",
+      "googleTarget": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcats%26safe%3Dactive&q=EgSsRAMJGNS8_dcGIjBb7aObg9yxi2i1GMIMoSc0AfSZT7-L2nClXRttoVQeKfXm1HUDmKgJ8y1vCr3LdgkyAnJSWgFDYLj9oZ3unfCqjwE",
       "googleHasSafeActive": true,
       "googleBotChecked": true,
       "frameBody": "🛡️\nדער פּלאַץ איז בלאקירט\nwww.facebook.com\n\nדער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס.\n\nמקור: manual\n\nבעטן אַן איבערקוק פֿון דעם פּלאַץ\nגיי צום וועב־בלעטערער\n↩ צוריק צום פֿריערדיקן בלאַט\n\nFilter Platform — Free kosher internet filter. דער פּלאַץ ווערט נישט געלאָדן; קי",
@@ -375,73 +373,73 @@
   "downloadEvents": [
     {
       "filename": "l1-glacier-lake.jpg",
-      "at": "2026-11-19T11:16:37.840Z"
+      "at": "2026-11-19T20:37:01.995Z"
     }
   ],
   "consoleLines": [
-    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
-    "[fp-detector] +85ms vision bundle imported",
-    "[fp-detector] +85ms fileset resolved",
-    "[fp-detector] +2095ms ObjectDetector created",
+    "[fp] tinyFaceDetector model loaded from /browser-assets/models",
+    "[fp-detector] +114ms vision bundle imported",
+    "[fp-detector] +114ms fileset resolved",
+    "[fp-detector] +5248ms ObjectDetector created",
     "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
     "[fp] person-detector warmup reply: fp-detector-ready ",
     "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
     "[fp-detector] +2ms vision bundle imported",
     "[fp-detector] +2ms fileset resolved",
-    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
-    "[fp-detector] +358ms ObjectDetector created",
+    "[fp] tinyFaceDetector model loaded from /browser-assets/models",
+    "[fp-detector] +478ms ObjectDetector created",
     "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
     "[fp] person-detector warmup reply: fp-detector-ready ",
     "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
-    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
-    "[fp-detector] +40ms vision bundle imported",
-    "[fp-detector] +40ms fileset resolved",
-    "[fp-detector] +429ms ObjectDetector created",
+    "[fp] tinyFaceDetector model loaded from /browser-assets/models",
+    "[fp-detector] +24ms vision bundle imported",
+    "[fp-detector] +24ms fileset resolved",
+    "[fp-detector] +371ms ObjectDetector created",
     "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
     "[fp] person-detector warmup reply: fp-detector-ready ",
     "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp] tinyFaceDetector model loaded from /browser-assets/models",
+    "[fp-detector] +38ms vision bundle imported",
+    "[fp-detector] +39ms fileset resolved",
+    "[fp-detector] +7ms vision bundle imported",
+    "[fp-detector] +7ms fileset resolved",
+    "[fp] tinyFaceDetector model loaded from /browser-assets/models",
+    "[fp-detector] +586ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp] tinyFaceDetector model loaded from /browser-assets/models",
     "[fp-detector] +2ms vision bundle imported",
     "[fp-detector] +3ms fileset resolved",
-    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
-    "[fp-detector] +424ms ObjectDetector created",
+    "[fp-detector] +377ms ObjectDetector created",
     "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
     "[fp] person-detector warmup reply: fp-detector-ready ",
     "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
-    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
-    "[fp-detector] +17ms vision bundle imported",
-    "[fp-detector] +17ms fileset resolved",
-    "[fp-detector] +409ms ObjectDetector created",
-    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
-    "[fp] person-detector warmup reply: fp-detector-ready ",
-    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
-    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
-    "[fp-detector] +2ms vision bundle imported",
-    "[fp-detector] +2ms fileset resolved",
-    "[fp-detector] +253ms ObjectDetector created",
-    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
-    "[fp] person-detector warmup reply: fp-detector-ready ",
-    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
-    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
-    "[fp-detector] +2ms vision bundle imported",
-    "[fp-detector] +2ms fileset resolved",
-    "[fp-detector] +257ms ObjectDetector created",
-    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
-    "[fp] person-detector warmup reply: fp-detector-ready ",
-    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
-    "[fp-detector] +4ms vision bundle imported",
-    "[fp-detector] +4ms fileset resolved",
-    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
-    "[fp-detector] +357ms ObjectDetector created",
-    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
-    "[fp] person-detector warmup reply: fp-detector-ready ",
-    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
-    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
     "[fp-detector] +3ms vision bundle imported",
     "[fp-detector] +3ms fileset resolved",
-    "[fp-detector] +246ms ObjectDetector created"
+    "[fp] tinyFaceDetector model loaded from /browser-assets/models",
+    "[fp-detector] +333ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp] tinyFaceDetector model loaded from /browser-assets/models",
+    "[fp-detector] +2ms vision bundle imported",
+    "[fp-detector] +2ms fileset resolved",
+    "[fp-detector] +237ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp] tinyFaceDetector model loaded from /browser-assets/models",
+    "[fp-detector] +3ms vision bundle imported",
+    "[fp-detector] +3ms fileset resolved",
+    "[fp-detector] +312ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp-detector] +3ms vision bundle imported"
   ],
   "summary": {
-    "passed": 13,
+    "passed": 12,
     "total": 13,
     "cases": [
       "a-shell-loads: PASS",
@@ -454,7 +452,7 @@
       "g-bookmarks: PASS",
       "h-downloads: PASS",
       "i-find: PASS",
-      "j-desktop-toggle: PASS",
+      "j-desktop-toggle: FAIL",
       "k-settings: PASS",
       "l-safesearch-block: PASS"
     ]

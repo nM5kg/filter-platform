@@ -73,6 +73,8 @@ deep(core.decideDownload('https://example.com/photo.jpg', [], null), { allowed: 
 deep(core.decideDownload('https://example.com/photo.png?x=1', [], undefined), { allowed: false, reason: 'unknown-image' }, 'download: image with query, unknown verdict -> block');
 deep(core.decideDownload('https://example.com/photo.JPG', [], ''), { allowed: false, reason: 'unknown-image' }, 'download: image ext case-insensitive');
 deep(core.decideDownload('https://example.com/photo.jpg', [], 'cover'), { allowed: false, reason: 'verdict-cover' }, 'download: cover verdict -> block');
+deep(core.decideDownload('https://example.com/photo.jpg', [], 'painted'), { allowed: false, reason: 'verdict-painted' }, 'download: painted verdict -> block (raw bytes still contain the person)');
+deep(core.decideDownload('https://example.com/file.pdf', [], 'painted'), { allowed: false, reason: 'verdict-painted' }, 'download: painted verdict blocks even non-images');
 deep(core.decideDownload('https://example.com/photo.jpg', [], 'block'), { allowed: false, reason: 'verdict-block' }, 'download: block verdict -> block');
 deep(core.decideDownload('https://example.com/file.pdf', [], 'review'), { allowed: false, reason: 'verdict-review' }, 'download: review verdict -> block');
 deep(core.decideDownload('https://www.facebook.com/pic.jpg', ['facebook.com'], 'allow'), { allowed: false, reason: 'blocked-host' }, 'download: exact blocked host');

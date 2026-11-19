@@ -1,0 +1,79 @@
+{
+  "startedAt": "2026-11-19T20:29:25.479Z",
+  "cases": {
+    "blockMode": {
+      "case": "block-mode",
+      "settings": {
+        "searchEngine": "duckduckgo",
+        "homepage": "https://filter-platform-dashboard.pages.dev/test-pages/index.html",
+        "humanImageMode": "block"
+      },
+      "reviewBtnIndex": 1,
+      "clicked": true,
+      "blocked": true,
+      "wallMsClickToBlocked": 22548,
+      "statusAfter": {
+        "covered": "2",
+        "allowed": "1",
+        "blocked": "1",
+        "painted": "0",
+        "scanned": "4",
+        "unscanned": "0",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images"
+      },
+      "paintDivs": 0,
+      "api": {
+        "status": 200,
+        "decision": "block",
+        "mode": "block",
+        "firstDetector": {
+          "faces": 0,
+          "persons": 5,
+          "detected": true,
+          "detector": "efficientdet",
+          "faceBest": 0,
+          "personBest": 0.617
+        }
+      },
+      "ok": true
+    },
+    "paintMode": {
+      "case": "paint-mode-restore",
+      "settings": {
+        "searchEngine": "duckduckgo",
+        "homepage": "https://filter-platform-dashboard.pages.dev/test-pages/index.html",
+        "humanImageMode": "paint"
+      },
+      "settled": true,
+      "reviewBtnIndex": 1,
+      "clicked": true,
+      "painted": true,
+      "wallMsClickToPainted": 4125,
+      "statusAfter": {
+        "covered": "2",
+        "allowed": "1",
+        "blocked": "0",
+        "painted": "1",
+        "scanned": "4",
+        "unscanned": "0",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images"
+      },
+      "api": {
+        "status": 200,
+        "decision": "allow_painted",
+        "mode": "paint",
+        "firstDetector": {
+          "faces": 0,
+          "persons": 5,
+          "detected": true,
+          "detector": "efficientdet",
+          "faceBest": 0,
+          "personBest": 0.617
+        }
+      },
+      "ok": true
+    }
+  },
+  "finishedAt": "2026-11-19T20:30:31.217Z",
+  "overallOk": true
+}

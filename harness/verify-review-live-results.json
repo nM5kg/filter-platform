@@ -1,0 +1,1575 @@
+{
+  "startedAt": "2026-11-19T20:32:49.549Z",
+  "cases": {
+    "firstScan": {
+      "case": "a-first-scan",
+      "detectorReady": true,
+      "countsSettled": true,
+      "status": {
+        "covered": "3",
+        "allowed": "1",
+        "blocked": "0",
+        "painted": "0",
+        "scanned": "4",
+        "unscanned": "0",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images"
+      },
+      "images": {
+        "img-person": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fp1-huang-portrait.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "img-crowd": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fd1-crowd-funeral.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "img-landscape": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fl1-glacier-lake.jpg",
+          "visible": true,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "img-picture": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fp1-huang-portrait.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "img-lazy": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fd1-crowd-funeral.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "img-datasrc": {
+          "src": "p1-huang-portrait.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "_overlays": 6,
+        "_reviewBtns": 6,
+        "_paintDivs": 0,
+        "_downloadBtns": 1
+      },
+      "ok": true
+    },
+    "roundTrip": {
+      "case": "d-round-trip",
+      "image": "img-crowd (d1-crowd-funeral.jpg)",
+      "reviewBtnIndex": 1,
+      "fpReviewPresent": true,
+      "clicked": true,
+      "painted": true,
+      "wallMsClickToPainted": 22753,
+      "statusAfter": {
+        "covered": "2",
+        "allowed": "1",
+        "blocked": "0",
+        "painted": "1",
+        "scanned": "4",
+        "unscanned": "0",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images"
+      },
+      "imagesAfter": {
+        "img-person": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fp1-huang-portrait.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "img-crowd": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fd1-crowd-funeral.jpg",
+          "visible": true,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "img-landscape": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fl1-glacier-lake.jpg",
+          "visible": true,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "img-picture": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fp1-huang-portrait.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "img-lazy": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fd1-crowd-funeral.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "img-datasrc": {
+          "src": "p1-huang-portrait.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "_overlays": 5,
+        "_reviewBtns": 5,
+        "_paintDivs": 18,
+        "_downloadBtns": 1
+      },
+      "imageKey": "u:0c1c08c44c981f394acc135dcdafea8e57e69344e1e36d68bd5a1bf0df8da708",
+      "cacheEntry": {
+        "decision": "allow_painted",
+        "boxes": [
+          {
+            "x": 0.8247004076838493,
+            "y": 0.7462473511695862,
+            "w": 0.1512608677148819,
+            "h": 0.25144338607788086,
+            "score": 0.7040501637819464
+          },
+          {
+            "x": 0.38415947183966637,
+            "y": 0.8140049651265144,
+            "w": 0.12295300513505936,
+            "h": 0.18515454232692719,
+            "score": 0.642829556151558
+          },
+          {
+            "x": 0.20783737301826477,
+            "y": 0.8075294569134712,
+            "w": 0.13172274827957153,
+            "h": 0.19126103818416595,
+            "score": 0.6032642838544486
+          },
+          {
+            "x": 0.462264534085989,
+            "y": 0.6922518312931061,
+            "w": 0.0931180790066719,
+            "h": 0.2715020775794983,
+            "score": 0.5637518573220867
+          },
+          {
+            "x": 0.6181515455245972,
+            "y": 0.8212018832564354,
+            "w": 0.08057856559753418,
+            "h": 0.17754502594470978,
+            "score": 0.529397398727823
+          },
+          {
+            "x": 0.0008892267942428589,
+            "y": 0.762690357863903,
+            "w": 0.13256123661994934,
+            "h": 0.23250187933444977,
+            "score": 0.5240116050431943
+          },
+          {
+            "x": 0.30686458200216293,
+            "y": 0.7239588052034378,
+            "w": 0.10320235788822174,
+            "h": 0.27389809489250183,
+            "score": 0.5201812954087625
+          },
+          {
+            "x": 0.38129815459251404,
+            "y": 0.6970654651522636,
+            "w": 0.08153414726257324,
+            "h": 0.14670969545841217,
+            "score": 0.46307811884779404
+          },
+          {
+            "x": 0.28634773567318916,
+            "y": 0.5848713293671608,
+            "w": 0.07217361778020859,
+            "h": 0.1707276552915573,
+            "score": 0.4497191291781344
+          },
+          {
+            "x": 0.16587819531559944,
+            "y": 0.6756945103406906,
+            "w": 0.11306699365377426,
+            "h": 0.1825430691242218,
+            "score": 0.39512551742671875
+          },
+          {
+            "x": 0.8423660695552826,
+            "y": 0.6543358564376831,
+            "w": 0.14046818017959595,
+            "h": 0.22734284400939941,
+            "score": 0.3930897746525339
+          },
+          {
+            "x": 0.0786716416478157,
+            "y": 0.6835356950759888,
+            "w": 0.12294234335422516,
+            "h": 0.3069188594818115,
+            "score": 0.3868799407438579
+          },
+          {
+            "x": 0.6509168967604637,
+            "y": 0.6148884892463684,
+            "w": 0.0770082026720047,
+            "h": 0.22650182247161865,
+            "score": 0.35784524312345
+          },
+          {
+            "x": 0.3919006008654833,
+            "y": 0.5264774262905121,
+            "w": 0.05567782744765282,
+            "h": 0.17801016569137573,
+            "score": 0.3554311941680686
+          },
+          {
+            "x": 0.7154715526849031,
+            "y": 0.5789388194680214,
+            "w": 0.0612201951444149,
+            "h": 0.21619968116283417,
+            "score": 0.3474236414104446
+          },
+          {
+            "x": 0.4269285090267658,
+            "y": 0.6389767602086067,
+            "w": 0.058120451867580414,
+            "h": 0.15153251588344574,
+            "score": 0.31645889344351524
+          },
+          {
+            "x": 0.14958406426012516,
+            "y": 0.5714401751756668,
+            "w": 0.05550996586680412,
+            "h": 0.1244947612285614,
+            "score": 0.30432396293116165
+          },
+          {
+            "x": 0.08616112358868122,
+            "y": 0.575020506978035,
+            "w": 0.05230451747775078,
+            "h": 0.10828718543052673,
+            "score": 0.3042049540679988
+          }
+        ],
+        "mode": "paint",
+        "best": 0.7040501637819464,
+        "at": 1795120408845
+      },
+      "paintFractions": {
+        "imgRect": {
+          "w": 482,
+          "h": 322
+        },
+        "paints": [
+          {
+            "x": 0.825,
+            "y": 0.746,
+            "w": 0.151,
+            "h": 0.251
+          },
+          {
+            "x": 0.384,
+            "y": 0.814,
+            "w": 0.123,
+            "h": 0.185
+          },
+          {
+            "x": 0.208,
+            "y": 0.808,
+            "w": 0.132,
+            "h": 0.191
+          },
+          {
+            "x": 0.462,
+            "y": 0.692,
+            "w": 0.093,
+            "h": 0.271
+          },
+          {
+            "x": 0.618,
+            "y": 0.821,
+            "w": 0.081,
+            "h": 0.178
+          },
+          {
+            "x": 0.001,
+            "y": 0.763,
+            "w": 0.133,
+            "h": 0.232
+          },
+          {
+            "x": 0.307,
+            "y": 0.724,
+            "w": 0.103,
+            "h": 0.274
+          },
+          {
+            "x": 0.381,
+            "y": 0.697,
+            "w": 0.082,
+            "h": 0.147
+          },
+          {
+            "x": 0.286,
+            "y": 0.585,
+            "w": 0.072,
+            "h": 0.171
+          },
+          {
+            "x": 0.166,
+            "y": 0.676,
+            "w": 0.113,
+            "h": 0.183
+          },
+          {
+            "x": 0.842,
+            "y": 0.654,
+            "w": 0.14,
+            "h": 0.227
+          },
+          {
+            "x": 0.079,
+            "y": 0.684,
+            "w": 0.123,
+            "h": 0.307
+          },
+          {
+            "x": 0.651,
+            "y": 0.615,
+            "w": 0.077,
+            "h": 0.226
+          },
+          {
+            "x": 0.392,
+            "y": 0.526,
+            "w": 0.056,
+            "h": 0.178
+          },
+          {
+            "x": 0.715,
+            "y": 0.579,
+            "w": 0.061,
+            "h": 0.216
+          },
+          {
+            "x": 0.427,
+            "y": 0.639,
+            "w": 0.058,
+            "h": 0.151
+          },
+          {
+            "x": 0.15,
+            "y": 0.571,
+            "w": 0.055,
+            "h": 0.124
+          },
+          {
+            "x": 0.086,
+            "y": 0.575,
+            "w": 0.052,
+            "h": 0.108
+          }
+        ],
+        "boxCount": 18
+      },
+      "boxesMatched": 18,
+      "boxesTotal": 18,
+      "apiViaProxy": {
+        "via": "proxy",
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "d3285ade-7251-47de-a2b5-66bd3b6d534b",
+            "image_key": "u:0c1c08c44c981f394acc135dcdafea8e57e69344e1e36d68bd5a1bf0df8da708",
+            "image_url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/d1-crowd-funeral.jpg",
+            "page_url": "https://filter-platform-web-browser.gavhah-copy.workers.dev/browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2F01-html-images.html",
+            "decision": "allow_painted",
+            "model": "rf-detr-nano",
+            "best_score": "0.7041",
+            "boxes": [
+              {
+                "h": 0.25144338607788086,
+                "w": 0.1512608677148819,
+                "x": 0.8247004076838493,
+                "y": 0.7462473511695862,
+                "score": 0.7040501637819464
+              },
+              {
+                "h": 0.18515454232692719,
+                "w": 0.12295300513505936,
+                "x": 0.38415947183966637,
+                "y": 0.8140049651265144,
+                "score": 0.642829556151558
+              },
+              {
+                "h": 0.19126103818416595,
+                "w": 0.13172274827957153,
+                "x": 0.20783737301826477,
+                "y": 0.8075294569134712,
+                "score": 0.6032642838544486
+              },
+              {
+                "h": 0.2715020775794983,
+                "w": 0.0931180790066719,
+                "x": 0.462264534085989,
+                "y": 0.6922518312931061,
+                "score": 0.5637518573220867
+              },
+              {
+                "h": 0.17754502594470978,
+                "w": 0.08057856559753418,
+                "x": 0.6181515455245972,
+                "y": 0.8212018832564354,
+                "score": 0.529397398727823
+              },
+              {
+                "h": 0.23250187933444977,
+                "w": 0.13256123661994934,
+                "x": 0.0008892267942428589,
+                "y": 0.762690357863903,
+                "score": 0.5240116050431943
+              },
+              {
+                "h": 0.27389809489250183,
+                "w": 0.10320235788822174,
+                "x": 0.30686458200216293,
+                "y": 0.7239588052034378,
+                "score": 0.5201812954087625
+              },
+              {
+                "h": 0.14670969545841217,
+                "w": 0.08153414726257324,
+                "x": 0.38129815459251404,
+                "y": 0.6970654651522636,
+                "score": 0.46307811884779404
+              },
+              {
+                "h": 0.1707276552915573,
+                "w": 0.07217361778020859,
+                "x": 0.28634773567318916,
+                "y": 0.5848713293671608,
+                "score": 0.4497191291781344
+              },
+              {
+                "h": 0.1825430691242218,
+                "w": 0.11306699365377426,
+                "x": 0.16587819531559944,
+                "y": 0.6756945103406906,
+                "score": 0.39512551742671875
+              },
+              {
+                "h": 0.22734284400939941,
+                "w": 0.14046818017959595,
+                "x": 0.8423660695552826,
+                "y": 0.6543358564376831,
+                "score": 0.3930897746525339
+              },
+              {
+                "h": 0.3069188594818115,
+                "w": 0.12294234335422516,
+                "x": 0.0786716416478157,
+                "y": 0.6835356950759888,
+                "score": 0.3868799407438579
+              },
+              {
+                "h": 0.22650182247161865,
+                "w": 0.0770082026720047,
+                "x": 0.6509168967604637,
+                "y": 0.6148884892463684,
+                "score": 0.35784524312345
+              },
+              {
+                "h": 0.17801016569137573,
+                "w": 0.05567782744765282,
+                "x": 0.3919006008654833,
+                "y": 0.5264774262905121,
+                "score": 0.3554311941680686
+              },
+              {
+                "h": 0.21619968116283417,
+                "w": 0.0612201951444149,
+                "x": 0.7154715526849031,
+                "y": 0.5789388194680214,
+                "score": 0.3474236414104446
+              },
+              {
+                "h": 0.15153251588344574,
+                "w": 0.058120451867580414,
+                "x": 0.4269285090267658,
+                "y": 0.6389767602086067,
+                "score": 0.31645889344351524
+              },
+              {
+                "h": 0.1244947612285614,
+                "w": 0.05550996586680412,
+                "x": 0.14958406426012516,
+                "y": 0.5714401751756668,
+                "score": 0.30432396293116165
+              },
+              {
+                "h": 0.10828718543052673,
+                "w": 0.05230451747775078,
+                "x": 0.08616112358868122,
+                "y": 0.575020506978035,
+                "score": 0.3042049540679988
+              }
+            ],
+            "human_image_mode": "paint",
+            "first_detector": {
+              "faces": 0,
+              "persons": 5,
+              "detected": true,
+              "detector": "efficientdet",
+              "faceBest": 0,
+              "personBest": 0.617
+            },
+            "created_at": "2026-11-19 19:18:46.052505+00",
+            "updated_at": "2026-11-19 20:33:30.293527+00"
+          }
+        }
+      },
+      "apiDirect": {
+        "via": "api-direct",
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "d3285ade-7251-47de-a2b5-66bd3b6d534b",
+            "image_key": "u:0c1c08c44c981f394acc135dcdafea8e57e69344e1e36d68bd5a1bf0df8da708",
+            "image_url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/d1-crowd-funeral.jpg",
+            "page_url": "https://filter-platform-web-browser.gavhah-copy.workers.dev/browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2F01-html-images.html",
+            "decision": "allow_painted",
+            "model": "rf-detr-nano",
+            "best_score": "0.7041",
+            "boxes": [
+              {
+                "h": 0.25144338607788086,
+                "w": 0.1512608677148819,
+                "x": 0.8247004076838493,
+                "y": 0.7462473511695862,
+                "score": 0.7040501637819464
+              },
+              {
+                "h": 0.18515454232692719,
+                "w": 0.12295300513505936,
+                "x": 0.38415947183966637,
+                "y": 0.8140049651265144,
+                "score": 0.642829556151558
+              },
+              {
+                "h": 0.19126103818416595,
+                "w": 0.13172274827957153,
+                "x": 0.20783737301826477,
+                "y": 0.8075294569134712,
+                "score": 0.6032642838544486
+              },
+              {
+                "h": 0.2715020775794983,
+                "w": 0.0931180790066719,
+                "x": 0.462264534085989,
+                "y": 0.6922518312931061,
+                "score": 0.5637518573220867
+              },
+              {
+                "h": 0.17754502594470978,
+                "w": 0.08057856559753418,
+                "x": 0.6181515455245972,
+                "y": 0.8212018832564354,
+                "score": 0.529397398727823
+              },
+              {
+                "h": 0.23250187933444977,
+                "w": 0.13256123661994934,
+                "x": 0.0008892267942428589,
+                "y": 0.762690357863903,
+                "score": 0.5240116050431943
+              },
+              {
+                "h": 0.27389809489250183,
+                "w": 0.10320235788822174,
+                "x": 0.30686458200216293,
+                "y": 0.7239588052034378,
+                "score": 0.5201812954087625
+              },
+              {
+                "h": 0.14670969545841217,
+                "w": 0.08153414726257324,
+                "x": 0.38129815459251404,
+                "y": 0.6970654651522636,
+                "score": 0.46307811884779404
+              },
+              {
+                "h": 0.1707276552915573,
+                "w": 0.07217361778020859,
+                "x": 0.28634773567318916,
+                "y": 0.5848713293671608,
+                "score": 0.4497191291781344
+              },
+              {
+                "h": 0.1825430691242218,
+                "w": 0.11306699365377426,
+                "x": 0.16587819531559944,
+                "y": 0.6756945103406906,
+                "score": 0.39512551742671875
+              },
+              {
+                "h": 0.22734284400939941,
+                "w": 0.14046818017959595,
+                "x": 0.8423660695552826,
+                "y": 0.6543358564376831,
+                "score": 0.3930897746525339
+              },
+              {
+                "h": 0.3069188594818115,
+                "w": 0.12294234335422516,
+                "x": 0.0786716416478157,
+                "y": 0.6835356950759888,
+                "score": 0.3868799407438579
+              },
+              {
+                "h": 0.22650182247161865,
+                "w": 0.0770082026720047,
+                "x": 0.6509168967604637,
+                "y": 0.6148884892463684,
+                "score": 0.35784524312345
+              },
+              {
+                "h": 0.17801016569137573,
+                "w": 0.05567782744765282,
+                "x": 0.3919006008654833,
+                "y": 0.5264774262905121,
+                "score": 0.3554311941680686
+              },
+              {
+                "h": 0.21619968116283417,
+                "w": 0.0612201951444149,
+                "x": 0.7154715526849031,
+                "y": 0.5789388194680214,
+                "score": 0.3474236414104446
+              },
+              {
+                "h": 0.15153251588344574,
+                "w": 0.058120451867580414,
+                "x": 0.4269285090267658,
+                "y": 0.6389767602086067,
+                "score": 0.31645889344351524
+              },
+              {
+                "h": 0.1244947612285614,
+                "w": 0.05550996586680412,
+                "x": 0.14958406426012516,
+                "y": 0.5714401751756668,
+                "score": 0.30432396293116165
+              },
+              {
+                "h": 0.10828718543052673,
+                "w": 0.05230451747775078,
+                "x": 0.08616112358868122,
+                "y": 0.575020506978035,
+                "score": 0.3042049540679988
+              }
+            ],
+            "human_image_mode": "paint",
+            "first_detector": {
+              "faces": 0,
+              "persons": 5,
+              "detected": true,
+              "detector": "efficientdet",
+              "faceBest": 0,
+              "personBest": 0.617
+            },
+            "created_at": "2026-11-19 19:18:46.052505+00",
+            "updated_at": "2026-11-19 20:33:30.293527+00"
+          }
+        }
+      },
+      "cachedProbe": {
+        "ensureMs": 0,
+        "inferMs": 2211,
+        "totalMs": 2237,
+        "decision": "allow_painted",
+        "best": 0.7040501637819464
+      },
+      "ok": true
+    },
+    "settingFlip": {
+      "case": "f-setting-flip",
+      "image": "img-crowd (d1, reviewed in paint mode in case 2)",
+      "settingsAfterFlip": {
+        "searchEngine": "duckduckgo",
+        "homepage": "https://filter-platform-dashboard.pages.dev/test-pages/index.html",
+        "humanImageMode": "block"
+      },
+      "settled": true,
+      "reviewBtnIndexCrowd": 1,
+      "clicked": true,
+      "blocked": true,
+      "wallMsClickToBlocked": 4258,
+      "statusAfterBlock": {
+        "covered": "2",
+        "allowed": "1",
+        "blocked": "1",
+        "painted": "0",
+        "scanned": "4",
+        "unscanned": "0",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images"
+      },
+      "imagesAfterBlock": {
+        "img-person": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fp1-huang-portrait.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "img-crowd": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fd1-crowd-funeral.jpg",
+          "visible": false,
+          "display": "none",
+          "visibility": "hidden"
+        },
+        "img-landscape": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fl1-glacier-lake.jpg",
+          "visible": true,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "img-picture": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fp1-huang-portrait.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "img-lazy": {
+          "src": "browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Fassets%2Fd1-crowd-funeral.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "img-datasrc": {
+          "src": "p1-huang-portrait.jpg",
+          "visible": false,
+          "display": "block",
+          "visibility": "hidden"
+        },
+        "_overlays": 5,
+        "_reviewBtns": 5,
+        "_paintDivs": 0,
+        "_downloadBtns": 1
+      },
+      "apiAfterBlock": {
+        "via": "proxy",
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "d3285ade-7251-47de-a2b5-66bd3b6d534b",
+            "image_key": "u:0c1c08c44c981f394acc135dcdafea8e57e69344e1e36d68bd5a1bf0df8da708",
+            "image_url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/d1-crowd-funeral.jpg",
+            "page_url": "https://filter-platform-web-browser.gavhah-copy.workers.dev/browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2F01-html-images",
+            "decision": "block",
+            "model": "rf-detr-nano",
+            "best_score": "0.7041",
+            "boxes": [
+              {
+                "h": 0.25144338607788086,
+                "w": 0.1512608677148819,
+                "x": 0.8247004076838493,
+                "y": 0.7462473511695862,
+                "score": 0.7040501637819464
+              },
+              {
+                "h": 0.18515454232692719,
+                "w": 0.12295300513505936,
+                "x": 0.38415947183966637,
+                "y": 0.8140049651265144,
+                "score": 0.642829556151558
+              },
+              {
+                "h": 0.19126103818416595,
+                "w": 0.13172274827957153,
+                "x": 0.20783737301826477,
+                "y": 0.8075294569134712,
+                "score": 0.6032642838544486
+              },
+              {
+                "h": 0.2715020775794983,
+                "w": 0.0931180790066719,
+                "x": 0.462264534085989,
+                "y": 0.6922518312931061,
+                "score": 0.5637518573220867
+              },
+              {
+                "h": 0.17754502594470978,
+                "w": 0.08057856559753418,
+                "x": 0.6181515455245972,
+                "y": 0.8212018832564354,
+                "score": 0.529397398727823
+              },
+              {
+                "h": 0.23250187933444977,
+                "w": 0.13256123661994934,
+                "x": 0.0008892267942428589,
+                "y": 0.762690357863903,
+                "score": 0.5240116050431943
+              },
+              {
+                "h": 0.27389809489250183,
+                "w": 0.10320235788822174,
+                "x": 0.30686458200216293,
+                "y": 0.7239588052034378,
+                "score": 0.5201812954087625
+              },
+              {
+                "h": 0.14670969545841217,
+                "w": 0.08153414726257324,
+                "x": 0.38129815459251404,
+                "y": 0.6970654651522636,
+                "score": 0.46307811884779404
+              },
+              {
+                "h": 0.1707276552915573,
+                "w": 0.07217361778020859,
+                "x": 0.28634773567318916,
+                "y": 0.5848713293671608,
+                "score": 0.4497191291781344
+              },
+              {
+                "h": 0.1825430691242218,
+                "w": 0.11306699365377426,
+                "x": 0.16587819531559944,
+                "y": 0.6756945103406906,
+                "score": 0.39512551742671875
+              },
+              {
+                "h": 0.22734284400939941,
+                "w": 0.14046818017959595,
+                "x": 0.8423660695552826,
+                "y": 0.6543358564376831,
+                "score": 0.3930897746525339
+              },
+              {
+                "h": 0.3069188594818115,
+                "w": 0.12294234335422516,
+                "x": 0.0786716416478157,
+                "y": 0.6835356950759888,
+                "score": 0.3868799407438579
+              },
+              {
+                "h": 0.22650182247161865,
+                "w": 0.0770082026720047,
+                "x": 0.6509168967604637,
+                "y": 0.6148884892463684,
+                "score": 0.35784524312345
+              },
+              {
+                "h": 0.17801016569137573,
+                "w": 0.05567782744765282,
+                "x": 0.3919006008654833,
+                "y": 0.5264774262905121,
+                "score": 0.3554311941680686
+              },
+              {
+                "h": 0.21619968116283417,
+                "w": 0.0612201951444149,
+                "x": 0.7154715526849031,
+                "y": 0.5789388194680214,
+                "score": 0.3474236414104446
+              },
+              {
+                "h": 0.15153251588344574,
+                "w": 0.058120451867580414,
+                "x": 0.4269285090267658,
+                "y": 0.6389767602086067,
+                "score": 0.31645889344351524
+              },
+              {
+                "h": 0.1244947612285614,
+                "w": 0.05550996586680412,
+                "x": 0.14958406426012516,
+                "y": 0.5714401751756668,
+                "score": 0.30432396293116165
+              },
+              {
+                "h": 0.10828718543052673,
+                "w": 0.05230451747775078,
+                "x": 0.08616112358868122,
+                "y": 0.575020506978035,
+                "score": 0.3042049540679988
+              }
+            ],
+            "human_image_mode": "block",
+            "first_detector": {
+              "faces": 0,
+              "persons": 5,
+              "detected": true,
+              "detector": "efficientdet",
+              "faceBest": 0,
+              "personBest": 0.617
+            },
+            "created_at": "2026-11-19 19:18:46.052505+00",
+            "updated_at": "2026-11-19 20:33:54.340944+00"
+          }
+        }
+      },
+      "settingsAfterFlipBack": {
+        "searchEngine": "duckduckgo",
+        "homepage": "https://filter-platform-dashboard.pages.dev/test-pages/index.html",
+        "humanImageMode": "paint"
+      },
+      "ok": true
+    },
+    "downloads": {
+      "case": "e-downloads",
+      "settled": true,
+      "repaintBtnIndex": 1,
+      "repaintClicked": true,
+      "repainted": true,
+      "statusAfterRepaint": {
+        "covered": "2",
+        "allowed": "1",
+        "blocked": "0",
+        "painted": "1",
+        "scanned": "4",
+        "unscanned": "0",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images"
+      },
+      "downloadsBefore": null,
+      "downloadRecords": [
+        {
+          "time": 1795120460130,
+          "url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/p1-huang-portrait.jpg",
+          "kind": "link",
+          "status": "blocked",
+          "reason": "verdict-cover",
+          "verdict": "cover"
+        },
+        {
+          "time": 1795120457110,
+          "url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/d1-crowd-funeral.jpg",
+          "kind": "link",
+          "status": "blocked",
+          "reason": "verdict-painted",
+          "verdict": "painted"
+        }
+      ],
+      "paintedDownload": {
+        "time": 1795120457110,
+        "url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/d1-crowd-funeral.jpg",
+        "kind": "link",
+        "status": "blocked",
+        "reason": "verdict-painted",
+        "verdict": "painted"
+      },
+      "coveredDownload": {
+        "time": 1795120460130,
+        "url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/p1-huang-portrait.jpg",
+        "kind": "link",
+        "status": "blocked",
+        "reason": "verdict-cover",
+        "verdict": "cover"
+      },
+      "landscapeDownloadBtnIndex": 0,
+      "landscapeDownloadClicked": true,
+      "landscapeDownload": {
+        "time": 1795120464474,
+        "url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/l1-glacier-lake.jpg",
+        "kind": "image",
+        "status": "completed",
+        "filename": "l1-glacier-lake.jpg"
+      },
+      "ok": true
+    },
+    "wikipedia": {
+      "case": "g-wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Albert_Einstein",
+      "scanned": true,
+      "status": {
+        "covered": "0",
+        "allowed": "61",
+        "blocked": "0",
+        "painted": "0",
+        "scanned": "61",
+        "unscanned": "0",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://en.wikipedia.org/wiki/Albert_Einstein"
+      },
+      "images": {
+        "browse?u=https%3A%2F%2Fen.wikipedia.org%2Fstatic%2Fimages%2Ficons%2Fenwiki-25.svg": {
+          "src": "browse?u=https%3A%2F%2Fen.wikipedia.org%2Fstatic%2Fimages%2Ficons%2Fenwiki-25.svg",
+          "visible": true,
+          "display": "inline",
+          "visibility": "visible"
+        },
+        "browse?u=https%3A%2F%2Fen.wikipedia.org%2Fstatic%2Fimages%2Fmobile%2Fcopyright%2Fwikipedia-wordmark-en-25.svg": {
+          "src": "browse?u=https%3A%2F%2Fen.wikipedia.org%2Fstatic%2Fimages%2Fmobile%2Fcopyright%2Fwikipedia-wordmark-en-25.svg",
+          "visible": true,
+          "display": "inline",
+          "visibility": "visible"
+        },
+        "browse?u=https%3A%2F%2Fen.wikipedia.org%2Fstatic%2Fimages%2Fmobile%2Fcopyright%2Fwikipedia-tagline-en-25.svg": {
+          "src": "browse?u=https%3A%2F%2Fen.wikipedia.org%2Fstatic%2Fimages%2Fmobile%2Fcopyright%2Fwikipedia-tagline-en-25.svg",
+          "visible": true,
+          "display": "inline",
+          "visibility": "visible"
+        },
+        "mwHNU": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F9%2F94%2FSymbol_support_vote.svg%2F20px-Symbol_support_vote.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwHNg": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F1%2F1b%2FSemi-protection-shackle.svg%2F20px-Semi-protection-shackle.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F2%2F28%2FAlbert_Einstein_Head_cleaned.jpg%2F250px-Albert_Einstein_Head_cleaned.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F2%2F28%2FAlbert_Einstein_Head_cleaned.jpg%2F250px-Albert_Einstein_Head_cleaned.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F8%2F8a%2FOOjs_UI_icon_edit-ltr-progressive.svg%2F20px-OOjs_UI_icon_edit-ltr-progressive.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F8%2F8a%2FOOjs_UI_icon_edit-ltr-progressive.svg%2F20px-OOjs_UI_icon_edit-ltr-progressive.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fd%2Fd7%2FAlbert_Einstein_signature_1934.svg%2F250px-Albert_Einstein_signature_1934.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fd%2Fd7%2FAlbert_Einstein_signature_1934.svg%2F250px-Albert_Einstein_signature_1934.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F3%2F33%2FAlbert_Einstein_1921_by_F_Schmutzer_%25283x4_close_cropped%2529.jpg%2F120px-Albert_Einstein_1921_by_F_Schmutzer_%25283x4_close_cropped%2529.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F3%2F33%2FAlbert_Einstein_1921_by_F_Schmutzer_%25283x4_close_cropped%2529.jpg%2F120px-Albert_Einstein_1921_by_F_Schmutzer_%25283x4_close_cropped%2529.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwug": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F3%2F39%2FAlbert_Einstein_age_3.jpg%2F250px-Albert_Einstein_age_3.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F6%2F66%2FHermann_einstein.jpg%2F250px-Hermann_einstein.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F6%2F66%2FHermann_einstein.jpg%2F250px-Hermann_einstein.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fa%2Fa4%2FPauline_Koch_edit.jpg%2F250px-Pauline_Koch_edit.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fa%2Fa4%2FPauline_Koch_edit.jpg%2F250px-Pauline_Koch_edit.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwAQc": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F0f%2FCasa_foscolo.jpg%2F250px-Casa_foscolo.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwASk": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F9%2F93%2FAlbert_Einstein_age_14.jpg%2F250px-Albert_Einstein_age_14.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwAVM": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fc%2Fc3%2FAlbert_Einstein%2527s_exam_of_maturity_grades_%2528color2%2529.jpg%2F250px-Albert_Einstein%2527s_exam_of_maturity_grades_%2528color2%2529.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwAWw": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F2%2F2c%2FAlbert_Einstein%2527s_W%25C3%25BCrttemberg_nationality_renunciation.jpg%2F250px-Albert_Einstein%2527s_W%25C3%25BCrttemberg_nationality_renunciation.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwAZs": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F8%2F87%2FAlbert_Einstein_and_his_wife_Mileva_Maric.jpg%2F250px-Albert_Einstein_and_his_wife_Mileva_Maric.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwAdM": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F3%2F38%2FEinstein_Albert_Elsa_LOC_32096u.jpg%2F250px-Einstein_Albert_Elsa_LOC_32096u.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwAiM": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F2%2F26%2FEinstein_patentoffice_full_%2528cropped%2529.jpg%2F250px-Einstein_patentoffice_full_%2528cropped%2529.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwAmQ": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Ff%2Ffe%2FEinstein_thesis.png%2F250px-Einstein_thesis.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwAqo": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F7%2F77%2FETH-BIB-Einstein%252C_Albert_und_Kollegen_am_Physik-Labor_ETH-Portrait-Portr_10750.tif%2Flossy-page1-330px-ETH-BIB-Einstein%252C_Albert_und_Kollegen_am_Physik-Labor_ETH-Portrait-Portr_10750.tif.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwAuE": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F6%2F62%2FBerliner_Physiker_u_Chemiker_1920.jpg%2F330px-Berliner_Physiker_u_Chemiker_1920.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwAyE": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F1%2F1a%2F19191125_A_New_Physics_Based_on_Einstein_-_The_New_York_Times.png%2F250px-19191125_A_New_Physics_Based_on_Einstein_-_The_New_York_Times.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwA0k": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F5%2F50%2FAlbert_Einstein_%2528Nobel%2529.png%2F250px-Albert_Einstein_%2528Nobel%2529.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwA5w": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F6%2F63%2FLeague_of_Nations_Commission_067.tif%2Flossy-page1-250px-League_of_Nations_Commission_067.tif.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwA88": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F1%2F15%2FAlbert_Einstein_writing_on_a_blackboard_in_Pasadena_%25281931%2529.jpg%2F250px-Albert_Einstein_writing_on_a_blackboard_in_Pasadena_%25281931%2529.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwA_M": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F9%2F9c%2FAlbert_Einstein_and_Charlie_Chaplin_City_Lights_premiere_1931.jpg%2F250px-Albert_Einstein_and_Charlie_Chaplin_City_Lights_premiere_1931.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwBCE": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fc%2Fc7%2FC._R._Macauley_-_Einstein_takes_up_the_sword%252C_circa_1933.jpg%2F250px-C._R._Macauley_-_Einstein_takes_up_the_sword%252C_circa_1933.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwBEs": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F7%2F78%2FEinstein%2527s_landing_card_%25285706142737%2529.jpg%2F250px-Einstein%2527s_landing_card_%25285706142737%2529.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwBJM": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Ff%2Ff0%2FChurchill_and_Einstein_in_1933.jpg%2F250px-Churchill_and_Einstein_in_1933.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwBMo": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fb%2Fb2%2FEinstein-formal_portrait-35_%2528cropped%2529.jpg%2F250px-Einstein-formal_portrait-35_%2528cropped%2529.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwBRc": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fb%2Fbf%2FEinstein-Roosevelt-letter.png%2F500px-Einstein-Roosevelt-letter.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwBVM": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F8%2F8a%2FCitizen-Einstein.jpg%2F250px-Citizen-Einstein.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwBZI": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fb%2Fb0%2FEinstein_Apr.1921_SS_Rotterdam_32099.jpg%2F250px-Einstein_Apr.1921_SS_Rotterdam_32099.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwBtM": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F5%2F5f%2FWanda_von_Debschitz-Kunowski_Albert_Einstein_beim_Geigenspiel_1927.jpg%2F330px-Wanda_von_Debschitz-Kunowski_Albert_Einstein_beim_Geigenspiel_1927.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwCDU": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F3%2F37%2F1919_eclipse_positive.jpg%2F250px-1919_eclipse_positive.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwCKU": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fc%2Fc6%2FMillikanLemaitreEinstein.jpg%2F250px-MillikanLemaitreEinstein.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwCUA": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F1%2F10%2FAlbert_Einstein_photo_1920.jpg%2F250px-Albert_Einstein_photo_1920.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwCWU": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fa%2Fa6%2FPhotoelectric_effect_in_a_solid_-_diagram.svg%2F250px-Photoelectric_effect_in_a_solid_-_diagram.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwCak": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F4%2F49%2FAlbert_Einstein_1921_%2528re-cropped%2529.jpg%2F250px-Albert_Einstein_1921_%2528re-cropped%2529.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwCeE": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fa%2Fa0%2FNYT_May_4%252C_1935.jpg%2F250px-NYT_May_4%252C_1935.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwCfE": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F4%2F43%2FNiels_Bohr_Albert_Einstein4_by_Ehrenfest_cr.jpg%2F250px-Niels_Bohr_Albert_Einstein4_by_Ehrenfest_cr.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwCl0": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F6%2F6e%2FSolvay_conference_1927.jpg%2F250px-Solvay_conference_1927.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwCqg": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F6%2F61%2FEinstein-Oslofjord_%2528cropped%2529.jpg%2F250px-Einstein-Oslofjord_%2528cropped%2529.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "mwCyc": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F4%2F46%2FAlbert_Einstein_sticks_his_tongue.jpg%2F250px-Albert_Einstein_sticks_his_tongue.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F6%2F62%2FPD-icon.svg%2F20px-PD-icon.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F6%2F62%2FPD-icon.svg%2F20px-PD-icon.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F4%2F4a%2FCommons-logo.svg%2F20px-Commons-logo.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F4%2F4a%2FCommons-logo.svg%2F20px-Commons-logo.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Ff%2Ffa%2FWikiquote-logo.svg%2F40px-Wikiquote-logo.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Ff%2Ffa%2FWikiquote-logo.svg%2F40px-Wikiquote-logo.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F4%2F4c%2FWikisource-logo.svg%2F40px-Wikisource-logo.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F4%2F4c%2FWikisource-logo.svg%2F40px-Wikisource-logo.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F3%2F32%2FScholia_logo.svg%2F40px-Scholia_logo.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F3%2F32%2FScholia_logo.svg%2F40px-Scholia_logo.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F2%2F21%2FSpeaker_Icon.svg%2F20px-Speaker_Icon.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F2%2F21%2FSpeaker_Icon.svg%2F20px-Speaker_Icon.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F9%2F96%2FSymbol_category_class.svg%2F20px-Symbol_category_class.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F9%2F96%2FSymbol_category_class.svg%2F20px-Symbol_category_class.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2Fe%2Fed%2FNobel_Prize.png%2F120px-Nobel_Prize.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2Fe%2Fed%2FNobel_Prize.png%2F120px-Nobel_Prize.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F6%2F69%2FP_vip.svg%2F20px-P_vip.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fen%2Fthumb%2F6%2F69%2FP_vip.svg%2F20px-P_vip.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F4%2F49%2FStar_of_David.svg%2F20px-Star_of_David.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F4%2F49%2FStar_of_David.svg%2F20px-Star_of_David.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F9%2F9e%2FSquare_root_of_x.svg%2F20px-Square_root_of_x.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F9%2F9e%2FSquare_root_of_x.svg%2F20px-Square_root_of_x.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F6%2F6f%2FStylised_atom_with_three_Bohr_model_orbits_and_stylised_nucleus.svg%2F20px-Stylised_atom_with_three_Bohr_model_orbits_and_stylised_nucleus.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F6%2F6f%2FStylised_atom_with_three_Bohr_model_orbits_and_stylised_nucleus.svg%2F20px-Stylised_atom_with_three_Bohr_model_orbits_and_stylised_nucleus.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F00%2FCrab_Nebula.jpg%2F20px-Crab_Nebula.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F0%2F00%2FCrab_Nebula.jpg%2F20px-Crab_Nebula.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F5%2F5f%2FHe1523a.jpg%2F20px-He1523a.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F5%2F5f%2FHe1523a.jpg%2F20px-He1523a.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fd%2Fd6%2FRocketSunIcon.svg%2F20px-RocketSunIcon.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fd%2Fd6%2FRocketSunIcon.svg%2F20px-RocketSunIcon.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F5%2F5c%2FEarth-moon.jpg%2F40px-Earth-moon.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F5%2F5c%2FEarth-moon.jpg%2F40px-Earth-moon.jpg%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F8%2F8b%2FNuvola_apps_kalzium.svg%2F20px-Nuvola_apps_kalzium.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail": {
+          "src": "browse?u=https%3A%2F%2Fthumb.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F8%2F8b%2FNuvola_apps_kalzium.svg%2F20px-Nuvola_apps_kalzium.svg.png%3Futm_source%3Den.wikipedia.org%26amp%3Butm_campaign%3Dparser%26amp%3Butm_content%3Dthumbnail",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fen.wikipedia.org%2Fstatic%2Fimages%2Ffooter%2Fwikimedia.svg": {
+          "src": "browse?u=https%3A%2F%2Fen.wikipedia.org%2Fstatic%2Fimages%2Ffooter%2Fwikimedia.svg",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fen.wikipedia.org%2Fw%2Fresources%2Fassets%2Fmediawiki_compact.svg": {
+          "src": "browse?u=https%3A%2F%2Fen.wikipedia.org%2Fw%2Fresources%2Fassets%2Fmediawiki_compact.svg",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "_overlays": 66,
+        "_reviewBtns": 66,
+        "_paintDivs": 0,
+        "_downloadBtns": 3
+      },
+      "ok": true
+    },
+    "bbc": {
+      "case": "g-bbc",
+      "url": "https://www.bbc.com/news",
+      "scanned": true,
+      "status": {
+        "covered": "6",
+        "allowed": "57",
+        "blocked": "0",
+        "painted": "0",
+        "scanned": "63",
+        "unscanned": "36",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://www.bbc.com/news"
+      },
+      "images": {
+        "browse?u=https%3A%2F%2Fstatic.files.bbci.co.uk%2Fbbcdotcom%2Fweb%2F20261119-102257-f8058bdc4a-3.28.2-1%2Fgrey-placeholder.png": {
+          "src": "browse?u=https%3A%2F%2Fstatic.files.bbci.co.uk%2Fbbcdotcom%2Fweb%2F20261119-102257-f8058bdc4a-3.28.2-1%2Fgrey-placeholder.png",
+          "visible": true,
+          "display": "block",
+          "visibility": "visible"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Face%2Fstandard%2F480%2Fcpsprodpb%2Fd38d%2Flive%2Fc67fae70-e427-11f1-bdfb-a33543c4dc85.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Face%2Fstandard%2F640%2Fcpsprodpb%2Fd38d%2Flive%2Fc67fae70-e427-11f1-bdfb-a33543c4dc85.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F56c4%2Flive%2Fc36d8970-e448-11f1-a094-5fdc692f3e33.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F320%2Fcpsprodpb%2F56c4%2Flive%2Fc36d8970-e448-11f1-a094-5fdc692f3e33.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2Fe1f4%2Flive%2Ff36e5af0-e448-11f1-99a1-253766e7ad8b.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F320%2Fcpsprodpb%2Fe1f4%2Flive%2Ff36e5af0-e448-11f1-99a1-253766e7ad8b.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F94c7%2Flive%2F863da8e0-e43a-11f1-8346-933d3547e297.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F320%2Fcpsprodpb%2F94c7%2Flive%2F863da8e0-e43a-11f1-8346-933d3547e297.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2Fd76c%2Flive%2F0d6d9ab0-a76f-11ef-a215-2b35ff609397.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F320%2Fcpsprodpb%2Fd76c%2Flive%2F0d6d9ab0-a76f-11ef-a215-2b35ff609397.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F31eb%2Flive%2F93fec7f0-e40a-11f1-99a1-253766e7ad8b.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F320%2Fcpsprodpb%2F31eb%2Flive%2F93fec7f0-e40a-11f1-99a1-253766e7ad8b.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2Ff353%2Flive%2F34533260-e445-11f1-99b6-a35a62fa4264.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2Ff353%2Flive%2F34533260-e445-11f1-99b6-a35a62fa4264.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F14d3%2Flive%2F332a20b0-e40e-11f1-b37c-b3a71d7200af.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F14d3%2Flive%2F332a20b0-e40e-11f1-b37c-b3a71d7200af.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F5269%2Flive%2Fcc6fe720-e448-11f1-99a1-253766e7ad8b.png.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F5269%2Flive%2Fcc6fe720-e448-11f1-99a1-253766e7ad8b.png.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F4b62%2Flive%2Fccbeb3f0-e407-11f1-a094-5fdc692f3e33.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F4b62%2Flive%2Fccbeb3f0-e407-11f1-a094-5fdc692f3e33.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F9c2e%2Flive%2Fff5925a0-e413-11f1-99a1-253766e7ad8b.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F9c2e%2Flive%2Fff5925a0-e413-11f1-99a1-253766e7ad8b.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F3255%2Flive%2Ff3ff0dc0-e43e-11f1-99b6-a35a62fa4264.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F3255%2Flive%2Ff3ff0dc0-e43e-11f1-99b6-a35a62fa4264.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2Fcbfc%2Flive%2F34a43100-e423-11f1-9e08-55a8a3b48445.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2Fcbfc%2Flive%2F34a43100-e423-11f1-9e08-55a8a3b48445.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2Feaa1%2Flive%2F4fe0f450-e408-11f1-99b6-a35a62fa4264.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2Feaa1%2Flive%2F4fe0f450-e408-11f1-99b6-a35a62fa4264.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2Ff393%2Flive%2F1b107640-dfbe-11f1-a785-cd5ce5e90c71.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2Ff393%2Flive%2F1b107640-dfbe-11f1-a785-cd5ce5e90c71.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F9aab%2Flive%2Fc39b82a0-e419-11f1-b37c-b3a71d7200af.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F9aab%2Flive%2Fc39b82a0-e419-11f1-b37c-b3a71d7200af.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F8510%2Flive%2F71f11f30-e420-11f1-9e08-55a8a3b48445.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F8510%2Flive%2F71f11f30-e420-11f1-9e08-55a8a3b48445.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F36a4%2Flive%2F68bb4050-e41e-11f1-99b6-a35a62fa4264.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F36a4%2Flive%2F68bb4050-e41e-11f1-99b6-a35a62fa4264.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Face%2Fstandard%2F480%2Fcpsprodpb%2F6240%2Flive%2Fc5d62730-e457-11f1-9431-9fe383d2f2c7.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Face%2Fstandard%2F480%2Fcpsprodpb%2F6240%2Flive%2Fc5d62730-e457-11f1-9431-9fe383d2f2c7.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F1f56%2Flive%2F0be50c80-e446-11f1-99b6-a35a62fa4264.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F1f56%2Flive%2F0be50c80-e446-11f1-99b6-a35a62fa4264.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F17f2%2Flive%2Fd02f91c0-e449-11f1-9192-3924a59e54c7.jpg.webp": {
+          "src": "browse?u=https%3A%2F%2Fichef.bbci.co.uk%2Fnews%2F480%2Fcpsprodpb%2F17f2%2Flive%2Fd02f91c0-e449-11f1-9192-3924a59e54c7.jpg.webp",
+          "visible": false,
+          "display": "inline",
+          "visibility": "hidden"
+        },
+        "_overlays": 21,
+        "_reviewBtns": 21,
+        "_paintDivs": 0,
+        "_downloadBtns": 21
+      },
+      "ok": true
+    }
+  },
+  "errors": [
+    "console: Failed to load resource: the server responded with a status of 404 ()",
+    "console: INFO: Created TensorFlow Lite XNNPACK delegate for CPU.",
+    "console: Failed to load resource: the server responded with a status of 404 ()",
+    "console: INFO: Created TensorFlow Lite XNNPACK delegate for CPU.",
+    "console: Failed to load resource: the server responded with a status of 404 ()",
+    "console: Failed to load resource: the server responded with a status of 404 ()",
+    "console: Failed to load resource: the server responded with a status of 404 ()",
+    "console: INFO: Created TensorFlow Lite XNNPACK delegate for CPU.",
+    "console: Failed to load resource: the server responded with a status of 404 ()",
+    "console: Failed to load resource: the server responded with a status of 404 ()",
+    "console: Failed to load resource: the server responded with a status of 404 ()",
+    "console: Failed to load resource: the server responded with a status of 404 ()",
+    "console: Refused to apply style from 'https://filter-platform-web-browser.gavhah-copy.workers.dev/browse?u=https%3A%2F%2Fen.wikipedia.org%2Fw%2Fload.php%3Flang%3Den%26amp%3Bmodules%3Dext.cite.parsoid.styles%25",
+    "console: Refused to apply style from 'https://filter-platform-web-browser.gavhah-copy.workers.dev/browse?u=https%3A%2F%2Fen.wikipedia.org%2Fw%2Fload.php%3Flang%3Den%26amp%3Bmodules%3Dsite.styles%26amp%3Bonly%3",
+    "console: INFO: Created TensorFlow Lite XNNPACK delegate for CPU.",
+    "console: Failed to load resource: the server responded with a status of 404 ()",
+    "console: Failed to load resource: the server responded with a status of 404 ()",
+    "console: Failed to load resource: the server responded with a status of 404 ()",
+    "console: Refused to apply style from 'https://filter-platform-web-browser.gavhah-copy.workers.dev/browse?u=https%3A%2F%2Fen.wikipedia.org%2Fw%2Fload.php%3Flang%3Den%26amp%3Bmodules%3Dext.cite.parsoid.styles%25",
+    "console: Refused to apply style from 'https://filter-platform-web-browser.gavhah-copy.workers.dev/browse?u=https%3A%2F%2Fen.wikipedia.org%2Fw%2Fload.php%3Flang%3Den%26amp%3Bmodules%3Dsite.styles%26amp%3Bonly%3",
+    "console: INFO: Created TensorFlow Lite XNNPACK delegate for CPU.",
+    "console: Access to fetch at 'https://www.bbc.co.uk/userinfo' from origin 'https://filter-platform-web-browser.gavhah-copy.workers.dev' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header i",
+    "console: Failed to load resource: net::ERR_FAILED"
+  ],
+  "finishedAt": "2026-11-19T20:35:08.312Z",
+  "overallOk": true
+}

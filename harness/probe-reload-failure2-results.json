@@ -1,0 +1,529 @@
+{
+  "startedAt": "2026-11-19T20:21:08.188Z",
+  "attempts": [
+    {
+      "load": "initial",
+      "status": {
+        "covered": "3",
+        "allowed": "4",
+        "scanned": "7",
+        "unscanned": "3",
+        "detector": "דעטעקטאָר: גרייט ✓"
+      },
+      "diag": {
+        "faceApiPresent": true,
+        "faceLoaded": true,
+        "personPresent": true,
+        "personReady": true,
+        "fpReady": true,
+        "iframes": [
+          "browser.gavhah-copy.workers.dev/browser-assets/detector.html"
+        ],
+        "res": [
+          {
+            "name": "vendor/face-api.js",
+            "status": 200,
+            "dur": 0,
+            "size": 0
+          },
+          {
+            "name": "browser-assets/detector.js",
+            "status": 200,
+            "dur": 0,
+            "size": 0
+          },
+          {
+            "name": "models/tiny_face_detector_model-weights_manifest.json",
+            "status": 200,
+            "dur": 3,
+            "size": 0
+          },
+          {
+            "name": "browser-assets/detector.html",
+            "status": 200,
+            "dur": 3,
+            "size": 0
+          },
+          {
+            "name": "models/tiny_face_detector_model-shard1",
+            "status": 200,
+            "dur": 4,
+            "size": 0
+          }
+        ]
+      }
+    },
+    {
+      "load": "reload-1",
+      "status": {
+        "covered": "2",
+        "allowed": "4",
+        "scanned": "7",
+        "unscanned": "3",
+        "detector": "דעטעקטאָר: גרייט ✓"
+      },
+      "diag": {
+        "error": "frame.evaluate: Execution context was destroyed, most likely because of a navigation"
+      },
+      "allUnscanned": false
+    },
+    {
+      "load": "reload-2",
+      "status": {
+        "covered": "2",
+        "allowed": "5",
+        "scanned": "7",
+        "unscanned": "4",
+        "detector": "דעטעקטאָר: גרייט ✓"
+      },
+      "diag": {
+        "faceApiPresent": true,
+        "faceLoaded": true,
+        "personPresent": true,
+        "personReady": true,
+        "fpReady": true,
+        "iframes": [
+          "browser.gavhah-copy.workers.dev/browser-assets/detector.html"
+        ],
+        "res": [
+          {
+            "name": "vendor/face-api.js",
+            "status": 200,
+            "dur": 0,
+            "size": 0
+          },
+          {
+            "name": "browser-assets/detector.js",
+            "status": 200,
+            "dur": 0,
+            "size": 0
+          },
+          {
+            "name": "models/tiny_face_detector_model-weights_manifest.json",
+            "status": 200,
+            "dur": 6,
+            "size": 0
+          },
+          {
+            "name": "browser-assets/detector.html",
+            "status": 200,
+            "dur": 11,
+            "size": 0
+          },
+          {
+            "name": "models/tiny_face_detector_model-shard1",
+            "status": 200,
+            "dur": 8,
+            "size": 0
+          }
+        ]
+      },
+      "allUnscanned": false
+    },
+    {
+      "load": "reload-3",
+      "status": {
+        "covered": "2",
+        "allowed": "5",
+        "scanned": "7",
+        "unscanned": "4",
+        "detector": "דעטעקטאָר: גרייט ✓"
+      },
+      "diag": {
+        "error": "frame.evaluate: Execution context was destroyed, most likely because of a navigation"
+      },
+      "allUnscanned": false
+    },
+    {
+      "load": "reload-4",
+      "status": {
+        "covered": "3",
+        "allowed": "4",
+        "scanned": "7",
+        "unscanned": "3",
+        "detector": "דעטעקטאָר: גרייט ✓"
+      },
+      "diag": {
+        "faceApiPresent": true,
+        "faceLoaded": true,
+        "personPresent": true,
+        "personReady": true,
+        "fpReady": true,
+        "iframes": [
+          "browser.gavhah-copy.workers.dev/browser-assets/detector.html"
+        ],
+        "res": [
+          {
+            "name": "vendor/face-api.js",
+            "status": 200,
+            "dur": 0,
+            "size": 0
+          },
+          {
+            "name": "browser-assets/detector.js",
+            "status": 200,
+            "dur": 0,
+            "size": 0
+          },
+          {
+            "name": "models/tiny_face_detector_model-weights_manifest.json",
+            "status": 200,
+            "dur": 2,
+            "size": 0
+          },
+          {
+            "name": "browser-assets/detector.html",
+            "status": 200,
+            "dur": 3,
+            "size": 0
+          },
+          {
+            "name": "models/tiny_face_detector_model-shard1",
+            "status": 200,
+            "dur": 3,
+            "size": 0
+          }
+        ]
+      },
+      "allUnscanned": false
+    },
+    {
+      "load": "reload-5",
+      "status": {
+        "covered": "3",
+        "allowed": "4",
+        "scanned": "7",
+        "unscanned": "3",
+        "detector": "דעטעקטאָר: גרייט ✓"
+      },
+      "diag": {
+        "error": "frame.evaluate: Execution context was destroyed, most likely because of a navigation"
+      },
+      "allUnscanned": false
+    },
+    {
+      "load": "reload-6",
+      "status": {
+        "covered": "3",
+        "allowed": "4",
+        "scanned": "7",
+        "unscanned": "3",
+        "detector": "דעטעקטאָר: גרייט ✓"
+      },
+      "diag": {
+        "faceApiPresent": true,
+        "faceLoaded": true,
+        "personPresent": true,
+        "personReady": true,
+        "fpReady": true,
+        "iframes": [
+          "browser.gavhah-copy.workers.dev/browser-assets/detector.html"
+        ],
+        "res": [
+          {
+            "name": "vendor/face-api.js",
+            "status": 200,
+            "dur": 0,
+            "size": 0
+          },
+          {
+            "name": "browser-assets/detector.js",
+            "status": 200,
+            "dur": 0,
+            "size": 0
+          },
+          {
+            "name": "models/tiny_face_detector_model-weights_manifest.json",
+            "status": 200,
+            "dur": 4,
+            "size": 0
+          },
+          {
+            "name": "browser-assets/detector.html",
+            "status": 200,
+            "dur": 5,
+            "size": 0
+          },
+          {
+            "name": "models/tiny_face_detector_model-shard1",
+            "status": 200,
+            "dur": 4,
+            "size": 0
+          }
+        ]
+      },
+      "allUnscanned": false
+    }
+  ],
+  "fpLogs": [
+    {
+      "at": "2026-11-19T20:21:12.005Z",
+      "type": "log",
+      "text": "[fp] tinyFaceDetector model loaded from /browser-assets/models"
+    },
+    {
+      "at": "2026-11-19T20:21:12.006Z",
+      "type": "log",
+      "text": "[fp-detector] +132ms vision bundle imported"
+    },
+    {
+      "at": "2026-11-19T20:21:12.007Z",
+      "type": "log",
+      "text": "[fp-detector] +133ms fileset resolved"
+    },
+    {
+      "at": "2026-11-19T20:21:13.934Z",
+      "type": "log",
+      "text": "[fp-detector] +2ms vision bundle imported"
+    },
+    {
+      "at": "2026-11-19T20:21:13.935Z",
+      "type": "log",
+      "text": "[fp-detector] +2ms fileset resolved"
+    },
+    {
+      "at": "2026-11-19T20:21:13.987Z",
+      "type": "log",
+      "text": "[fp] tinyFaceDetector model loaded from /browser-assets/models"
+    },
+    {
+      "at": "2026-11-19T20:21:15.230Z",
+      "type": "log",
+      "text": "[fp-detector] +1300ms ObjectDetector created"
+    },
+    {
+      "at": "2026-11-19T20:21:15.231Z",
+      "type": "log",
+      "text": "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)"
+    },
+    {
+      "at": "2026-11-19T20:21:15.231Z",
+      "type": "log",
+      "text": "[fp] person-detector warmup reply: fp-detector-ready "
+    },
+    {
+      "at": "2026-11-19T20:21:15.232Z",
+      "type": "log",
+      "text": "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)"
+    },
+    {
+      "at": "2026-11-19T20:24:28.377Z",
+      "type": "log",
+      "text": "[fp-detector] +9ms vision bundle imported"
+    },
+    {
+      "at": "2026-11-19T20:24:28.385Z",
+      "type": "log",
+      "text": "[fp-detector] +10ms fileset resolved"
+    },
+    {
+      "at": "2026-11-19T20:24:28.442Z",
+      "type": "log",
+      "text": "[fp] tinyFaceDetector model loaded from /browser-assets/models"
+    },
+    {
+      "at": "2026-11-19T20:24:28.719Z",
+      "type": "log",
+      "text": "[fp-detector] +352ms ObjectDetector created"
+    },
+    {
+      "at": "2026-11-19T20:24:28.719Z",
+      "type": "log",
+      "text": "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)"
+    },
+    {
+      "at": "2026-11-19T20:24:28.719Z",
+      "type": "log",
+      "text": "[fp] person-detector warmup reply: fp-detector-ready "
+    },
+    {
+      "at": "2026-11-19T20:24:28.719Z",
+      "type": "log",
+      "text": "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)"
+    },
+    {
+      "at": "2026-11-19T20:24:29.108Z",
+      "type": "log",
+      "text": "[fp-detector] +4ms vision bundle imported"
+    },
+    {
+      "at": "2026-11-19T20:24:29.113Z",
+      "type": "log",
+      "text": "[fp-detector] +4ms fileset resolved"
+    },
+    {
+      "at": "2026-11-19T20:24:29.225Z",
+      "type": "log",
+      "text": "[fp] tinyFaceDetector model loaded from /browser-assets/models"
+    },
+    {
+      "at": "2026-11-19T20:24:29.599Z",
+      "type": "log",
+      "text": "[fp-detector] +497ms ObjectDetector created"
+    },
+    {
+      "at": "2026-11-19T20:24:29.599Z",
+      "type": "log",
+      "text": "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)"
+    },
+    {
+      "at": "2026-11-19T20:24:29.654Z",
+      "type": "log",
+      "text": "[fp] person-detector warmup reply: fp-detector-ready "
+    },
+    {
+      "at": "2026-11-19T20:24:29.654Z",
+      "type": "log",
+      "text": "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)"
+    },
+    {
+      "at": "2026-11-19T20:24:38.517Z",
+      "type": "log",
+      "text": "[fp-detector] +2ms vision bundle imported"
+    },
+    {
+      "at": "2026-11-19T20:24:38.517Z",
+      "type": "log",
+      "text": "[fp-detector] +2ms fileset resolved"
+    },
+    {
+      "at": "2026-11-19T20:24:38.582Z",
+      "type": "log",
+      "text": "[fp] tinyFaceDetector model loaded from /browser-assets/models"
+    },
+    {
+      "at": "2026-11-19T20:24:38.913Z",
+      "type": "log",
+      "text": "[fp-detector] +399ms ObjectDetector created"
+    },
+    {
+      "at": "2026-11-19T20:24:38.914Z",
+      "type": "log",
+      "text": "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)"
+    },
+    {
+      "at": "2026-11-19T20:24:38.914Z",
+      "type": "log",
+      "text": "[fp] person-detector warmup reply: fp-detector-ready "
+    },
+    {
+      "at": "2026-11-19T20:24:38.915Z",
+      "type": "log",
+      "text": "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)"
+    },
+    {
+      "at": "2026-11-19T20:24:39.260Z",
+      "type": "log",
+      "text": "[fp-detector] +2ms vision bundle imported"
+    },
+    {
+      "at": "2026-11-19T20:24:39.260Z",
+      "type": "log",
+      "text": "[fp-detector] +3ms fileset resolved"
+    },
+    {
+      "at": "2026-11-19T20:24:39.281Z",
+      "type": "log",
+      "text": "[fp] tinyFaceDetector model loaded from /browser-assets/models"
+    },
+    {
+      "at": "2026-11-19T20:24:39.667Z",
+      "type": "log",
+      "text": "[fp-detector] +409ms ObjectDetector created"
+    },
+    {
+      "at": "2026-11-19T20:24:39.667Z",
+      "type": "log",
+      "text": "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)"
+    },
+    {
+      "at": "2026-11-19T20:24:39.667Z",
+      "type": "log",
+      "text": "[fp] person-detector warmup reply: fp-detector-ready "
+    },
+    {
+      "at": "2026-11-19T20:24:39.667Z",
+      "type": "log",
+      "text": "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)"
+    },
+    {
+      "at": "2026-11-19T20:24:46.810Z",
+      "type": "log",
+      "text": "[fp] tinyFaceDetector model loaded from /browser-assets/models"
+    },
+    {
+      "at": "2026-11-19T20:24:46.814Z",
+      "type": "log",
+      "text": "[fp-detector] +3ms vision bundle imported"
+    },
+    {
+      "at": "2026-11-19T20:24:46.814Z",
+      "type": "log",
+      "text": "[fp-detector] +3ms fileset resolved"
+    },
+    {
+      "at": "2026-11-19T20:24:47.213Z",
+      "type": "log",
+      "text": "[fp-detector] +403ms ObjectDetector created"
+    },
+    {
+      "at": "2026-11-19T20:24:47.214Z",
+      "type": "log",
+      "text": "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)"
+    },
+    {
+      "at": "2026-11-19T20:24:47.214Z",
+      "type": "log",
+      "text": "[fp] person-detector warmup reply: fp-detector-ready "
+    },
+    {
+      "at": "2026-11-19T20:24:47.214Z",
+      "type": "log",
+      "text": "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)"
+    },
+    {
+      "at": "2026-11-19T20:24:47.559Z",
+      "type": "log",
+      "text": "[fp-detector] +5ms vision bundle imported"
+    },
+    {
+      "at": "2026-11-19T20:24:47.560Z",
+      "type": "log",
+      "text": "[fp-detector] +5ms fileset resolved"
+    },
+    {
+      "at": "2026-11-19T20:24:47.572Z",
+      "type": "log",
+      "text": "[fp] tinyFaceDetector model loaded from /browser-assets/models"
+    },
+    {
+      "at": "2026-11-19T20:24:47.804Z",
+      "type": "log",
+      "text": "[fp-detector] +260ms ObjectDetector created"
+    },
+    {
+      "at": "2026-11-19T20:24:47.804Z",
+      "type": "log",
+      "text": "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)"
+    },
+    {
+      "at": "2026-11-19T20:24:47.805Z",
+      "type": "log",
+      "text": "[fp] person-detector warmup reply: fp-detector-ready "
+    },
+    {
+      "at": "2026-11-19T20:24:47.805Z",
+      "type": "log",
+      "text": "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)"
+    }
+  ],
+  "reviewBtnIdx": 1,
+  "afterReview": {
+    "covered": "2",
+    "allowed": "4",
+    "scanned": "7",
+    "unscanned": "3",
+    "detector": "דעטעקטאָר: גרייט ✓"
+  },
+  "finishedAt": "2026-11-19T20:24:54.874Z"
+}
