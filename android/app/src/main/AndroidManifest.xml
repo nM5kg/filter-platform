@@ -4,6 +4,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Pre-Android-10 downloads: DownloadManager needs
+         WRITE_EXTERNAL_STORAGE to write into the public Downloads
+         directory on API 26-28. No runtime permission is needed on
+         API 29+ (scoped storage); DownloadHelper requests it at
+         runtime before enqueue on 26-28. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
     <!-- GeckoView 160 (org.mozilla.geckoview AAR manifest) requires these two;
          Gradle's manifest merger adds them automatically — they are listed
          here explicitly so the manual build (which has no merger) matches. -->
@@ -41,11 +47,35 @@
              The GeckoView services / content provider from the
              org.mozilla.geckoview AAR manifest are merged in by Gradle's
              manifest merger on a normal build; the manual build reproduces
-             that with manual-build/merge_manifest.py. -->
+             that with manual-build/merge_manifest.py.
+             singleTask (0.3.0): History/Bookmarks open a URL in this
+             browser via the "open_url" intent extra — a second tap must
+             reuse this activity (onNewIntent) instead of starting a
+             second browser with a second GeckoRuntime. -->
         <activity
             android:name=".BrowserActivity"
             android:exported="false"
+            android:launchMode="singleTask"
             android:label="Filter Browser" />
+        <!-- Browser screens (programmatic UI, no XML layouts):
+             History / Bookmarks / Downloads / Settings. Started by
+             BrowserActivity; not exported (in-app only). -->
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="false"
+            android:label="History" />
+        <activity
+            android:name=".BookmarksActivity"
+            android:exported="false"
+            android:label="Bookmarks" />
+        <activity
+            android:name=".DownloadsActivity"
+            android:exported="false"
+            android:label="Downloads" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="Settings" />
     </application>
 
 </manifest>
