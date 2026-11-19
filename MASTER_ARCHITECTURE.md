@@ -192,7 +192,12 @@ the Android browser sees — that proof now lives inside GeckoView.
    session — own UI, no ready-made browser UI).
 4. Built-in filter extension inside GeckoView (content scripts + native
    bridge; MV2 first — the documented path; MV3 support in GeckoView 160
-   is unverified, test explicitly before committing).
+   is unverified, test explicitly before committing). DONE in app 0.2.0
+   (2026-11-19): the real v1.2.0 engine is in the app — EfficientDet
+   person detector + face fallback in the built-in extension, Yiddish
+   block page, SafeSearch rewrite; see
+   `android/GECKOVIEW-PROTOTYPE.md` §0.2.0. Still unproven on a real
+   device (step 5 is the device test).
 5. Re-prove the test matrix (§3) inside GeckoView on real sites,
    including Canvas and video; unreviewed stays covered.
 6. Only then continue with the rest of the platform (Phases 5–6).
