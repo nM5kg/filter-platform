@@ -21,12 +21,15 @@
 //   the content script keeps everything covered — fail closed.
 //
 // Person detection hook: FilterEngine is constructed with a PersonDetector.
-// This prototype ships StubPersonDetector (no model on device), so every
-// finding comes back REVIEW and stays covered. Plugging in a real
-// on-device model means implementing PersonDetector (one interface, one
-// call site in FilterEngine.decide) — nothing here changes, and no verdict
-// in this file is ever faked: there is no code path that returns ALLOW
-// without a detector saying NO_PERSON above threshold.
+// v1.2.0: the engine is JsReportedPersonDetector — the content script runs
+// the person + face detectors on each element's pixels and reports the
+// numbers; Kotlin maps them to verdicts with the POLICY threshold (see
+// FilterEngine.JsReportedPersonDetector). StubPersonDetector remains for
+// tests only. Plugging in a real on-device model would mean implementing
+// PersonDetector (one interface, one call site in FilterEngine.decide) —
+// nothing here changes, and no verdict in this file is ever faked: there
+// is no code path that returns ALLOW without a detector saying NO_PERSON
+// above threshold.
 //
 // What is NOT verified here (no Android device/emulator exists on this VM):
 // the Activity has never run. GeckoView startup, extension install,
@@ -44,6 +47,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import java.net.URLEncoder
 import org.json.JSONObject
 import org.mozilla.geckoview.AllowOrDeny
 import org.mozilla.geckoview.GeckoResult
@@ -96,9 +100,12 @@ class BrowserActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         store = SecureStore(this)
-        // HOOK: replace StubPersonDetector with a real on-device model here.
-        // Until then every finding is REVIEW and stays covered.
-        engine = FilterEngine(StubPersonDetector())
+        // HOOK: the v1.2.0 engine reports via JS — the content script runs
+        // the person + face detectors and FilterEngine maps the reported
+        // numbers with the policy threshold. StubPersonDetector is kept
+        // for tests only; a real on-device model would be plugged in
+        // here instead (same PersonDetector interface).
+        engine = FilterEngine(JsReportedPersonDetector())
         setContentView(R.layout.activity_browser)
 
         addressInput = findViewById(R.id.addressInput)
@@ -173,11 +180,35 @@ class BrowserActivity : Activity() {
             session: GeckoSession,
             request: GeckoSession.NavigationDelegate.LoadRequest
         ): GeckoResult<AllowOrDeny>? {
-            // EVERY top-level navigation passes through the filter engine.
-            return if (FilterEngine.shouldBlockNavigation(request.uri, blockedHosts)) {
+            // EVERY top-level navigation passes through the filter engine,
+            // in this order:
+            //  1. SafeSearch: a search-engine URL without its SafeSearch
+            //     param is denied and re-loaded with the param added.
+            //     rewriteSafeSearch is idempotent, so the re-loaded URL
+            //     passes straight through (no loop).
+            //  2. Blocked host: deny and show the Yiddish block page.
+            //  3. The remaining navigation checks (unknown schemes).
+            // The loadUri / showBlockPage calls run on the UI thread; the
+            // deny result itself is returned synchronously.
+            val uri = request.uri
+            val rewritten = if (policy.forceSafeSearch) {
+                FilterEngine.rewriteSafeSearch(uri, true)
+            } else {
+                null
+            }
+            if (rewritten != null && rewritten != uri) {
+                runOnUiThread { session.loadUri(rewritten) }
+                return GeckoResult.deny()
+            }
+            val blockedHost = FilterEngine.matchedBlockedHost(uri, blockedHosts)
+            if (blockedHost != null) {
+                runOnUiThread { showBlockPage(blockedHost) }
+                return GeckoResult.deny()
+            }
+            return if (FilterEngine.shouldBlockNavigation(uri, blockedHosts)) {
                 runOnUiThread {
                     filterStatusText.text =
-                        "Blocked navigation: ${request.uri} (filter policy)"
+                        "Blocked navigation: $uri (filter policy)"
                 }
                 GeckoResult.deny()
             } else {
@@ -248,6 +279,41 @@ class BrowserActivity : Activity() {
         if (url.isBlank()) return
         if (!url.contains("://")) url = "https://$url"
         session.loadUri(url)
+    }
+
+    /**
+     * Show the Yiddish block page for a blocked host: read the bundled
+     * filter-extension/blocked.html asset, substitute the blocked host
+     * and the current policy name into its data-domain / data-policy
+     * attributes (HTML-escaped), and load the result as a data: URL.
+     *
+     * UNVERIFIED ON-DEVICE: loading a data: URL as the top-level page
+     * in GeckoView has never been tried on a real device — if GeckoView
+     * refuses it, the navigation stays denied and the status line says
+     * so. If reading the asset itself fails, fall back to a plain deny
+     * and write the error to the status line.
+     */
+    private fun showBlockPage(host: String) {
+        try {
+            val html = applicationContext.assets
+                .open("filter-extension/blocked.html")
+                .bufferedReader(Charsets.UTF_8).use { it.readText() }
+            val page = html
+                .replace("{{DOMAIN}}", FilterEngine.escapeHtml(host))
+                .replace("{{POLICY_NAME}}", FilterEngine.escapeHtml(policy.name))
+            session.loadUri("data:text/html;charset=utf-8," + URLEncoder.encode(page, "UTF-8"))
+            runOnUiThread {
+                filterStatusText.text = "Blocked: $host (filter policy)"
+            }
+        } catch (e: Exception) {
+            // Asset missing or unreadable: the navigation is still denied
+            // (the caller already returned deny) — just say so.
+            runOnUiThread {
+                filterStatusText.text =
+                    "Blocked: $host — block page failed to load " +
+                        "(${e.javaClass.simpleName}: ${e.message})"
+            }
+        }
     }
 
     // ------------------------------------------------- filter extension (bridge)
