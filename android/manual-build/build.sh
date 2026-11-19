@@ -189,7 +189,7 @@ LINK_R_ARGS+=(-R "$OUT/compiled-res.zip")
   -0 onnx \
   --auto-add-overlay \
   --min-sdk-version 26 --target-sdk-version 34 \
-  --version-code 8 --version-name 0.3.0
+  --version-code 9 --version-name 0.3.1
 
 # --- 3. kotlinc ---------------------------------------------------------------
 echo "== 3. kotlinc (app sources + generated R.java) =="
