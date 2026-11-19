@@ -16,7 +16,10 @@ import org.junit.Test
  */
 class FilterEngineTest {
 
-    private val thumb = "data:image/jpeg;base64,/9j/4AAQ=="
+    // "/9j/4A==" is valid base64 for the 4-byte JPEG SOI start FF D8 FF E0
+    // (the old placeholder "/9j/4AAQ==" was not valid base64 — it never
+    // mattered until 0.2.2, when RfDetrPersonDetector actually decodes it).
+    private val thumb = "data:image/jpeg;base64,/9j/4A=="
     private val strictPolicy = Policy(
         id = "p1", name = "Standard", blockImages = true, coverImages = true,
         filterAds = false, forceSafeSearch = true,
@@ -458,5 +461,300 @@ class FilterEngineTest {
         assertEquals("facebook.com", FilterEngine.escapeHtml("facebook.com"))
         assertEquals("&lt;script&gt; &amp; &quot;q&quot; &#39;s&#39;",
             FilterEngine.escapeHtml("<script> & \"q\" 's'"))
+    }
+
+    // --- RF-DETR Nano score mapping (pure, no ORT) ---------------------------
+    //
+    // The mapping is the fail-closed contract: PERSON at/above the policy
+    // threshold, UNKNOWN for a weak signal in [0.40, threshold) or for no
+    // score at all, NO_PERSON only when the model ran and its best person
+    // score stayed below the 0.40 floor.
+
+    @Test
+    fun rfDetrMapping_personAboveThreshold() {
+        val r = RfDetrPersonDetector.mapBestPersonScore(0.87, 0.70)
+        assertEquals(DetectionOutcome.PERSON, r.outcome)
+        assertEquals(0.87, r.confidence, 0.001)
+        // Same score clears the 0.50 threshold too.
+        assertEquals(DetectionOutcome.PERSON,
+            RfDetrPersonDetector.mapBestPersonScore(0.87, 0.50).outcome)
+    }
+
+    @Test
+    fun rfDetrMapping_thresholdBoundary() {
+        // Exactly at the threshold counts as a person (>=, not >).
+        assertEquals(DetectionOutcome.PERSON,
+            RfDetrPersonDetector.mapBestPersonScore(0.70, 0.70).outcome)
+        assertEquals(DetectionOutcome.PERSON,
+            RfDetrPersonDetector.mapBestPersonScore(0.50, 0.50).outcome)
+    }
+
+    @Test
+    fun rfDetrMapping_thresholdDecides() {
+        // 0.60 is a person at the 0.50 threshold but a weak signal at
+        // 0.70 — the pending Yakob decision (0.50 vs 0.70), same as the
+        // JS detector. The benchmark's distant beach walker scores 0.568:
+        // found at 0.50, missed at 0.70.
+        assertEquals(DetectionOutcome.PERSON,
+            RfDetrPersonDetector.mapBestPersonScore(0.60, 0.50).outcome)
+        assertEquals(DetectionOutcome.PERSON,
+            RfDetrPersonDetector.mapBestPersonScore(0.568, 0.50).outcome)
+        val weak = RfDetrPersonDetector.mapBestPersonScore(0.60, 0.70)
+        assertEquals(DetectionOutcome.UNKNOWN, weak.outcome)
+        assertTrue(weak.detail.contains("weak signal"))
+        assertEquals(DetectionOutcome.UNKNOWN,
+            RfDetrPersonDetector.mapBestPersonScore(0.568, 0.70).outcome)
+    }
+
+    @Test
+    fun rfDetrMapping_weakSignalIsUnknown() {
+        val r = RfDetrPersonDetector.mapBestPersonScore(0.45, 0.70)
+        assertEquals(DetectionOutcome.UNKNOWN, r.outcome)
+        assertEquals(0.0, r.confidence, 0.001)
+    }
+
+    @Test
+    fun rfDetrMapping_scoreFloorBoundary() {
+        // SCORE_FLOOR is 0.40, same as the JS detector: 0.40 is a weak
+        // signal (UNKNOWN); 0.39 is clean (NO_PERSON, confidence 1.0).
+        assertEquals(0.40, RfDetrPersonDetector.SCORE_FLOOR, 0.001)
+        assertEquals(DetectionOutcome.UNKNOWN,
+            RfDetrPersonDetector.mapBestPersonScore(0.40, 0.70).outcome)
+        val clean = RfDetrPersonDetector.mapBestPersonScore(0.39, 0.70)
+        assertEquals(DetectionOutcome.NO_PERSON, clean.outcome)
+        assertEquals(1.0, clean.confidence, 0.001)
+        // The benchmark's worst no-person photo scores 0.219 — clean.
+        assertEquals(DetectionOutcome.NO_PERSON,
+            RfDetrPersonDetector.mapBestPersonScore(0.219, 0.70).outcome)
+    }
+
+    @Test
+    fun rfDetrMapping_noScoreIsUnknown() {
+        // Null = model not loaded / inference failed: UNKNOWN, never
+        // NO_PERSON on a guess.
+        val r = RfDetrPersonDetector.mapBestPersonScore(null, 0.70)
+        assertEquals(DetectionOutcome.UNKNOWN, r.outcome)
+        assertEquals(0.0, r.confidence, 0.001)
+    }
+
+    @Test
+    fun rfDetrMapping_zeroScoreIsNoPerson() {
+        val r = RfDetrPersonDetector.mapBestPersonScore(0.0, 0.70)
+        assertEquals(DetectionOutcome.NO_PERSON, r.outcome)
+        assertEquals(1.0, r.confidence, 0.001)
+    }
+
+    // --- RfDetrPersonDetector with a fake backend ----------------------------
+
+    /** Fake ORT backend: canned score, canned decode result. */
+    private class FakeRfDetrBackend(
+        private val score: Double? = null,
+        private val decodeResult: DecodedImage? = DecodedImage(IntArray(4), 2, 2)
+    ) : RfDetrBackend {
+        var lastJpegBytes: ByteArray? = null
+        override fun decodeJpeg(jpegBytes: ByteArray): DecodedImage? {
+            lastJpegBytes = jpegBytes
+            return decodeResult
+        }
+
+        override fun bestPersonScore(image: DecodedImage): Double? = score
+    }
+
+    @Test
+    fun rfDetrDetector_noBackendIsUnknown() {
+        // No backend wired in (should not happen in the shipped app,
+        // which always passes RfDetrOrtBackend): UNKNOWN, never ALLOW.
+        val r = RfDetrPersonDetector().detect(finding(), 0.70)
+        assertEquals(DetectionOutcome.UNKNOWN, r.outcome)
+        assertTrue(r.detail.contains("not available"))
+    }
+
+    @Test
+    fun rfDetrDetector_noThumbnailIsUnknown() {
+        val d = RfDetrPersonDetector(FakeRfDetrBackend(score = 0.01))
+        val r = d.detect(finding(thumbnail = null), 0.70)
+        assertEquals(DetectionOutcome.UNKNOWN, r.outcome)
+        assertTrue(r.detail.contains("no thumbnail"))
+    }
+
+    @Test
+    fun rfDetrDetector_malformedThumbnailIsUnknown() {
+        val d = RfDetrPersonDetector(FakeRfDetrBackend(score = 0.01))
+        val r = d.detect(
+            finding(thumbnail = "data:image/jpeg;base64,!!!not-base64!!!"), 0.70)
+        assertEquals(DetectionOutcome.UNKNOWN, r.outcome)
+    }
+
+    @Test
+    fun rfDetrDetector_decodeFailureIsUnknown() {
+        val d = RfDetrPersonDetector(FakeRfDetrBackend(score = 0.01, decodeResult = null))
+        val r = d.detect(finding(), 0.70)
+        assertEquals(DetectionOutcome.UNKNOWN, r.outcome)
+    }
+
+    @Test
+    fun rfDetrDetector_nullScoreIsUnknown() {
+        // Backend ran but produced no score (model not loaded / inference
+        // failed inside the backend): UNKNOWN.
+        val d = RfDetrPersonDetector(FakeRfDetrBackend(score = null))
+        assertEquals(DetectionOutcome.UNKNOWN, d.detect(finding(), 0.70).outcome)
+    }
+
+    @Test
+    fun rfDetrDetector_scoreMappingApplies() {
+        assertEquals(DetectionOutcome.PERSON,
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.87))
+                .detect(finding(), 0.70).outcome)
+        assertEquals(DetectionOutcome.NO_PERSON,
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.20))
+                .detect(finding(), 0.70).outcome)
+        assertEquals(DetectionOutcome.UNKNOWN,
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.55))
+                .detect(finding(), 0.70).outcome)
+    }
+
+    @Test
+    fun rfDetrDetector_thumbnailBytesReachBackend() {
+        // The data URL is base64-decoded before the backend sees it:
+        // "/9j/4A==" is the 4-byte JPEG SOI marker start.
+        val backend = FakeRfDetrBackend(score = 0.01)
+        RfDetrPersonDetector(backend).detect(finding(), 0.70)
+        val bytes = backend.lastJpegBytes
+        assertEquals(4, bytes?.size)
+        assertEquals(0xFF.toByte(), bytes?.get(0))
+        assertEquals(0xD8.toByte(), bytes?.get(1))
+        assertEquals(0xFF.toByte(), bytes?.get(2))
+        assertEquals(0xE0.toByte(), bytes?.get(3))
+    }
+
+    @Test
+    fun rfDetrDecodeDataUrl() {
+        val bytes = RfDetrPersonDetector.decodeDataUrl("data:image/jpeg;base64,/9j/4A==")
+        assertEquals(4, bytes?.size)
+        // Bare base64 (no data: prefix) is accepted too.
+        assertEquals(4, RfDetrPersonDetector.decodeDataUrl("/9j/4A==")?.size)
+        assertNull(RfDetrPersonDetector.decodeDataUrl("data:image/jpeg;base64,!!!"))
+        assertNull(RfDetrPersonDetector.decodeDataUrl(""))
+        assertNull(RfDetrPersonDetector.decodeDataUrl("data:image/jpeg;base64,"))
+    }
+
+    // --- CombinedPersonDetector ----------------------------------------------
+
+    private fun combined(vararg detectors: PersonDetector) =
+        CombinedPersonDetector(detectors.toList())
+
+    @Test
+    fun combined_personWinsEitherSide() {
+        // JS says person, RF says clean -> PERSON (OR for PERSON).
+        val a = combined(
+            FixedDetector(DetectionResult(DetectionOutcome.PERSON, 0.9)),
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.01))
+        )
+        assertEquals(DetectionOutcome.PERSON, a.detect(finding(), 0.70).outcome)
+        // RF says person, JS says clean -> PERSON.
+        val b = combined(
+            jsDetector,
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.95))
+        )
+        val r = b.detect(detectedFinding(), 0.70)
+        assertEquals(DetectionOutcome.PERSON, r.outcome)
+        assertEquals(0.95, r.confidence, 0.001)
+    }
+
+    @Test
+    fun combined_noPersonRequiresAll() {
+        // Both clean -> NO_PERSON, confidence 1.0.
+        val bothClean = combined(
+            jsDetector,
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.05))
+        )
+        val r = bothClean.detect(detectedFinding(), 0.70)
+        assertEquals(DetectionOutcome.NO_PERSON, r.outcome)
+        assertEquals(1.0, r.confidence, 0.001)
+    }
+
+    @Test
+    fun combined_unknownVetoesNoPerson() {
+        // JS clean but RF undecided (no thumbnail) -> UNKNOWN.
+        val a = combined(
+            jsDetector,
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.01))
+        )
+        assertEquals(DetectionOutcome.UNKNOWN,
+            a.detect(detectedFinding().copy(thumbnailDataUrl = null), 0.70).outcome)
+        // RF clean but JS undecided (detector never ran) -> UNKNOWN.
+        val b = combined(
+            jsDetector,
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.01))
+        )
+        assertEquals(DetectionOutcome.UNKNOWN,
+            b.detect(detectedFinding(detectionRan = false), 0.70).outcome)
+        // One weak signal is enough to veto as well.
+        val c = combined(
+            jsDetector,
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.55))
+        )
+        assertEquals(DetectionOutcome.UNKNOWN,
+            c.detect(detectedFinding(), 0.70).outcome)
+    }
+
+    @Test
+    fun combined_allUnknownIsUnknown() {
+        val d = combined(StubPersonDetector(), StubPersonDetector())
+        assertEquals(DetectionOutcome.UNKNOWN, d.detect(finding(), 0.70).outcome)
+    }
+
+    @Test
+    fun combined_emptyListIsUnknown() {
+        // No detectors configured means no decision — fail closed.
+        assertEquals(DetectionOutcome.UNKNOWN,
+            CombinedPersonDetector(emptyList()).detect(finding(), 0.70).outcome)
+    }
+
+    @Test
+    fun combined_noPersonConfidenceIsMinimum() {
+        // A detector reporting NO_PERSON with low confidence drags the
+        // combined confidence down (FilterEngine then reviews it).
+        val d = combined(
+            FixedDetector(DetectionResult(DetectionOutcome.NO_PERSON, 0.6)),
+            FixedDetector(DetectionResult(DetectionOutcome.NO_PERSON, 1.0))
+        )
+        val r = d.detect(finding(), 0.70)
+        assertEquals(DetectionOutcome.NO_PERSON, r.outcome)
+        assertEquals(0.6, r.confidence, 0.001)
+    }
+
+    // --- combined detector end to end ----------------------------------------
+
+    @Test
+    fun decide_withCombinedDetector_endToEnd() {
+        val engine = FilterEngine(combined(
+            jsDetector,
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.05))
+        ))
+        // Both clean -> ALLOW.
+        assertEquals(Verdict.ALLOW,
+            engine.decide(detectedFinding(), strictPolicy).verdict)
+        // RF sees a person the JS detectors missed -> COVER.
+        val enginePerson = FilterEngine(combined(
+            jsDetector,
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.98))
+        ))
+        assertEquals(Verdict.COVER,
+            enginePerson.decide(detectedFinding(), strictPolicy).verdict)
+        // JS sees a person RF missed -> COVER (PERSON wins either side).
+        val engineJsPerson = FilterEngine(combined(
+            jsDetector,
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.01))
+        ))
+        assertEquals(Verdict.COVER,
+            engineJsPerson.decide(
+                detectedFinding(persons = 1, personBest = 0.87), strictPolicy).verdict)
+        // No thumbnail: JS clean, RF undecided -> REVIEW (covered).
+        // This is the 0.2.2 behaviour change: a finding the JS detectors
+        // checked but could not thumbnail no longer allows on JS alone.
+        assertEquals(Verdict.REVIEW,
+            engine.decide(
+                detectedFinding().copy(thumbnailDataUrl = null), strictPolicy).verdict)
     }
 }
