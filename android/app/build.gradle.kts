@@ -29,8 +29,8 @@ android {
         applicationId = "com.filterplatform.app"
         minSdk = 26
         targetSdk = 34
-        versionCode = 5
-        versionName = "0.2.0"
+        versionCode = 7
+        versionName = "0.2.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -65,6 +65,14 @@ dependencies {
     // framework Activity + Material theme, so the only library is
     // security-crypto (plus its Tink dependency, classes only, no resources).
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
+    // RF-DETR Nano on-device person detection (0.2.2) — the officially
+    // agreed person model (Apache 2.0). The AAR is fetched by
+    // manual-build/fetch-deps.py --onnxruntime-only into
+    // manual-build/libs/onnxruntime/ (sha256-pinned, see
+    // libs/onnxruntime/README.md); build.sh puts its classes.jar on the
+    // classpath and its arm64-v8a .so files into the APK, stored.
+    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.32.0")
 
     // GeckoView — the browser engine (Yakob's decision 2026-11-18: STABLE
     // release channel, NOT Nightly; own browser app + own filter engine).
