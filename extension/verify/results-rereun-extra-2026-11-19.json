@@ -1,0 +1,883 @@
+{
+  "ranAt": "2026-11-19T07:33:15.559Z",
+  "extensionDir": "/home/hatch/workspace/filter-platform/extension",
+  "manifest": {
+    "action": {
+      "default_popup": "popup.html",
+      "default_title": "Filter Platform"
+    },
+    "background": {
+      "service_worker": "background.js",
+      "type": "module"
+    },
+    "content_scripts": [
+      {
+        "all_frames": false,
+        "js": [
+          "vendor/face-api.js",
+          "detector.js",
+          "content.js"
+        ],
+        "matches": [
+          "http://*/*",
+          "https://*/*"
+        ],
+        "run_at": "document_idle"
+      }
+    ],
+    "description": "Free kosher internet filter: blocks human pictures per policy (on-device person + face detection) and blocks listed domains. Phase 2.",
+    "host_permissions": [
+      "http://*/*",
+      "https://*/*"
+    ],
+    "manifest_version": 3,
+    "name": "Filter Platform \u2014 Kosher Browser Filter",
+    "permissions": [
+      "storage",
+      "declarativeNetRequest",
+      "alarms"
+    ],
+    "short_name": "Filter Platform",
+    "version": "1.2.0",
+    "content_security_policy": {
+      "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+    },
+    "web_accessible_resources": [
+      {
+        "matches": [
+          "http://*/*",
+          "https://*/*"
+        ],
+        "resources": [
+          "models/*",
+          "detector.html",
+          "blocked.html"
+        ]
+      }
+    ]
+  },
+  "cases": {
+    "manifestVersion": "1.2.0",
+    "canvas": {
+      "url": "http://127.0.0.1:8126/canvas.html",
+      "pageReady": true,
+      "modelReady": true,
+      "scanDone": true,
+      "elapsedMs": 9858,
+      "navTiming": {
+        "navStartToDomContentLoadedMs": 142,
+        "navStartToLoadMs": 445,
+        "domContentLoadedMs": 121
+      },
+      "stats": {
+        "found": 1,
+        "scanned": 1,
+        "human": 1,
+        "blocked": 1,
+        "covered": 0,
+        "uncertain": 0,
+        "noHuman": 0,
+        "bgFound": 0,
+        "bgHuman": 0,
+        "skipped": 0,
+        "personHits": 1,
+        "refetched": 0,
+        "refetchFailed": 0,
+        "refetchCacheHits": 0
+      },
+      "inferenceMs": {
+        "n": 1,
+        "mean": 5396,
+        "median": 5396,
+        "min": 5396,
+        "max": 5396
+      },
+      "canvasState": [
+        {
+          "id": "c-person",
+          "w": 480,
+          "h": 640,
+          "fpAction": "none",
+          "hasOverlaySibling": false,
+          "styleDisplay": "block",
+          "styleVisibility": "visible"
+        },
+        {
+          "id": "c-video",
+          "w": 854,
+          "h": 480,
+          "fpAction": "none",
+          "hasOverlaySibling": false,
+          "styleDisplay": "block",
+          "styleVisibility": "visible"
+        },
+        {
+          "id": "c-landscape",
+          "w": 480,
+          "h": 318,
+          "fpAction": "none",
+          "hasOverlaySibling": false,
+          "styleDisplay": "block",
+          "styleVisibility": "visible"
+        }
+      ],
+      "videoState": [
+        {
+          "id": "v",
+          "paused": false,
+          "currentTime": 9,
+          "fpAction": "none"
+        }
+      ],
+      "imgControlLog": {
+        "src": "http://127.0.0.1:8126/assets/p1-huang-portrait.jpg",
+        "kind": "img",
+        "persons": 1,
+        "personBest": 0.968,
+        "faces": 1,
+        "faceBest": 0.929,
+        "best": 0.968,
+        "detectedBy": "person+face",
+        "via": "direct",
+        "ms": 5396,
+        "result": "human",
+        "action": "blocked",
+        "mode": "block"
+      },
+      "log": [
+        {
+          "src": "http://127.0.0.1:8126/assets/p1-huang-portrait.jpg",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.968,
+          "faces": 1,
+          "faceBest": 0.929,
+          "best": 0.968,
+          "detectedBy": "person+face",
+          "via": "direct",
+          "ms": 5396,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        }
+      ],
+      "verdict": "see canvasState/log \u2014 extension handles <img>/backgrounds; canvas/video elements are NOT scanned by the extension (no log entries for them = left visible)"
+    },
+    "video": {
+      "url": "http://127.0.0.1:8126/video.html",
+      "pageReady": true,
+      "modelReady": true,
+      "scanDone": true,
+      "elapsedMs": 8774,
+      "navTiming": {
+        "navStartToDomContentLoadedMs": 93,
+        "navStartToLoadMs": 198,
+        "domContentLoadedMs": 46
+      },
+      "paused": {
+        "videoState": {
+          "paused": true,
+          "currentTime": 0,
+          "fpAction": "none"
+        },
+        "stats": {
+          "found": 0,
+          "scanned": 0,
+          "human": 0,
+          "blocked": 0,
+          "covered": 0,
+          "uncertain": 0,
+          "noHuman": 0,
+          "bgFound": 0,
+          "bgHuman": 0,
+          "skipped": 0,
+          "personHits": 0,
+          "refetched": 0,
+          "refetchFailed": 0,
+          "refetchCacheHits": 0
+        },
+        "log": []
+      },
+      "playing": {
+        "videoState": {
+          "paused": false,
+          "currentTime": 5,
+          "fpAction": "none"
+        },
+        "stats": {
+          "found": 0,
+          "scanned": 0,
+          "human": 0,
+          "blocked": 0,
+          "covered": 0,
+          "uncertain": 0,
+          "noHuman": 0,
+          "bgFound": 0,
+          "bgHuman": 0,
+          "skipped": 0,
+          "personHits": 0,
+          "refetched": 0,
+          "refetchFailed": 0,
+          "refetchCacheHits": 0
+        },
+        "log": []
+      },
+      "verdict": "see videoState/log \u2014 <video> elements are NOT scanned by the extension (no log entries for them = left visible, paused and playing)"
+    },
+    "testPagePerCase": {
+      "url": "http://127.0.0.1:8123/index.html",
+      "modelReady": true,
+      "scanDone": true,
+      "elapsedMs": 35407,
+      "navTiming": {
+        "navStartToDomContentLoadedMs": 62,
+        "navStartToLoadMs": 2125,
+        "domContentLoadedMs": 44
+      },
+      "stats": {
+        "found": 10,
+        "scanned": 11,
+        "human": 7,
+        "blocked": 7,
+        "covered": 0,
+        "uncertain": 0,
+        "noHuman": 4,
+        "bgFound": 1,
+        "bgHuman": 1,
+        "skipped": 2,
+        "personHits": 7,
+        "refetched": 2,
+        "refetchFailed": 0,
+        "refetchCacheHits": 0
+      },
+      "inferenceMs": {
+        "n": 11,
+        "mean": 1554,
+        "median": 1250,
+        "min": 1073,
+        "max": 4483
+      },
+      "perCase": {
+        "img-apple": {
+          "expect": "no-human",
+          "src": "http://127.0.0.1:8123/photos/nopeople-apple.jpg",
+          "action": "none",
+          "complete": true,
+          "naturalWidth": 960,
+          "logEntries": [
+            {
+              "result": "no-human",
+              "action": "none",
+              "via": "direct",
+              "personBest": 0,
+              "faces": 0,
+              "ms": 1525
+            }
+          ]
+        },
+        "img-cat": {
+          "expect": "no-human",
+          "src": "http://127.0.0.1:8123/photos/nopeople-cat.jpg",
+          "action": "none",
+          "complete": true,
+          "naturalWidth": 960,
+          "logEntries": [
+            {
+              "result": "no-human",
+              "action": "none",
+              "via": "direct",
+              "personBest": 0,
+              "faces": 0,
+              "ms": 1535
+            }
+          ]
+        },
+        "img-earth": {
+          "expect": "no-human",
+          "src": "http://127.0.0.1:8123/photos/nopeople-earth.jpg",
+          "action": "none",
+          "complete": true,
+          "naturalWidth": 960,
+          "logEntries": [
+            {
+              "result": "no-human",
+              "action": "none",
+              "via": "direct",
+              "personBest": 0,
+              "faces": 0,
+              "ms": 1266
+            }
+          ]
+        },
+        "img-xorigin": {
+          "expect": "human",
+          "src": "Path/Albert%20Einstein%20sticks%20his%20tongue.jpg?width=800",
+          "action": "none",
+          "complete": true,
+          "naturalWidth": 0,
+          "logEntries": []
+        },
+        "img-facebook-probe": {
+          "expect": "dnr-blocked",
+          "src": "https://www.facebook.com/favicon.ico",
+          "action": "none",
+          "complete": true,
+          "naturalWidth": 60,
+          "logEntries": [
+            {
+              "result": "no-human",
+              "action": "none",
+              "via": "refetch-iframe",
+              "personBest": 0,
+              "faces": 0,
+              "ms": 1083
+            }
+          ]
+        },
+        "bg-person(div)": {
+          "expect": "human",
+          "action": "none",
+          "hasCoverOverlay": false,
+          "logEntries": [
+            {
+              "result": "human",
+              "action": "blocked",
+              "via": "direct",
+              "personBest": 0.935,
+              "faces": 1,
+              "ms": 1236
+            }
+          ]
+        }
+      },
+      "animationsCasePresent": false,
+      "webglCasePresent": false,
+      "liveStreamCasePresent": false
+    },
+    "slow3gWikipedia": {
+      "throttling": {
+        "preset": "Slow 3G (DevTools)",
+        "latencyMs": 400,
+        "downloadKbps": 400,
+        "uploadKbps": 400
+      },
+      "domContentLoadedMs": 4139,
+      "modelReady": true,
+      "scanDone": true,
+      "elapsedMs": 52297,
+      "navTiming": {
+        "navStartToDomContentLoadedMs": 4131,
+        "navStartToLoadMs": 12710,
+        "domContentLoadedMs": 180
+      },
+      "stats": {
+        "found": 21,
+        "scanned": 21,
+        "human": 2,
+        "blocked": 2,
+        "covered": 1,
+        "uncertain": 1,
+        "noHuman": 18,
+        "bgFound": 0,
+        "bgHuman": 0,
+        "skipped": 2,
+        "personHits": 3,
+        "refetched": 18,
+        "refetchFailed": 0,
+        "refetchCacheHits": 0
+      },
+      "inferenceMs": {
+        "n": 21,
+        "mean": 1320,
+        "median": 1134,
+        "min": 1045,
+        "max": 4551
+      },
+      "chromeMemorySample": {
+        "chromeProcesses": 15,
+        "totalRssMb": 1808,
+        "top5": [
+          "14234 305560 8.4 chrome",
+          "14131 252368 59.3 chrome",
+          "14294 233932 5.3 chrome",
+          "14100 221380 4.4 chrome",
+          "14178 132912 0.3 chrome"
+        ]
+      },
+      "humanLog": [
+        {
+          "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/2025%2C_07%2C_Cody_Fajardo.jpg/250px-2025%2C_07%2C_Cody_Fajardo.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+          "kind": "img",
+          "persons": 2,
+          "personBest": 0.961,
+          "faces": 1,
+          "faceBest": 0.709,
+          "best": 0.961,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 1069,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/84/Selo_Pel%C3%A9_1000_gols_10_cts.jpg/120px-Selo_Pel%C3%A9_1000_gols_10_cts.jpg?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumb",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.818,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0.818,
+          "detectedBy": "person",
+          "via": "refetch-iframe",
+          "ms": 1098,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fa/Wikibooks-logo.svg/40px-Wikibooks-logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.456,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0.456,
+          "detectedBy": "person",
+          "via": "refetch-iframe",
+          "ms": 1124,
+          "result": "uncertain",
+          "action": "covered",
+          "mode": "block",
+          "error": "weak signal 0.456"
+        }
+      ]
+    },
+    "cpu4xBbc": {
+      "throttling": {
+        "method": "Emulation.setCPUThrottlingRate",
+        "rate": 4
+      },
+      "domContentLoadedMs": 13458,
+      "modelReady": true,
+      "modelReadyMs": 26914,
+      "scanDone": true,
+      "settled": true,
+      "settleKey": "134/134/72/41/2/91/66/68",
+      "elapsedMs": 594339,
+      "navTiming": {
+        "navStartToDomContentLoadedMs": 13434,
+        "navStartToLoadMs": 25756,
+        "domContentLoadedMs": 12821
+      },
+      "stats": {
+        "found": 134,
+        "scanned": 134,
+        "human": 41,
+        "blocked": 41,
+        "covered": 2,
+        "uncertain": 2,
+        "noHuman": 91,
+        "bgFound": 0,
+        "bgHuman": 0,
+        "skipped": 72,
+        "personHits": 41,
+        "refetched": 66,
+        "refetchFailed": 0,
+        "refetchCacheHits": 68
+      },
+      "inferenceMs": {
+        "n": 66,
+        "mean": 1781,
+        "median": 1584,
+        "min": 1318,
+        "max": 8260
+      },
+      "chromeMemorySample": {
+        "chromeProcesses": 16,
+        "totalRssMb": 1217,
+        "top5": [
+          "14685 345544 68.1 chrome",
+          "14633 274232 2.1 chrome",
+          "14520 223336 15.6 chrome",
+          "14484 91244  0.8 chrome",
+          "14523 47812  0.1 chrome"
+        ]
+      },
+      "humanLog": [
+        {
+          "src": "https://ichef.bbci.co.uk/ace/standard/480/cpsprodpb/b431/live/8baf7b80-e3e7-11f1-a16c-7de3762c094b.jpg.webp",
+          "kind": "img",
+          "persons": 3,
+          "personBest": 0.577,
+          "faces": 1,
+          "faceBest": 0.525,
+          "best": 0.577,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 2017,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/07ac/live/bcaff6a0-e3cf-11f1-a266-6b47da5e73cc.jpg.webp",
+          "kind": "img",
+          "persons": 2,
+          "personBest": 0.896,
+          "faces": 2,
+          "faceBest": 0.701,
+          "best": 0.896,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 1481,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/ace/standard/320/cpsprodpb/58e1/live/97862bb0-e3e3-11f1-95b9-4f56547154ff.jpg.webp",
+          "kind": "img",
+          "persons": 3,
+          "personBest": 0.849,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0.849,
+          "detectedBy": "person",
+          "via": "refetch-iframe",
+          "ms": 1729,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/images/ic/640x360/p0pnfhcn.jpg.webp",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.939,
+          "faces": 1,
+          "faceBest": 0.863,
+          "best": 0.939,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 1898,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnndmv.jpg.webp",
+          "kind": "img",
+          "persons": 2,
+          "personBest": 0.937,
+          "faces": 1,
+          "faceBest": 0.598,
+          "best": 0.937,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 2388,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnfcyn.jpg.webp",
+          "kind": "img",
+          "persons": 5,
+          "personBest": 0.876,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0.876,
+          "detectedBy": "person",
+          "via": "refetch-iframe",
+          "ms": 1562,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0png5qs.jpg.webp",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.941,
+          "faces": 1,
+          "faceBest": 0.907,
+          "best": 0.941,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 1453,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pj883s.jpg.webp",
+          "kind": "img",
+          "persons": 3,
+          "personBest": 0.817,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0.817,
+          "detectedBy": "person",
+          "via": "refetch-iframe",
+          "ms": 2032,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pn9f4r.jpg.webp",
+          "kind": "img",
+          "persons": 2,
+          "personBest": 0.742,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0.742,
+          "detectedBy": "person",
+          "via": "refetch-iframe",
+          "ms": 1622,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/images/ic/480x270/p0pnfsr9.jpg.webp",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.897,
+          "faces": 1,
+          "faceBest": 0.767,
+          "best": 0.897,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 1654,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/images/ic/1376xn/p0pkjx8q.jpg.webp",
+          "kind": "img",
+          "persons": 0,
+          "personBest": 0,
+          "faces": 3,
+          "faceBest": 0.896,
+          "best": 0.896,
+          "detectedBy": "face",
+          "via": "refetch-iframe",
+          "ms": 1569,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/fde6/live/889408a0-e250-11f1-ad39-a14279638f62.jpg.webp",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.802,
+          "faces": 1,
+          "faceBest": 0.677,
+          "best": 0.802,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 1972,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/128f/live/04ac0df0-e366-11f1-9f51-4bfc31543510.jpg.webp",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.858,
+          "faces": 1,
+          "faceBest": 0.802,
+          "best": 0.858,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 1417,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/ee79/live/56061990-e382-11f1-a094-5fdc692f3e33.jpg.webp",
+          "kind": "img",
+          "persons": 4,
+          "personBest": 0.79,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0.79,
+          "detectedBy": "person",
+          "via": "refetch-iframe",
+          "ms": 1367,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/images/ic/320x180/p0n52nlw.jpg.webp",
+          "kind": "img",
+          "persons": 2,
+          "personBest": 0.871,
+          "faces": 2,
+          "faceBest": 0.75,
+          "best": 0.871,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 1644,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/images/ic/320x180/p0kfyl58.jpg.webp",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.902,
+          "faces": 1,
+          "faceBest": 0.631,
+          "best": 0.902,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 1324,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/images/ic/320x180/p0l7n6xc.jpg.webp",
+          "kind": "img",
+          "persons": 1,
+          "personBest": 0.758,
+          "faces": 1,
+          "faceBest": 0.826,
+          "best": 0.826,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 1599,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/8d1a/live/8e8f8740-e3b6-11f1-a094-5fdc692f3e33.jpg.webp",
+          "kind": "img",
+          "persons": 2,
+          "personBest": 0.871,
+          "faces": 2,
+          "faceBest": 0.871,
+          "best": 0.871,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 1543,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/1e88/live/842b0ae0-e39d-11f1-a094-5fdc692f3e33.jpg.webp",
+          "kind": "img",
+          "persons": 4,
+          "personBest": 0.635,
+          "faces": 2,
+          "faceBest": 0.768,
+          "best": 0.768,
+          "detectedBy": "person+face",
+          "via": "refetch-iframe",
+          "ms": 1326,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        },
+        {
+          "src": "https://ichef.bbci.co.uk/news/320/cpsprodpb/a17c/live/11cee900-e369-11f1-a094-5fdc692f3e33.jpg.webp",
+          "kind": "img",
+          "persons": 3,
+          "personBest": 0.797,
+          "faces": 0,
+          "faceBest": 0,
+          "best": 0.797,
+          "detectedBy": "person",
+          "via": "refetch-iframe",
+          "ms": 1726,
+          "result": "human",
+          "action": "blocked",
+          "mode": "block"
+        }
+      ]
+    },
+    "classifyCache": {
+      "note": "Throwaway customer+device created for this check, deleted afterwards (dogfood pattern).",
+      "customerId": "a7d1f1bb-937c-45c6-854d-94f4ef746a72",
+      "deviceId": "144aee8f-0c52-4042-ad67-7d104af6b658",
+      "exampleCom": [
+        {
+          "call": 1,
+          "elapsedMs": 1686,
+          "requestId": "54cf5fdf-603d-492f-a592-d2756f682860",
+          "requestError": null,
+          "cached": false,
+          "verdict": "approve",
+          "confidence": "0.9500"
+        },
+        {
+          "call": 2,
+          "elapsedMs": 1353,
+          "requestId": "6f3b755a-3642-459a-8a3f-2b4121d7b1cc",
+          "requestError": null,
+          "cached": true,
+          "verdict": "approve",
+          "confidence": "0.9500"
+        }
+      ],
+      "exampleOrg": [
+        {
+          "call": 1,
+          "elapsedMs": 1523,
+          "requestId": "013bc367-1f32-4bbc-8655-9593f9abe2fd",
+          "requestError": null,
+          "cached": false,
+          "verdict": "approve",
+          "confidence": "0.9500"
+        },
+        {
+          "call": 2,
+          "elapsedMs": 1277,
+          "requestId": "89485fe4-2774-493b-9842-d1b3857dc8cb",
+          "requestError": null,
+          "cached": true,
+          "verdict": "approve",
+          "confidence": "0.9500"
+        }
+      ],
+      "cleanup": {
+        "requestsDeleted": "[1/1] FAILED :: DELETE FROM approval_requests WHERE customer_id = 'a7d1f1bb-937c-45c6-854d-94f4ef746a72';\n  Remote end closed connection without response",
+        "deviceDeleted": "[1/1] OK rowCount=0 :: DELETE FROM devices WHERE id = '144aee8f-0c52-4042-ad67-7d104af6b658';",
+        "customerDeleted": "[1/1] OK rowCount=0 :: DELETE FROM customers WHERE id = 'a7d1f1bb-937c-45c6-854d-94f4ef746a72';",
+        "requestsLeft": "[1/1] OK rowCount=1 :: SELECT count(*) FROM approval_requests WHERE customer_id = 'a7d1f1bb-937c-45c6-854d-94f4ef\n[\n {\n  \"count\": \"0\"\n }\n]",
+        "customersLeft": "[1/1] FAILED :: SELECT count(*) FROM customers WHERE id = 'a7d1f1bb-937c-45c6-854d-94f4ef746a72';\n  Remote end closed connection without response",
+        "devicesLeft": "[1/1] OK rowCount=1 :: SELECT count(*) FROM devices WHERE id = '144aee8f-0c52-4042-ad67-7d104af6b658';\n[\n {\n  \"count\": \"0\"\n }\n]",
+        "verifiedAfterRetry": {
+          "customersLeft": 0,
+          "devicesLeft": 0,
+          "requestsLeft": 0,
+          "deviceAbsentFromApiList": true,
+          "note": "Two fpsql calls dropped the Neon connection mid-call (\"Remote end closed connection without response\") but the deletes had landed; re-run SELECTs confirm 0 rows for customer, device and requests, and GET /api/v1/devices no longer lists the throwaway device."
+        }
+      }
+    },
+    "liveStream": {
+      "coveredByAnyTestPage": false,
+      "note": "No test page in extension/test-page/ or scanner/test-video-canvas/ covers a live stream (HLS/DASH/live video). video.html is a static file, canvas.html draws a playing file. Recorded as NOT COVERED \u2014 no live stream was invented."
+    },
+    "tenThousandCustomers": {
+      "run": false,
+      "note": "NOT RUN \u2014 no load-test setup exists here, and hammering the live free-tier Worker + Neon would risk the real service. Needs a staged load-test plan with rate limits."
+    },
+    "webgl": {
+      "coveredByAnyTestPage": false,
+      "note": "No test page in extension/test-page/ or scanner/test-video-canvas/ draws WebGL content. The GeckoView prototype has WebGL test pages, but the extension test pages do not. Recorded as NOT COVERED."
+    }
+  }
+}
