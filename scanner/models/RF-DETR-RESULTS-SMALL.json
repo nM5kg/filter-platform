@@ -1,0 +1,323 @@
+{
+  "model": "RF-DETR-Small",
+  "onnx_path": "/home/hatch/workspace/filter-platform/scanner/models/rf-detr/onnx-small/rfdetr-small.onnx",
+  "input_hw": [
+    512,
+    512
+  ],
+  "threads": {
+    "intra_op": 2,
+    "inter_op": 1
+  },
+  "passes": 2,
+  "n_images": 16,
+  "session_load_s": 0.67,
+  "infer_ms": {
+    "mean": 571.9,
+    "median": 559.9,
+    "min": 509.5,
+    "max": 793.7
+  },
+  "e2e_ms": {
+    "mean": 658.2,
+    "median": 644.8,
+    "min": 551.6,
+    "max": 896.8
+  },
+  "images_per_sec_infer": 1.749,
+  "images_per_sec_e2e": 1.519,
+  "cpu_avg_cores": 1.37,
+  "cpu_time_s": 29.5,
+  "wall_timed_s": 21.6,
+  "peak_rss_gb": 0.81,
+  "metrics@0.50": {
+    "tp": 11,
+    "fp": 0,
+    "fn": 0,
+    "tn": 5,
+    "precision": 1.0,
+    "recall": 1.0
+  },
+  "metrics@0.70": {
+    "tp": 8,
+    "fp": 0,
+    "fn": 3,
+    "tn": 5,
+    "precision": 1.0,
+    "recall": 0.727
+  },
+  "per_photo": {
+    "b1-back-soldier": {
+      "file": "b1-back-soldier.png",
+      "category": "behind",
+      "person_present": true,
+      "count": 1,
+      "infer_ms": [
+        561.4,
+        523.0
+      ],
+      "e2e_ms": [
+        578.6,
+        557.5
+      ],
+      "best_person_score": 0.9765501001787894,
+      "n_person@0.50": 1,
+      "n_person@0.70": 1
+    },
+    "b2-behind-back": {
+      "file": "b2-behind-back.jpg",
+      "category": "behind",
+      "person_present": true,
+      "count": 1,
+      "infer_ms": [
+        524.1,
+        514.7
+      ],
+      "e2e_ms": [
+        606.4,
+        594.5
+      ],
+      "best_person_score": 0.9368986566872731,
+      "n_person@0.50": 1,
+      "n_person@0.70": 1
+    },
+    "b3-back-tattoo": {
+      "file": "b3-back-tattoo.jpg",
+      "category": "behind",
+      "person_present": true,
+      "count": 1,
+      "infer_ms": [
+        513.9,
+        531.7
+      ],
+      "e2e_ms": [
+        769.5,
+        610.0
+      ],
+      "best_person_score": 0.9849294598121414,
+      "n_person@0.50": 1,
+      "n_person@0.70": 1
+    },
+    "d1-crowd-funeral": {
+      "file": "d1-crowd-funeral.jpg",
+      "category": "distant",
+      "person_present": true,
+      "count": null,
+      "infer_ms": [
+        581.4,
+        575.5
+      ],
+      "e2e_ms": [
+        671.4,
+        647.0
+      ],
+      "best_person_score": 0.6168998828815423,
+      "n_person@0.50": 6,
+      "n_person@0.70": 0
+    },
+    "d2-crowd-street-night": {
+      "file": "d2-crowd-street-night.jpg",
+      "category": "distant",
+      "person_present": true,
+      "count": null,
+      "infer_ms": [
+        599.2,
+        521.1
+      ],
+      "e2e_ms": [
+        690.1,
+        616.5
+      ],
+      "best_person_score": 0.6901438166013638,
+      "n_person@0.50": 5,
+      "n_person@0.70": 0
+    },
+    "d3-lone-beach": {
+      "file": "d3-lone-beach.jpg",
+      "category": "distant",
+      "person_present": true,
+      "count": 1,
+      "infer_ms": [
+        544.0,
+        545.2
+      ],
+      "e2e_ms": [
+        627.4,
+        597.2
+      ],
+      "best_person_score": 0.5282229278041835,
+      "n_person@0.50": 1,
+      "n_person@0.70": 0
+    },
+    "g1-team-cincinnati": {
+      "file": "g1-team-cincinnati.jpg",
+      "category": "group",
+      "person_present": true,
+      "count": 11,
+      "infer_ms": [
+        621.6,
+        570.7
+      ],
+      "e2e_ms": [
+        685.7,
+        646.7
+      ],
+      "best_person_score": 0.9001107564281702,
+      "n_person@0.50": 11,
+      "n_person@0.70": 8
+    },
+    "g2-imperial-family": {
+      "file": "g2-imperial-family.jpg",
+      "category": "group",
+      "person_present": true,
+      "count": 7,
+      "infer_ms": [
+        584.1,
+        509.5
+      ],
+      "e2e_ms": [
+        648.2,
+        590.7
+      ],
+      "best_person_score": 0.9520991445088796,
+      "n_person@0.50": 6,
+      "n_person@0.70": 5
+    },
+    "g3-west-point-1899": {
+      "file": "g3-west-point-1899.png",
+      "category": "group",
+      "person_present": true,
+      "count": null,
+      "infer_ms": [
+        636.9,
+        525.6
+      ],
+      "e2e_ms": [
+        719.1,
+        603.9
+      ],
+      "best_person_score": 0.9167390195308256,
+      "n_person@0.50": 10,
+      "n_person@0.70": 9
+    },
+    "p1-huang-portrait": {
+      "file": "p1-huang-portrait.jpg",
+      "category": "portrait",
+      "person_present": true,
+      "count": 1,
+      "infer_ms": [
+        596.8,
+        562.7
+      ],
+      "e2e_ms": [
+        733.2,
+        649.2
+      ],
+      "best_person_score": 0.9829718432560043,
+      "n_person@0.50": 1,
+      "n_person@0.70": 1
+    },
+    "p2-khrushchev-portrait": {
+      "file": "p2-khrushchev-portrait.jpg",
+      "category": "portrait",
+      "person_present": true,
+      "count": 1,
+      "infer_ms": [
+        535.3,
+        587.5
+      ],
+      "e2e_ms": [
+        642.9,
+        698.1
+      ],
+      "best_person_score": 0.982758684902496,
+      "n_person@0.50": 1,
+      "n_person@0.70": 1
+    },
+    "a1-dog-running": {
+      "file": "a1-dog-running.jpg",
+      "category": "animal",
+      "person_present": false,
+      "count": 0,
+      "infer_ms": [
+        519.6,
+        558.5
+      ],
+      "e2e_ms": [
+        551.6,
+        576.4
+      ],
+      "best_person_score": 0.04386540165388008,
+      "n_person@0.50": 0,
+      "n_person@0.70": 0
+    },
+    "a2-dog-stream": {
+      "file": "a2-dog-stream.jpg",
+      "category": "animal",
+      "person_present": false,
+      "count": 0,
+      "infer_ms": [
+        534.6,
+        542.2
+      ],
+      "e2e_ms": [
+        614.4,
+        638.5
+      ],
+      "best_person_score": 0.041907236452955944,
+      "n_person@0.50": 0,
+      "n_person@0.70": 0
+    },
+    "l1-glacier-lake": {
+      "file": "l1-glacier-lake.jpg",
+      "category": "landscape",
+      "person_present": false,
+      "count": 0,
+      "infer_ms": [
+        755.4,
+        608.9
+      ],
+      "e2e_ms": [
+        858.1,
+        743.7
+      ],
+      "best_person_score": 0.0505108886656174,
+      "n_person@0.50": 0,
+      "n_person@0.70": 0
+    },
+    "l2-mountain-lake": {
+      "file": "l2-mountain-lake.jpg",
+      "category": "landscape",
+      "person_present": false,
+      "count": 0,
+      "infer_ms": [
+        793.7,
+        593.4
+      ],
+      "e2e_ms": [
+        896.8,
+        678.9
+      ],
+      "best_person_score": 0.12177884475558605,
+      "n_person@0.50": 0,
+      "n_person@0.70": 0
+    },
+    "o1-vintage-camera": {
+      "file": "o1-vintage-camera.jpg",
+      "category": "object",
+      "person_present": false,
+      "count": 0,
+      "infer_ms": [
+        520.0,
+        607.5
+      ],
+      "e2e_ms": [
+        615.7,
+        704.4
+      ],
+      "best_person_score": 0.11502411185853,
+      "n_person@0.50": 0,
+      "n_person@0.70": 0
+    }
+  }
+}

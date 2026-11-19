@@ -16,6 +16,19 @@ models. Check **all upstream dependencies AND model weights**, not just the
 program license. Ultralytics YOLO (AGPL-3.0) is already excluded and is not
 re-proposed here.
 
+**UPDATE — DECISION MADE (Yakob, 2026-11-19 ~02:28–02:30 EST: "אונזער
+נייע אפמאך. אפיציעלע"): RF-DETR is the OFFICIALLY AGREED model.**
+Apache 2.0, free for commercial use; weights run on our own hardware; no
+API credits, no per-image or per-customer payment; Nano / Small / Medium /
+Large; CPU + ONNX support. One shared AI server for all 10,000 customers
+(the server, electricity and infrastructure still cost money — only the
+model/API is $0). Roboflow's hosted inference is NOT used — self-hosted
+only. **Pending: CPU measurements** — Nano + Small benchmarking is running
+2026-11-19 on the 16-photo labeled set; results in
+`RF-DETR-BENCHMARK.md`. RF-DETR is not presented as proven on CPU until
+those measurements exist. EfficientDet-Lite0 stays prototype-only; Intel
+person-detection-0202 stays a candidate.
+
 ---
 
 ## 1. EfficientDet-Lite0 (current prototype model)
@@ -122,7 +135,7 @@ produces a URL.** It contributes nothing to the evidence trail.
 
 ---
 
-## 2. Intel Open Model Zoo — person-detection-0202 (leading production candidate)
+## 2. Intel Open Model Zoo — person-detection-0202 (candidate)
 
 ### 2.1 Source and license — VERIFIED
 
@@ -294,7 +307,22 @@ file, replacing the current MediaPipe/TFLite detector.
 
 ---
 
-## 3. Candidate 2 — RF-DETR Nano (Roboflow) — Apache 2.0, ONNX-native
+## 3. RF-DETR Nano (Roboflow) — Apache 2.0, ONNX-native — **OFFICIALLY AGREED MODEL (Yakob, 2026-11-19)**
+
+Status: **the agreed production model. CPU proof DONE 2026-11-19 —
+Nano recommended** (see `RF-DETR-BENCHMARK.md`): Nano 327 ms infer /
+422 ms e2e, 2.37 img/s, recall 1.000 @0.50 / 0.909 @0.70, precision
+1.000, 0.71 GB peak RSS; Small 572 ms / 658 ms, 1.52 img/s, recall
+1.000 @0.50 / 0.727 @0.70. Both beat the EfficientDet-Lite0 baseline
+(recall 0.727 @0.50 / 0.455 @0.70) with zero false positives. License
+re-verified from the repo itself (Apache 2.0, README "commercially
+usable out of the box"); official checkpoints' MD5s match the
+repo-published values; ONNX exported with the repo's own
+`model.export()` (opset 17, rfdetr 1.12.1) — no pre-built ONNX exists.
+Hashes: Nano ONNX `26728b72…bee0851` (116,607,449 bytes), Small ONNX
+`f3db46a8…f508d8eb95` (123,850,761 bytes). Limits: n=16 only; no
+real-site validation yet; INT8, batching, video not tested; DINOv2
+backbone provenance not separately traced.
 
 ### 3.1 License — VERIFIED (repo + model card)
 
@@ -348,6 +376,11 @@ file, replacing the current MediaPipe/TFLite detector.
   download-on-first-use from our own hosting is an option but adds a
   distribution step). License is the cleanest of all candidates; the
   blocker is purely performance/size.
+- **(c) CPU proof (in progress 2026-11-19):** Nano + Small are being
+  benchmarked on CPU on the 16-photo labeled set and real sites
+  (`RF-DETR-BENCHMARK.md`). The agreement is on the model; if the
+  numbers show it cannot run on the hardware we have, the decision is
+  revisited with Yakob — the numbers decide, not the agreement.
 
 ---
 
@@ -437,13 +470,20 @@ file, replacing the current MediaPipe/TFLite detector.
 | Biggest blocker (a) Android | — (already works) | **unverified IR→ONNX conversion + parity test** | **~122 MB + phone CPU speed unmeasured** | **~172 MB, almost certainly too heavy** |
 | Biggest blocker (b) Extension | — (already works) | **WASM CPU cost + hash/provenance mismatch** | **size + CPU cost** | **size + CPU cost** |
 
-**Recommendation from this research:** person-detection-0202 is the
-most practical production candidate (smallest, person-only, cheapest to
-convert, Apache 2.0 repo license), **provided** the §2.2 hash mismatch is
-resolved and Intel written confirmation is sought. RF-DETR Nano is the
-license-cleanest candidate and the fallback if the Intel weights question
-or the conversion fails — but its phone performance must be measured
-first; it may be too heavy. Neither is confirmed for production yet.
+**Recommendation — UPDATED 2026-11-19:** Yakob has decided: **RF-DETR
+is the officially agreed model** ("אונזער נייע אפמאך. אפיציעלע").
+Its license is the cleanest of all candidates (Apache 2.0 stated for the
+weights, including closed-source commercial use), its ONNX export is
+official, and the agreement is self-hosted only — no API credits, no
+per-customer payment, one shared AI server. **What is still missing is
+the CPU proof:** Nano + Small benchmarking is running 2026-11-19
+(`RF-DETR-BENCHMARK.md`); if the numbers show it cannot run on the
+hardware we have, the decision is revisited with Yakob.
+person-detection-0202 remains a candidate (smallest, person-only,
+cheapest to convert, Apache 2.0 repo license), **provided** the §2.2 hash
+mismatch is resolved and Intel written confirmation is sought.
+EfficientDet-Lite0 stays prototype-only. Neither Intel nor EfficientDet
+is confirmed for production.
 
 ---
 
@@ -470,8 +510,12 @@ first; it may be too heavy. Neither is confirmed for production yet.
 6. **Phone CPU performance** — no candidate has a published phone-CPU
    latency. Measure person-detection-0202 (ONNX) and RF-DETR Nano (INT8)
    on a real mid-range Android phone before choosing.
-7. **RF-DETR / RT-DETR file hashes** — neither model was downloaded in
-   this session; hash on download and record.
+7. **RF-DETR / RT-DETR file hashes** — RT-DETR not yet downloaded/hashed.
+   RF-DETR Nano + Small: downloaded + hashed 2026-11-19 (see
+   `RF-DETR-BENCHMARK.md`): Nano checkpoint MD5 `fb6504cce7fbdc783f7a46991f07639f`
+   (matches repo-published), SHA-256 `d8d6b9ee…57440d`; Nano ONNX SHA-256
+   `26728b72…bee0851` (116,607,449 bytes); Small ONNX SHA-256
+   `f3db46a8…f508d8eb95` (123,850,761 bytes).
 8. **D-FINE checkpoint license** — only a secondary collaborator
    confirmation found; verify in the weights repo before considering it.
 9. **All upstream dependencies of the runtimes** (ONNX Runtime MIT,
