@@ -261,6 +261,51 @@ the Android browser sees — that proof now lives inside GeckoView.
 
 ## Browser status — 2026-11-19 (first goal, per Yakob 2026-11-19)
 
+**Order (Yakob 2026-11-19 ~04:36 EST): ONLINE FIRST, phone app second.**
+
+- **Online browser — LIVE + VERIFIED:**
+  `https://filter-platform-dashboard.pages.dev/browser.html` — a full
+  Chrome-like shell on the web: multiple tabs + overview, omnibox
+  (address + search, suggestions from history/bookmarks), per-tab
+  history, bookmarks, downloads, new-tab page, settings (search engine,
+  homepage, clear data, filter-settings link, About with version +
+  licenses), find in page, share, desktop-site toggle, private tabs.
+  All data local only (localStorage), no account sync. The filter
+  (EfficientDet JS detector + face fallback, Yiddish block page,
+  SafeSearch) stays wired through every tab and surface; a covered
+  human picture cannot be downloaded around the filter (no download
+  button on covered images; a forced download is blocked fail-closed).
+  **Verification 2026-11-19 (Playwright, live, after the fixes below):
+  old harness 8/8, new harness 13/13** — tabs incl. real-mouse
+  tab-strip clicks at 1280×720, omnibox + DDG search, navigation,
+  filter (page 01: 6 covered / 1 allowed), history filter/clear,
+  bookmarks, downloads (allowed image downloads for real; covered
+  image blocked with the right reason), find, desktop UA toggle,
+  settings engine switch, SafeSearch + Yiddish block page.
+  **Incident fixed the same day:** the Bug 2 redeploy broke the WHOLE
+  filter — the Worker's injected shim had a SyntaxError (a regex
+  inside the `SHIM_JS` template literal lost its backslashes, so
+  `//browse?u=` commented out the line and `window.browser` was never
+  defined; `node --check` cannot catch this). Fixed by doubling the
+  backslashes in the template literal, with a comment warning in the
+  code, and a permanent regression guard `harness/test-shim.js`
+  (evaluates the template literal the way the Worker does and proves
+  the shim parses + unwraps + decides — run it on every Worker
+  change). Worker redeployed (etag `e73c79ed`, 2026-11-19 11:14 UTC);
+  the live shim was extracted from a proxied page and verified parsing.
+  **Face model fixed the same day:** the face-api weights shard was
+  never deployed — `pages_deploy.py` skipped extensionless files, so
+  the browser got the dashboard HTML (43,672 bytes) instead of the
+  weights and the face detector failed on every load (tensor shape
+  error). Deploy script fixed (extensionless files now upload as
+  `application/octet-stream`), Pages redeployed (deployment
+  `3104228d`, 2026-11-19), shard verified byte-identical live, and a
+  live probe confirmed the face detector loads and finds the portrait
+  face at 0.99 with no errors.
+  **Honest limit:** it runs in Chromium, not GeckoView, and uses the
+  EfficientDet JS detector, not the native RF-DETR path. It proves the
+  filter pipeline; it **cannot** prove the GeckoView app launches on
+  his phone. Logins/cookies on proxied sites mostly fail.
 - **0.2.0** (versionCode 5, 211 MB): real v1.2.0 engine in the app
   (EfficientDet + face fallback, Yiddish block page, SafeSearch). **Still
   crashes on Yakob's BLU B1680V** ("keeps stopping / not responding") —
@@ -286,26 +331,32 @@ the Android browser sees — that proof now lives inside GeckoView.
   **Local only** — next test after the 0.2.1 verdict; do NOT replace the
   main Drive APK with it yet. Known wart: the failure screen still says
   "diagnostic build 0.2.1-test" (cosmetic).
+- **0.3.0** (versionCode 8, 364,358,924 bytes, sha256 `16d000b8…152c`,
+  v2+v3 signed, 104/104 tests): the proper Chrome-like browser UI
+  ported to the app — tabs + overview, omnibox, history, bookmarks,
+  downloads, new-tab page, settings, page tools, private tabs
+  (pure-Kotlin state layer `BrowserData.kt`; Android Components
+  assessed and deliberately NOT used for the state layer). On Drive as
+  a **separate file** (`FilterPlatform-0.3.0-browser.apk`, id
+  `1fIrtVA92ifPitaW0tKZD40SZjjRRaioK`); main APK and 0.2.1-test
+  untouched. **PARKED as app-phase work — do NOT install before the
+  0.2.1-test verdict** (same launch path; if 0.2.1-test still crashes,
+  0.3.0 will almost certainly crash the same way).
 - **Canvas + video in the app:** done in code — video frame sampling +
   re-pause when a covered video is restarted, hash-gated re-sampling of
   animated canvases, dynamic-video listeners; WebGL stays covered
   (pixels unreadable → fail closed). Phone proof still needed. The
   **extension's** canvas/video gap is a separate item (needs Yakob's
   build decision).
-- **Web demo — live:** `https://filter-platform-dashboard.pages.dev/browser.html`
-  (proxy Worker `filter-platform-web-browser`; test pages at
-  `/test-pages/`). Verified: Wikipedia 23 scanned (20 covered), BBC 257
-  (187 covered), canvas + video covered with videos paused, WebGL
-  covered, facebook.com → Yiddish block page, SafeSearch rewrites work.
-  **Honest limit:** it runs in Chromium, not GeckoView, and uses the
-  EfficientDet JS detector, not the native RF-DETR path. It proves the
-  filter pipeline; it **cannot** prove the GeckoView app launches on his
-  phone. Logins/cookies on proxied sites mostly fail.
 - **Still open:** threshold 0.50 vs 0.70; extension canvas/video; R2
   enabling (blocked at account level, needs Yakob in the dashboard);
   release signing (debug key only on all test builds — nothing
-  release-signed, nothing published, Download Center Android stays OFF).
-  Full detail: `android/GECKOVIEW-PROTOTYPE.md` (§0.2.1-test, §0.2.2).
+  release-signed, nothing published, Download Center Android stays OFF);
+  proxy rewrite gap (JS-set image `src`, e.g. test page 01's `data-src`
+  image, is not rewritten — it 404s against the Worker origin;
+  pre-existing, separate from the shim fix).
+  Full detail: `android/GECKOVIEW-PROTOTYPE.md` (§0.2.1-test, §0.2.2,
+  §0.3.0, Web demo).
 
 ---
 

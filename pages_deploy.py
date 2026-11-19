@@ -65,13 +65,23 @@ def main():
             rel = os.path.relpath(p, PUBLIC_DIR).replace(os.sep, "/")
             ext = os.path.splitext(name)[1].lower()
             if ext not in CONTENT_TYPES:
-                print(f"skip (unknown type): {rel}")
-                continue
+                if ext == "":
+                    # Extensionless binary (e.g. face-api model shards like
+                    # tiny_face_detector_model-shard1): upload as raw bytes.
+                    # Skipping these used to ship a dashboard-HTML 404
+                    # fallback instead of the weights, so the face detector
+                    # failed to load on every page (2026-11-19).
+                    content_type = "application/octet-stream"
+                else:
+                    print(f"skip (unknown type): {rel}")
+                    continue
+            else:
+                content_type = CONTENT_TYPES[ext]
             content = open(p, "rb").read()
             file_hash = blake3.blake3(base64.b64encode(content) + ext.lstrip(".").encode()).hexdigest()[:32]
             files.append({"name": rel, "path": "/" + rel, "content": content,
                           "ext": ext, "hash": file_hash,
-                          "content_type": CONTENT_TYPES[ext]})
+                          "content_type": content_type})
             print(f"{rel}: {len(content)} bytes, hash {file_hash}")
 
     tok = cf_request("GET", f"/accounts/{ACCOUNT}/pages/projects/{PROJECT}/upload-token")

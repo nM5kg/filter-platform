@@ -216,6 +216,29 @@ const domainCache = new Map(); // host -> { decision, source, at }
 // *.workers.dev (verified 2026-11-19), so this server-to-server fetch
 // MUST send a browser User-Agent or every check fails as unavailable.
 const BROWSER_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+// UA modes for /browse?ua=... (desktop-site toggle in the shell).
+// The DEFAULT (no ua param, or an unknown value) keeps the original
+// Linux Chrome UA below exactly — do not change it.
+const UA_DEFAULT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 FilterPlatformWebBrowser/0.1';
+const UA_DESKTOP = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+const UA_MOBILE = 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36';
+
+function uaForMode(mode) {
+  if (mode === 'desktop') return UA_DESKTOP;
+  if (mode === 'mobile') return UA_MOBILE;
+  return UA_DEFAULT;
+}
+
+// CORS for the demo shell's cross-origin fetches of /browse (allowed
+// downloads fetch file bytes via fetch(PROXY + '/browse?u=' + url)).
+// Origin is the Pages dashboard ONLY; the API token is never exposed
+// here (it is only ever used server-side for the domain check).
+// Deliberately NOT added to /health or /browser-assets.
+function addCors(headers) {
+  headers.set('Access-Control-Allow-Origin', PAGES_ORIGIN);
+  headers.set('Vary', 'Origin');
+  return headers;
+}
 
 let lastCheckDebug = '';
 async function checkOneDomain(env, host) {
@@ -344,6 +367,7 @@ const SHIM_JS = `(function () {
   var THRESHOLD = 0.70;   // FilterEngine.DEFAULT_POLICY.autoDecideThreshold
   var SCORE_FLOOR = 0.40; // JsReportedPersonDetector.SCORE_FLOOR
   var verdicts = {};      // element id -> latest verdict ('allow'/'cover'/'block')
+  var verdictsBySource = {}; // element source URL -> latest verdict (for the shell's download policy)
   var readyPosted = false;
 
   // JsReportedPersonDetector.detect, translated from FilterEngine.kt.
@@ -388,6 +412,8 @@ const SHIM_JS = `(function () {
         apiCheck: proxy.apiCheck || 'unknown',
         dohUnavailable: !!proxy.dohUnavailable,
         detectorReady: !!window.__fpPersonReady,
+        verdicts: verdictsBySource,
+        verdictsById: verdicts,
         covered: c.covered, allowed: c.allowed, blocked: c.blocked, scanned: c.scanned
       }, '*');
     } catch (e) { /* parent gone */ }
@@ -401,7 +427,8 @@ const SHIM_JS = `(function () {
       type: 'fp-loaded', source: 'filter-platform-web',
       target: proxy0.target || location.href,
       apiCheck: proxy0.apiCheck || 'unknown',
-      dohUnavailable: !!proxy0.dohUnavailable
+      dohUnavailable: !!proxy0.dohUnavailable,
+      verdicts: {}
     }, '*');
   } catch (e) { /* parent gone */ }
 
@@ -426,6 +453,26 @@ const SHIM_JS = `(function () {
             var f = msg.findings[i];
             var v = decide(f);
             verdicts[f.id] = v;
+            if (f.source) {
+              // Unwrap proxied /browse?u=<original> sources back to the
+              // ORIGINAL URL: the shell's download requests carry original
+              // URLs, so a verdict keyed by the proxied URL could never
+              // match. Non-proxied sources pass through unchanged.
+              var srcKey = f.source;
+              // NOTE: this line lives inside the SHIM_JS template literal,
+              // so the regex backslashes must be DOUBLED here (double
+              // backslash + slash, double backslash + question mark) —
+              // a single backslash is consumed by the template literal
+              // and the deployed shim would read '//browse?u=...' (a
+              // comment), breaking the whole shim with a SyntaxError.
+              // (Fixed 2026-11-19 after the Bug 2 redeploy broke the
+              // filter on every page for exactly this reason.)
+              // Also: NEVER put a backtick character in any comment
+              // inside this template literal — it would end the literal.
+              var m = /\\/browse\\?u=([^&]+)/.exec(f.source);
+              if (m) { try { srcKey = decodeURIComponent(m[1]); } catch (e) {} }
+              verdictsBySource[srcKey] = v;
+            }
             out.decisions.push({ id: f.id, verdict: v });
           }
         }
@@ -572,10 +619,17 @@ const ASSET_TYPES = {
   '.md': 'text/markdown; charset=utf-8',
 };
 
+// Cache-buster for the Worker-side asset cache (caches.default):
+// the cache key is the asset URL, so a changed browser-assets file
+// would otherwise stay stale for up to 24h (Cache-Control max-age).
+// BUMP THIS whenever a file under public/browser-assets/ changes and
+// the Worker is redeployed; the new key fetches fresh from Pages.
+const ASSET_CACHE_VERSION = '2';
+
 async function serveAsset(path, request, ctx) {
   const assetUrl = PAGES_ORIGIN + '/browser-assets/' + path;
   const cache = caches.default;
-  const cacheKey = new Request('https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/' + path);
+  const cacheKey = new Request('https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/' + path + '?v=' + ASSET_CACHE_VERSION);
   let res = await cache.match(cacheKey);
   if (!res) {
     res = await fetch(assetUrl, { headers: { 'Accept-Encoding': 'identity' } });
@@ -600,7 +654,7 @@ async function serveAsset(path, request, ctx) {
 }
 
 // ---------------------------------------------------------------- proxy fetch
-async function fetchTarget(env, startUrl, request) {
+async function fetchTarget(env, startUrl, request, uaMode) {
   let current = startUrl;
   let dohUnavailable = false;
   let dohReason = '';
@@ -618,7 +672,7 @@ async function fetchTarget(env, startUrl, request) {
       const range = request.headers.get('Range');
       if (range) headers.set('Range', range);
       headers.set('Accept-Encoding', 'identity');
-      headers.set('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 FilterPlatformWebBrowser/0.1');
+      headers.set('User-Agent', uaForMode(uaMode));
       headers.set('Accept', request.headers.get('Accept') || 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8');
       headers.set('Accept-Language', 'en-US,en;q=0.9');
       const init = { method: request.method, headers, redirect: 'manual', signal: ctrl.signal };
@@ -659,20 +713,35 @@ export default {
     }
     if (path !== '/browse') return new Response('Not found', { status: 404 });
 
+    // CORS preflight for the shell's cross-origin /browse fetches.
+    if (request.method === 'OPTIONS') {
+      return new Response(null, {
+        status: 204,
+        headers: addCors(new Headers({
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Range',
+        })),
+      });
+    }
+
     const rawU = url.searchParams.get('u');
     if (!rawU) return Response.redirect(DASHBOARD_URL, 302);
+    // Desktop-site toggle: ?ua=desktop | ?ua=mobile; absent/unknown keeps
+    // the default UA. 'ua' is a shell control param — it must NOT leak
+    // into the target URL's query string.
+    const uaMode = url.searchParams.get('ua');
     let target;
     try {
       target = new URL(rawU);
       // GET form submits arrive as extra query params on /browse — merge
       // them into the target URL (e.g. ?u=<search>&q=...).
       for (const [k, v] of url.searchParams.entries()) {
-        if (k === 'u') continue;
+        if (k === 'u' || k === 'ua') continue;
         target.searchParams.append(k, v);
       }
     } catch (e) {
       return new Response(errorPage('אומגילטיקע אַדרעס', 'די אַדרעס קען נישט געלײֵנט ווערן: ' + rawU), {
-        status: 400, headers: { 'Content-Type': 'text/html; charset=utf-8' },
+        status: 400, headers: addCors(new Headers({ 'Content-Type': 'text/html; charset=utf-8' })),
       });
     }
 
@@ -685,20 +754,20 @@ export default {
     const checked = await domain;
     if (checked.decision === 'block') {
       return new Response(blockPage(target.hostname, checked.source), {
-        status: 403, headers: { 'Content-Type': 'text/html; charset=utf-8' },
+        status: 403, headers: addCors(new Headers({ 'Content-Type': 'text/html; charset=utf-8' })),
       });
     }
     const apiCheck = checked.decision === 'unknown' ? 'unavailable' : 'ok';
 
-    const fetched = await fetchTarget(env, target.toString(), request);
+    const fetched = await fetchTarget(env, target.toString(), request, uaMode);
     if (fetched.blocked) {
       return new Response(errorPage('דער פּלאַץ איז בלאקירט', 'דער פּראָקסי האָט אָפּגעוואָרפֿן די אַדרעס: ' + fetched.reason), {
-        status: 403, headers: { 'Content-Type': 'text/html; charset=utf-8' },
+        status: 403, headers: addCors(new Headers({ 'Content-Type': 'text/html; charset=utf-8' })),
       });
     }
     if (fetched.fetchError) {
       return new Response(errorPage('דער פּלאַץ לאָדט זיך נישט', 'מען האָט נישט געקענט פֿעטשן דעם פּלאַץ (' + fetched.fetchError + '). פּרוּווט שפּעטער נאָך אַ מאָל.'), {
-        status: 502, headers: { 'Content-Type': 'text/html; charset=utf-8' },
+        status: 502, headers: addCors(new Headers({ 'Content-Type': 'text/html; charset=utf-8' })),
       });
     }
     const upstream = fetched.res;
@@ -712,6 +781,7 @@ export default {
         const css = await upstream.text();
         const headers = cleanHeaders(upstream.headers);
         headers.set('Content-Type', 'text/css; charset=utf-8');
+        addCors(headers);
         return new Response(rewriteCssUrls(css, finalUrl), { status: upstream.status, headers });
       }
       // Binary passthrough, preserving status + Range semantics.
@@ -720,6 +790,7 @@ export default {
         if (STRIP_HEADERS.has(k.toLowerCase())) continue;
         headers.set(k, v);
       }
+      addCors(headers);
       return new Response(upstream.body, { status: upstream.status, headers });
     }
 
@@ -735,6 +806,7 @@ export default {
     headers.set('Content-Type', 'text/html; charset=utf-8');
     headers.set('Cache-Control', 'no-store');
     headers.set('X-FP-Domain-Debug', (checked.debug || '').slice(0, 200));
+    addCors(headers);
     const transformed = rw.transform(new Response(upstream.body, { status: upstream.status, headers }));
     // HTMLRewriter's document-end injection: append the shim + scripts.
     // (transform() returns a Response; wrap it so the injection lands at
