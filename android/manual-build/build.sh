@@ -68,8 +68,11 @@ ZIPALIGN="$SDK/build-tools/34.0.0/zipalign"
 APKSIGNER="$SDK/build-tools/34.0.0/apksigner"
 ANDROID_JAR="$SDK/platforms/android-34/android.jar"
 # GeckoView ABIs to package. Default arm64-v8a only: it covers ~all modern
-# phones (incl. the user's BLU B1680V, arm64-v8a) and keeps the APK ~190 MB
-# instead of ~360 MB (arm64+armeabi) or ~520 MB (all three).
+# phones (incl. the user's BLU B1680V, arm64-v8a) and keeps the APK ~327 MB
+# instead of ~500 MB (arm64+armeabi) or ~700 MB (all three). The 0.2.2 APK
+# is ~116 MB bigger than 0.2.1-test: the RF-DETR Nano model
+# (assets/rfdetr-nano.onnx, 116,607,449 bytes, stored uncompressed) plus
+# the onnxruntime .so files (~36 MB, stored).
 GV_ABIS="${GV_ABIS:-arm64-v8a}"
 GV_VERSION="160.0.20261116130455"
 
@@ -80,6 +83,16 @@ mkdir -p "$OUT/generated" "$OUT/classes" "$OUT/dex" "$OUT/assets-staging"
 if [ ! -f "$LIBS/geckoview-$GV_VERSION.aar" ]; then
   echo "== 0. downloading GeckoView + dependencies (curl) =="
   python3 "$ROOT/manual-build/fetch-deps.py"
+fi
+# onnxruntime-android (RF-DETR Nano runtime, 0.2.2): same curl-only route.
+# fetch-deps.py --onnxruntime-only is idempotent (skips when the AAR is
+# already on disk with the expected sha256) and extracts classes.jar +
+# AndroidManifest.xml into libs/extracted/onnxruntime-android/, which the
+# classpath loop in 0b and merge_manifest.py in 0c pick up automatically.
+ORT_AAR="$LIBS/onnxruntime/onnxruntime-android-1.32.0.aar"
+if [ ! -f "$ORT_AAR" ]; then
+  echo "== 0. downloading onnxruntime-android 1.32.0 (curl) =="
+  python3 "$ROOT/manual-build/fetch-deps.py" --onnxruntime-only
 fi
 
 # --- 0b. classpath: every library jar, minus jars superseded by a newer
@@ -173,9 +186,10 @@ LINK_R_ARGS+=(-R "$OUT/compiled-res.zip")
   --java "$OUT/generated" \
   $EXTRA_PACKAGES \
   -A "$OUT/assets-staging" \
+  -0 onnx \
   --auto-add-overlay \
   --min-sdk-version 26 --target-sdk-version 34 \
-  --version-code 5 --version-name 0.2.0
+  --version-code 7 --version-name 0.2.2
 
 # --- 3. kotlinc ---------------------------------------------------------------
 echo "== 3. kotlinc (app sources + generated R.java) =="
@@ -197,13 +211,20 @@ for jar in $(echo "$CP_JARS" | tr ':' ' '); do D8_INPUTS+=("$jar"); done
   "${D8_INPUTS[@]}"
 ls "$OUT/dex"
 
-# --- 5. add dex + GeckoView native libs to the APK ----------------------------
-echo "== 5. add dex + GeckoView .so libs ($GV_ABIS) to the APK =="
+# --- 5. add dex + native libs to the APK --------------------------------------
+echo "== 5. add dex + GeckoView + onnxruntime .so libs ($GV_ABIS) to the APK =="
 cp "$OUT/app-unaligned.apk" "$OUT/app-debug.apk"
 GV_AAR="$LIBS/geckoview-$GV_VERSION.aar"
-python3 - "$OUT/app-debug.apk" "$OUT/dex" "$GV_AAR" "$GV_ABIS" <<'EOF'
+# onnxruntime-android 1.32.0 (RF-DETR Nano runtime, 0.2.2): the AAR ships
+# one .so per ABI plus the JNI bridge libonnxruntime4j_jni.so. Both are
+# needed (the bridge loads libonnxruntime.so); both go in stored
+# (uncompressed), arm64-v8a only by default — the same pattern as the
+# GeckoView .so step above. The ORT AAR carries all four ABIs, so a
+# multi-ABI build (GV_ABIS="arm64-v8a armeabi-v7a ...") picks up the
+# matching ORT .so files automatically.
+python3 - "$OUT/app-debug.apk" "$OUT/dex" "$GV_AAR" "$GV_ABIS" "$ORT_AAR" <<'EOF'
 import sys, zipfile, os
-apk, dexdir, aar, abis = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4].split()
+apk, dexdir, aar, abis, ort_aar = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4].split(), sys.argv[5]
 dexes = sorted(f for f in os.listdir(dexdir) if f.endswith('.dex'))
 with zipfile.ZipFile(apk, 'a', zipfile.ZIP_DEFLATED) as z:
     for d in dexes:
@@ -211,10 +232,24 @@ with zipfile.ZipFile(apk, 'a', zipfile.ZIP_DEFLATED) as z:
         print('added', d)
 with zipfile.ZipFile(aar) as g:
     for abi in abis:
-        for name in sorted(n for n in g.namelist() if n.startswith(f'jni/{abi}/')):
+        # Skip the 'jni/<abi>/' directory entry itself: writing it would
+        # create a 'lib/<abi>/' entry, and a second loop doing the same
+        # makes apksigner fail on a duplicate name (hit in 0.2.2 when the
+        # onnxruntime loop was added — the GeckoView loop alone got away
+        # with one copy).
+        for name in sorted(n for n in g.namelist() if n.startswith(f'jni/{abi}/') and not n.endswith('/')):
             so = name.split('/')[-1]
             dest = f'lib/{abi}/{so}'
             data = g.read(name)
+            with zipfile.ZipFile(apk, 'a', zipfile.ZIP_STORED) as z:
+                z.writestr(dest, data, compress_type=zipfile.ZIP_STORED)
+            print(f'added {dest} ({len(data)} bytes, stored)')
+with zipfile.ZipFile(ort_aar) as o:
+    for abi in abis:
+        for name in sorted(n for n in o.namelist() if n.startswith(f'jni/{abi}/') and not n.endswith('/')):
+            so = name.split('/')[-1]
+            dest = f'lib/{abi}/{so}'
+            data = o.read(name)
             with zipfile.ZipFile(apk, 'a', zipfile.ZIP_STORED) as z:
                 z.writestr(dest, data, compress_type=zipfile.ZIP_STORED)
             print(f'added {dest} ({len(data)} bytes, stored)')

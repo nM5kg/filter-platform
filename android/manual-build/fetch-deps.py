@@ -36,6 +36,22 @@ GECKOVIEW_VERSION = "160.0.20261116130455"  # current STABLE (release channel)
 # Firefox 160 released 2026-11-10 (MozillaWiki "Releases"). POM scm =
 # hg.mozilla.org/releases/mozilla-release (the release branch).
 
+# onnxruntime-android — the ONNX Runtime for the RF-DETR Nano on-device
+# person detector (0.2.2). Latest stable at fetch time (2026-11-19):
+# Maven Central metadata says latest/release 1.32.0; it matches the
+# onnxruntime 1.32.0 used for the CPU benchmark
+# (scanner/models/RF-DETR-BENCHMARK.md), and no concrete reason was found
+# to pin an older version. MIT license; AAR minSdk 24 (app minSdk 26),
+# minCompileSdk 1 (no Gradle blocker). See libs/onnxruntime/README.md
+# for the full note (sizes, hashes, exact curl command, Gradle line).
+ONNXRUNTIME_VERSION = "1.32.0"
+ONNXRUNTIME_SHA256 = "8e8dbb412ed4939675a157702f0c1e3621b436a645af7f7244536ac20bfad628"
+ONNXRUNTIME_URL = (
+    "https://repo.maven.apache.org/maven2/com/microsoft/onnxruntime/"
+    f"onnxruntime-android/{ONNXRUNTIME_VERSION}/"
+    f"onnxruntime-android-{ONNXRUNTIME_VERSION}.aar"
+)
+
 REPOS = {
     "mozilla": "https://maven.mozilla.org/maven2",
     "google": "https://maven.google.com",
@@ -276,9 +292,50 @@ def download_artifact(group, artifact, version):
     return None, None
 
 
+def fetch_onnxruntime():
+    """Download + extract onnxruntime-android (RF-DETR Nano runtime).
+
+    Idempotent: skips the download when the AAR is already on disk with
+    the expected SHA-256; always re-extracts classes.jar +
+    AndroidManifest.xml into libs/extracted/onnxruntime-android/ (what
+    the manual build's classpath loop and merge_manifest.py read).
+    Returns True on success.
+    """
+    import zipfile
+    ort_dir = os.path.join(LIBS, "onnxruntime")
+    os.makedirs(ort_dir, exist_ok=True)
+    aar = os.path.join(ort_dir, f"onnxruntime-android-{ONNXRUNTIME_VERSION}.aar")
+    if os.path.exists(aar) and sha256(aar) == ONNXRUNTIME_SHA256:
+        print(f"  ok {os.path.basename(aar)} (already on disk, sha256 matches)")
+    else:
+        print(f"Downloading onnxruntime-android {ONNXRUNTIME_VERSION} ...")
+        if not curl_download(ONNXRUNTIME_URL, aar):
+            print(f"  FAILED: {ONNXRUNTIME_URL}")
+            return False
+        if sha256(aar) != ONNXRUNTIME_SHA256:
+            print(f"  FAILED: sha256 mismatch for {aar} "
+                  f"(expected {ONNXRUNTIME_SHA256})")
+            os.remove(aar)
+            return False
+        print(f"  ok {os.path.basename(aar)} ({os.path.getsize(aar)} bytes, "
+              f"sha256 matches)")
+    ext_dir = os.path.join(EXTRACTED, "onnxruntime-android")
+    os.makedirs(ext_dir, exist_ok=True)
+    with zipfile.ZipFile(aar) as z:
+        for n in ("classes.jar", "AndroidManifest.xml"):
+            z.extract(n, ext_dir)
+    print(f"  extracted classes.jar + AndroidManifest.xml -> {ext_dir}")
+    return True
+
+
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == "--onnxruntime-only":
+        sys.exit(0 if fetch_onnxruntime() else 1)
     os.makedirs(GV_DIR, exist_ok=True)
     os.makedirs(EXTRACTED, exist_ok=True)
+    print("Fetching onnxruntime-android (RF-DETR Nano runtime) ...")
+    if not fetch_onnxruntime():
+        sys.exit(1)
     print(f"Resolving GeckoView {GECKOVIEW_VERSION} closure ...")
     resolved, order = resolve_closure()
     print(f"Resolved {len(resolved)} artifacts:")
