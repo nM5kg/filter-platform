@@ -183,6 +183,246 @@ class JsReportedPersonDetector : PersonDetector {
     }
 }
 
+/**
+ * RF-DETR Nano — the on-device person detector (0.2.2).
+ *
+ * The model is the OFFICIALLY AGREED person model (Apache 2.0, free
+ * commercial use; README explicitly allows closed-source commercial
+ * products). CPU benchmark on this project's 16-photo test set
+ * (scanner/models/RF-DETR-BENCHMARK.md): Nano 327 ms infer, recall
+ * 1.000 @0.50 / 0.909 @0.70, precision 1.000, 0 FP — Nano is the pick
+ * (Small is slower with no accuracy gain here; do NOT swap it in).
+ *
+ * Model file: assets/rfdetr-nano.onnx (116,607,449 bytes, sha256
+ * 26728b72ccbb264678566993bc63007d48622490d547aff950814c9f9bee0851),
+ * exported with the repo's own model.export() (opset 17, rfdetr 1.12.1).
+ * Input "input" [1,3,384,384] float32; outputs "dets" [1,300,4] and
+ * "labels" [1,300,91] (raw logits).
+ *
+ * Preprocessing — replicated EXACTLY from the benchmark
+ * (scanner/models/rf-detr/benchmark.py, which uses the official
+ * rfdetr 1.12.1 runtime helpers preprocess_to_nchw / decode_detections):
+ *   * stretch the image to 384x384 (aspect ratio NOT preserved — that
+ *     is RFDETR.predict()'s own default convention);
+ *   * resize bilinear, half-pixel centres, antialias=False (the
+ *     torch-free numpy fallback _bilinear_resize_half_pixel);
+ *   * ImageNet normalise: mean [0.485, 0.456, 0.406],
+ *     std [0.229, 0.224, 0.225]; NCHW float32.
+ *   * decode: per-class sigmoid on the "labels" logits (NOT softmax);
+ *     person = class slot 1 (COCO category id 1 — verified by probe:
+ *     portrait top detection is slot 1 @ 0.981, dog is slot 18);
+ *     background_class_id=None (slot 90 is the real class "toothbrush",
+ *     not background). Boxes are irrelevant to the verdict — only the
+ *     best person score is needed.
+ * The resize + normalise live in [RfDetrOrtBackend] (Android/ORT code);
+ * the score -> outcome mapping lives here, pure and unit-testable.
+ * One known approximation: Android has no torchvision, so the resize is
+ * a hand-rolled half-pixel bilinear in Kotlin matching the reference
+ * numpy fallback up to float32 op-order noise. Scores may therefore
+ * differ from the benchmark by a hair on borderline images; the
+ * SCORE_FLOOR band below absorbs that (anything in [0.40, threshold)
+ * is UNKNOWN, never a guess either way).
+ */
+data class DecodedImage(val pixels: IntArray, val width: Int, val height: Int)
+
+/**
+ * The Android + ONNX Runtime half of RF-DETR: JPEG decoding and the
+ * OrtSession itself. Kept behind this interface so [RfDetrPersonDetector]
+ * stays pure Kotlin (no android.*, no ai.onnxruntime.*) and unit-testable
+ * on the JVM — the real implementation is [RfDetrOrtBackend], and the
+ * tests use a fake. [bestPersonScore] runs the model and returns the
+ * best person score (max sigmoid over the 300 queries at class slot 1),
+ * or null when the model is not loaded or inference failed.
+ */
+interface RfDetrBackend {
+    /** Decode JPEG bytes to ARGB pixels, or null when undecodable. */
+    fun decodeJpeg(jpegBytes: ByteArray): DecodedImage?
+    /** Run RF-DETR Nano on ARGB pixels; best person score, or null. */
+    fun bestPersonScore(image: DecodedImage): Double?
+}
+
+/**
+ * RF-DETR person detector. Input is the finding's thumbnailDataUrl
+ * (JPEG data URL, max 320px) — the same thumbnail the content script
+ * already sends. The model runs on the calling thread, which is the
+ * WebExtension message-delegate thread (already a background thread);
+ * it must NEVER be called from the UI thread (a cold session load is
+ * ~0.6 s on the benchmark VM and inference ~0.3 s per image).
+ *
+ * Mapping (fail closed, same floor as [JsReportedPersonDetector]):
+ *   * no backend / no thumbnail / undecodable thumbnail / model not
+ *     loaded / inference error -> UNKNOWN (never NO_PERSON on a guess)
+ *   * best person score >= humanThreshold -> PERSON (confidence = best)
+ *   * best in [SCORE_FLOOR, humanThreshold) -> UNKNOWN ("weak signal")
+ *   * best < SCORE_FLOOR (0.40) -> NO_PERSON (confidence = 1.0, the
+ *     same "positively clean" convention as JsReportedPersonDetector:
+ *     the model ran on the pixels and found nothing)
+ * The threshold flows from policy (autoDecideThreshold); no default is
+ * hardcoded here — Yakob has not decided 0.50 vs 0.70.
+ */
+class RfDetrPersonDetector(
+    private val backend: RfDetrBackend? = null
+) : PersonDetector {
+    companion object {
+        /** Same floor as JsReportedPersonDetector.SCORE_FLOOR. */
+        const val SCORE_FLOOR = 0.40
+
+        /**
+         * Pure score -> outcome mapping (no ORT, no Android — unit-tested
+         * in FilterEngineTest). [bestPersonScore] is null when the model
+         * did not produce a score at all (not loaded / inference error).
+         */
+        fun mapBestPersonScore(
+            bestPersonScore: Double?,
+            humanThreshold: Double
+        ): DetectionResult {
+            if (bestPersonScore == null) {
+                return DetectionResult(
+                    DetectionOutcome.UNKNOWN, 0.0,
+                    "RF-DETR did not produce a score " +
+                        "(model not loaded or inference failed)"
+                )
+            }
+            return when {
+                bestPersonScore >= humanThreshold -> DetectionResult(
+                    DetectionOutcome.PERSON, bestPersonScore,
+                    "RF-DETR person detected (best score $bestPersonScore)"
+                )
+                bestPersonScore >= SCORE_FLOOR -> DetectionResult(
+                    DetectionOutcome.UNKNOWN, 0.0,
+                    "RF-DETR weak signal $bestPersonScore below " +
+                        "human threshold $humanThreshold"
+                )
+                else -> DetectionResult(
+                    DetectionOutcome.NO_PERSON, 1.0,
+                    "RF-DETR found no person (best score $bestPersonScore)"
+                )
+            }
+        }
+
+        /** Decode a "data:image/jpeg;base64,..." URL to bytes, or null
+         *  when malformed. A bare base64 string (no comma) is accepted. */
+        fun decodeDataUrl(dataUrl: String): ByteArray? {
+            return try {
+                val base64 = dataUrl.substringAfter(",", dataUrl)
+                    .trim()
+                    .ifBlank { return null }
+                java.util.Base64.getDecoder().decode(base64)
+            } catch (_: IllegalArgumentException) {
+                null
+            }
+        }
+    }
+
+    override fun detect(finding: ScanFinding, humanThreshold: Double): DetectionResult {
+        val backend = this.backend
+            ?: return DetectionResult(
+                DetectionOutcome.UNKNOWN, 0.0,
+                "RF-DETR backend not available on this build"
+            )
+        val dataUrl = finding.thumbnailDataUrl
+            ?: return DetectionResult(
+                DetectionOutcome.UNKNOWN, 0.0,
+                "RF-DETR: no thumbnail for this element"
+            )
+        val jpeg = decodeDataUrl(dataUrl)
+            ?: return DetectionResult(
+                DetectionOutcome.UNKNOWN, 0.0,
+                "RF-DETR: thumbnail is not decodable base64"
+            )
+        val image = try {
+            backend.decodeJpeg(jpeg)
+        } catch (e: Throwable) {
+            return DetectionResult(
+                DetectionOutcome.UNKNOWN, 0.0,
+                "RF-DETR: JPEG decode failed (${e.javaClass.simpleName})"
+            )
+        } ?: return DetectionResult(
+            DetectionOutcome.UNKNOWN, 0.0,
+            "RF-DETR: JPEG decode failed"
+        )
+        val best = try {
+            backend.bestPersonScore(image)
+        } catch (e: Throwable) {
+            return DetectionResult(
+                DetectionOutcome.UNKNOWN, 0.0,
+                "RF-DETR: inference failed (${e.javaClass.simpleName})"
+            )
+        }
+        return mapBestPersonScore(best, humanThreshold)
+    }
+}
+
+/**
+ * Combines several person detectors into one vote.
+ *
+ *   * PERSON if ANY detector says PERSON;
+ *   * NO_PERSON only if ALL detectors say NO_PERSON;
+ *   * else UNKNOWN (any UNKNOWN vetoes a clean verdict).
+ *
+ * The OR for PERSON is the fail-closed choice: one detector seeing a
+ * person is enough to keep the element covered. The AND for NO_PERSON
+ * is equally fail-closed: every detector must have run clean.
+ *
+ * Decision (0.2.2): RF-DETR Nano is the AUTHORITATIVE person model
+ * (officially agreed, Apache 2.0, best benchmark recall). The JS
+ * EfficientDet + face-api numbers stay as COMPLEMENTARY signals —
+ * they catch what RF-DETR might miss and vice versa. BrowserActivity
+ * wires CombinedPersonDetector(JsReportedPersonDetector(),
+ * RfDetrPersonDetector(...)).
+ *
+ * Behaviour change to know about: a finding the JS detectors checked
+ * but could NOT thumbnail (cross-origin / tainted / WebGL / stream —
+ * previously ALLOWable on the JS NO_PERSON alone) now stays covered,
+ * because RF-DETR answers UNKNOWN with no thumbnail and one UNKNOWN
+ * vetoes NO_PERSON. That is the intended price of requiring two
+ * independent clean verdicts; it only ever keeps content covered,
+ * never uncovers anything unchecked.
+ *
+ * NO_PERSON confidence is the minimum of the detectors' confidences
+ * (all 1.0 in practice today, so the combined confidence is 1.0).
+ * An empty detector list is UNKNOWN — no detectors means no decision.
+ */
+class CombinedPersonDetector(
+    private val detectors: List<PersonDetector>
+) : PersonDetector {
+    override fun detect(finding: ScanFinding, humanThreshold: Double): DetectionResult {
+        if (detectors.isEmpty()) {
+            return DetectionResult(
+                DetectionOutcome.UNKNOWN, 0.0,
+                "no person detectors configured"
+            )
+        }
+        var sawUnknown = false
+        var unknownDetail = ""
+        var minNoPersonConfidence = 1.0
+        for (detector in detectors) {
+            val result = detector.detect(finding, humanThreshold)
+            when (result.outcome) {
+                DetectionOutcome.PERSON -> return result
+                DetectionOutcome.NO_PERSON ->
+                    minNoPersonConfidence =
+                        minOf(minNoPersonConfidence, result.confidence)
+                DetectionOutcome.UNKNOWN -> {
+                    sawUnknown = true
+                    if (unknownDetail.isEmpty()) unknownDetail = result.detail
+                }
+            }
+        }
+        return if (sawUnknown) {
+            DetectionResult(
+                DetectionOutcome.UNKNOWN, 0.0,
+                "undecided: $unknownDetail"
+            )
+        } else {
+            DetectionResult(
+                DetectionOutcome.NO_PERSON, minNoPersonConfidence,
+                "all detectors found no person"
+            )
+        }
+    }
+}
+
 /** One element's decision, as sent back to the content script. */
 data class ElementDecision(
     val elementId: String,

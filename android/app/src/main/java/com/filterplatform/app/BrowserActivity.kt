@@ -21,14 +21,14 @@
 //   the content script keeps everything covered — fail closed.
 //
 // Person detection hook: FilterEngine is constructed with a PersonDetector.
-// v1.2.0: the engine is JsReportedPersonDetector — the content script runs
-// the person + face detectors on each element's pixels and reports the
-// numbers; Kotlin maps them to verdicts with the POLICY threshold (see
-// FilterEngine.JsReportedPersonDetector). StubPersonDetector remains for
-// tests only. Plugging in a real on-device model would mean implementing
-// PersonDetector (one interface, one call site in FilterEngine.decide) —
-// nothing here changes, and no verdict in this file is ever faked: there
-// is no code path that returns ALLOW without a detector saying NO_PERSON
+// 0.2.2: CombinedPersonDetector(JsReportedPersonDetector(),
+// RfDetrPersonDetector(RfDetrOrtBackend)) — RF-DETR Nano runs on-device
+// (assets/rfdetr-nano.onnx, onnxruntime-android 1.32.0) as the authoritative
+// person model; the content script's person + face numbers stay as a
+// complementary signal. PERSON if EITHER says person; NO_PERSON only if
+// BOTH ran clean; anything undecided stays covered. StubPersonDetector
+// remains for tests only. No verdict in this file is ever faked: there is
+// no code path that returns ALLOW without a detector saying NO_PERSON
 // above threshold.
 //
 // What is NOT verified here (no Android device/emulator exists on this VM):
@@ -100,12 +100,21 @@ class BrowserActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         store = SecureStore(this)
-        // HOOK: the v1.2.0 engine reports via JS — the content script runs
-        // the person + face detectors and FilterEngine maps the reported
-        // numbers with the policy threshold. StubPersonDetector is kept
-        // for tests only; a real on-device model would be plugged in
-        // here instead (same PersonDetector interface).
-        engine = FilterEngine(JsReportedPersonDetector())
+        // HOOK (0.2.2): RF-DETR Nano is the authoritative person model
+        // (officially agreed, Apache 2.0); the JS EfficientDet + face-api
+        // numbers stay as complementary signals. PERSON if EITHER says
+        // person; NO_PERSON only if BOTH ran clean (see
+        // CombinedPersonDetector in FilterEngine.kt). The RF-DETR backend
+        // is created lazily on first use, on the message-delegate
+        // (background) thread — never on the UI thread.
+        engine = FilterEngine(
+            CombinedPersonDetector(
+                listOf(
+                    JsReportedPersonDetector(),
+                    RfDetrPersonDetector(RfDetrOrtBackend(applicationContext))
+                )
+            )
+        )
         setContentView(R.layout.activity_browser)
 
         addressInput = findViewById(R.id.addressInput)

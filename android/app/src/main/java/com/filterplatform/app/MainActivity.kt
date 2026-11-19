@@ -9,7 +9,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.ScrollView
 import android.widget.TextView
+import java.io.File
 import kotlin.concurrent.thread
 
 /**
@@ -46,26 +48,227 @@ class MainActivity : Activity() {
     private lateinit var policyText: TextView
     private lateinit var heartbeatText: TextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // 0.1.0 died at launch with only the system's "keeps stopping"
-        // dialog — if startup throws again, show the real error on screen
-        // so it can be reported instead of guessed at.
+    private var normalStarted = false
+
+    // ------------------------------------------------------------------
+    // 0.2.1-test diagnostic build: startup crash reporting.
+    //
+    // 0.2.0 dies at launch on the user's BLU phone with only the system's
+    // "keeps stopping" dialog and no UI. The old code caught only
+    // Exception around onCreateSafe() and called super.onCreate() BEFORE
+    // the try — so an Error (NoClassDefFoundError, UnsatisfiedLinkError,
+    // VerifyError, ...) escaped with no report at all. This build:
+    //  * writes a checkpoint line to getFilesDir()/startup-report.txt at
+    //    every startup stage, so the last line reached names the failing
+    //    step even when nothing can be shown on screen;
+    //  * installs a default uncaught-exception handler FIRST (before
+    //    super.onCreate) that writes the full trace + cause chain to the
+    //    same file, then chains to the previous handler;
+    //  * on the next launch, shows the previous crash report on screen
+    //    FIRST, before trying to start normally;
+    //  * catches Throwable around the WHOLE onCreate (super.onCreate
+    //    included) and shows class + message + first 20 frames on screen.
+    // The file is the evidence; the on-screen text is for the user to
+    // photograph / read out. Nothing here sends anything anywhere.
+    // ------------------------------------------------------------------
+
+    /** Append one line to the startup report file, opening + flushing +
+     *  closing it on every call (never held open). Never throws. */
+    private fun appendReport(line: String) {
+        try {
+            File(filesDir, REPORT_FILE_NAME).appendText(line + "\n")
+        } catch (_: Throwable) {
+            // Reporting must never kill startup itself.
+        }
+    }
+
+    /** Read the report file left by a previous run, or null if none. */
+    private fun readPreviousReport(): String? {
+        return try {
+            val f = File(filesDir, REPORT_FILE_NAME)
+            if (!f.exists()) null else f.readText().ifBlank { null }
+        } catch (_: Throwable) {
+            null
+        }
+    }
+
+    private fun isCrashReport(text: String): Boolean =
+        text.contains("UNCAUGHT EXCEPTION") || text.contains("STARTUP FAILED")
+
+    /** Full trace with the whole cause chain (class names included). */
+    private fun formatThrowable(t: Throwable, maxFramesPerLevel: Int): String =
+        buildString {
+            var cur: Throwable? = t
+            var depth = 0
+            while (cur != null) {
+                if (depth == 0) append(cur.javaClass.name) else append("Caused by: ${cur.javaClass.name}")
+                append(": ${cur.message}\n")
+                val frames = cur.stackTrace.take(maxFramesPerLevel)
+                for (frame in frames) append("    at $frame\n")
+                cur = cur.cause
+                depth++
+                if (depth > 10) {
+                    append("    ... (cause chain truncated)\n")
+                    break
+                }
+            }
+        }
+
+    /** Install the uncaught-exception handler FIRST, before super.onCreate.
+     *  It writes the full trace to the report file, then chains to the
+     *  previous default handler so the system still shows its dialog. */
+    private fun installCrashHandler() {
+        try {
+            val previous = Thread.getDefaultUncaughtExceptionHandler()
+            Thread.setDefaultUncaughtExceptionHandler { thread, t ->
+                try {
+                    appendReport("UNCAUGHT EXCEPTION on thread ${thread.name}:")
+                    appendReport(formatThrowable(t, Int.MAX_VALUE))
+                } catch (_: Throwable) {
+                    // Nothing more we can do; still chain below.
+                }
+                if (previous != null) {
+                    previous.uncaughtException(thread, t)
+                } else {
+                    android.os.Process.killProcess(android.os.Process.myPid())
+                }
+            }
+        } catch (_: Throwable) {
+            // Handler install must never kill startup itself.
+        }
+    }
+
+    /** On-screen scrollable text view (selectable, so it can be copied). */
+    private fun scrollableText(text: String): ScrollView {
+        val tv = TextView(this)
+        tv.text = text
+        tv.setPadding(32, 32, 32, 32)
+        tv.setTextIsSelectable(true)
+        val scroll = ScrollView(this)
+        scroll.addView(tv)
+        return scroll
+    }
+
+    /** Show a startup failure on screen (the old Exception path, now for
+     *  Throwable too, with the first 20 frames). If even setContentView
+     *  fails, the trace is already in the file — rethrow so the system
+     *  dialog still appears instead of hanging on a black screen. */
+    private fun showStartupFailure(t: Throwable) {
+        appendReport("STARTUP FAILED: ${t.javaClass.name}: ${t.message}")
+        appendReport(formatThrowable(t, Int.MAX_VALUE))
+        val text = "Filter Platform failed to start (diagnostic build 0.2.1-test):\n\n" +
+            "${t.javaClass.name}: ${t.message}\n\n" +
+            t.stackTrace.take(20).joinToString("\n")
+        try {
+            setContentView(scrollableText(text))
+        } catch (t2: Throwable) {
+            try {
+                appendReport("COULD NOT SHOW ERROR SCREEN: ${t2.javaClass.name}: ${t2.message}")
+            } catch (_: Throwable) {
+            }
+            throw t
+        }
+    }
+
+    /** Show the previous run's crash report FIRST, with buttons to clear
+     *  it and retry, or to continue into the normal startup anyway. */
+    private fun showPreviousCrashReport(report: String, savedInstanceState: Bundle?) {
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+        val header = TextView(this)
+        header.text = "The app crashed last time it started. This is the saved crash report — please photograph this screen or read it out:\n"
+        header.setPadding(32, 32, 32, 16)
+        val body = TextView(this)
+        body.text = report
+        body.setPadding(32, 0, 32, 16)
+        body.setTextIsSelectable(true)
+        val scroll = ScrollView(this)
+        scroll.addView(body)
+        val clearButton = Button(this)
+        clearButton.text = "Clear report and retry"
+        clearButton.setOnClickListener {
+            try {
+                File(filesDir, REPORT_FILE_NAME).delete()
+            } catch (_: Throwable) {
+            }
+            recreate()
+        }
+        val continueButton = Button(this)
+        continueButton.text = "Continue anyway"
+        continueButton.setOnClickListener { startNormal(savedInstanceState) }
+        layout.addView(header)
+        layout.addView(scroll, LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f))
+        layout.addView(clearButton)
+        layout.addView(continueButton)
+        setContentView(layout)
+    }
+
+    /** Normal startup (onCreateSafe), guarded so a Throwable anywhere in
+     *  it — including inside SecureStore — is shown, not swallowed. */
+    private fun startNormal(savedInstanceState: Bundle?) {
+        if (normalStarted) return
+        normalStarted = true
         try {
             onCreateSafe(savedInstanceState)
-        } catch (e: Exception) {
-            val tv = TextView(this)
-            tv.text = "Filter Platform failed to start:\n\n" +
-                "${e.javaClass.simpleName}: ${e.message}\n\n" +
-                e.stackTrace.take(12).joinToString("\n")
-            tv.setPadding(32, 32, 32, 32)
-            setContentView(tv)
+            appendReport("onCreateSafe done")
+        } catch (t: Throwable) {
+            showStartupFailure(t)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // 0.2.2 device-facts checkpoint (forensics gap #2): one line at
+        // the very start of onCreate, so the startup report names the
+        // exact device even when nothing else gets far enough to run.
+        // Never throws: appendReport swallows everything, and the facts
+        // themselves are gathered inside a Throwable catch.
+        try {
+            val am = getSystemService(ACTIVITY_SERVICE) as? android.app.ActivityManager
+            val mem = android.app.ActivityManager.MemoryInfo()
+            try { am?.getMemoryInfo(mem) } catch (_: Throwable) { }
+            appendReport(
+                "DEVICE: manufacturer=${android.os.Build.MANUFACTURER} " +
+                    "model=${android.os.Build.MODEL} " +
+                    "sdk=${android.os.Build.VERSION.SDK_INT} " +
+                    "abis=${android.os.Build.SUPPORTED_ABIS.joinToString(",")} " +
+                    "pageSize=${android.system.Os.sysconf(android.system.OsConstants._SC_PAGESIZE)} " +
+                    "memAvail=${mem.availMem} memTotal=${mem.totalMem} " +
+                    "filesFree=${filesDir.freeSpace} filesUsable=${filesDir.usableSpace}"
+            )
+        } catch (_: Throwable) {
+            // Device-facts reporting must never kill startup itself.
+        }
+        // Read the previous run's report BEFORE writing anything this run
+        // (this run's own checkpoints go into the same file).
+        val previousReport = readPreviousReport()
+        // Handler first, before super.onCreate, so a failure in
+        // super.onCreate itself is also captured to the file.
+        installCrashHandler()
+        try {
+            appendReport("=== launch ${System.currentTimeMillis()} ===")
+            appendReport("onCreate entered")
+            appendReport("uncaught handler installed")
+            super.onCreate(savedInstanceState)
+            appendReport("super.onCreate done")
+            // NOTE: setContentView needs super.onCreate first, so the
+            // previous report is read above but can only be DISPLAYED here
+            // — still before any normal startup work runs.
+            if (previousReport != null && isCrashReport(previousReport)) {
+                showPreviousCrashReport(previousReport, savedInstanceState)
+                return
+            }
+            startNormal(savedInstanceState)
+        } catch (t: Throwable) {
+            showStartupFailure(t)
         }
     }
 
     private fun onCreateSafe(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_main)
+        appendReport("setContentView done")
         store = SecureStore(this)
+        appendReport("SecureStore created")
 
         setupSection = findViewById(R.id.setupSection)
         registerSection = findViewById(R.id.registerSection)
@@ -82,6 +285,7 @@ class MainActivity : Activity() {
         codeDisplay = findViewById(R.id.codeDisplay)
         policyText = findViewById(R.id.policyText)
         heartbeatText = findViewById(R.id.heartbeatText)
+        appendReport("views bound")
 
         baseUrlInput.setText(store.baseUrl)
         tokenInput.setText(store.apiToken)
@@ -284,4 +488,8 @@ class MainActivity : Activity() {
     }
 
     private fun yesNo(value: Boolean) = if (value) "Yes" else "No"
+
+    companion object {
+        const val REPORT_FILE_NAME = "startup-report.txt"
+    }
 }
