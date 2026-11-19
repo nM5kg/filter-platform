@@ -1,0 +1,108 @@
+{
+  "ranAt": "2026-11-19T08:46:02.794Z",
+  "shell": "https://filter-platform-dashboard.pages.dev/browser.html",
+  "pages": [
+    {
+      "page": "02-css-backgrounds",
+      "countsArrived": true,
+      "status": {
+        "covered": "5",
+        "allowed": "1",
+        "blocked": "0",
+        "scanned": "6",
+        "detector": "דעטעקטאָר: גרייט ✓"
+      },
+      "frame": {
+        "overlays": 6,
+        "note": "text over stripped backgrounds must stay readable; covered count covers bg boxes"
+      },
+      "ok": true
+    },
+    {
+      "page": "04-svg",
+      "countsArrived": true,
+      "status": {
+        "covered": "2",
+        "allowed": "2",
+        "blocked": "0",
+        "scanned": "4",
+        "detector": "דעטעקטאָר: גרייט ✓"
+      },
+      "frame": {
+        "overlays": 2
+      },
+      "ok": true
+    },
+    {
+      "page": "05-webgl",
+      "countsArrived": true,
+      "status": {
+        "covered": "2",
+        "allowed": "0",
+        "blocked": "0",
+        "scanned": "2",
+        "detector": "דעטעקטאָר: לאָדט זיך…"
+      },
+      "frame": {
+        "overlays": 2,
+        "canvases": [
+          "hidden",
+          "hidden"
+        ]
+      },
+      "ok": true
+    },
+    {
+      "page": "07-live-streams",
+      "countsArrived": true,
+      "status": {
+        "covered": "3",
+        "allowed": "0",
+        "blocked": "0",
+        "scanned": "3",
+        "detector": "דעטעקטאָר: לאָדט זיך…"
+      },
+      "frame": {
+        "overlays": 3,
+        "videos": [
+          {
+            "paused": true,
+            "visibility": "hidden"
+          },
+          {
+            "paused": true,
+            "visibility": "hidden"
+          }
+        ]
+      },
+      "ok": true
+    },
+    {
+      "page": "08-dynamic-content",
+      "countsArrived": true,
+      "status": {
+        "covered": "3",
+        "allowed": "1",
+        "blocked": "0",
+        "scanned": "4",
+        "detector": "דעטעקטאָר: גרייט ✓"
+      },
+      "frame": {
+        "overlays": 4,
+        "imgs": 5
+      },
+      "statusAfter5s": {
+        "covered": "4",
+        "allowed": "1",
+        "blocked": "0",
+        "scanned": "5",
+        "detector": "דעטעקטאָר: גרייט ✓"
+      },
+      "ok": true
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 5
+  }
+}

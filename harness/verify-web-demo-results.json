@@ -1,0 +1,249 @@
+{
+  "ranAt": "2026-11-19T08:45:03.939Z",
+  "shell": "https://filter-platform-dashboard.pages.dev/browser.html",
+  "cases": [
+    {
+      "case": "A-shell-loads",
+      "shellUrl": "https://filter-platform-dashboard.pages.dev/browser",
+      "iframeSrc": "https://filter-platform-web-browser.gavhah-copy.workers.dev/browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Findex.html",
+      "status": {
+        "covered": "0",
+        "allowed": "0",
+        "blocked": "0",
+        "scanned": "0",
+        "detector": "דעטעקטאָר: לאָדט זיך…",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/"
+      },
+      "framePresent": true,
+      "frameTarget": "https://filter-platform-dashboard.pages.dev/test-pages/",
+      "ok": true
+    },
+    {
+      "case": "B-test-page-01",
+      "detectorReady": true,
+      "detectorReadyMs": 5040,
+      "status": {
+        "covered": "6",
+        "allowed": "1",
+        "blocked": "0",
+        "scanned": "7",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images"
+      },
+      "frame": {
+        "overlays": 6,
+        "personVisibility": "hidden",
+        "crowdVisibility": "hidden",
+        "landscapeVisibility": "visible",
+        "pictureVisibility": "hidden",
+        "datasrcVisibility": "hidden",
+        "personReady": true,
+        "fpProxy": {
+          "target": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images",
+          "apiCheck": "ok",
+          "dohUnavailable": false,
+          "dohReason": ""
+        }
+      },
+      "ok": true
+    },
+    {
+      "case": "C-wikipedia",
+      "countsArrived": true,
+      "status": {
+        "covered": "20",
+        "allowed": "3",
+        "blocked": "0",
+        "scanned": "23",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://en.wikipedia.org/wiki/Main_Page"
+      },
+      "frame": {
+        "overlays": 20,
+        "imgs": 23,
+        "title": "Wikipedia, the free encyclopedia",
+        "personReady": true
+      },
+      "ok": true
+    },
+    {
+      "case": "D-bbc",
+      "countsArrived": true,
+      "status": {
+        "covered": "187",
+        "allowed": "70",
+        "blocked": "0",
+        "scanned": "257",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://www.bbc.com/"
+      },
+      "frame": {
+        "overlays": 187,
+        "imgs": 143,
+        "title": "BBC Home | Breaking News, World News, US News, Sports, Business, Innovation, Climate, Culture, Travel, Video & Audio",
+        "bodySnippet": "Skip to content | Watch Live | Home | News | Sport | Business | Technology | Health | Culture | Arts | Travel | Earth | Audio | Video | Live | Documentaries | LIVE | Trump calls Putin his 'friend' as they begin historic talks with Xi ",
+        "personReady": true
+      },
+      "ok": true
+    },
+    {
+      "case": "E-canvas-video",
+      "canvas": {
+        "overlays": 5,
+        "canvases": [
+          "hidden",
+          "hidden",
+          "hidden"
+        ]
+      },
+      "canvasStatus": {
+        "covered": "5",
+        "allowed": "0",
+        "blocked": "0",
+        "scanned": "5",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/03-canvas"
+      },
+      "video": {
+        "overlays": 3,
+        "videos": [
+          {
+            "paused": true,
+            "visibility": "hidden"
+          },
+          {
+            "paused": true,
+            "visibility": "hidden"
+          },
+          {
+            "paused": true,
+            "visibility": "hidden"
+          }
+        ]
+      },
+      "videoStatus": {
+        "covered": "3",
+        "allowed": "0",
+        "blocked": "0",
+        "scanned": "3",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/06-video-frames"
+      },
+      "ok": true
+    },
+    {
+      "case": "F-safesearch",
+      "googleTarget": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcats%26safe%3Dactive&q=EgSsRCIPGKXu-tcGIjBOfJCec4PxLbzPC1J2TXzcVqBCVgAVgM6sxI-g3-DYtjOqknrPVQfYmfNkh0nGpd8yAnJSWgFDYKPzvc2btKLGiwE",
+      "googleHasSafeActive": true,
+      "googleBotChecked": true,
+      "bingTarget": "https://www.bing.com/search?q=cats&adlt=strict",
+      "bingHasAdltStrict": true,
+      "ok": true
+    },
+    {
+      "case": "G-blocked-facebook",
+      "frameBody": "🛡️\nדער פּלאַץ איז בלאקירט\nwww.facebook.com\n\nדער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס.\n\nמקור: manual\n\nבעטן אַן איבערקוק פֿון דעם פּלאַץ\nגיי צום וועב־בלעטערער\n↩ צוריק צום פֿריערדיקן בלאַט\n\nFilter Platform — Free kosher internet filter. דער פּלאַץ ווערט נישט געלאָדן; קי",
+      "frameUrl": "https://filter-platform-web-browser.gavhah-copy.workers.dev/browse?u=https%3A%2F%2Fwww.facebook.com",
+      "ok": true
+    },
+    {
+      "case": "H-slow-3g",
+      "firstCounts": true,
+      "firstCountsMs": 1012,
+      "detectorReady": true,
+      "detectorReadyMs": 2015,
+      "status": {
+        "covered": "7",
+        "allowed": "0",
+        "blocked": "0",
+        "scanned": "7",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images"
+      },
+      "ok": true
+    }
+  ],
+  "consoleLines": [
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +105ms vision bundle imported",
+    "[fp-detector] +106ms fileset resolved",
+    "[fp-detector] +2ms vision bundle imported",
+    "[fp-detector] +2ms fileset resolved",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +3476ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp-detector] +2ms vision bundle imported",
+    "[fp-detector] +2ms fileset resolved",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +328ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp-detector] +3ms vision bundle imported",
+    "[fp-detector] +3ms fileset resolved",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +340ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp-detector] +3ms vision bundle imported",
+    "[fp-detector] +3ms fileset resolved",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +408ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +10ms vision bundle imported",
+    "[fp-detector] +10ms fileset resolved",
+    "[fp-detector] +419ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp-detector] +2ms vision bundle imported",
+    "[fp-detector] +2ms fileset resolved",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +332ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "PAGEERROR: solveSimpleChallenge is not defined",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +46ms vision bundle imported",
+    "[fp-detector] +47ms fileset resolved",
+    "[fp-detector] +404ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +3ms vision bundle imported",
+    "[fp-detector] +3ms fileset resolved",
+    "[fp-detector] +305ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)"
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "cases": [
+      "A-shell-loads: PASS",
+      "B-test-page-01: PASS",
+      "C-wikipedia: PASS",
+      "D-bbc: PASS",
+      "E-canvas-video: PASS",
+      "F-safesearch: PASS",
+      "G-blocked-facebook: PASS",
+      "H-slow-3g: PASS"
+    ]
+  }
+}
