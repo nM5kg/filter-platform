@@ -57,6 +57,35 @@
 //   * EfficientDet-Lite0 weights are PROTOTYPE-ONLY (license unverified —
 //     see models-mediapipe/LICENSES.md); do not treat this model as
 //     production-licensed.
+//
+// ------------------------------------------------------------------
+// Web-demo shell protocol (postMessage with the demo shell in
+// public/browser.html). The shell cannot read inside the cross-origin
+// iframe, so everything goes through window.postMessage with
+// source 'filter-platform-web':
+//   OUT fp-download-request {source, type:'fp-download-request',
+//       url:<absolute ORIGINAL image/link URL>, kind:'image'|'link',
+//       elementId:<the element's fp id, image buttons only>}
+//       — posted when the user clicks the Download button on an
+//       ALLOWED image, or clicks a link to an image file / a link
+//       with a download attribute. The elementId lets the shell look
+//       the verdict up per ELEMENT (verdictsById), which is the only
+//       unambiguous lookup when one source URL backs several elements
+//       with different verdicts. Link clicks carry NO elementId and
+//       fall back to the by-source lookup in the shell.
+//       policy (it blocks covered/unknown images using the verdicts
+//       map from fp-status) and does the actual fetching — this
+//       script never downloads anything itself. Covered / blocked /
+//       review images get NO download button.
+//   IN  fp-find {type:'fp-find', query, backwards} — from
+//       window.parent (the shell) only; runs window.find and replies:
+//   OUT fp-find-result {source, type:'fp-find-result', found, query}
+//   (fp-loaded / fp-status are posted by the Worker shim, not here;
+//   fp-status carries verdicts {sourceUrl: 'allow'|'cover'|'block'}
+//   (keys unwrapped to ORIGINAL URLs) and verdictsById
+//   {elementId: 'allow'|'cover'|'block'}, which the shell uses for
+//   its download policy.)
+// ------------------------------------------------------------------
 (function () {
   'use strict';
 
@@ -115,7 +144,83 @@
   function repositionAll() {
     tracked.forEach(function (entry) {
       if (entry.state === 'covered') placeOverlay(entry);
+      else if (entry.state === 'allowed') placeDownloadButton(entry);
     });
+  }
+
+  // ---------------------------------------------------------------- downloads
+  // The proxied page's URLs are rewritten to /browse?u=<original>.
+  // Unwrap one back to the original absolute URL, so the shell can
+  // fetch it via /browse?u=<original> itself. Non-proxied URLs pass
+  // through unchanged.
+  function originalUrl(raw) {
+    try {
+      var u = new URL(raw, location.href);
+      var orig = u.searchParams.get('u');
+      if (orig) return new URL(orig, location.href).href;
+      return u.href;
+    } catch (e) { return raw || ''; }
+  }
+
+  function placeDownloadButton(entry) {
+    var btn = entry.downloadBtn;
+    if (!btn) return;
+    var r = entry.el.getBoundingClientRect();
+    if (r.width <= 0 || r.height <= 0) { btn.style.display = 'none'; return; }
+    btn.style.display = 'block';
+    // Sit on the image's top-right corner, straddling the edge so it
+    // hides as little of the image itself as possible.
+    var w = btn.offsetWidth || 84;
+    var h = btn.offsetHeight || 24;
+    var top = r.top - h / 2;
+    if (top < 0) top = r.top; // image at the viewport top: fall back inside
+    btn.style.left = Math.max(0, r.right - w / 2) + 'px';
+    btn.style.top = top + 'px';
+  }
+
+  // Small "Download" button on an ALLOWED image only. Clicking it just
+  // asks the shell (window.parent) to download — the shell enforces
+  // the policy and fetches the bytes; this script downloads nothing.
+  // Covered / blocked / review images never get a button.
+  function addDownloadButton(entry) {
+    if (entry.downloadBtn || entry.kind !== 'img') return;
+    var el = entry.el;
+    if (el.tagName !== 'IMG' && el.tagName !== 'INPUT') return;
+    var url = originalUrl(entry.source || sourceOf(el));
+    if (!url) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.setAttribute('data-fp-download', '1');
+    btn.textContent = '⤓ Download';
+    var s = btn.style;
+    s.position = 'fixed';
+    s.zIndex = '2147483646';
+    s.padding = '2px 8px';
+    s.font = '600 11px/1.6 system-ui, sans-serif';
+    s.color = '#fff';
+    s.background = 'rgba(20, 50, 79, 0.92)';
+    s.border = '1px solid rgba(255,255,255,0.6)';
+    s.borderRadius = '6px';
+    s.cursor = 'pointer';
+    s.boxSizing = 'border-box';
+    s.whiteSpace = 'nowrap';
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      try {
+        window.parent.postMessage({
+          source: 'filter-platform-web', type: 'fp-download-request',
+          url: url, kind: 'image', elementId: entry.id
+        }, '*');
+      } catch (err) { /* parent gone */ }
+    });
+    (document.body || document.documentElement).appendChild(btn);
+    entry.downloadBtn = btn;
+    placeDownloadButton(entry);
+  }
+
+  function removeDownloadButton(entry) {
+    if (entry.downloadBtn) { entry.downloadBtn.remove(); entry.downloadBtn = null; }
   }
 
   // Cover an element now. `kind` decides how: CSS-background elements keep
@@ -124,6 +229,7 @@
   // hidden video does not keep playing audio.
   function cover(entry) {
     var el = entry.el;
+    removeDownloadButton(entry);
     if (entry.state === 'covered') { placeOverlay(entry); return; }
     if (entry.kind === 'css') {
       if (el.dataset.fpOrigBg === undefined) {
@@ -158,6 +264,7 @@
   }
 
   function block(entry) {
+    removeDownloadButton(entry);
     if (entry.overlay) { entry.overlay.remove(); entry.overlay = null; }
     entry.el.style.display = 'none';
     entry.state = 'blocked';
@@ -772,9 +879,9 @@
     reply.decisions.forEach(function (d) {
       var entry = tracked.get(d.id);
       if (!entry) return;
-      if (d.verdict === 'allow') uncover(entry);
-      else if (d.verdict === 'block') block(entry);
-      else cover(entry); // 'cover' and anything unknown: stay covered
+      if (d.verdict === 'allow') { uncover(entry); addDownloadButton(entry); }
+      else if (d.verdict === 'block') { removeDownloadButton(entry); block(entry); }
+      else { removeDownloadButton(entry); cover(entry); } // 'cover' and anything unknown: stay covered
     });
     repositionAll();
   }
@@ -799,6 +906,50 @@
 
     window.addEventListener('scroll', repositionAll, { capture: true, passive: true });
     window.addEventListener('resize', repositionAll);
+
+    // Image-file / download links: do not navigate — ask the shell to
+    // download instead (it enforces the policy and fetches the bytes).
+    // Normal navigation links are never intercepted. The extension
+    // check runs on the ORIGINAL url (proxied hrefs are /browse?u=...,
+    // whose own pathname is just '/browse').
+    document.addEventListener('click', function (e) {
+      try {
+        var a = e.target && e.target.closest ? e.target.closest('a') : null;
+        if (!a || !a.href) return;
+        var orig = originalUrl(a.href);
+        var linkPath = '';
+        try { linkPath = new URL(orig, location.href).pathname.toLowerCase(); } catch (err) { return; }
+        var isImageFile = /\.(jpg|jpeg|png|gif|webp|svg|bmp)$/.test(linkPath);
+        if (!isImageFile && !a.hasAttribute('download')) return;
+        e.preventDefault();
+        e.stopPropagation();
+        window.parent.postMessage({
+          source: 'filter-platform-web', type: 'fp-download-request',
+          url: orig, kind: 'link'
+        }, '*');
+      } catch (err) { /* never break the page's own clicks */ }
+    }, true);
+
+    // Find in page, driven by the shell. Only messages from the parent
+    // frame (the shell) are accepted. Everything is guarded so a find
+    // failure can never break the filter.
+    window.addEventListener('message', function (e) {
+      try {
+        if (!e || e.source !== window.parent) return;
+        var d = e.data;
+        if (!d || d.type !== 'fp-find' || typeof d.query !== 'string') return;
+        var found = false;
+        try {
+          if (typeof window.find === 'function') {
+            found = !!window.find(d.query, false, !!d.backwards, true, false, false, false);
+          }
+        } catch (err) { found = false; }
+        window.parent.postMessage({
+          source: 'filter-platform-web', type: 'fp-find-result',
+          found: found, query: d.query
+        }, '*');
+      } catch (err) { /* a find failure must never break the filter */ }
+    });
 
     // Dynamic content: new nodes, src/style/class changes (lazy images,
     // carousels, infinite scroll, SPA navigation).
