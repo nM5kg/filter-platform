@@ -12,17 +12,72 @@
   header h1 { margin: 0; font-size: 20px; }
   header p { margin: 4px 0 0; opacity: .85; font-size: 13px; }
   .badge { display: inline-block; background: #2e7d32; color: #fff; border-radius: 4px; padding: 2px 8px; font-size: 12px; margin-inline-start: 8px; }
-  .toolbar { display: flex; gap: 8px; padding: 10px 12px; background: #fff; border-bottom: 1px solid #dde3ea; align-items: center; flex-wrap: wrap; }
+  /* --- tab strip --- */
+  .tabstrip { display: flex; flex: none; min-height: 48px; gap: 6px; padding: 8px 12px 0; background: #dde3ea; align-items: flex-end; overflow-x: auto; position: relative; }
+  .tab { display: flex; align-items: center; gap: 6px; max-width: 220px; min-width: 120px; padding: 7px 10px; background: #eef3f7; border: 1px solid #c4ccd6; border-bottom: 0; border-radius: 8px 8px 0 0; cursor: pointer; font-size: 14px; white-space: nowrap; overflow: hidden; }
+  .tab.active { background: #fff; font-weight: 700; }
+  .tab.private { background: #3b2d4d; color: #fff; border-color: #3b2d4d; }
+  .tab.private.active { background: #4d3a63; }
+  .tab .t { flex: 1; overflow: hidden; text-overflow: ellipsis; direction: ltr; text-align: right; }
+  .tab .x { border: 0; background: none; cursor: pointer; font-size: 14px; padding: 0 2px; color: inherit; }
+  .tab .x:hover { color: #a50e0e; }
+  .tabstrip button.add, .tabstrip button.ov { flex: 0 0 auto; font-size: 16px; padding: 5px 10px; margin-bottom: 4px; border-radius: 6px; border: 1px solid #14324f; background: #fff; color: #14324f; cursor: pointer; }
+  /* --- toolbar --- */
+  .toolbar { display: flex; gap: 8px; padding: 10px 12px; background: #fff; border-bottom: 1px solid #dde3ea; align-items: center; flex-wrap: wrap; position: relative; }
   .toolbar input[type="text"] { flex: 1; min-width: 200px; font-size: 15px; padding: 9px 10px; border-radius: 6px; border: 1px solid #c4ccd6; direction: ltr; text-align: left; }
   .toolbar button { font-size: 15px; padding: 9px 12px; border-radius: 6px; border: 1px solid #14324f; background: #14324f; color: #fff; cursor: pointer; }
   .toolbar button.secondary { background: #fff; color: #14324f; }
   .toolbar button:disabled { opacity: .45; cursor: default; }
+  .toolbar button.starred { color: #d9a400; }
+  .suggest { position: absolute; top: 100%; inset-inline-start: 12px; inset-inline-end: 12px; background: #fff; border: 1px solid #c4ccd6; border-radius: 0 0 8px 8px; box-shadow: 0 6px 18px rgba(0,0,0,.15); z-index: 50; display: none; max-height: 260px; overflow-y: auto; }
+  .suggest.open { display: block; }
+  .suggest .row { padding: 9px 12px; cursor: pointer; font-size: 14px; border-bottom: 1px solid #eef3f7; }
+  .suggest .row:hover { background: #eef3f7; }
+  .suggest .row .k { color: #5a6b7d; font-size: 12px; margin-inline-start: 8px; }
+  .suggest .row .u { direction: ltr; text-align: left; color: #5a6b7d; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* --- dropdown menus --- */
+  .menu { position: absolute; top: 100%; inset-inline-end: 12px; background: #fff; border: 1px solid #c4ccd6; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,.15); z-index: 60; display: none; min-width: 220px; }
+  .menu.open { display: block; }
+  .menu button { display: block; width: 100%; text-align: start; border: 0; background: none; padding: 10px 14px; font-size: 14px; cursor: pointer; color: #1c2430; }
+  .menu button:hover { background: #eef3f7; }
+  .menu hr { margin: 4px 0; border: 0; border-top: 1px solid #dde3ea; }
+  /* --- find bar --- */
+  .findbar { display: none; gap: 8px; padding: 8px 12px; background: #fef7e0; border-bottom: 1px solid #e8c96a; align-items: center; }
+  .findbar.open { display: flex; }
+  .findbar input { flex: 1; font-size: 14px; padding: 7px 9px; border-radius: 6px; border: 1px solid #c4ccd6; }
+  .findbar button { font-size: 14px; padding: 7px 10px; border-radius: 6px; border: 1px solid #14324f; background: #fff; color: #14324f; cursor: pointer; }
+  .findbar .res { font-size: 13px; min-width: 90px; }
+  .findbar .res.found { color: #137333; font-weight: 700; }
+  .findbar .res.notfound { color: #a50e0e; font-weight: 700; }
+  /* --- status --- */
   .status { padding: 7px 14px; background: #eef3f7; border-bottom: 1px solid #dde3ea; font-size: 14px; display: flex; gap: 18px; flex-wrap: wrap; }
   .status b { font-size: 15px; }
   .status .warn { color: #a50e0e; font-weight: 600; }
   .status .ok { color: #137333; font-weight: 600; }
+  /* --- views --- */
+  .viewarea { flex: 1; min-height: 0; display: flex; flex-direction: column; background: #fff; position: relative; }
   .frame-wrap { flex: 1; min-height: 0; background: #fff; }
-  iframe { width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+  .frame-wrap iframe { width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+  .ntp, .panel { flex: 1; min-height: 0; overflow-y: auto; padding: 24px 20px; background: #fff; }
+  .ntp h2, .panel h2 { margin: 0 0 14px; font-size: 20px; }
+  .ntp .searchrow { display: flex; gap: 8px; max-width: 560px; margin: 0 auto 22px; }
+  .ntp .searchrow input { flex: 1; font-size: 16px; padding: 11px 12px; border-radius: 8px; border: 1px solid #c4ccd6; direction: ltr; text-align: left; }
+  .ntp .searchrow button { font-size: 16px; padding: 11px 16px; border-radius: 8px; border: 1px solid #14324f; background: #14324f; color: #fff; cursor: pointer; }
+  .ntp .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; max-width: 900px; margin: 0 auto; }
+  .ntp .tile { display: block; border: 1px solid #dde3ea; border-radius: 8px; padding: 12px; background: #fbfcfd; text-decoration: none; color: #14324f; font-size: 14px; }
+  .ntp .tile b { display: block; margin-bottom: 4px; }
+  .ntp .tile span { direction: ltr; display: block; text-align: left; font-size: 12px; color: #5a6b7d; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .panel .back { margin-bottom: 12px; font-size: 14px; padding: 7px 12px; border-radius: 6px; border: 1px solid #14324f; background: #fff; color: #14324f; cursor: pointer; }
+  .panel .row { display: flex; gap: 10px; align-items: center; padding: 10px 4px; border-bottom: 1px solid #eef3f7; font-size: 14px; }
+  .panel .row .t { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; color: #14324f; }
+  .panel .row .u { direction: ltr; text-align: left; color: #5a6b7d; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 45%; }
+  .panel .row button { font-size: 13px; padding: 5px 9px; border-radius: 6px; border: 1px solid #14324f; background: #fff; color: #14324f; cursor: pointer; }
+  .panel .row button.danger { border-color: #a50e0e; color: #a50e0e; }
+  .panel input[type="text"], .panel select { font-size: 14px; padding: 8px 10px; border-radius: 6px; border: 1px solid #c4ccd6; }
+  .panel label { display: block; margin: 12px 0 4px; font-size: 14px; font-weight: 700; }
+  .panel .blocked { color: #a50e0e; font-weight: 700; }
+  .panel .done { color: #137333; font-weight: 700; }
+  .toast { position: fixed; bottom: 18px; inset-inline-start: 50%; transform: translateX(50%); background: #14324f; color: #fff; padding: 10px 18px; border-radius: 8px; font-size: 14px; z-index: 100; display: none; max-width: 90vw; }
   main { padding: 14px 16px; }
   .card { background: #fff; border: 1px solid #dde3ea; border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
   .card h2 { margin: 0 0 8px; font-size: 17px; }
@@ -46,12 +101,41 @@
   <p>דער זעלבער פֿילטער־מאָטאָר ווי אין דער אַנדרויד־אַפּ — אָבער דאָ אויפֿן וועב, אַז מען קען אים טעסטן אָן אַ טעלעפֿאָן.</p>
 </header>
 
+<div class="tabstrip" id="tabStrip">
+  <button id="newTabBtn" class="add" type="button" title="נייַ בלאַט">＋</button>
+  <button id="tabOverviewBtn" class="ov" type="button" title="אַלע בלעטער">▦</button>
+  <div class="menu" id="tabOverview" style="top: 44px;"></div>
+</div>
+
 <div class="toolbar">
   <button id="backBtn" class="secondary" type="button" title="צוריק">◀ צוריק</button>
   <button id="fwdBtn" class="secondary" type="button" title="פֿאָרויס">פֿאָרויס ▶</button>
   <button id="reloadBtn" class="secondary" type="button" title="דערפֿרישן">↻ דערפֿרישן</button>
+  <button id="homeBtn" class="secondary" type="button" title="היים">⌂</button>
   <input id="addr" type="text" dir="ltr" placeholder="wikipedia.org אָדער אַ פֿולע אַדרעס…" autocomplete="off" spellcheck="false">
   <button id="goBtn" type="button">גיי</button>
+  <button id="bookmarkBtn" class="secondary" type="button" title="לייג צו צו בוקמאַרקס">☆</button>
+  <button id="menuBtn" class="secondary" type="button" title="מעניו">⋮</button>
+  <div class="suggest" id="suggestBox"></div>
+  <div class="menu" id="menuDropdown">
+    <button type="button" data-act="find">🔍 זוך אויפֿן בלאַט</button>
+    <button type="button" data-act="share">↗ טיילן</button>
+    <button type="button" data-act="desktop">🖥 דעסקטאָפּ־זײַטל</button>
+    <button type="button" data-act="private">🕶 נייַ פּריוואַט בלאַט</button>
+    <hr>
+    <button type="button" data-act="history">🕐 געשיכטע</button>
+    <button type="button" data-act="bookmarks">★ בוקמאַרקס</button>
+    <button type="button" data-act="downloads">⬇ אַראָפּלאָדס</button>
+    <button type="button" data-act="settings">⚙ סעטטינגס</button>
+  </div>
+</div>
+
+<div class="findbar" id="findBar">
+  <input id="findInput" type="text" placeholder="זוך אויפֿן בלאַט…" autocomplete="off">
+  <button id="findPrev" type="button" title="פֿריערדיק">▲</button>
+  <button id="findNext" type="button" title="נעקסט">▼</button>
+  <span class="res" id="findResult"></span>
+  <button id="findClose" type="button">✕ פֿאַרמאַכן</button>
 </div>
 
 <div class="status" id="statusLine">
@@ -61,9 +145,24 @@
   <span id="stApi">דאָמעין־טשעק: …</span>
 </div>
 
-<div class="frame-wrap">
-  <iframe id="frame" title="וועב־בלעטערער" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+<div class="viewarea" id="viewArea">
+  <div class="frame-wrap" id="frameWrap"></div>
+  <div class="ntp" id="ntp" style="display:none;">
+    <h2 style="text-align:center;">נייַ בלאַט</h2>
+    <div class="searchrow">
+      <input id="ntpSearch" type="text" dir="ltr" placeholder="Search or type a URL…" autocomplete="off" spellcheck="false">
+      <button id="ntpGo" type="button">גיי</button>
+    </div>
+    <div class="grid" id="ntpGrid"></div>
+  </div>
+  <div class="panel" id="panel" style="display:none;">
+    <button class="back" id="panelBack" type="button">◀ צוריק צום בלעטערער</button>
+    <h2 id="panelTitle"></h2>
+    <div id="panelBody"></div>
+  </div>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <main>
   <div class="card">
@@ -91,14 +190,11 @@
   </div>
 </main>
 
+<script src="browser-core.js"></script>
 <script>
+var Core = window.FPBrowserCore;
 var PROXY = 'https://filter-platform-web-browser.gavhah-copy.workers.dev';
 var PAGES = 'https://filter-platform-dashboard.pages.dev';
-var frame = document.getElementById('frame');
-var addr = document.getElementById('addr');
-var historyStack = [];
-var historyIndex = -1;
-var currentTarget = '';
 
 var QUICK = [
   ['וויקיפּעדיע', 'https://en.wikipedia.org/wiki/Main_Page'],
@@ -120,43 +216,145 @@ var TESTS = [
   ['08 — דינאַמישער אינהאַלט', '08-dynamic-content.html', 'שפּעט־צוגעלייגטע בילדער → באַדעקט גלײַך ווען זיי דערשײַנען']
 ];
 
-function normalizeUrl(input) {
-  var v = (input || '').trim();
-  if (!v) return '';
-  if (!/^[a-z][a-z0-9+.-]*:/i.test(v)) v = 'https://' + v;
-  return v;
+// ---------------------------------------------------------------- storage
+function loadJson(key, fallback) {
+  try { var v = JSON.parse(localStorage.getItem(key) || 'null'); return v === null ? fallback : v; }
+  catch (e) { return fallback; }
+}
+function saveJson(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {} }
+
+var settings = loadJson('fp_settings_v1', {});
+if (!settings.searchEngine) settings.searchEngine = 'duckduckgo';
+if (!settings.homepage) settings.homepage = Core.DEFAULT_HOMEPAGE;
+function saveSettings() { saveJson('fp_settings_v1', settings); }
+
+function getHistory() { return loadJson('fp_history_v1', []); }
+function getBookmarks() { return loadJson('fp_bookmarks_v1', []); }
+function getDownloads() { return loadJson('fp_downloads_v1', []); }
+
+// ---------------------------------------------------------------- tabs
+var tabs = [];
+var activeTabId = null;
+var tabSeq = 0;
+var frameWrap = document.getElementById('frameWrap');
+var addr = document.getElementById('addr');
+
+function activeTab() { return tabs.find(function (t) { return t.id === activeTabId; }) || null; }
+
+function newTabState(opts) {
+  opts = opts || {};
+  return {
+    id: 'tab-' + (++tabSeq) + '-' + Date.now().toString(36),
+    title: '',
+    url: opts.url || '',
+    private: !!opts.private,
+    desktop: false,
+    stack: [],
+    index: -1,
+    counts: { covered: 0, allowed: 0, blocked: 0, scanned: 0 },
+    detectorReady: false,
+    apiCheck: '…',
+    dohUnavailable: false,
+    verdicts: {},
+    verdictsById: {},
+    ntp: !opts.url,
+    iframe: null
+  };
 }
 
-// SafeSearch rewrite (same rules as FilterEngine.rewriteSafeSearch — the
-// proxy Worker is authoritative and re-applies it; this is only for display).
-function rewriteSafeSearch(url) {
-  var rules = [
-    [/^https:\/\/(?:www\.)?google\.(?:com(?:\.[a-z]{2})?|co\.[a-z]{2}|[a-z]{2,3})\/search/i, 'safe', 'active'],
-    [/^https:\/\/(?:www\.)?bing\.com\/search/i, 'adlt', 'strict'],
-    [/^https:\/\/(?:www\.)?duckduckgo\.com\/.*[?&]q=/i, 'kp', '1']
-  ];
-  for (var i = 0; i < rules.length; i++) {
-    if (!rules[i][0].test(url)) continue;
-    var key = rules[i][1], val = rules[i][2];
-    var hashIdx = url.indexOf('#');
-    var frag = hashIdx >= 0 ? url.substring(hashIdx) : '';
-    var noFrag = hashIdx >= 0 ? url.substring(0, hashIdx) : url;
-    var qIdx = noFrag.indexOf('?');
-    var base = qIdx >= 0 ? noFrag.substring(0, qIdx) : noFrag;
-    var query = qIdx >= 0 ? noFrag.substring(qIdx + 1) : '';
-    var params = query ? query.split('&') : [];
-    var found = false;
-    for (var j = 0; j < params.length; j++) {
-      if (params[j].split('=')[0] === key) { params[j] = key + '=' + val; found = true; }
-    }
-    if (!found) params.push(key + '=' + val);
-    return base + '?' + params.join('&') + frag;
-  }
-  return url;
+function createIframe(tab) {
+  var f = document.createElement('iframe');
+  f.title = 'וועב־בלעטערער';
+  f.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups');
+  f.style.display = 'none';
+  frameWrap.appendChild(f);
+  tab.iframe = f;
+  return f;
 }
 
-function proxyUrl(target) {
-  return PROXY + '/browse?u=' + encodeURIComponent(target);
+function createTab(opts, makeActive) {
+  var tab = newTabState(opts);
+  createIframe(tab);
+  tabs.push(tab);
+  if (makeActive !== false) switchTab(tab.id);
+  else renderTabStrip();
+  return tab;
+}
+
+function tabTitle(tab) {
+  if (tab.title) return tab.title;
+  if (tab.url) { try { return new URL(tab.url).hostname; } catch (e) { return tab.url; } }
+  return tab.private ? 'פּריוואַט בלאַט' : 'נייַ בלאַט';
+}
+
+function renderTabStrip() {
+  var strip = document.getElementById('tabStrip');
+  strip.querySelectorAll('.tab').forEach(function (el) { el.remove(); });
+  tabs.forEach(function (tab) {
+    var chip = document.createElement('div');
+    chip.className = 'tab' + (tab.id === activeTabId ? ' active' : '') + (tab.private ? ' private' : '');
+    var label = tabTitle(tab) + (tab.private ? ' (פּריוואַט)' : '');
+    var span = document.createElement('span');
+    span.className = 't';
+    span.textContent = label;
+    span.title = tab.url || label;
+    var x = document.createElement('button');
+    x.className = 'x';
+    x.type = 'button';
+    x.textContent = '✕';
+    x.title = 'פֿאַרמאַכן בלאַט';
+    x.onclick = function (e) { e.stopPropagation(); closeTab(tab.id); };
+    chip.appendChild(span);
+    chip.appendChild(x);
+    chip.onclick = function () { switchTab(tab.id); };
+    strip.insertBefore(chip, document.getElementById('newTabBtn'));
+  });
+}
+
+// Non-private tabs persist (URL list only); private tabs never persist.
+function persistTabs() {
+  var list = tabs.filter(function (t) { return !t.private && t.url; })
+    .map(function (t) { return { url: t.url, title: t.title || '' }; });
+  saveJson('fp_tabs_v1', list);
+}
+
+function switchTab(id) {
+  var tab = tabs.find(function (t) { return t.id === id; });
+  if (!tab) return;
+  tabs.forEach(function (t) { if (t.iframe) { t.iframe.removeAttribute('id'); t.iframe.style.display = 'none'; } });
+  activeTabId = id;
+  // The ACTIVE tab's iframe carries id="frame" so the old harness keeps
+  // working unchanged (#frame, #addr, #goBtn, #backBtn, #fwdBtn, #reloadBtn).
+  tab.iframe.id = 'frame';
+  tab.iframe.style.display = 'block';
+  showBrowserView();
+  addr.value = tab.url || '';
+  updateNavButtons();
+  updateStatusLine();
+  updateBookmarkStar();
+  renderTabStrip();
+  if (tab.ntp) renderNtp();
+}
+
+function closeTab(id) {
+  var i = tabs.findIndex(function (t) { return t.id === id; });
+  if (i < 0) return;
+  var wasActive = tabs[i].id === activeTabId;
+  if (tabs[i].iframe) tabs[i].iframe.remove();
+  tabs.splice(i, 1);
+  if (!tabs.length) { createTab({}); persistTabs(); return; }
+  if (wasActive) switchTab(tabs[Math.max(0, i - 1)].id);
+  else renderTabStrip();
+  persistTabs();
+}
+
+// ---------------------------------------------------------------- navigation
+function proxyUrl(target, tab) {
+  var u = PROXY + '/browse?u=' + encodeURIComponent(target);
+  // Desktop-site toggle is per-tab; only the desktop flag adds a param
+  // (the Worker default — no param — keeps the old behaviour).
+  if (tab && tab.desktop) u += '&ua=desktop';
+  return u;
 }
 
 function setStatus(counts, detectorReady, apiCheck, dohUnavailable) {
@@ -184,56 +382,635 @@ function setStatus(counts, detectorReady, apiCheck, dohUnavailable) {
   }
 }
 
-function updateNavButtons() {
-  document.getElementById('backBtn').disabled = historyIndex <= 0;
-  document.getElementById('fwdBtn').disabled = historyIndex < 0 || historyIndex >= historyStack.length - 1;
+function updateStatusLine() {
+  var tab = activeTab();
+  if (!tab) return;
+  setStatus(tab.counts, tab.detectorReady, tab.apiCheck, tab.dohUnavailable);
 }
 
-function loadTarget(target, push) {
-  target = rewriteSafeSearch(normalizeUrl(target));
+function updateNavButtons() {
+  var tab = activeTab();
+  document.getElementById('backBtn').disabled = !tab || tab.index <= 0;
+  document.getElementById('fwdBtn').disabled = !tab || tab.index < 0 || tab.index >= tab.stack.length - 1;
+}
+
+function recordHistory(url, title) {
+  var tab = activeTab();
+  if (tab && tab.private) return; // private tabs never record history
+  if (!/^https?:\/\//i.test(url)) return;
+  var hist = getHistory().filter(function (h) { return h.url !== url; });
+  hist.unshift({ url: url, title: title || url, time: Date.now() });
+  saveJson('fp_history_v1', hist.slice(0, 500));
+}
+
+function loadTarget(input, push) {
+  var tab = activeTab();
+  if (!tab) return;
+  var resolved = Core.resolveOmnibox(input, settings);
+  var target = Core.rewriteSafeSearch(resolved);
   if (!target) return;
-  currentTarget = target;
+  tab.url = target;
+  tab.ntp = false;
+  tab.title = '';
+  try { tab.title = new URL(target).hostname; } catch (e) {}
+  tab.counts = { covered: 0, allowed: 0, blocked: 0, scanned: 0 };
+  tab.detectorReady = false;
+  tab.apiCheck = '…';
+  tab.verdicts = {};
+  tab.verdictsById = {};
   addr.value = target;
-  setStatus({ covered: 0, allowed: 0, blocked: 0, scanned: 0 }, false, '…', false);
-  frame.src = proxyUrl(target);
+  setStatus(tab.counts, false, '…', false);
+  tab.iframe.src = proxyUrl(target, tab);
   if (push !== false) {
-    historyStack = historyStack.slice(0, historyIndex + 1);
-    historyStack.push(target);
-    historyIndex = historyStack.length - 1;
+    tab.stack = tab.stack.slice(0, tab.index + 1);
+    tab.stack.push(target);
+    tab.index = tab.stack.length - 1;
   }
+  recordHistory(target, tab.title);
   updateNavButtons();
+  updateBookmarkStar();
+  renderTabStrip();
+  showBrowserView();
+  persistTabs();
 }
 
 function loadIndex(i) {
-  if (i < 0 || i >= historyStack.length) return;
-  historyIndex = i;
-  var target = historyStack[i];
-  currentTarget = target;
+  var tab = activeTab();
+  if (!tab || i < 0 || i >= tab.stack.length) return;
+  tab.index = i;
+  var target = tab.stack[i];
+  tab.url = target;
+  tab.ntp = false;
+  try { tab.title = new URL(target).hostname; } catch (e) {}
+  tab.counts = { covered: 0, allowed: 0, blocked: 0, scanned: 0 };
+  tab.detectorReady = false;
+  tab.apiCheck = '…';
+  tab.verdicts = {};
+  tab.verdictsById = {};
   addr.value = target;
-  setStatus({ covered: 0, allowed: 0, blocked: 0, scanned: 0 }, false, '…', false);
-  frame.src = proxyUrl(target);
+  setStatus(tab.counts, false, '…', false);
+  tab.iframe.src = proxyUrl(target, tab);
   updateNavButtons();
+  updateBookmarkStar();
+  renderTabStrip();
+  showBrowserView();
 }
 
+// ---------------------------------------------------------------- views
+function showBrowserView() {
+  document.getElementById('panel').style.display = 'none';
+  var tab = activeTab();
+  var showNtp = !!(tab && tab.ntp);
+  document.getElementById('ntp').style.display = showNtp ? 'block' : 'none';
+  document.getElementById('frameWrap').style.display = showNtp ? 'none' : 'block';
+  if (showNtp) renderNtp();
+}
+
+function showPanel(title) {
+  document.getElementById('ntp').style.display = 'none';
+  document.getElementById('frameWrap').style.display = 'none';
+  document.getElementById('panel').style.display = 'block';
+  document.getElementById('panelTitle').textContent = title;
+}
+
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function () { t.style.display = 'none'; }, 3500);
+}
+
+function hostOf(url) { try { return new URL(url).hostname; } catch (e) { return url; } }
+
+function renderNtp() {
+  var grid = document.getElementById('ntpGrid');
+  grid.innerHTML = '';
+  function tile(title, url, sub) {
+    var a = document.createElement('a');
+    a.className = 'tile';
+    a.href = '#';
+    var b = document.createElement('b');
+    b.textContent = title;
+    var s = document.createElement('span');
+    s.textContent = sub || url;
+    a.appendChild(b);
+    a.appendChild(s);
+    a.onclick = function (e) { e.preventDefault(); loadTarget(url); };
+    grid.appendChild(a);
+  }
+  tile('טעסט־בלעטער (אינדעקס)', PAGES + '/test-pages/index.html', 'אַלע 8 טעסט־בלעטער');
+  getBookmarks().slice(0, 8).forEach(function (b) { tile('★ ' + (b.title || hostOf(b.url)), b.url); });
+  // Top sites: most-visited from history (by recency here — history is
+  // newest-first and deduped, so the first entries are the top sites).
+  getHistory().slice(0, 8).forEach(function (h) { tile(h.title || hostOf(h.url), h.url); });
+  QUICK.forEach(function (q) { tile(q[0], q[1]); });
+}
+
+// ---------------------------------------------------------------- suggestions
+var suggestBox = document.getElementById('suggestBox');
+function hideSuggestions() { suggestBox.classList.remove('open'); suggestBox.innerHTML = ''; }
+function showSuggestions() {
+  var q = addr.value;
+  var openTabs = tabs.filter(function (t) { return t.url; }).map(function (t) { return { url: t.url, title: tabTitle(t) }; });
+  var list = Core.suggestions(q, getHistory(), getBookmarks(), openTabs, 8);
+  if (!list.length) { hideSuggestions(); return; }
+  suggestBox.innerHTML = '';
+  list.forEach(function (s) {
+    var row = document.createElement('div');
+    row.className = 'row';
+    var kind = s.kind === 'bookmark' ? '★ בוקמאַרק' : s.kind === 'tab' ? 'בלאַט' : 'געשיכטע';
+    var t = document.createElement('div');
+    t.textContent = s.title;
+    var k = document.createElement('span');
+    k.className = 'k';
+    k.textContent = kind;
+    t.appendChild(k);
+    var u = document.createElement('div');
+    u.className = 'u';
+    u.textContent = s.url;
+    row.appendChild(t);
+    row.appendChild(u);
+    row.onclick = function () { hideSuggestions(); loadTarget(s.url); };
+    suggestBox.appendChild(row);
+  });
+  suggestBox.classList.add('open');
+}
+addr.addEventListener('input', showSuggestions);
+addr.addEventListener('focus', showSuggestions);
+addr.addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') { hideSuggestions(); loadTarget(addr.value); }
+  if (e.key === 'Escape') hideSuggestions();
+});
+document.addEventListener('click', function (e) {
+  if (!suggestBox.contains(e.target) && e.target !== addr) hideSuggestions();
+  var menu = document.getElementById('menuDropdown');
+  var ov = document.getElementById('tabOverview');
+  if (!menu.contains(e.target) && e.target.id !== 'menuBtn') menu.classList.remove('open');
+  if (!ov.contains(e.target) && e.target.id !== 'tabOverviewBtn') ov.classList.remove('open');
+});
+
+// ---------------------------------------------------------------- history view
+var clearArmed = false;
+function renderHistory(filter) {
+  showPanel('געשיכטע');
+  var body = document.getElementById('panelBody');
+  body.innerHTML = '';
+  var search = document.createElement('input');
+  search.type = 'text';
+  search.placeholder = 'זוך אין געשיכטע…';
+  search.value = filter || '';
+  search.style.width = '100%';
+  search.oninput = function () { renderHistory(search.value); var s2 = body.querySelector('input'); if (s2) { s2.focus(); s2.setSelectionRange(s2.value.length, s2.value.length); } };
+  body.appendChild(search);
+  var clear = document.createElement('button');
+  clear.type = 'button';
+  clear.textContent = 'פֿאַרמעקן געשיכטע';
+  clear.style.cssText = 'margin-top:10px;font-size:13px;padding:7px 12px;border-radius:6px;border:1px solid #a50e0e;background:#fff;color:#a50e0e;cursor:pointer;';
+  clearArmed = false;
+  clear.onclick = function () {
+    if (!clearArmed) { clearArmed = true; clear.textContent = 'דריקט נאָך אַ מאָל צו באַשטעטיקן'; return; }
+    saveJson('fp_history_v1', []);
+    renderHistory('');
+    toast('געשיכטע פֿאַרמעקט');
+  };
+  body.appendChild(clear);
+  var q = (filter || '').toLowerCase();
+  var hist = getHistory().filter(function (h) {
+    return !q || (h.url + ' ' + (h.title || '')).toLowerCase().indexOf(q) !== -1;
+  });
+  if (!hist.length) {
+    var p = document.createElement('p');
+    p.className = 'muted';
+    p.textContent = 'קיין געשיכטע — פּריוואַטע בלעטער ווערן קיינמאָל נישט אויפֿגעשריבן.';
+    body.appendChild(p);
+    return;
+  }
+  hist.forEach(function (h) {
+    var row = document.createElement('div');
+    row.className = 'row';
+    var t = document.createElement('span');
+    t.className = 't';
+    t.textContent = h.title || h.url;
+    t.title = h.url;
+    t.onclick = function () { loadTarget(h.url); };
+    var u = document.createElement('span');
+    u.className = 'u';
+    u.textContent = h.url;
+    var when = document.createElement('span');
+    when.className = 'muted';
+    when.textContent = new Date(h.time).toLocaleDateString();
+    row.appendChild(t);
+    row.appendChild(u);
+    row.appendChild(when);
+    body.appendChild(row);
+  });
+}
+
+// ---------------------------------------------------------------- bookmarks
+function isBookmarked(url) { return getBookmarks().some(function (b) { return b.url === url; }); }
+function updateBookmarkStar() {
+  var tab = activeTab();
+  var btn = document.getElementById('bookmarkBtn');
+  var on = !!(tab && tab.url && isBookmarked(tab.url));
+  btn.textContent = on ? '★' : '☆';
+  btn.classList.toggle('starred', on);
+}
+function toggleBookmark() {
+  var tab = activeTab();
+  if (!tab || !tab.url) return;
+  var list = getBookmarks();
+  if (isBookmarked(tab.url)) {
+    saveJson('fp_bookmarks_v1', list.filter(function (b) { return b.url !== tab.url; }));
+    toast('בוקמאַרק אַראָפּגענומען');
+  } else {
+    list.unshift({ url: tab.url, title: tab.title || hostOf(tab.url), time: Date.now() });
+    saveJson('fp_bookmarks_v1', list);
+    toast('בוקמאַרק צוגעלייגט ★');
+  }
+  updateBookmarkStar();
+}
+function renderBookmarks() {
+  showPanel('בוקמאַרקס');
+  var body = document.getElementById('panelBody');
+  body.innerHTML = '';
+  var note = document.createElement('p');
+  note.className = 'muted';
+  note.textContent = 'קיין פֿאָלדערס — אַלע בוקמאַרקס אין איין רשימה. אַלץ איז לאָקאַל אויף דעם דעווייס; קיין אַקאַונט־סינק.';
+  body.appendChild(note);
+  var list = getBookmarks();
+  if (!list.length) {
+    var p = document.createElement('p');
+    p.className = 'muted';
+    p.textContent = 'נאָך קיין בוקמאַרקס. דריקט דעם ☆ אין דער טולבאַר צו לייגן דעם אַקטיוון בלאַט צו.';
+    body.appendChild(p);
+    return;
+  }
+  list.forEach(function (b, i) {
+    var row = document.createElement('div');
+    row.className = 'row';
+    var t = document.createElement('span');
+    t.className = 't';
+    t.textContent = b.title || b.url;
+    t.title = b.url;
+    t.onclick = function () { loadTarget(b.url); };
+    var edit = document.createElement('button');
+    edit.type = 'button';
+    edit.textContent = 'רעדאַקטירן';
+    edit.onclick = function () {
+      var nt = prompt('טיטל פֿאַר דעם בוקמאַרק:', b.title || '');
+      if (nt === null) return;
+      var l = getBookmarks();
+      l[i].title = nt.trim() || hostOf(b.url);
+      saveJson('fp_bookmarks_v1', l);
+      renderBookmarks();
+    };
+    var del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'danger';
+    del.textContent = 'מעקן';
+    del.onclick = function () {
+      saveJson('fp_bookmarks_v1', getBookmarks().filter(function (x) { return x.url !== b.url; }));
+      updateBookmarkStar();
+      renderBookmarks();
+    };
+    row.appendChild(t);
+    row.appendChild(edit);
+    row.appendChild(del);
+    body.appendChild(row);
+  });
+}
+
+// ---------------------------------------------------------------- downloads
+function recordDownload(rec) {
+  var list = getDownloads();
+  list.unshift(Object.assign({ time: Date.now() }, rec));
+  saveJson('fp_downloads_v1', list.slice(0, 200));
+}
+function lookupVerdict(tab, url) {
+  if (!tab || !tab.verdicts) return null;
+  if (url in tab.verdicts) return tab.verdicts[url];
+  try {
+    var u = new URL(url);
+    var bare = u.origin + u.pathname;
+    if (bare in tab.verdicts) return tab.verdicts[bare];
+    // Last resort: any verdict whose URL shares the same pathname.
+    for (var k in tab.verdicts) {
+      try { if (new URL(k).pathname === u.pathname) return tab.verdicts[k]; } catch (e) {}
+    }
+  } catch (e) {}
+  return null;
+}
+function fileNameOf(url, res) {
+  var cd = res && res.headers ? res.headers.get('content-disposition') : '';
+  var m = cd && cd.match(/filename\*?=(?:UTF-8'')?"?([^";]+)"?/i);
+  if (m) { try { return decodeURIComponent(m[1]); } catch (e) { return m[1]; } }
+  try { var base = new URL(url).pathname.split('/').pop(); return base || 'download'; }
+  catch (e) { return 'download'; }
+}
+async function handleDownloadRequest(msg, tab) {
+  var url = msg.url;
+  // Verdict by ELEMENT id first: per-URL verdicts are ambiguous when
+  // one source URL backs several elements with different verdicts
+  // (e.g. test page 01: the same landscape URL is allow as <img> but
+  // cover as <picture>/<input>). Only requests WITHOUT an elementId
+  // (link clicks) fall back to the by-source lookup; a present
+  // elementId with no map entry stays unknown and fails closed.
+  var verdict = null;
+  if (msg.elementId) {
+    if (tab && tab.verdictsById && msg.elementId in tab.verdictsById) verdict = tab.verdictsById[msg.elementId];
+  } else {
+    verdict = lookupVerdict(tab, url);
+  }
+  // LIMITATION (documented): the shell cannot see the Worker's domain
+  // blocklist — the Worker decides blocked domains and the shell only
+  // learns about them via the page it serves. So the shell-side
+  // blockedHosts set is empty here and the decision rests on the
+  // element verdict + the unknown-image rule in decideDownload.
+  // A download from a Worker-blocked domain never reaches this point
+  // in practice: the page itself is the Yiddish block page, with no
+  // allowed image to download from.
+  var decision = Core.decideDownload(url, [], verdict);
+  if (!decision.allowed) {
+    recordDownload({ url: url, kind: msg.kind || 'link', status: 'blocked', reason: decision.reason, verdict: verdict });
+    toast('אַראָפּלאָד בלאָקירט: ' + decision.reason);
+    return;
+  }
+  try {
+    var res = await fetch(proxyUrl(url, tab));
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var blob = await res.blob();
+    var name = fileNameOf(url, res);
+    var objUrl = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = objUrl;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(objUrl); }, 60000);
+    recordDownload({ url: url, kind: msg.kind || 'link', status: 'completed', filename: name });
+    toast('אַראָפּגעלאָדן: ' + name);
+  } catch (e) {
+    // CORS for this fetch is the parallel agent's job (Access-Control-
+    // Allow-Origin on /browse responses). If it is missing, the fetch
+    // fails here — recorded as failed, not silently swallowed.
+    recordDownload({ url: url, kind: msg.kind || 'link', status: 'failed', reason: 'fetch-failed: ' + String(e && e.message ? e.message : e) });
+    toast('אַראָפּלאָד נישט געלונגען — דער פּראָקסי האָט די טעקע נישט געגעבן (מעגלעך CORS). זעט אַראָפּלאָדס.');
+  }
+}
+function renderDownloads() {
+  showPanel('אַראָפּלאָדס');
+  var body = document.getElementById('panelBody');
+  body.innerHTML = '';
+  var list = getDownloads();
+  if (!list.length) {
+    var p = document.createElement('p');
+    p.className = 'muted';
+    p.textContent = 'נאָך קיין אַראָפּלאָדס. אַן אַראָפּלאָד פֿון אַ דערלויבט בילד אָדער לינק וועט דאָ דערשײַנען; בלאָקירטע פּרוּוון אויך.';
+    body.appendChild(p);
+    return;
+  }
+  list.forEach(function (d) {
+    var row = document.createElement('div');
+    row.className = 'row';
+    var t = document.createElement('span');
+    t.className = 't';
+    t.textContent = d.filename || d.url;
+    t.title = d.url;
+    var st = document.createElement('span');
+    st.className = d.status === 'completed' ? 'done' : 'blocked';
+    st.textContent = d.status === 'completed' ? '✓ געענדיקט' : d.status === 'blocked' ? '✕ בלאָקירט' : '✕ נישט געלונגען';
+    var why = document.createElement('span');
+    why.className = 'muted';
+    why.textContent = d.reason ? d.reason : (d.kind || '');
+    if (d.verdict) why.textContent += ' (' + d.verdict + ')';
+    row.appendChild(t);
+    row.appendChild(st);
+    row.appendChild(why);
+    body.appendChild(row);
+  });
+  var clear = document.createElement('button');
+  clear.type = 'button';
+  clear.textContent = 'פֿאַרמעקן אַראָפּלאָד־רשימה';
+  clear.style.cssText = 'margin-top:12px;font-size:13px;padding:7px 12px;border-radius:6px;border:1px solid #14324f;background:#fff;color:#14324f;cursor:pointer;';
+  clear.onclick = function () { saveJson('fp_downloads_v1', []); renderDownloads(); };
+  body.appendChild(clear);
+}
+
+// ---------------------------------------------------------------- settings
+function renderSettings() {
+  showPanel('סעטטינגס');
+  var body = document.getElementById('panelBody');
+  body.innerHTML = '';
+  var lab = document.createElement('label');
+  lab.textContent = 'זוך־מאָטאָר';
+  var sel = document.createElement('select');
+  Object.keys(Core.SEARCH_ENGINES).forEach(function (id) {
+    var o = document.createElement('option');
+    o.value = id;
+    o.textContent = Core.SEARCH_ENGINES[id].name + (id === 'duckduckgo' ? ' (דיפֿאָלט)' : '');
+    if (settings.searchEngine === id) o.selected = true;
+    sel.appendChild(o);
+  });
+  sel.onchange = function () { settings.searchEngine = sel.value; saveSettings(); toast('זוך־מאָטאָר: ' + Core.SEARCH_ENGINES[sel.value].name); };
+  body.appendChild(lab);
+  body.appendChild(sel);
+  var lab2 = document.createElement('label');
+  lab2.textContent = 'היים־בלאַט';
+  var home = document.createElement('input');
+  home.type = 'text';
+  home.value = settings.homepage;
+  home.style.width = '100%';
+  home.dir = 'ltr';
+  home.onchange = function () {
+    var v = home.value.trim();
+    if (!v) { home.value = settings.homepage; return; }
+    settings.homepage = Core.resolveOmnibox(v, settings);
+    home.value = settings.homepage;
+    saveSettings();
+  };
+  body.appendChild(lab2);
+  body.appendChild(home);
+  var lab3 = document.createElement('label');
+  lab3.textContent = 'פֿילטער־סעטטינגס';
+  var link = document.createElement('a');
+  link.href = PAGES + '/index.html';
+  link.textContent = 'עפֿענען דעם פֿילטער־דאַשבאָרד (פּאָליסי, דעווייסעס)';
+  link.style.fontSize = '14px';
+  body.appendChild(lab3);
+  body.appendChild(link);
+  var lab4 = document.createElement('label');
+  lab4.textContent = 'פֿאַרמעקן דאַטן (לאָקאַל בלויז — קיין אַקאַונט־סינק)';
+  var btns = [
+    ['פֿאַרמעקן געשיכטע', function () { saveJson('fp_history_v1', []); }],
+    ['פֿאַרמעקן בוקמאַרקס', function () { saveJson('fp_bookmarks_v1', []); updateBookmarkStar(); }],
+    ['פֿאַרמעקן אַראָפּלאָד־רשימה', function () { saveJson('fp_downloads_v1', []); }],
+    ['פֿאַרמאַכן אַלע בלעטער (און אָנהייבן פֿריש)', function () {
+      saveJson('fp_tabs_v1', []);
+      tabs.slice().forEach(function (t) { closeTab(t.id); });
+    }]
+  ];
+  btns.forEach(function (b) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = b[0];
+    btn.style.cssText = 'display:block;margin:6px 0;font-size:14px;padding:8px 12px;border-radius:6px;border:1px solid #a50e0e;background:#fff;color:#a50e0e;cursor:pointer;';
+    btn.onclick = function () { if (confirm(b[0] + '?')) { b[1](); toast('געשען'); } };
+    body.appendChild(btn);
+  });
+  var about = document.createElement('div');
+  about.style.marginTop = '18px';
+  about.innerHTML = '<h3 style="margin:0 0 6px;">וועגן דער וועב־דעמאָ</h3>' +
+    '<p class="muted">וועב־דעמאָ ווערסיע 0.2.0 (multi-tab shell). דעטעקטאָר: EfficientDet JS (MediaPipe tasks-vision, Apache 2.0). ' +
+    'די דעמאָ לויפֿט אין Chromium, נישט אין GeckoView, און נוצט דעם EfficientDet־JS־דעטעקטאָר, נישט דעם RF-DETR־וועג פֿונעם טעלעפֿאָן. ' +
+    'פֿילטער־פּאָליסי: שוועל 0.70; מענטש → באַדעקט; קיין מענטש ≥ 0.70 → דערלויבט; אומבאַקאַנט → באַדעקט (fail closed). ' +
+    'אַלע דאַטן (געשיכטע, בוקמאַרקס, אַראָפּלאָדס, בלעטער) זענען לאָקאַל אויף דעם דעווייס בלויז — קיין אַקאַונט־סינק.</p>';
+  body.appendChild(about);
+}
+
+// ---------------------------------------------------------------- find in page
+function doFind(backwards) {
+  var tab = activeTab();
+  if (!tab || !tab.iframe || !tab.iframe.contentWindow) return;
+  var q = document.getElementById('findInput').value;
+  if (!q) return;
+  // Protocol agreed with the parallel agent: the iframe listens for
+  // {type:'fp-find', query, backwards} and replies fp-find-result.
+  tab.iframe.contentWindow.postMessage({ type: 'fp-find', query: q, backwards: !!backwards }, PROXY);
+}
+document.getElementById('findNext').onclick = function () { doFind(false); };
+document.getElementById('findPrev').onclick = function () { doFind(true); };
+document.getElementById('findInput').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') doFind(e.shiftKey);
+  if (e.key === 'Escape') closeFind();
+});
+function openFind() {
+  document.getElementById('findBar').classList.add('open');
+  document.getElementById('findInput').focus();
+}
+function closeFind() {
+  document.getElementById('findBar').classList.remove('open');
+  document.getElementById('findResult').textContent = '';
+}
+document.getElementById('findClose').onclick = closeFind;
+
+// ---------------------------------------------------------------- tab overview
+function renderTabOverview() {
+  var ov = document.getElementById('tabOverview');
+  ov.innerHTML = '';
+  tabs.forEach(function (tab) {
+    var row = document.createElement('button');
+    row.type = 'button';
+    row.style.display = 'flex';
+    row.style.justifyContent = 'space-between';
+    row.style.gap = '8px';
+    var label = document.createElement('span');
+    label.textContent = (tab.id === activeTabId ? '● ' : '') + tabTitle(tab) + (tab.private ? ' (פּריוואַט)' : '');
+    var x = document.createElement('span');
+    x.textContent = '✕';
+    x.onclick = function (e) { e.stopPropagation(); closeTab(tab.id); ov.classList.remove('open'); };
+    row.appendChild(label);
+    row.appendChild(x);
+    row.onclick = function () { switchTab(tab.id); ov.classList.remove('open'); };
+    ov.appendChild(row);
+  });
+}
+document.getElementById('tabOverviewBtn').onclick = function (e) {
+  e.stopPropagation();
+  renderTabOverview();
+  document.getElementById('tabOverview').classList.toggle('open');
+};
+
+// ---------------------------------------------------------------- ⋮ menu
+document.getElementById('menuBtn').onclick = function (e) {
+  e.stopPropagation();
+  var tab = activeTab();
+  var item = document.querySelector('#menuDropdown [data-act="desktop"]');
+  if (item) item.textContent = (tab && tab.desktop ? '✓ ' : '') + '🖥 דעסקטאָפּ־זײַטל';
+  document.getElementById('menuDropdown').classList.toggle('open');
+};
+document.querySelectorAll('#menuDropdown [data-act]').forEach(function (btn) {
+  btn.onclick = function () {
+    document.getElementById('menuDropdown').classList.remove('open');
+    var act = btn.getAttribute('data-act');
+    if (act === 'find') openFind();
+    else if (act === 'history') renderHistory('');
+    else if (act === 'bookmarks') renderBookmarks();
+    else if (act === 'downloads') renderDownloads();
+    else if (act === 'settings') renderSettings();
+    else if (act === 'private') { createTab({ private: true }); toast('פּריוואַט בלאַט — קיין געשיכטע, קיין פּערסיסטענץ'); }
+    else if (act === 'desktop') {
+      var tab = activeTab();
+      if (!tab) return;
+      tab.desktop = !tab.desktop;
+      toast(tab.desktop ? 'דעסקטאָפּ־זײַטל אָן' : 'דעסקטאָפּ־זײַטל אויס');
+      if (tab.url) loadTarget(tab.url, false);
+    } else if (act === 'share') {
+      var tab2 = activeTab();
+      if (!tab2 || !tab2.url) return;
+      if (navigator.share) navigator.share({ url: tab2.url }).catch(function () {});
+      else if (navigator.clipboard) navigator.clipboard.writeText(tab2.url).then(function () { toast('לינק קאָפּירט'); });
+      else toast(tab2.url);
+    }
+  };
+});
+
+// ---------------------------------------------------------------- messages from iframes
 window.addEventListener('message', function (event) {
-  if (!frame.contentWindow || event.source !== frame.contentWindow) return;
   var msg = event.data || {};
   if (msg.source !== 'filter-platform-web') return;
+  // Find the tab that owns the sending iframe (cross-origin: the shell
+  // cannot read inside the iframe, everything comes via postMessage).
+  var tab = tabs.find(function (t) { return t.iframe && t.iframe.contentWindow && event.source === t.iframe.contentWindow; });
+  if (!tab) return;
   if (msg.type === 'fp-loaded') {
-    if (msg.target) { currentTarget = msg.target; addr.value = msg.target; }
-    setStatus({ covered: 0, allowed: 0, blocked: 0, scanned: 0 }, false, msg.apiCheck, msg.dohUnavailable);
+    if (msg.target) {
+      tab.url = msg.target;
+      try { tab.title = new URL(msg.target).hostname; } catch (e) {}
+      if (tab === activeTab()) addr.value = msg.target;
+      recordHistory(msg.target, tab.title);
+      persistTabs();
+    }
+    tab.counts = { covered: 0, allowed: 0, blocked: 0, scanned: 0 };
+    tab.detectorReady = false;
+    tab.apiCheck = msg.apiCheck;
+    tab.dohUnavailable = !!msg.dohUnavailable;
+    if (tab === activeTab()) { updateStatusLine(); renderTabStrip(); }
   } else if (msg.type === 'fp-status') {
-    if (msg.target) { currentTarget = msg.target; addr.value = msg.target; }
-    setStatus(msg, msg.detectorReady, msg.apiCheck, msg.dohUnavailable);
+    if (msg.target) {
+      tab.url = msg.target;
+      if (tab === activeTab()) addr.value = msg.target;
+    }
+    tab.counts = { covered: msg.covered || 0, allowed: msg.allowed || 0, blocked: msg.blocked || 0, scanned: msg.scanned || 0 };
+    tab.detectorReady = !!msg.detectorReady;
+    tab.apiCheck = msg.apiCheck;
+    tab.dohUnavailable = !!msg.dohUnavailable;
+    if (msg.verdicts && typeof msg.verdicts === 'object') tab.verdicts = msg.verdicts;
+    if (msg.verdictsById && typeof msg.verdictsById === 'object') tab.verdictsById = msg.verdictsById;
+    if (tab === activeTab()) updateStatusLine();
+  } else if (msg.type === 'fp-download-request') {
+    handleDownloadRequest(msg, tab);
+  } else if (msg.type === 'fp-find-result') {
+    var r = document.getElementById('findResult');
+    r.textContent = msg.found ? 'געפֿונען ✓' : 'נישט געפֿונען';
+    r.className = 'res ' + (msg.found ? 'found' : 'notfound');
   }
 });
 
-document.getElementById('goBtn').onclick = function () { loadTarget(addr.value); };
-addr.addEventListener('keydown', function (e) { if (e.key === 'Enter') loadTarget(addr.value); });
-document.getElementById('backBtn').onclick = function () { loadIndex(historyIndex - 1); };
-document.getElementById('fwdBtn').onclick = function () { loadIndex(historyIndex + 1); };
-document.getElementById('reloadBtn').onclick = function () { if (currentTarget) loadTarget(currentTarget, false); };
+// ---------------------------------------------------------------- toolbar wiring
+document.getElementById('goBtn').onclick = function () { hideSuggestions(); loadTarget(addr.value); };
+document.getElementById('backBtn').onclick = function () { var t = activeTab(); if (t) loadIndex(t.index - 1); };
+document.getElementById('fwdBtn').onclick = function () { var t = activeTab(); if (t) loadIndex(t.index + 1); };
+document.getElementById('reloadBtn').onclick = function () { var t = activeTab(); if (t && t.url) loadTarget(t.url, false); };
+document.getElementById('homeBtn').onclick = function () { loadTarget(settings.homepage); };
+document.getElementById('bookmarkBtn').onclick = toggleBookmark;
+document.getElementById('newTabBtn').onclick = function () { createTab({}); };
+document.getElementById('panelBack').onclick = showBrowserView;
+document.getElementById('ntpGo').onclick = function () { loadTarget(document.getElementById('ntpSearch').value); };
+document.getElementById('ntpSearch').addEventListener('keydown', function (e) { if (e.key === 'Enter') loadTarget(e.target.value); });
 
+// ---------------------------------------------------------------- quick links + test pages
 var ql = document.getElementById('quickLinks');
 QUICK.forEach(function (q) {
   var a = document.createElement('a');
@@ -242,7 +1019,6 @@ QUICK.forEach(function (q) {
   a.onclick = function (e) { e.preventDefault(); loadTarget(q[1]); };
   ql.appendChild(a);
 });
-
 var tl = document.getElementById('testList');
 TESTS.forEach(function (t) {
   var div = document.createElement('div');
@@ -259,10 +1035,40 @@ TESTS.forEach(function (t) {
   tl.appendChild(div);
 });
 
-// Deep link: browser.html?u=<url> loads that page right away.
-var params = new URLSearchParams(location.search);
-var start = params.get('u') || (PAGES + '/test-pages/index.html');
-loadTarget(start);
+// ---------------------------------------------------------------- init
+// Restore non-private tabs; otherwise deep link ?u=; otherwise the first
+// tab loads the homepage (the test-pages index, as before) AND shows the
+// new-tab page on top of it. That keeps the old harness green (case A:
+// #frame exists, the proxy frame is present, target = test-pages index)
+// while the user first sees the NTP with search + shortcuts. A "+" tab
+// opens a pure NTP with no URL and no iframe load until navigation.
+(function init() {
+  var params = new URLSearchParams(location.search);
+  var start = params.get('u');
+  var saved = loadJson('fp_tabs_v1', []);
+  if (start) {
+    createTab({ url: start });
+    loadTarget(start);
+  } else if (saved.length) {
+    saved.forEach(function (s, i) {
+      var t = createTab({ url: s.url }, i === 0);
+      t.stack = [s.url];
+      t.index = 0;
+      t.ntp = false;
+      t.iframe.src = proxyUrl(s.url, t); // restore the page without re-recording history
+    });
+    var first = tabs[0];
+    if (first) { switchTab(first.id); }
+  } else {
+    var tab = createTab({ url: settings.homepage });
+    loadTarget(settings.homepage);
+    // loadTarget clears tab.ntp; re-set it AFTER the load so the NTP
+    // stays visible over the preloaded homepage (see comment above).
+    tab.ntp = true;
+    showBrowserView();
+    renderTabStrip();
+  }
+})();
 </script>
 </body>
 </html>
