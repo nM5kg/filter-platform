@@ -580,9 +580,9 @@ it cannot prove the GeckoView app launches on the phone.
   via `postMessage` from the iframe.
 - **What it proves (verified live 2026-11-19, Playwright headless
   Chromium — `harness/verify-web-demo.js` 8/8 PASS,
-  `harness/verify-web-demo-testpages.js` 5/5 PASS):** the filter
-  pipeline, the EfficientDet JS detector, SafeSearch, and the Yiddish
-  block page all work on real pages — Wikipedia 23 scanned (20 covered,
+  `harness/verify-web-browser.js` 13/13 PASS — see "Multi-tab browser
+  shell" below):** the filter pipeline, the EfficientDet JS detector,
+  SafeSearch, and the Yiddish block page all work on real pages — Wikipedia 23 scanned (20 covered,
   3 allowed), BBC 257 scanned (187 covered, 70 allowed), test page 01
   person/crowd covered + landscape allowed, canvas + video covered with
   videos paused, WebGL covered (pixels unreadable → fail closed),
@@ -613,6 +613,86 @@ it cannot prove the GeckoView app launches on the phone.
   allowed) — likely a re-report timing artifact; nothing that should be
   covered was shown uncovered.
 
+## Multi-tab browser shell (added 2026-11-19 — online FIRST per Yakob's
+redirect ~04:36 EST; app port is §0.3.0, parked until the 0.2.1-test
+verdict)
+
+The web demo is now a full Chrome-like browser, not a single-page shell:
+`public/browser.html` (1,059 lines, Yiddish RTL) — tab strip + overview,
+omnibox (address + search in one, suggestions from history/bookmarks),
+per-tab history stacks, localStorage history/bookmarks/downloads,
+new-tab page (search + shortcuts), settings (search engine, homepage,
+clear data, filter-settings link, About with version + licenses), find
+in page, share, desktop-site toggle, private tabs. Pure logic in
+`public/browser-core.js` (182 lines, Node-tested: 61 assertions,
+`harness/test-browser-core.js`). Worker (`web-browser-worker.js`): shim
+now posts a per-source verdict map in `fp-status`, `?ua=desktop|mobile`
+param (desktop = Windows Chrome UA, mobile = Android Pixel UA),
+CORS on `/browse` + OPTIONS 204. `content.js`: download buttons on
+ALLOWED images only, image-link click interception, `fp-find` handler.
+**Verified live 2026-11-19 (Playwright, `harness/verify-web-browser.js`
+13/13 + `harness/verify-web-demo.js` 8/8):** tabs (real-mouse clicks on
+the strip at 1280×720), omnibox, navigation, filter wired, history,
+bookmarks, downloads (allowed image downloads for real; covered image
+has no button and a forced download is blocked fail-closed with reason
+`verdict-cover`), find, desktop toggle, settings, SafeSearch + block
+page. Old-harness detail: Wikipedia 23 scanned (20 covered), BBC 257
+(187 covered), canvas + video covered with videos paused, slow-3G
+first counts ~2 s.
+- **Bug 1 (tab strip collapsed at 1280×720):** fixed — `.tabstrip`
+  is now `flex:none; min-height:48px`; verified with real mouse clicks.
+- **Bug 2 (allowed-image downloads always blocked):** fixed — Worker
+  shim posts `verdictsById` (per-element) in `fp-status` AND unwraps
+  `verdictsBySource` keys to original URLs; `content.js` download
+  buttons post `elementId`; shell looks up by elementId first
+  (present-but-unknown fails closed, no by-source fallback).
+- **REGRESSION the Bug 2 redeploy caused (found by re-verification,
+  fixed same day):** the unwrap regex sat inside the `SHIM_JS`
+  template literal with single backslashes, so the deployed shim read
+  `//browse?u=…` (a comment) and failed to parse — `window.browser`
+  was never defined and the filter died on EVERY page (old harness
+  3/8, new 9/13). Fix: doubled backslashes + a warning comment in the
+  code. **Lesson: `node --check` cannot see inside a template literal
+  — always run `harness/test-shim.js`** (new permanent guard: evaluates
+  the template literal as the Worker does, proves the shim parses +
+  unwraps + decides). Worker redeployed (etag `e73c79ed`, 2026-11-19
+  11:14 UTC); live shim extracted from a proxied page and verified
+  parsing. Also: bump `ASSET_CACHE_VERSION` in `web-browser-worker.js`
+  whenever a file under `public/browser-assets/` changes (the Worker's
+  `caches.default` key had no version, so changed assets stayed stale
+  up to 24 h).
+- **Face model fixed (2026-11-19):** the face-api weights shard
+  (`tiny_face_detector_model-shard1`, no extension) was never deployed
+  — `pages_deploy.py` skipped unknown/extensionless files, so the
+  browser received the dashboard HTML (43,672 bytes) instead of the
+  weights and the face detector failed on every load (tensor shape
+  error: 30,088 values instead of 32,768). `pages_deploy.py` now
+  uploads extensionless files as `application/octet-stream`; Pages
+  redeployed (deployment `3104228d`); shard verified byte-identical
+  live (sha256 `b7503ce7…`), and a live probe confirmed the face
+  detector loads and finds the portrait face at 0.99 with no errors.
+- **Harness hardening (2026-11-19):** case E (canvas-video) failed
+  once on a race — the waitFor `scanned > 0` was already satisfied by
+  the previous page's counts, so it returned before the frame
+  navigated. Fixed: addr-gated waitFors (`03-canvas` /
+  `06-video-frames`) + one retry in `frameEval` on "Execution context
+  was destroyed". Case B had the same race earlier (fixed with a
+  settle-wait). Case m now uses real mouse clicks.
+- **Known quirks (2026-11-19):** (1) Worker-to-Worker fetch to
+  `*.workers.dev` returns Cloudflare error 1042 even with the subdomain
+  enabled — the domain check therefore uses a service binding to
+  `filter-platform-api`. (2) Cloudflare error 1010 blocks non-browser
+  User-Agents on `*.workers.dev` — the Worker sends a browser UA on its
+  API calls. (3) `<input type=image>` has no `naturalWidth`, so the
+  content script cannot read its pixels — it stays covered (fail
+  closed), even for a landscape picture. (4) Test page 01's `data-src`
+  image 404s — the page's JS sets `el.src` to a relative `data-src`
+  value, which the Worker does not rewrite (it rewrites `src`
+  attributes in HTML, not JS-set ones). Pre-existing rewrite gap,
+  separate from the shim fix. (5) Google bot-checks headless Chromium
+  to `/sorry` — SafeSearch is still proven via the decoded `continue=`
+  URL carrying `safe=active`.
+
 ## 0.2.1-test — launch-crash diagnostic build (2026-11-19, versionCode 6)
 - Same app as 0.2.0 plus crash reporting: catches `Throwable` (not just `Exception`) in the launch path, writes checkpoints + full crash (class, message, stack) to `startup-report.txt`, and shows a previous-crash screen on the next launch so Yakob can photograph it.
 - APK: `manual-build/out/FilterPlatform-diagnostic-0.2.1-test.apk`, 211,176,487 bytes, sha256 `9b5bd6887eb9083f89736bcd1e6e7c439dc3d0c21a1f1ab7e1e3f27df4d90e62`, apksigner v2+v3 true.
@@ -625,3 +705,114 @@ it cannot prove the GeckoView app launches on the phone.
 - APK: `manual-build/out/app-debug.apk`, 364,289,292 bytes (~348 MB), sha256 `78becf7355e54c67d24a3b4ff034c2d7ad5a5a46ef9ab217609639ee13350420`, apksigner v2+v3 true, badging versionCode 7 / versionName 0.2.2. Tests 59/59 pass (37 existing + 22 new).
 - NOT uploaded to Drive yet — the parent decides which build goes to Yakob; 0.2.1-test remains the current phone test. Only the phone can prove: ORT native libs loading on the BLU, on-device inference speed, real detection on phone photos, memory use with GeckoView + ORT together, and whether the app still launches at all with the extra ~150 MB. This build has never run on a device.
 - Known wart: the failure screen still says "diagnostic build 0.2.1-test" — it should say 0.2.2 someday.
+
+## 0.3.0 — proper browser UI, Chrome-like (2026-11-19, versionCode 8)
+
+Yakob: "It needs to have a proper browser like Google Chrome." This build
+turns the single-page prototype into a full browser on the same GeckoView
+engine. Same launch path and crash diagnostics as 0.2.1-test/0.2.2
+(MainActivity Throwable catch + startup-report.txt unchanged), same
+filter engine (RF-DETR Nano + EfficientDet/face, threshold from policy —
+0.50 vs 0.70 still Yakob's decision), same fail-closed rules.
+
+- **Tabs:** one GeckoSession per tab, one shared GeckoRuntime; tab strip
+  (title chips + close ×, `(private)` suffix, active highlight), `+`
+  button, tab-overview dialog (tap to switch, close per row). Non-private
+  tabs persist and restore on relaunch (TabStore + FileBrowserStorage);
+  private tabs (`usePrivateMode(true)`) never persist/restore and never
+  record history. Closing the last tab opens a fresh new tab.
+- **Omnibox:** address bar + search in one (DuckDuckGo default —
+  privacy-respecting, and the only engine whose SafeSearch rewrite the
+  filter already handled; Google/Bing selectable in Settings).
+  Suggestions from bookmarks (first), history, open tabs. Back /
+  forward / reload / stop (reload shows ✕ while loading) / home.
+- **History:** local only, recorded on page stop for non-private http(s)
+  pages; searchable list; clear with two-tap confirm.
+- **Bookmarks:** star toggle in the toolbar, list grouped by folder,
+  edit title/folder, delete. No sync — local only.
+- **Downloads:** DownloadManager (public Downloads dir); list with live
+  status/size, open, delete, clear completed. **Filter policy:**
+  `DownloadPolicy.decide` blocks a download when its host is blocked,
+  when the element's filter verdict was COVER/BLOCK/REVIEW, or when an
+  image download's verdict is unknown (fail closed) — a covered picture
+  cannot be downloaded as a way around the filter. The DownloadManager
+  id is stored on the record (`DownloadRecord.downloadManagerId`), so
+  DownloadsActivity looks downloads up by id, never by file name.
+  Pre-Android-10 (API 26–28) the storage permission is requested at
+  runtime; API 29+ needs none.
+- **New-tab page:** native view (not a web page) with a search box +
+  shortcuts (bookmarks + top sites from history).
+- **Settings:** search engine (DuckDuckGo/Google/Bing), homepage, clear
+  browsing data (history / download records directly; cookies, site
+  data and cache via `BrowserDataCleaner` on the browser's own
+  GeckoRuntime — Settings returns the flags and BrowserActivity clears
+  them on return), filter row (policy name + threshold; device/policy
+  screen via MainActivity), About (version 0.3.0, GeckoView 160
+  MPL-2.0, Android Components 160.0.1 MPL-2.0, RF-DETR Apache 2.0,
+  ONNX Runtime 1.32.0 MIT, EfficientDet prototype-only note).
+- **Page tools:** find in page (SessionFinder, "n of m"), share
+  (ACTION_SEND), desktop-site toggle per tab (desktop UA + viewport,
+  session recreated, persisted in TabState), long-press menu (open link
+  in new tab, copy link, download image/link — all policy-checked).
+- **Android Components:** assessed, deliberately NOT used for the state
+  layer. No AC browser-state artifacts are vendored (the manual build
+  only has GeckoView + AndroidX + Tink + ORT); pulling in
+  browser-state/store would mean vendoring ~10 more AARs and their
+  transitive deps by hand for no gain — the pure-Kotlin state layer
+  (`BrowserData.kt`: TabStore, HistoryStore, BookmarkStore,
+  DownloadStore, SettingsStore, Omnibox, DownloadPolicy) is fully
+  unit-tested on the JVM, the same pattern as FilterEngine. GeckoView
+  APIs are used directly (sessions, private mode, desktop UA, finder,
+  context menu, storage controller — all verified by javap against the
+  vendored AAR).
+- **New files:** `BrowserData.kt`, `BrowserDataTest.kt`,
+  `HistoryActivity.kt`, `BookmarksActivity.kt`, `DownloadsActivity.kt`,
+  `SettingsActivity.kt`, `DownloadHelper.kt`, `BrowserDataCleaner.kt`;
+  changed: `BrowserActivity.kt` (rewritten, 1,420 lines),
+  `AndroidManifest.xml` (4 new activities; BrowserActivity
+  `singleTask` so History/Bookmarks "open_url" reuses the browser;
+  WRITE_EXTERNAL_STORAGE maxSdkVersion 28), `build.sh` (version 8 /
+  0.3.0), `run-tests.sh` (new test class). `MainActivity.kt`,
+  `FilterEngine.kt`, the filter extension, the Worker, Gavhah and
+  SignalWire untouched. No Gradle, no release signing (debug key only),
+  no public publish, no account sync.
+- **Tests: 104/104 pass** (59 before + 44 BrowserDataTest + 1
+  setDownloadManagerId round-trip). Full-app compile proven by the
+  build below (kotlinc step 3 + d8 + packaging all green).
+- **APK:** `manual-build/out/FilterPlatform-0.3.0-browser.apk`,
+  364,358,924 bytes, sha256
+  `16d000b833ca9060a38e80c37cac2567f542d51412adcc067bcec1358328152c`,
+  apksigner v2+v3 true, badging versionCode 8 / versionName 0.3.0,
+  package com.filterplatform.app, minSdk 26 / targetSdk 34. Verified:
+  all 14 new/changed classes in classes.dex, omni.ja at assets root,
+  rfdetr-nano.onnx present, no zygotePreloadName in the manifest, no
+  secrets in the dex (grep clean).
+- **Drive (SEPARATE file, main APK and 0.2.1-test untouched):**
+  `FilterPlatform-0.3.0-browser.apk`, file id
+  `1fIrtVA92ifPitaW0tKZD40SZjjRRaioK` (size verified on Drive =
+  364,358,924 bytes) —
+  https://drive.google.com/file/d/1fIrtVA92ifPitaW0tKZD40SZjjRRaioK/view?usp=drivesdk
+- **HONEST LIMIT — read this before testing:** the phone crash is
+  STILL unresolved. 0.3.0 has the same launch path as 0.2.0/0.2.2 plus
+  the 0.2.1-test diagnostics, so **if 0.2.1-test still crashes on
+  Yakob's phone, 0.3.0 will almost certainly crash the same way**.
+  Test 0.2.1-test FIRST and report its verdict; only then install
+  0.3.0. The UI work here is verified in code + tests on this VM, but
+  nothing about this build has run on a phone.
+- **Phone test (only after the 0.2.1-test verdict; uninstall the old app
+  first, then install 0.3.0 from the Drive link above):** (1) app opens
+  to setup / browser — if it kicks out, photograph any crash screen
+  first (same as 0.2.1-test) and stop; (2) in the browser, tap `+` —
+  a second tab appears in the strip; switch between tabs; close one;
+  (3) type a word in the address bar — suggestions appear; pick one /
+  type an address — the page loads; back/forward/reload/stop/home work;
+  (4) open the ⋮ menu — Share, Desktop site, Bookmark, Find in page,
+  New private tab, History, Bookmarks, Downloads, Settings all open;
+  (5) bookmark a page (★), check it in Bookmarks, open it from there;
+  (6) visit two sites, check them in History, search history;
+  (7) long-press a picture — Download image is offered; try it on a
+  COVERED picture (it must be blocked with the filter explanation) and
+  on an allowed one (it must download and appear in Downloads);
+  (8) Settings — change the search engine, clear history, check About
+  shows 0.3.0; (9) close the app fully and reopen — non-private tabs
+  are back, private tabs are gone.
