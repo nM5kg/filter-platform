@@ -45,11 +45,14 @@ echo "== compile tests (kotlinc) =="
   -jvm-target 17 \
   "$APP/src/main/java/com/filterplatform/app/ApiClient.kt" \
   "$APP/src/main/java/com/filterplatform/app/FilterEngine.kt" \
+  "$APP/src/main/java/com/filterplatform/app/BrowserData.kt" \
   "$APP/src/test/java/com/filterplatform/app/ApiClientTest.kt" \
-  "$APP/src/test/java/com/filterplatform/app/FilterEngineTest.kt"
+  "$APP/src/test/java/com/filterplatform/app/FilterEngineTest.kt" \
+  "$APP/src/test/java/com/filterplatform/app/BrowserDataTest.kt"
 
 echo "== run tests (JUnitCore) =="
 java -cp "$OUT/test-classes:$STDLIB:$LIBS/json-20240303.jar:$LIBS/junit-4.13.2.jar:$LIBS/hamcrest-core-1.3.jar" \
   org.junit.runner.JUnitCore \
   com.filterplatform.app.ApiClientTest \
-  com.filterplatform.app.FilterEngineTest
+  com.filterplatform.app.FilterEngineTest \
+  com.filterplatform.app.BrowserDataTest
