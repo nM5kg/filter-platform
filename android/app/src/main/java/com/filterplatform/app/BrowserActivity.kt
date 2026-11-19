@@ -142,6 +142,14 @@ class BrowserActivity : Activity() {
 
     private lateinit var store: SecureStore
     private lateinit var engine: FilterEngine
+    /** The RF-DETR backend the engine's detector runs on — kept here
+     *  too, so the review handler can run the same model on a
+     *  finding's thumbnail for boxes (see handleReviewMessage). */
+    private lateinit var rfDetrBackend: RfDetrOrtBackend
+    /** Local review-decision store: a reviewed image is honoured
+     *  from here on later scans without re-asking (see
+     *  enrichWithCachedDecisions). */
+    private lateinit var reviewDecisionStore: ReviewDecisionStore
 
     // Pure state layer (BrowserData.kt) — no copies of these classes here.
     private lateinit var browserStorage: FileBrowserStorage
@@ -182,6 +190,11 @@ class BrowserActivity : Activity() {
     // The device's server policy when registered; the fail-closed local
     // default otherwise (FilterEngine.DEFAULT_POLICY).
     @Volatile private var policy: Policy = FilterEngine.DEFAULT_POLICY
+    /** The last server policy fetched (null when never fetched / not
+     *  registered). Kept apart from [policy] so the effective policy
+     *  can be re-resolved when the local setting changes (see
+     *  [effectivePolicy]). */
+    @Volatile private var serverPolicy: Policy? = null
     // Hosts the server says are blocked (filled from the policy/blocklist
     // when registered; empty until then — navigation still goes through
     // FilterEngine.shouldBlockNavigation for scheme checks).
@@ -210,6 +223,10 @@ class BrowserActivity : Activity() {
         /** Last filter verdict per element source URL (for the download
          *  policy: a covered/blocked image must not be downloadable). */
         val verdicts = HashMap<String, Verdict>()
+        /** Last scan's findings by element id — the review handler
+         *  looks a covered image up here by the id the content
+         *  script sends with {type:'review'}. Replaced on every scan. */
+        var findingsById = HashMap<String, ScanFinding>()
     }
 
     /** Open tabs, in the same order as [TabStore.list]. */
@@ -247,11 +264,12 @@ class BrowserActivity : Activity() {
         // CombinedPersonDetector in FilterEngine.kt). The RF-DETR backend
         // is created lazily on first use, on the message-delegate
         // (background) thread — never on the UI thread.
+        rfDetrBackend = RfDetrOrtBackend(applicationContext)
         engine = FilterEngine(
             CombinedPersonDetector(
                 listOf(
                     JsReportedPersonDetector(),
-                    RfDetrPersonDetector(RfDetrOrtBackend(applicationContext))
+                    RfDetrPersonDetector(rfDetrBackend)
                 )
             )
         )
@@ -263,6 +281,7 @@ class BrowserActivity : Activity() {
         bookmarkStore = BookmarkStore(browserStorage)
         downloadStore = DownloadStore(browserStorage)
         settingsStore = SettingsStore(browserStorage)
+        reviewDecisionStore = ReviewDecisionStore(browserStorage)
 
         setContentView(R.layout.activity_browser)
 
@@ -397,6 +416,11 @@ class BrowserActivity : Activity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode != REQUEST_SETTINGS || resultCode != Activity.RESULT_OK) return
+        // The local human-image-mode setting may have changed in
+        // Settings — re-resolve the effective policy (the server mode,
+        // when the server specified one, still wins).
+        policy = effectivePolicy()
+        updateFilterStatus()
         val flags = data?.getLongExtra(
             SettingsActivity.EXTRA_CLEAR_GECKO_FLAGS, 0L) ?: 0L
         if (flags == 0L) return
@@ -1430,11 +1454,18 @@ class BrowserActivity : Activity() {
     }
 
     /**
-     * The native bridge. The content script sends
-     * {"type":"scan","pageUrl":"...","findings":[...]} and this returns the
-     * FilterEngine decisions {"type":"decisions","decisions":[...]}.
-     * Any message that is not a scan, or any failure parsing it, returns
-     * null — the content script then keeps everything covered.
+     * The native bridge. Two message types, both from the content
+     * script via background.js (a generic relay — see
+     * filter-extension/background.js):
+     *   {"type":"scan", ...}   -> FilterEngine decisions (see
+     *     handleScanMessage).
+     *   {"type":"review", id, source, imageKey} -> second-stage
+     *     review for one covered image (see handleReviewMessage):
+     *     runs RF-DETR on the finding's thumbnail and replies
+     *     {"type":"review-decision", id, decision, boxes, best,
+     *     model, reason, contentHash}.
+     * Any other message, or any failure parsing it, returns null —
+     * the content script then keeps everything covered.
      *
      * Per-tab attribution: WebExtension.MessageSender.session (public
      * final field) is the session the message came from, so the
@@ -1454,38 +1485,315 @@ class BrowserActivity : Activity() {
             sender: WebExtension.MessageSender
         ): GeckoResult<Any>? {
             val json = message as? JSONObject ?: return null
-            val findings = try {
-                FilterEngine.parseScanMessage(json)
-            } catch (e: IllegalArgumentException) {
-                // Malformed scan message: do NOT guess — reply nothing, the
-                // content script keeps everything covered and retries.
-                return null
+            return when (json.optString("type")) {
+                "scan" -> handleScanMessage(json, sender)
+                "review" -> handleReviewMessage(json, sender)
+                else -> null
             }
-            val decisions = engine.decideAll(findings, policy)
-            val senderSession = sender.session
-            val tab = if (senderSession != null) {
-                tabs.firstOrNull { it.session === senderSession } ?: activeTab()
+        }
+    }
+
+    /** Resolve the tab a message came from (see filterMessageDelegate). */
+    private fun tabForSender(sender: WebExtension.MessageSender): Tab? {
+        val senderSession = sender.session
+        return if (senderSession != null) {
+            tabs.firstOrNull { it.session === senderSession } ?: activeTab()
+        } else {
+            activeTab()
+        }
+    }
+
+    /** Review-cache key for a finding: the key the content script
+     *  sent ('u:' + sha256 of the canonical URL), or — when the
+     *  script sent none (the pre-sync Android script) — a key
+     *  computed here from the thumbnail bytes ('b:') or, with no
+     *  thumbnail at all, from the source URL ('u:'). Null when
+     *  there is nothing to key on. */
+    private fun imageKeyForFinding(finding: ScanFinding): String? {
+        finding.imageKey?.takeIf { it.isNotBlank() }?.let { return it }
+        val thumb = finding.thumbnailDataUrl
+        if (thumb != null) {
+            val bytes = RfDetrPersonDetector.decodeDataUrl(thumb)
+            if (bytes != null) return FilterEngine.imageKeyForContent(bytes)
+        }
+        val source = finding.sourceUrl?.takeIf { it.isNotBlank() } ?: return null
+        return FilterEngine.imageKeyForUrl(source)
+    }
+
+    /** Attach locally recorded review decisions to findings that do
+     *  not already carry one from the content script, so the engine
+     *  honours a reviewed image verbatim on later scans instead of
+     *  re-deciding it. The content script's own cachedDecision (when
+     *  present) wins — it is the freshest copy of the same record. */
+    private fun enrichWithCachedDecisions(
+        findings: List<ScanFinding>
+    ): List<ScanFinding> {
+        return findings.map { finding ->
+            if (finding.cachedDecision != null) {
+                finding
             } else {
-                activeTab()
+                val key = imageKeyForFinding(finding) ?: return@map finding
+                val stored = try {
+                    reviewDecisionStore.lookup(key)
+                } catch (_: Exception) {
+                    null
+                } ?: return@map finding
+                finding.copy(cachedDecision = stored.toCachedDecision())
             }
-            if (tab != null) {
-                for ((finding, decision) in findings.zip(decisions)) {
-                    finding.sourceUrl?.let { tab.verdicts[it] = decision.verdict }
-                }
-                runOnUiThread {
-                    for (d in decisions) {
-                        when (d.verdict) {
-                            Verdict.ALLOW -> tab.allowedCount++
-                            Verdict.BLOCK -> tab.blockedCount++
-                            Verdict.COVER, Verdict.REVIEW -> tab.coveredCount++
-                        }
+        }
+    }
+
+    private fun handleScanMessage(
+        json: JSONObject,
+        sender: WebExtension.MessageSender
+    ): GeckoResult<Any>? {
+        val parsed = try {
+            FilterEngine.parseScanMessage(json)
+        } catch (e: IllegalArgumentException) {
+            // Malformed scan message: do NOT guess — reply nothing, the
+            // content script keeps everything covered and retries.
+            return null
+        }
+        val findings = enrichWithCachedDecisions(parsed)
+        val decisions = engine.decideAll(findings, policy)
+        val tab = tabForSender(sender)
+        if (tab != null) {
+            tab.findingsById = HashMap<String, ScanFinding>().also { map ->
+                for (finding in findings) map[finding.elementId] = finding
+            }
+            for ((finding, decision) in findings.zip(decisions)) {
+                finding.sourceUrl?.let { tab.verdicts[it] = decision.verdict }
+            }
+            runOnUiThread {
+                for (d in decisions) {
+                    when (d.verdict) {
+                        Verdict.ALLOW, Verdict.PAINTED -> tab.allowedCount++
+                        Verdict.BLOCK -> tab.blockedCount++
+                        Verdict.COVER, Verdict.REVIEW -> tab.coveredCount++
                     }
-                    if (tab === activeTab()) updateFilterStatus()
                 }
+                if (tab === activeTab()) updateFilterStatus()
             }
-            val reply = FilterEngine.buildDecisionsMessage(decisions)
+        }
+        val reply = FilterEngine.buildDecisionsMessage(decisions)
+        @Suppress("UNCHECKED_CAST")
+        return GeckoResult.fromValue(reply) as GeckoResult<Any>
+    }
+
+    /**
+     * Second-stage review for one covered image (Yakob req 2 + 3).
+     * The content script sends {type:'review', id, source, imageKey}
+     * when the user taps the request button on a covered image.
+     * Runs on the message-delegate (background) thread — RF-DETR
+     * inference (~0.3 s) never touches the UI thread.
+     *
+     * Order:
+     *  1. Find the finding by id (any tab's last scan). Unknown id,
+     *     or a finding with no thumbnail to run on -> reply
+     *     'uncertain' (stays covered; a review NEVER unblocks by
+     *     itself on failure).
+     *  2. A recorded decision for the image key — local store first,
+     *     then the server (GET /api/v1/review-decisions) — is
+     *     replied verbatim, without re-running the model.
+     *  3. Otherwise run RF-DETR on the thumbnail: best person score
+     *     + person boxes -> [FilterEngine.reviewDecision] with the
+     *     effective human-image mode.
+     *  4. Record the outcome locally (always) and on the server
+     *     (when registered; a failed POST never blocks or undoes the
+     *     UI decision — the local store is the fallback), under the
+     *     'u:' key the script sent and the 'b:' content-hash key.
+     * Reply: {type:'review-decision', id, decision, boxes, best,
+     * model:'rf-detr-nano', reason, contentHash} — decision in
+     * allow | allow_painted | block | uncertain; contentHash is the
+     * bare sha256 hex of the reviewed bytes, so the script can also
+     * cache under 'b:' + contentHash.
+     */
+    private fun handleReviewMessage(
+        json: JSONObject,
+        sender: WebExtension.MessageSender
+    ): GeckoResult<Any>? {
+        val id = json.optString("id", "").ifBlank { return null }
+        val reply = JSONObject()
+            .put("type", "review-decision")
+            .put("id", id)
+        fun uncertainReply(reason: String): GeckoResult<Any> {
+            reply.put("decision", "uncertain")
+                .put("boxes", org.json.JSONArray())
+                .put("best", 0.0)
+                .put("model", "rf-detr-nano")
+                .put("reason", reason)
             @Suppress("UNCHECKED_CAST")
             return GeckoResult.fromValue(reply) as GeckoResult<Any>
+        }
+        // 1. The finding (any tab — the review button belongs to the
+        //    page that reported it, which may not be the active tab).
+        val finding = tabs.asSequence()
+            .mapNotNull { it.findingsById[id] }
+            .firstOrNull()
+            ?: return uncertainReply("no finding for this image")
+        val mode = policy.humanImageMode ?: settingsStore.settings.humanImageMode
+        val imageKey = json.optString("imageKey", "").ifBlank { null }
+            ?: imageKeyForFinding(finding)
+        // 2. Already reviewed? Local store first, then the server.
+        if (imageKey != null) {
+            val stored = try {
+                reviewDecisionStore.lookup(imageKey)
+            } catch (_: Exception) {
+                null
+            }
+            if (stored != null) {
+                return reviewReply(reply, stored.decision, stored.boxes,
+                    stored.bestScore, "reviewed earlier", null)
+            }
+            val serverRecord = lookupServerReview(imageKey)
+            if (serverRecord != null) {
+                saveLocalReview(serverRecord, finding)
+                return reviewReply(reply, serverRecord.decision,
+                    serverRecord.boxes, serverRecord.bestScore,
+                    "reviewed earlier (server)", null)
+            }
+        }
+        // 3. Run RF-DETR on the thumbnail.
+        val thumbBytes = finding.thumbnailDataUrl?.let {
+            RfDetrPersonDetector.decodeDataUrl(it)
+        } ?: return uncertainReply("no thumbnail to review")
+        val image = try {
+            rfDetrBackend.decodeJpeg(thumbBytes)
+        } catch (_: Throwable) {
+            null
+        } ?: return uncertainReply("thumbnail could not be decoded")
+        val detections = try {
+            rfDetrBackend.personDetections(image)
+        } catch (_: Throwable) {
+            null
+        } ?: return uncertainReply("review model unavailable")
+        val decision = FilterEngine.reviewDecision(
+            detections.bestScore, detections.boxes, mode
+        )
+        val contentHash = FilterEngine.sha256Hex(thumbBytes)
+        val firstSignal = when {
+            finding.persons > 0 -> "efficientdet"
+            finding.faces > 0 -> "face-api"
+            else -> "none"
+        }
+        // 4. Record locally (always) and on the server (best-effort).
+        val stored = StoredReviewDecision(
+            imageKey = imageKey ?: FilterEngine.imageKeyForContent(thumbBytes),
+            decision = decision,
+            boxes = detections.boxes,
+            bestScore = detections.bestScore,
+            humanImageMode = mode,
+            imageUrl = finding.sourceUrl,
+            pageUrl = finding.pageUrl.ifBlank { null },
+            recordedAt = System.currentTimeMillis()
+        )
+        try {
+            reviewDecisionStore.save(stored)
+        } catch (_: Exception) {
+            // Local save failing must not undo the review reply.
+        }
+        recordServerReview(stored, firstSignal)
+        return reviewReply(reply, decision, detections.boxes,
+            detections.bestScore, reviewReason(decision, detections), contentHash)
+    }
+
+    /** Build a review-decision reply object (shared by the
+     *  already-reviewed and freshly-reviewed paths). */
+    private fun reviewReply(
+        reply: JSONObject,
+        decision: ReviewDecision,
+        boxes: List<PersonBox>,
+        best: Double,
+        reason: String,
+        contentHash: String?
+    ): GeckoResult<Any> {
+        reply.put("decision", ReviewDecision.wireName(decision))
+            .put("boxes", FilterEngine.boxesToJson(boxes))
+            .put("best", best)
+            .put("model", "rf-detr-nano")
+            .put("reason", reason)
+        if (contentHash != null) reply.put("contentHash", contentHash)
+        @Suppress("UNCHECKED_CAST")
+        return GeckoResult.fromValue(reply) as GeckoResult<Any>
+    }
+
+    /** Human-readable reason for a fresh review outcome (shown by
+     *  the content script; also the audit trail in the record). */
+    private fun reviewReason(
+        decision: ReviewDecision,
+        detections: RfDetrDetections
+    ): String = when (decision) {
+        ReviewDecision.ALLOW ->
+            "review: no person (best score ${detections.bestScore})"
+        ReviewDecision.ALLOW_PAINTED ->
+            "review: person confirmed (best score ${detections.bestScore}), " +
+                "person painted over"
+        ReviewDecision.BLOCK ->
+            "review: person confirmed (best score ${detections.bestScore}), " +
+                "whole image blocked"
+        ReviewDecision.UNCERTAIN ->
+            "review: uncertain (best score ${detections.bestScore}), stays covered"
+    }
+
+    /** Server lookup for a recorded decision (GET). Null when the
+     *  device is not registered, offline, or the server has no
+     *  decision for the key — all normal, never fatal. */
+    private fun lookupServerReview(imageKey: String): ReviewDecisionRecord? {
+        if (store.deviceId.isNullOrBlank() || store.apiToken.isNullOrBlank()) {
+            return null
+        }
+        return try {
+            ApiClient(store.baseUrl, store.apiToken).getReviewDecision(imageKey)
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    /** Save a server record into the local store (same shape the
+     *  engine honours), so the next scan needs no network. */
+    private fun saveLocalReview(
+        record: ReviewDecisionRecord,
+        finding: ScanFinding
+    ) {
+        try {
+            reviewDecisionStore.save(
+                StoredReviewDecision(
+                    imageKey = record.imageKey,
+                    decision = record.decision,
+                    boxes = record.boxes,
+                    bestScore = record.bestScore,
+                    humanImageMode = record.humanImageMode,
+                    imageUrl = record.imageUrl ?: finding.sourceUrl,
+                    pageUrl = record.pageUrl ?: finding.pageUrl.ifBlank { null },
+                    recordedAt = System.currentTimeMillis()
+                )
+            )
+        } catch (_: Exception) {
+            // Best-effort; the server still holds the record.
+        }
+    }
+
+    /** POST a fresh review decision to the server. Fire-and-forget:
+     *  any failure is swallowed — the local store already holds the
+     *  decision, and a failed POST must never block or undo the UI
+     *  decision. Only when the device is registered. */
+    private fun recordServerReview(stored: StoredReviewDecision, firstSignal: String) {
+        if (store.deviceId.isNullOrBlank() || store.apiToken.isNullOrBlank()) return
+        try {
+            ApiClient(store.baseUrl, store.apiToken).recordReviewDecision(
+                ReviewDecisionRecord(
+                    imageKey = stored.imageKey,
+                    imageUrl = stored.imageUrl,
+                    pageUrl = stored.pageUrl,
+                    decision = stored.decision,
+                    bestScore = stored.bestScore,
+                    boxes = stored.boxes,
+                    humanImageMode = stored.humanImageMode,
+                    firstSignal = firstSignal
+                )
+            )
+        } catch (_: Exception) {
+            // Swallowed by design (see above).
         }
     }
 
@@ -1507,16 +1815,44 @@ class BrowserActivity : Activity() {
 
     // ------------------------------------------------------------- policy
 
+    /**
+     * The effective policy the engine decides against: the server
+     * policy when one was fetched, with the server's human-image
+     * mode when the server specified one — otherwise the LOCAL
+     * setting from Settings (SettingsStore). With no server policy
+     * at all (not registered / offline), the fail-closed local
+     * default with the local human-image mode. So: the server mode
+     * wins when present; the local setting is authoritative when
+     * there is no server fetch or the server sent no mode.
+     */
+    private fun effectivePolicy(): Policy {
+        val localMode = try {
+            settingsStore.settings.humanImageMode
+        } catch (_: Exception) {
+            HumanImageMode.PAINT
+        }
+        val server = serverPolicy
+        return if (server != null) {
+            server.copy(humanImageMode = server.humanImageMode ?: localMode)
+        } else {
+            FilterEngine.DEFAULT_POLICY.copy(humanImageMode = localMode)
+        }
+    }
+
     /** Load the device's server policy when registered; otherwise keep the
      *  fail-closed local default. Never fails the browser: on any error the
      *  default policy stays in force. */
     private fun loadPolicy() {
         val policyId = store.policyId
-        if (policyId.isNullOrBlank() || store.deviceId.isNullOrBlank()) return
+        if (policyId.isNullOrBlank() || store.deviceId.isNullOrBlank()) {
+            policy = effectivePolicy()
+            return
+        }
         thread {
             try {
                 val p = ApiClient(store.baseUrl, store.apiToken).getPolicy(policyId)
-                policy = p
+                serverPolicy = p
+                policy = effectivePolicy()
                 runOnUiThread { updateFilterStatus() }
             } catch (_: Exception) {
                 // Offline / bad token: keep DEFAULT_POLICY (fail closed).

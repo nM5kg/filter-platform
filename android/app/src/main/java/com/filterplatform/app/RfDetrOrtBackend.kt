@@ -10,7 +10,10 @@
 //   3. preprocess exactly like the benchmark (stretch to 384x384,
 //      half-pixel bilinear, antialias off, ImageNet normalise, NCHW),
 //      run OrtSession, and return the best person score (max sigmoid
-//      over the 300 queries at class slot 1).
+//      over the 300 queries at class slot 1) — plus, since 0.3.1,
+//      the person boxes ("dets" is normalised cxcywh, verified
+//      empirically 2026-11-19; decoded by the pure
+//      RfDetrPersonDetector.decodePersonDetections in FilterEngine.kt).
 //
 // Model: RF-DETR Nano, Apache 2.0, officially agreed person model.
 // onnxruntime-android 1.32.0 (MIT). Session options match the benchmark
@@ -135,6 +138,19 @@ class RfDetrOrtBackend(context: Context) : RfDetrBackend {
     // ------------------------------------------------------------ inference
 
     override fun bestPersonScore(image: DecodedImage): Double? {
+        return personDetections(image)?.bestScore
+    }
+
+    /**
+     * Full run: best person score + every person box at or above the
+     * box threshold. "dets" [1,300,4] is normalised cxcywh — VERIFIED
+     * empirically 2026-11-19 (see FilterEngine.kt
+     * RfDetrPersonDetector): decode through the pure
+     * [RfDetrPersonDetector.decodePersonDetections], never by
+     * guessing xyxy. Any failure returns null, exactly like
+     * [bestPersonScore] — the detector above maps null to UNKNOWN.
+     */
+    override fun personDetections(image: DecodedImage): RfDetrDetections? {
         val sess = getSession() ?: return null
         return try {
             synchronized(sessionLock) {
@@ -146,11 +162,19 @@ class RfDetrOrtBackend(context: Context) : RfDetrBackend {
                     longArrayOf(1, 3, INPUT_SIZE.toLong(), INPUT_SIZE.toLong())
                 ).use { tensor ->
                     sess.run(mapOf("input" to tensor)).use { result ->
-                        // Output 0 is "dets" [1,300,4]; output 1 is "labels"
-                        // [1,300,91]. Only labels matter: the verdict needs
-                        // the best person score, not boxes.
+                        // Output 0 is "dets" [1,300,4] (normalised
+                        // cxcywh); output 1 is "labels" [1,300,91]
+                        // (raw logits). The pure decoder turns them
+                        // into a best score + fraction person boxes.
+                        val dets = result.get(0) as OnnxTensor
                         val labels = result.get(1) as OnnxTensor
-                        bestPersonScoreFromLabels(labels.floatBuffer)
+                        val detsArray = FloatArray(NUM_QUERIES * 4)
+                        dets.floatBuffer.get(detsArray)
+                        val labelsArray = FloatArray(NUM_QUERIES * NUM_CLASSES)
+                        labels.floatBuffer.get(labelsArray)
+                        RfDetrPersonDetector.decodePersonDetections(
+                            detsArray, labelsArray
+                        )
                     }
                 }
             }
@@ -164,6 +188,9 @@ class RfDetrOrtBackend(context: Context) : RfDetrBackend {
      * benchmark's decode (decode_detections with background_class_id=None):
      * per-class sigmoid, NOT softmax; logits clipped to [-88, 88] exactly
      * as the reference decode does before the sigmoid.
+     * Kept for reference: [bestPersonScore] now goes through
+     * [personDetections] (same max, plus boxes), which shares this
+     * sigmoid/clip convention via decodePersonDetections.
      */
     internal fun bestPersonScoreFromLabels(labels: FloatBuffer): Double {
         var best = 0.0

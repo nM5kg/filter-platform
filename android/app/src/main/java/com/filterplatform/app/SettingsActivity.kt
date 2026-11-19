@@ -50,10 +50,9 @@ class SettingsActivity : Activity() {
         const val EXTRA_CLEAR_GECKO_FLAGS = "clear_gecko_flags"
 
         // App version, hardcoded: must match build.sh
-        // --version-name 0.3.0 / --version-code 8 (update build.sh when
-        // bumping this — build.sh still said 0.2.2 / 7 when this screen
-        // was written, so the coordinator must bump it to 0.3.0 / 8).
-        const val APP_VERSION = "0.3.0"
+        // --version-name 0.3.1 / --version-code 9 (update build.sh when
+        // bumping this).
+        const val APP_VERSION = "0.3.1"
     }
 
     private var settingsStore: SettingsStore? = null
@@ -219,6 +218,39 @@ class SettingsActivity : Activity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
         parent.addView(deviceButton)
+
+        // Human pictures on review (Yakob req 3, 0.3.1): paint the
+        // person over (default) or block the whole picture. This is
+        // the LOCAL setting: it rules when the device is not
+        // registered or the server policy names no mode; a server
+        // mode, when the server specifies one, wins (see
+        // BrowserActivity.effectivePolicy). The 60% rule always
+        // applies: when the person covers most of the picture, the
+        // whole picture is blocked even in paint mode.
+        sectionHeader(parent, "מענטש־בילדער — וואָס טאָן בײַ אַ באַשטעטיקטן מענטש?")
+        val modeGroup = RadioGroup(this).apply {
+            orientation = RadioGroup.VERTICAL
+        }
+        val modeOptions = listOf(
+            "מאָלן דעם מענטש (דיפֿאָלט)" to HumanImageMode.PAINT,
+            "בלאָקירן דאָס גאַנצע בילד" to HumanImageMode.BLOCK
+        )
+        val currentMode = currentSettings().humanImageMode
+        for ((label, mode) in modeOptions) {
+            val radio = RadioButton(this).apply {
+                text = label
+                isChecked = mode == currentMode
+                setOnClickListener { saveHumanImageMode(mode) }
+            }
+            modeGroup.addView(radio)
+        }
+        parent.addView(modeGroup)
+        parent.addView(TextView(this).apply {
+            text = "אויב דער מענטש נעמט מער ווי 60% פֿון בילד, ווערט דאָס גאַנצע בילד " +
+                "בלאָקירט אפֿילו אין מאָלן־מאָדוס"
+            textSize = 13f
+            setPadding(0, 8, 0, 0)
+        })
     }
 
     private fun buildAboutSection(parent: LinearLayout) {
@@ -260,8 +292,25 @@ class SettingsActivity : Activity() {
         }
     }
 
-    private fun saveHomepage() {
-        var url = homepageInput.text.toString().trim()
+    private fun saveHumanImageMode(mode: HumanImageMode) {
+        val store = settingsStore
+        if (store == null) {
+            statusText.text = "Could not save human-image mode: settings storage is unavailable."
+            return
+        }
+        try {
+            store.save(store.settings.copy(humanImageMode = mode))
+            statusText.text = if (mode == HumanImageMode.PAINT) {
+                "Human-image mode saved: paint the person over."
+            } else {
+                "Human-image mode saved: block the whole picture."
+            }
+        } catch (t: Throwable) {
+            statusText.text = "Could not save human-image mode: ${t.message ?: t.javaClass.simpleName}"
+        }
+    }
+
+    private fun saveHomepage() {        var url = homepageInput.text.toString().trim()
         if (url.isBlank()) {
             statusText.text = "Homepage cannot be blank."
             return
@@ -346,7 +395,12 @@ class SettingsActivity : Activity() {
             try {
                 val p = ApiClient(baseUrl, token).getPolicy(policyId)
                 runOnUiThread {
-                    policyText.text = "Policy: ${p.name}\nAuto-decide threshold: ${p.autoDecideThreshold}"
+                    val modeText = when (p.humanImageMode) {
+                        HumanImageMode.PAINT -> "paint (server)"
+                        HumanImageMode.BLOCK -> "block (server)"
+                        null -> "${HumanImageMode.wireName(currentSettings().humanImageMode)} (local setting — server names no mode)"
+                    }
+                    policyText.text = "Policy: ${p.name}\nAuto-decide threshold: ${p.autoDecideThreshold}\nHuman image mode: $modeText"
                 }
             } catch (t: Throwable) {
                 runOnUiThread {
@@ -360,6 +414,8 @@ class SettingsActivity : Activity() {
 
     private fun showDefaultPolicy(note: String) {
         val d = FilterEngine.DEFAULT_POLICY
-        policyText.text = "Policy: ${d.name}\nAuto-decide threshold: ${d.autoDecideThreshold}\n$note"
+        val localMode = currentSettings().humanImageMode
+        policyText.text = "Policy: ${d.name}\nAuto-decide threshold: ${d.autoDecideThreshold}\n" +
+            "Human image mode: ${HumanImageMode.wireName(localMode)} (local setting)\n$note"
     }
 }

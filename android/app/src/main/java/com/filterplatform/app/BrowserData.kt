@@ -738,11 +738,13 @@ enum class SearchEngine {
 }
 
 /** Browser settings. Defaults: DuckDuckGo, the Filter Platform
- *  dashboard as homepage, desktop-site off. */
+ *  dashboard as homepage, desktop-site off, human images painted
+ *  (not blocked) on review. */
 data class BrowserSettings(
     val searchEngine: SearchEngine,
     val homepage: String,
-    val desktopSiteDefault: Boolean
+    val desktopSiteDefault: Boolean,
+    val humanImageMode: HumanImageMode = HumanImageMode.PAINT
 )
 
 /** Loads/saves [BrowserSettings]; missing or corrupt storage yields the defaults. */
@@ -788,7 +790,10 @@ class SettingsStore(private val storage: BrowserStorage) {
                     .ifBlank { DEFAULT_SETTINGS.homepage },
                 desktopSiteDefault = o.optBoolean(
                     "desktopSiteDefault", DEFAULT_SETTINGS.desktopSiteDefault
-                )
+                ),
+                humanImageMode = HumanImageMode.parse(
+                    o.optString("humanImageMode", "")
+                ) ?: DEFAULT_SETTINGS.humanImageMode
             )
         } catch (_: Exception) {
             DEFAULT_SETTINGS
@@ -800,8 +805,144 @@ class SettingsStore(private val storage: BrowserStorage) {
             .put("searchEngine", settings.searchEngine.name)
             .put("homepage", settings.homepage)
             .put("desktopSiteDefault", settings.desktopSiteDefault)
+            .put("humanImageMode", HumanImageMode.wireName(settings.humanImageMode))
             .toString()
         storage.save(STORAGE_KEY, json)
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Review decisions (local cache)
+// ---------------------------------------------------------------------------
+
+/** One locally recorded review decision, as the engine honours it. */
+data class StoredReviewDecision(
+    val imageKey: String,
+    val decision: ReviewDecision,
+    val boxes: List<PersonBox>,
+    val bestScore: Double,
+    val humanImageMode: HumanImageMode,
+    val imageUrl: String?,
+    val pageUrl: String?,
+    /** Epoch millis, for the eviction order (oldest first). */
+    val recordedAt: Long
+) {
+    fun toCachedDecision(): CachedDecision = CachedDecision(
+        ReviewDecision.wireName(decision), boxes
+    )
+}
+
+/**
+ * Local review-decision store (BrowserStorage key
+ * "review_decisions"): image_key -> [StoredReviewDecision]. This is
+ * the app's own memory of reviewed images — a reviewed image is not
+ * re-asked on later scans (BrowserActivity attaches the stored
+ * decision to the finding before deciding, and the engine honours it
+ * verbatim). The server record (ApiClient.recordReviewDecision) is
+ * the shared copy; this store is the offline fallback and the fast
+ * path, and it is also what a review is honoured from when the
+ * device is not registered. Capped at 500 entries (oldest evicted
+ * first); a corrupt file loads as empty, never a crash.
+ */
+class ReviewDecisionStore(private val storage: BrowserStorage) {
+    companion object {
+        const val STORAGE_KEY = "review_decisions"
+        const val MAX_ENTRIES = 500
+    }
+
+    private var entries: ArrayList<StoredReviewDecision> = loadFromStorage()
+
+    fun lookup(imageKey: String): StoredReviewDecision? =
+        entries.firstOrNull { it.imageKey == imageKey }
+
+    fun count(): Int = entries.size
+
+    /** Save (upsert) a decision: a later review of the same image
+     *  replaces the earlier one, newest first in eviction order. */
+    fun save(record: StoredReviewDecision) {
+        entries.removeAll { it.imageKey == record.imageKey }
+        entries.add(record)
+        while (entries.size > MAX_ENTRIES) entries.removeAt(0)
+        persist()
+    }
+
+    fun clear() {
+        entries.clear()
+        persist()
+    }
+
+    private fun persist() {
+        try {
+            val arr = JSONArray()
+            for (e in entries) {
+                val boxes = JSONArray()
+                for (b in e.boxes) {
+                    boxes.put(
+                        JSONObject().put("x", b.x).put("y", b.y)
+                            .put("w", b.w).put("h", b.h).put("score", b.score)
+                    )
+                }
+                val o = JSONObject()
+                    .put("imageKey", e.imageKey)
+                    .put("decision", ReviewDecision.wireName(e.decision))
+                    .put("boxes", boxes)
+                    .put("bestScore", e.bestScore)
+                    .put("humanImageMode", HumanImageMode.wireName(e.humanImageMode))
+                    .put("recordedAt", e.recordedAt)
+                if (e.imageUrl != null) o.put("imageUrl", e.imageUrl)
+                if (e.pageUrl != null) o.put("pageUrl", e.pageUrl)
+                arr.put(o)
+            }
+            storage.save(STORAGE_KEY, arr.toString())
+        } catch (_: Exception) {
+            // Best-effort persistence, like every store here.
+        }
+    }
+
+    private fun loadFromStorage(): ArrayList<StoredReviewDecision> {
+        val out = ArrayList<StoredReviewDecision>()
+        val json = storage.load(STORAGE_KEY) ?: return out
+        try {
+            val arr = JSONArray(json)
+            for (i in 0 until arr.length()) {
+                val o = arr.optJSONObject(i) ?: continue
+                val decision = ReviewDecision.parse(o.optString("decision", ""))
+                    ?: continue
+                val key = o.optString("imageKey", "").ifBlank { continue }
+                val boxes = ArrayList<PersonBox>()
+                val barr = o.optJSONArray("boxes")
+                if (barr != null) {
+                    for (j in 0 until barr.length()) {
+                        val b = barr.optJSONObject(j) ?: continue
+                        PersonBox.fromWire(
+                            if (b.has("x")) b.optDouble("x") else null,
+                            if (b.has("y")) b.optDouble("y") else null,
+                            if (b.has("w")) b.optDouble("w") else null,
+                            if (b.has("h")) b.optDouble("h") else null,
+                            if (b.has("score")) b.optDouble("score") else null
+                        )?.let { boxes.add(it) }
+                    }
+                }
+                out.add(
+                    StoredReviewDecision(
+                        imageKey = key,
+                        decision = decision,
+                        boxes = boxes,
+                        bestScore = o.optDouble("bestScore", 0.0),
+                        humanImageMode = HumanImageMode.parse(
+                            o.optString("humanImageMode", "")
+                        ) ?: HumanImageMode.PAINT,
+                        imageUrl = if (o.has("imageUrl")) o.optString("imageUrl") else null,
+                        pageUrl = if (o.has("pageUrl")) o.optString("pageUrl") else null,
+                        recordedAt = o.optLong("recordedAt", 0L)
+                    )
+                )
+            }
+        } catch (_: Exception) {
+            out.clear()
+        }
+        while (out.size > MAX_ENTRIES) out.removeAt(0)
+        return out
     }
 }
 
@@ -1011,6 +1152,12 @@ object DownloadPolicy {
             )
             Verdict.REVIEW -> return DownloadDecision.BLOCK(
                 "content has not been reviewed by the filter"
+            )
+            // PAINTED (0.3.1): the picture is visible with the person
+            // painted over — but its raw bytes still contain the
+            // person, so downloading it would bypass the paint.
+            Verdict.PAINTED -> return DownloadDecision.BLOCK(
+                "content is shown painted over; the original image cannot be downloaded"
             )
             Verdict.ALLOW, null -> { /* fall through to the image check */ }
         }
