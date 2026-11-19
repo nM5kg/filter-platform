@@ -25,7 +25,7 @@ authoritative tech list is now `TECH-STACK.md` (Yakob, 2026-11-19; see
 only GitHub / Cloudflare / Neon (+ Playwright as test tooling) are
 **live-connected** today; Queues/R2 are deferred until the scanner
 becomes a deployed service, WAF/Turnstile until production hardening;
-GeckoView/Kotlin are the app stack (phone work parked); OpenVINO/ONNX/
+GeckoView/Kotlin are the app stack (phone work: 0.2.1-test diagnostic APK awaiting Yakob's phone verdict — see Browser status 2026-11-19 below); OpenVINO/ONNX/
 OpenCV/OMZ/Hugging Face/PyTorch are model tooling and research sources,
 not accounts to connect.
 
@@ -259,6 +259,56 @@ the Android browser sees — that proof now lives inside GeckoView.
 
 ---
 
+## Browser status — 2026-11-19 (first goal, per Yakob 2026-11-19)
+
+- **0.2.0** (versionCode 5, 211 MB): real v1.2.0 engine in the app
+  (EfficientDet + face fallback, Yiddish block page, SafeSearch). **Still
+  crashes on Yakob's BLU B1680V** ("keeps stopping / not responding") —
+  cause unresolved. Ruled out: 16 KB page size (all `.so` 16 KB-aligned),
+  `zygotePreloadName` (0 in merged manifest), targetSdk 34. Leading
+  suspects: an `Error` (not `Exception`) escaping the old `catch
+  (Exception)` hole; keystore ANR on the main thread. The minimal
+  no-Gecko test APK opened on his phone, so skeleton/manifest/dex/signing
+  are fine; the 0.1.3 no-Gecko test result is still unknown.
+- **0.2.1-test** (versionCode 6, 211,176,487 bytes, sha256
+  `9b5bd688…90e62`, v2+v3 signed): diagnostic build — catches `Throwable`
+  in the launch path, writes checkpoints + full crash to
+  `startup-report.txt`, shows a crash screen on the next launch to
+  photograph. On Drive as a **separate file** (id
+  `1hwlBJDmb7Tn1m2LoWmAQoAeYZDvO2hPR`); the main Drive APK is untouched
+  (still 0.2.0). **Awaiting Yakob's phone verdict** (opens / crash-screen
+  photo / just "keeps stopping").
+- **0.2.2** (versionCode 7, 364,289,292 bytes, sha256 `78becf73…0420`,
+  59/59 tests): RF-DETR Nano ONNX in the app (official ONNX, hash
+  matches the benchmarked file) + ONNX Runtime 1.32.0 CPU. Voting:
+  PERSON if either detector says person; UNKNOWN stays covered. Threshold
+  still flows from policy (0.50 vs 0.70 still Yakob's decision).
+  **Local only** — next test after the 0.2.1 verdict; do NOT replace the
+  main Drive APK with it yet. Known wart: the failure screen still says
+  "diagnostic build 0.2.1-test" (cosmetic).
+- **Canvas + video in the app:** done in code — video frame sampling +
+  re-pause when a covered video is restarted, hash-gated re-sampling of
+  animated canvases, dynamic-video listeners; WebGL stays covered
+  (pixels unreadable → fail closed). Phone proof still needed. The
+  **extension's** canvas/video gap is a separate item (needs Yakob's
+  build decision).
+- **Web demo — live:** `https://filter-platform-dashboard.pages.dev/browser.html`
+  (proxy Worker `filter-platform-web-browser`; test pages at
+  `/test-pages/`). Verified: Wikipedia 23 scanned (20 covered), BBC 257
+  (187 covered), canvas + video covered with videos paused, WebGL
+  covered, facebook.com → Yiddish block page, SafeSearch rewrites work.
+  **Honest limit:** it runs in Chromium, not GeckoView, and uses the
+  EfficientDet JS detector, not the native RF-DETR path. It proves the
+  filter pipeline; it **cannot** prove the GeckoView app launches on his
+  phone. Logins/cookies on proxied sites mostly fail.
+- **Still open:** threshold 0.50 vs 0.70; extension canvas/video; R2
+  enabling (blocked at account level, needs Yakob in the dashboard);
+  release signing (debug key only on all test builds — nothing
+  release-signed, nothing published, Download Center Android stays OFF).
+  Full detail: `android/GECKOVIEW-PROTOTYPE.md` (§0.2.1-test, §0.2.2).
+
+---
+
 ## Technology list — chosen vs live-connected (Yakob, 2026-11-19)
 
 Source: `TECH-STACK.md` — Yakob's authoritative tech list (latest
@@ -476,6 +526,20 @@ negatives, cache hit rate.
   recall 1.000 @0.50 / 0.909 @0.70, precision 1.000; Small 572 ms /
   658 ms, 1.52 img/s, recall 1.000 @0.50 / 0.727 @0.70. Both beat the
   EfficientDet baseline. **Nano recommended.**
+- **Web demo (2026-11-19):** the browser is also usable on the web —
+  demo shell https://filter-platform-dashboard.pages.dev/browser.html,
+  proxy Worker `filter-platform-web-browser` (same `content.js` /
+  detector / models as the app, in-page JS translation of
+  `FilterEngine.decide`, SafeSearch + Yiddish block page enforced
+  server-side). Verified live in Playwright: 8/8 main cases + 5/5 test
+  pages (Wikipedia 20 covered / 3 allowed of 23; BBC 187 covered / 70
+  allowed of 257; canvas/video covered, videos paused; facebook.com →
+  Yiddish block page; Google `safe=active`, Bing `adlt=strict`). It
+  proves the filter pipeline in Chromium — it does NOT prove the
+  GeckoView app launches on the phone, Gecko-specific behaviour, the
+  native RF-DETR path, logins through the proxy, or phone performance.
+  See `android/GECKOVIEW-PROTOTYPE.md` §Web demo. The phone test in
+  §5 above is still required.
 
 ## Open items / caveats (carried over — do not lose these)
 
