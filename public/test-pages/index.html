@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Filter test pages — index</title>
+<style>body{font-family:sans-serif;margin:20px;max-width:800px}li{margin:8px 0}</style>
+</head>
+<body>
+<h1>Filter Platform — GeckoView prototype test pages</h1>
+<p>Serve this folder over HTTP (<code>python3 -m http.server 8130 --bind 127.0.0.1</code>)
+and open the pages in the Filter Browser. Every visual element must be
+<b>covered</b> (dark overlay, "Filtered — image covered") on first paint,
+because this prototype has no on-device detector yet — every finding is
+REVIEW, and REVIEW stays covered. The status line at the bottom of the
+browser shows the covered/allowed/blocked counts.</p>
+<ol>
+  <li><a href="01-html-images.html">01 — HTML images</a> (&lt;img&gt;, picture/srcset, lazy, data-src)</li>
+  <li><a href="02-css-backgrounds.html">02 — CSS backgrounds</a> (background-image, data-URI, sprite)</li>
+  <li><a href="03-canvas.html">03 — Canvas 2D</a> (drawImage person + landscape, animated video canvas)</li>
+  <li><a href="04-svg.html">04 — SVG</a> (inline SVG with raster image, &lt;img src="*.svg"&gt;)</li>
+  <li><a href="05-webgl.html">05 — WebGL</a> (textured quad with a person photo, procedural shader)</li>
+  <li><a href="06-video-frames.html">06 — Video frames</a> (paused at 5 s, autoplaying loop, poster)</li>
+  <li><a href="07-live-streams.html">07 — Live streams</a> (canvas.captureStream, optional camera)</li>
+  <li><a href="08-dynamic-content.html">08 — Dynamic content</a> (added after load, src swaps, infinite scroll)</li>
+</ol>
+<p>Assets are real photos/video from the scanner's labeled test set:
+<code>assets/p1-huang-portrait.jpg</code> (person),
+<code>assets/d1-crowd-funeral.jpg</code> (crowd),
+<code>assets/l1-glacier-lake.jpg</code> (landscape, no person),
+<code>assets/obama-chile-480p.webm</code> (Obama speaking, person in frame).</p>
+<p>Expected result on every page in this prototype: <b>everything visual
+covered, nothing allowed</b>. If anything is visible uncovered, that is a
+filter failure — note which element and how it got through.</p>
+</body>
+</html>

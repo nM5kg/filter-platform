@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>06 — Video frames</title>
+<style>body{font-family:sans-serif;margin:20px;max-width:900px}video{display:block;border:1px solid #888;margin:10px 0;background:#000}</style>
+</head>
+<body>
+<h1>06 — Video frames</h1>
+<p>Expected: <b>all three videos are covered</b> (and paused when covered —
+the prototype pauses covered videos so hidden video does not keep playing
+audio). Obama is visible in frame throughout the clip, so any sampled frame
+shows a person.</p>
+
+<h2>Video paused at 5 s (deterministic frame)</h2>
+<video id="v-paused" src="assets/obama-chile-480p.webm" width="854" height="480" muted playsinline preload="auto"></video>
+
+<h2>Video autoplaying, muted, loop</h2>
+<video id="v-playing" src="assets/obama-chile-480p.webm" width="854" height="480" muted playsinline autoplay loop preload="auto"></video>
+
+<h2>Video with a poster image (person photo)</h2>
+<video id="v-poster" src="assets/obama-chile-480p.webm" width="854" height="480" muted playsinline preload="none" poster="assets/p1-huang-portrait.jpg"></video>
+
+<p id="status">loading…</p>
+<script>
+const v = document.getElementById('v-paused');
+v.addEventListener('loadedmetadata', () => {
+  v.currentTime = 5;
+});
+v.addEventListener('seeked', () => {
+  document.getElementById('status').textContent = 'paused video seeked to 5 s and paused.';
+});
+</script>
+</body>
+</html>

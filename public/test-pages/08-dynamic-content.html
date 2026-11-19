@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>08 — Dynamic content</title>
+<style>body{font-family:sans-serif;margin:20px;max-width:900px}img,canvas{display:block;border:1px solid #888;margin:10px 0;max-width:100%}button{font-size:16px;padding:8px 16px;margin:4px}</style>
+</head>
+<body>
+<h1>08 — Dynamic content</h1>
+<p>Expected: <b>everything added after load is covered too</b> — the image
+added at 2 s, anything added by the buttons, the carousel's swapped images,
+and the images appended by scrolling to the bottom. The MutationObserver
+must catch all of it; nothing may flash uncovered first.</p>
+
+<h2>Auto-added after 2 s</h2>
+<div id="auto-slot"><p>(an image appears here at 2 s)</p></div>
+
+<h2>Buttons</h2>
+<button id="add-img">Add person image</button>
+<button id="add-bg">Add background div</button>
+<button id="add-canvas">Add canvas (person)</button>
+<div id="slot"></div>
+
+<h2>Carousel — swaps the image every 3 s</h2>
+<img id="carousel" src="assets/l1-glacier-lake.jpg" width="480" height="318" alt="carousel">
+
+<h2>Infinite scroll — scroll to the bottom to append more</h2>
+<div id="feed"></div>
+<p id="status">loading…</p>
+
+<script>
+const st = document.getElementById('status');
+let n = 0;
+function personImg(){
+  const i = document.createElement('img');
+  i.src = 'assets/p1-huang-portrait.jpg'; i.width = 480; i.height = 640;
+  i.alt = 'dynamically added person ' + (++n);
+  return i;
+}
+setTimeout(function(){
+  const slot = document.getElementById('auto-slot');
+  slot.innerHTML = '';
+  slot.appendChild(personImg());
+  st.textContent = 'auto image added at 2 s.';
+}, 2000);
+
+document.getElementById('add-img').addEventListener('click', () => {
+  document.getElementById('slot').appendChild(personImg());
+});
+document.getElementById('add-bg').addEventListener('click', () => {
+  const d = document.createElement('div');
+  d.style.cssText = 'width:480px;height:320px;background-image:url("assets/d1-crowd-funeral.jpg");background-size:cover';
+  document.getElementById('slot').appendChild(d);
+});
+document.getElementById('add-canvas').addEventListener('click', () => {
+  const cv = document.createElement('canvas');
+  cv.width = 480; cv.height = 640;
+  document.getElementById('slot').appendChild(cv);
+  const im = new Image();
+  im.onload = () => cv.getContext('2d').drawImage(im, 0, 0, 480, 640);
+  im.src = 'assets/p1-huang-portrait.jpg';
+});
+
+const sources = ['assets/l1-glacier-lake.jpg', 'assets/p1-huang-portrait.jpg', 'assets/d1-crowd-funeral.jpg'];
+let ci = 0;
+setInterval(function(){
+  ci = (ci + 1) % sources.length;
+  document.getElementById('carousel').src = sources[ci];
+}, 3000);
+
+let feedN = 0;
+function addFeed(){
+  const f = document.getElementById('feed');
+  for (let k = 0; k < 3; k++) {
+    f.appendChild(personImg());
+    feedN++;
+  }
+  st.textContent = 'feed items: ' + feedN;
+}
+window.addEventListener('scroll', function(){
+  if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 200) addFeed();
+});
+addFeed();
+</script>
+</body>
+</html>

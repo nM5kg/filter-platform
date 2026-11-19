@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>04 — SVG</title>
+<style>body{font-family:sans-serif;margin:20px;max-width:900px}svg,img{display:block;border:1px solid #888;margin:10px 0}.box{width:480px;height:320px;border:1px solid #888;margin:10px 0}</style>
+</head>
+<body>
+<h1>04 — SVG</h1>
+<p>Expected: <b>every SVG below is covered</b> — the inline one with the
+embedded person photo, the shapes-only one, and the &lt;img&gt; loading an
+SVG file.</p>
+
+<h2>Inline &lt;svg&gt; with an embedded raster photo (person)</h2>
+<svg id="svg-photo" width="480" height="640" viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg">
+  <image href="assets/p1-huang-portrait.jpg" x="0" y="0" width="480" height="640"/>
+  <text x="10" y="30" font-size="24" fill="white">inline svg + photo</text>
+</svg>
+
+<h2>Inline &lt;svg&gt; — shapes only (no photo)</h2>
+<svg id="svg-shapes" width="480" height="320" viewBox="0 0 480 320" xmlns="http://www.w3.org/2000/svg">
+  <rect width="480" height="320" fill="#2a6f2a"/>
+  <circle cx="240" cy="160" r="100" fill="#e8c832"/>
+  <text x="120" y="170" font-size="36" fill="#222">shapes only</text>
+</svg>
+
+<h2>&lt;img src="person.svg"&gt; (SVG file with an embedded photo)</h2>
+<img id="img-svg" src="assets/person.svg" width="480" height="640" alt="svg file with photo">
+
+<h2>SVG as a CSS background</h2>
+<div class="box" id="svg-bg" style="background-image:url('assets/shapes.svg');background-size:cover"></div>
+
+<p>Note: the content script serialises inline SVGs and thumbnails them where
+possible; an SVG that cannot be thumbnailed is reported without pixels and
+stays covered.</p>
+</body>
+</html>
