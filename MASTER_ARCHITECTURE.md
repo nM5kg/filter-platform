@@ -3,7 +3,9 @@
 **Status:** updated 2026-11-18 ~12:54 EST per Yakob's five decisions (see
 Decisions log below). This is the single authoritative plan for the whole
 platform. Where an older doc disagrees with this file, **this file wins** —
-the older doc is marked stale in place where noted.
+the older doc is marked stale in place where noted. Corrected 2026-11-18
+~19:15 EST: decision 4 (the `other_tcp` setting does not exist — nothing
+for Yakob to do) and the extension bullets (now v1.2.0) updated.
 
 **What this plan covers:** the free kosher internet filter platform —
 own Android browser app + own Filtering Engine, AI Visual Protection
@@ -150,17 +152,23 @@ scanner (Playwright + headless Chromium, `scanner/`) stays as the
 approval-engine / server-side check. It is no longer the proof for what
 the Android browser sees — that proof now lives inside GeckoView.
 
-### 4. Muse Build Permission — `other_tcp` on Ask
+### 4. Muse Build Permission — `other_tcp` (checked: the setting does not exist)
 
-- The `other_tcp` permission is set to **Ask**, so Gradle can download
-  the needed build dependencies.
-- **Only Yakob can do this step** — in the Muse app: Settings →
-  Permissions → Direct network protocols → **Ask**.
-- Until then `./gradlew assembleDebug` stays blocked on this VM
-  (sandbox blocks all TCP from JVM processes — proven, nothing in the
-  project needs to change) and Android builds continue via the manual
-  build path (`android/manual-build/build.sh`, verified: 848,343-byte
-  signed debug APK, 7/7 unit tests pass).
+- Yakob's decision was to set the `other_tcp` permission to **Ask**,
+  so Gradle could download the needed build dependencies.
+- **Correction 2026-11-18 ~13:42 EST:** checked on every Permissions
+  screen and in the full permissions list — there is **no**
+  "Direct network protocols" / `other_tcp` setting anywhere in Muse,
+  and no permission card exists to bring up. There is **nothing for
+  Yakob to do here**; do not send him hunting for it.
+- `./gradlew` stays blocked on this VM (JVM data transfer is
+  intercepted — proven byte-for-byte; the Gradle daemon dies on the
+  loopback socket), and a Gradle build of this module fails on **every**
+  machine until Google publishes SDK platform 37 (GeckoView 160 needs
+  `minCompileSdk=37`; highest published is platform-36, re-checked
+  2026-11-18 ~14:53 EST). Android builds continue via the manual
+  build path (`android/manual-build/build.sh`, verified: signed debug
+  APK, 7/7 unit tests pass).
 
 ### 5. Further work — prototype first, no rebuild
 
@@ -172,7 +180,9 @@ the Android browser sees — that proof now lives inside GeckoView.
 - This file is the Master Architecture Plan updated per these decisions.
 
 **Prototype sequence (next steps, in order):**
-1. Yakob sets `other_tcp` to Ask (decision 4 — his step, blocks Gradle).
+1. Gradle is blocked (decision 4 — the `other_tcp` setting does not
+   exist, and SDK platform 37 is unpublished); the prototype continues
+   on the manual build path until both blockers clear.
 2. Apply the GeckoView/AC pins to the Android skeleton
    (`android/GECKOVIEW-RESEARCH.md` §5 has the Gradle snippets, not yet
    applied to any build file) and run the first Gradle sync — confirm
@@ -195,11 +205,13 @@ the Android browser sees — that proof now lives inside GeckoView.
   + Pages dashboard, 13 tables, default Standard policy (block images +
   explicit words, rest open), auto-decide threshold 0.70, uncertain stays
   blocked. All verified live; dogfood green.
-- **Browser extension** (`extension/`): MV3, policy fetch, DNR blocklist
-  (domains 1000+, ads 5000+ gated on `filter_ads`), on-device face
-  detection, block/cover/strict. The desktop/Android-via-Vivaldi path
-  until the own browser ships. Person detection lives in the scanner
-  only, not yet in the extension.
+- **Browser extension** (`extension/`): v1.2.0, MV3, policy fetch, DNR
+  blocklist (domains 1000+, ads 5000+ gated on `filter_ads`), on-device
+  **person** detection (MediaPipe EfficientDet-Lite0 + face fallback,
+  fail-closed), Yiddish block page, SafeSearch enforcement
+  (Google/Bing/DuckDuckGo). The desktop/Android-via-Vivaldi path until
+  the own browser ships. Verified on real sites (BBC 44 human blocked,
+  Wikipedia 4, test page 7).
 - **Server-side scanner** (`scanner/`): stays as the pre-rendering /
   approval-engine check; its Chromium results no longer stand in for
   the Android browser.
@@ -224,10 +236,14 @@ the Android browser sees — that proof now lives inside GeckoView.
 3. Google Images unverified — Google serves `/sorry` (bot-check) to
    headless Chromium; needs a real browser test (the GeckoView prototype
    is the natural place to try it).
-4. DNR shows the browser block page, not a Yiddish block page — still to fix.
-5. SafeSearch enforcement in extension/device is config + display only
-   (Worker endpoints + dashboard exist; no URL rewriting or DNS yet).
-6. Person detection in the extension is scanner-only.
+4. Yiddish block page — DONE in extension v1.2.0 (facebook.com →
+   blocked.html, verified).
+5. SafeSearch enforcement — DONE in extension v1.2.0 (Google
+   `safe=active`, Bing `adlt=strict`, DuckDuckGo `kp=1`); YouTube
+   Restricted Mode still needs DNS/CNAME.
+6. Person detection in the extension — DONE in v1.2.0 (EfficientDet
+   via detector iframe + cross-origin refetch; recall 0.727 at 0.50,
+   0.455 at 0.70 on the 16-photo set).
 7. Built-in extension signing exemption (`installBuiltIn` vs `install`)
    and MV3 support in GeckoView 160 are not confirmed from a primary
    source — test in the prototype.
