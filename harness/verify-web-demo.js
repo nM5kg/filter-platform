@@ -95,10 +95,18 @@ async function main() {
     addr: document.getElementById('addr').value,
   }));
   const proxyFrame = () => page.frames().find((f) => f.url().includes(PROXY_HOST));
-  const frameEval = async (fn) => {
+  const frameEval = async (fn, retries = 1) => {
     const fr = proxyFrame();
     if (!fr) return null;
-    try { return await fr.evaluate(fn); } catch (e) { return { error: String(e.message).slice(0, 200) }; }
+    try { return await fr.evaluate(fn); } catch (e) {
+      // The frame navigates between pages; a stale execution context is a
+      // harness race, not a product failure — re-attach once and retry.
+      if (retries > 0 && String(e.message).includes('Execution context was destroyed')) {
+        await sleep(1500);
+        return frameEval(fn, retries - 1);
+      }
+      return { error: String(e.message).slice(0, 200) };
+    }
   };
   const navigateViaShell = async (target) => {
     await page.fill('#addr', target);
@@ -135,6 +143,20 @@ async function main() {
       return s.detector.includes('גרייט');
     }, 180000, 'detector ready on page 01');
     caseB.detectorReadyMs = Date.now() - t0;
+    // Counts settle AFTER detector-ready: the final fp-status can arrive
+    // after the detector-ready flag, so a snapshot taken the moment
+    // detector-ready appears can read stale counts (seen: 7 covered /
+    // 0 allowed while the frame already showed 6/1). Wait for two
+    // consecutive identical covered+allowed+scanned readings 1s apart
+    // (bounded 60 s) before snapshotting.
+    caseB.countsSettled = await waitFor(async () => {
+      const s1 = await shellStatus();
+      const key1 = [s1.covered, s1.allowed, s1.scanned].join('/');
+      await sleep(1000);
+      const s2 = await shellStatus();
+      const key2 = [s2.covered, s2.allowed, s2.scanned].join('/');
+      return key1 === key2 && Number(s2.scanned) > 0;
+    }, 60000, 'counts settle on page 01');
     caseB.status = await shellStatus();
     caseB.frame = await frameEval(() => {
       const vis = (id) => {
@@ -207,7 +229,9 @@ async function main() {
     });
     await waitFor(async () => {
       const s = await shellStatus();
-      return Number(s.scanned) > 0;
+      // Addr-gated: the previous page's counts already satisfy scanned>0,
+      // so without the addr check this returns before the frame navigates.
+      return s.addr.includes('03-canvas') && Number(s.scanned) > 0;
     }, 120000, 'canvas page scan counts');
     caseE.canvas = await frameEval(() => ({
       overlays: document.querySelectorAll('[data-fp-overlay]').length,
@@ -219,7 +243,9 @@ async function main() {
     });
     await waitFor(async () => {
       const s = await shellStatus();
-      return Number(s.scanned) > 0;
+      // Addr-gated: see the canvas wait above — the 03 counts would
+      // otherwise satisfy this before the frame reaches page 06.
+      return s.addr.includes('06-video-frames') && Number(s.scanned) > 0;
     }, 120000, 'video page scan counts');
     caseE.video = await frameEval(() => ({
       overlays: document.querySelectorAll('[data-fp-overlay]').length,

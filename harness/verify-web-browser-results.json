@@ -1,0 +1,462 @@
+{
+  "ranAt": "2026-11-19T11:15:44.938Z",
+  "shell": "https://filter-platform-dashboard.pages.dev/browser.html",
+  "cases": [
+    {
+      "case": "a-shell-loads",
+      "shellUrl": "https://filter-platform-dashboard.pages.dev/browser",
+      "tabChips": 1,
+      "ntpVisible": true,
+      "ntpText": "נייַ בלאַט\nגיי\nטעסט־בלעטער (אינדעקס)\nאַלע 8 טעסט־בלעטער\nfilter-platform-dashboard.pages.dev\nhttps://filter-platform-dashboard.pages.dev/test-pages/index.html\nוויקיפּעדיע\nhttps://en.wikipedia.org/wiki/",
+      "frameEl": {
+        "src": "https://filter-platform-web-browser.gavhah-copy.workers.dev/browse?u=https%3A%2F%2Ffilter-platform-dashboard.pages.dev%2Ftest-pages%2Findex.html",
+        "visible": true
+      },
+      "framePresent": true,
+      "frameTarget": "https://filter-platform-dashboard.pages.dev/test-pages/",
+      "addr": "https://filter-platform-dashboard.pages.dev/test-pages/",
+      "ok": true
+    },
+    {
+      "case": "m-tabstrip-layout",
+      "viewport": {
+        "w": 1280,
+        "h": 720
+      },
+      "geometry": {
+        "stripHeight": 48,
+        "chipTop": 87,
+        "chipBottom": 121,
+        "hitAtChipCenter": "SPAN.t",
+        "hitAtCloseCenter": "BUTTON.x"
+      },
+      "stripVisible": true,
+      "chipClickable": true,
+      "closeClickable": true,
+      "realClickNewTab": "clicked",
+      "tabsAfterRealPlus": 2,
+      "realClickTab1": "clicked",
+      "activeAfterRealSwitch": 0,
+      "ntpAfterRealSwitch": true,
+      "realClickCloseTab2": "clicked",
+      "tabsAfterRealClose": 1,
+      "realSwitchOk": true,
+      "ok": true
+    },
+    {
+      "case": "b-omnibox",
+      "wikiAddrOk": true,
+      "wikiAddr": "https://www.wikipedia.org/",
+      "wikiFrameTarget": "https://www.wikipedia.org/",
+      "suggestOpen": true,
+      "suggestRows": [
+        "www.wikipedia.orgגעשיכטע | https://www.wikipedia.org/",
+        "wikipedia.orgגעשיכטע | https://wikipedia.org"
+      ],
+      "searchAddrOk": true,
+      "searchAddr": "https://duckduckgo.com/?q=how%20to%20bake%20bread&kp=1",
+      "searchFrameTarget": "https://duckduckgo.com/?q=how%20to%20bake%20bread&kp=1",
+      "ok": true
+    },
+    {
+      "case": "c-tabs",
+      "tabsAfterPlus": 2,
+      "tab2Ntp": true,
+      "tab2AddrEmpty": true,
+      "tab2AddrOk": true,
+      "tab2FrameTarget": "https://example.com/",
+      "switchClick": "clicked",
+      "tab1Addr": "https://duckduckgo.com/?q=how%20to%20bake%20bread&kp=1",
+      "tab1StillThere": true,
+      "tab1FrameTarget": "https://duckduckgo.com/?q=how%20to%20bake%20bread&kp=1",
+      "closeClick": "clicked",
+      "tabsAfterClose": 1,
+      "tabsWithPrivate": 2,
+      "privateChipPresent": true,
+      "tabsAfterReload": 1,
+      "privateAfterReload": false,
+      "addrAfterReload": "https://duckduckgo.com/?q=how%20to%20bake%20bread&kp=1",
+      "nonPrivateRestored": true,
+      "frameAfterReload": true,
+      "ok": true
+    },
+    {
+      "case": "d-navigation",
+      "indexOk": true,
+      "page01Ok": true,
+      "backOk": true,
+      "backEnabledAtIndex": true,
+      "fwdOk": true,
+      "backEnabledOn01": true,
+      "reloadScanned": true,
+      "reloadAddr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images",
+      "ok": true
+    },
+    {
+      "case": "e-filter-wired",
+      "detectorReady": true,
+      "countsSettled": true,
+      "status": {
+        "covered": "6",
+        "allowed": "1",
+        "blocked": "0",
+        "scanned": "7",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images"
+      },
+      "frame": {
+        "overlays": 6,
+        "personVisibility": "hidden",
+        "crowdVisibility": "hidden",
+        "landscapeVisibility": "visible",
+        "personReady": true
+      },
+      "wikiCounts": true,
+      "wikiStatus": {
+        "covered": "20",
+        "allowed": "3",
+        "blocked": "0",
+        "scanned": "23",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://en.wikipedia.org/wiki/Main_Page"
+      },
+      "wikiFrame": {
+        "overlays": 20,
+        "imgs": 23,
+        "title": "Wikipedia, the free encyclopedia"
+      },
+      "ok": true
+    },
+    {
+      "case": "f-history",
+      "historyBefore": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Main_Page",
+          "title": "en.wikipedia.org",
+          "time": 1795086979383
+        },
+        {
+          "url": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images",
+          "title": "filter-platform-dashboard.pages.dev",
+          "time": 1795086976827
+        },
+        {
+          "url": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images.html",
+          "title": "filter-platform-dashboard.pages.dev",
+          "time": 1795086976709
+        },
+        {
+          "url": "https://filter-platform-dashboard.pages.dev/test-pages/",
+          "title": "filter-platform-dashboard.pages.dev",
+          "time": 1795086976023
+        },
+        {
+          "url": "https://filter-platform-dashboard.pages.dev/test-pages/index.html",
+          "title": "filter-platform-dashboard.pages.dev",
+          "time": 1795086972043
+        },
+        {
+          "url": "https://duckduckgo.com/?q=how%20to%20bake%20bread&kp=1",
+          "title": "duckduckgo.com",
+          "time": 1795086968180
+        },
+        {
+          "url": "https://example.com/",
+          "title": "example.com",
+          "time": 1795086962048
+        },
+        {
+          "url": "https://example.com",
+          "title": "example.com",
+          "time": 1795086961278
+        },
+        {
+          "url": "https://www.wikipedia.org/",
+          "title": "www.wikipedia.org",
+          "time": 1795086954514
+        },
+        {
+          "url": "https://wikipedia.org",
+          "title": "wikipedia.org",
+          "time": 1795086952997
+        }
+      ],
+      "panelTitle": "געשיכטע",
+      "rows": [
+        "en.wikipedia.org | https://en.wikipedia.org/wiki/Main_Page | 11/19/2026",
+        "filter-platform-dashboard.pages.dev | https://filter-platform-dashboard.pages.dev/test-pages/01-html-images | 11/19/2026",
+        "filter-platform-dashboard.pages.dev | https://filter-platform-dashboard.pages.dev/test-pages/01-html-images.html | 11/19/2026",
+        "filter-platform-dashboard.pages.dev | https://filter-platform-dashboard.pages.dev/test-pages/ | 11/19/2026",
+        "filter-platform-dashboard.pages.dev | https://filter-platform-dashboard.pages.dev/test-pages/index.html | 11/19/2026",
+        "duckduckgo.com | https://duckduckgo.com/?q=how%20to%20bake%20bread&kp=1 | 11/19/2026",
+        "example.com | https://example.com/ | 11/19/2026",
+        "example.com | https://example.com | 11/19/2026",
+        "www.wikipedia.org | https://www.wikipedia.org/ | 11/19/2026",
+        "wikipedia.org | https://wikipedia.org | 11/19/2026"
+      ],
+      "hasWikipedia": true,
+      "hasExample": true,
+      "filteredRows": [
+        "en.wikipedia.org | https://en.wikipedia.org/wiki/Main_Page | 11/19/2026",
+        "www.wikipedia.org | https://www.wikipedia.org/ | 11/19/2026",
+        "wikipedia.org | https://wikipedia.org | 11/19/2026"
+      ],
+      "filterWorks": true,
+      "clearArmedText": "דריקט נאָך אַ מאָל צו באַשטעטיקן",
+      "rowsAfterClear": [],
+      "emptyText": "פֿאַרמעקן געשיכטע\n\nקיין געשיכטע — פּריוואַטע בלעטער ווערן קיינמאָל נישט אויפֿגעשריבן.",
+      "historyAfter": [],
+      "ok": true
+    },
+    {
+      "case": "g-bookmarks",
+      "exampleOk": true,
+      "starOn": true,
+      "bookmarksAfterStar": [
+        {
+          "url": "https://example.com/",
+          "title": "example.com",
+          "time": 1795086988291
+        }
+      ],
+      "rows": [
+        "example.com | רעדאַקטירן | מעקן"
+      ],
+      "listed": true,
+      "openedAddr": "https://example.com/",
+      "openedFromView": true,
+      "rowsAfterDelete": [],
+      "bookmarksAfterDelete": [],
+      "ok": true
+    },
+    {
+      "case": "h-downloads",
+      "page01Ok": true,
+      "detectorReady": true,
+      "countsSettled": true,
+      "status": {
+        "covered": "6",
+        "allowed": "1",
+        "blocked": "0",
+        "scanned": "7",
+        "detector": "דעטעקטאָר: גרייט ✓",
+        "api": "דאָמעין־טשעק: אַקטיוו ✓",
+        "addr": "https://filter-platform-dashboard.pages.dev/test-pages/01-html-images"
+      },
+      "lastFpStatus": {
+        "covered": 6,
+        "allowed": 1,
+        "scanned": 7,
+        "verdicts": {
+          "https://filter-platform-dashboard.pages.dev/test-pages/assets/p1-huang-portrait.jpg": "cover",
+          "https://filter-platform-dashboard.pages.dev/test-pages/assets/d1-crowd-funeral.jpg": "cover",
+          "https://filter-platform-dashboard.pages.dev/test-pages/assets/l1-glacier-lake.jpg": "cover",
+          "assets/p1-huang-portrait.jpg": "cover",
+          "https://filter-platform-web-browser.gavhah-copy.workers.dev/assets/p1-huang-portrait.jpg": "cover"
+        }
+      },
+      "buttons": {
+        "count": 1,
+        "buttons": [
+          {
+            "x": 502,
+            "y": 1265,
+            "text": "⤓ Download"
+          }
+        ],
+        "landscape": {
+          "found": true,
+          "imgRect": {
+            "left": 20,
+            "top": 1265,
+            "right": 502
+          }
+        },
+        "person": {
+          "found": false,
+          "imgRect": {
+            "left": 20,
+            "top": 166,
+            "right": 502
+          }
+        }
+      },
+      "allowedHasButton": true,
+      "coveredHasNoButton": true,
+      "downloadFilename": "l1-glacier-lake.jpg",
+      "downloadPath": "/tmp/fp-browser-downloads-1795086945255/a18c1d39-8388-474d-918c-e3d62fffe168",
+      "downloadFileExists": true,
+      "downloadsAfterAllowed": [
+        {
+          "time": 1795086997829,
+          "url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/l1-glacier-lake.jpg",
+          "kind": "image",
+          "status": "completed",
+          "filename": "l1-glacier-lake.jpg"
+        }
+      ],
+      "downloadRows": [
+        "l1-glacier-lake.jpg | ✓ געענדיקט | image"
+      ],
+      "completedListed": true,
+      "forcedPost": "posted https://filter-platform-dashboard.pages.dev/test-pages/assets/p1-huang-portrait.jpg",
+      "downloadsDuringForced": 0,
+      "downloadsAfterForced": [
+        {
+          "time": 1795087002036,
+          "url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/p1-huang-portrait.jpg",
+          "kind": "image",
+          "status": "blocked",
+          "reason": "verdict-cover",
+          "verdict": "cover"
+        },
+        {
+          "time": 1795086997829,
+          "url": "https://filter-platform-dashboard.pages.dev/test-pages/assets/l1-glacier-lake.jpg",
+          "kind": "image",
+          "status": "completed",
+          "filename": "l1-glacier-lake.jpg"
+        }
+      ],
+      "downloadRowsAfterForced": [
+        "https://filter-platform-dashboard.pages.dev/test-pages/assets/p1-huang-portrait.jpg | ✕ בלאָקירט | verdict-cover (cover)",
+        "l1-glacier-lake.jpg | ✓ געענדיקט | image"
+      ],
+      "blockedListed": true,
+      "blockedRow": "https://filter-platform-dashboard.pages.dev/test-pages/assets/p1-huang-portrait.jpg | ✕ בלאָקירט | verdict-cover (cover)",
+      "ok": true
+    },
+    {
+      "case": "i-find",
+      "findBarOpen": true,
+      "foundOk": true,
+      "foundText": "געפֿונען ✓",
+      "notFoundOk": true,
+      "notFoundText": "נישט געפֿונען",
+      "ok": true
+    },
+    {
+      "case": "j-desktop-toggle",
+      "desktopOnToast": "דעסקטאָפּ־זײַטל אָן",
+      "uaDesktopOk": true,
+      "uaDesktopText": "{\n  \"user-agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\"\n}\n",
+      "uaDefaultOk": true,
+      "uaDefaultText": "{\n  \"user-agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 FilterPlatformWebBrowser/0.1\"\n}\n",
+      "uaNewTabDefault": true,
+      "uaNewTabText": "{\n  \"user-agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 FilterPlatformWebBrowser/0.1\"\n}\n",
+      "ok": true
+    },
+    {
+      "case": "k-settings",
+      "engineAfterGoogle": "google",
+      "googleAddrOk": true,
+      "googleAddr": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dhow%2520to%2520bake%2520bread%26safe%3Dactive&q=EgSinru0GLK1-9cGIjAfSZsU3ZJuUauYxyLMTLyS32PW7XPCoBXwZYNLEm0A8awR5mdGOLKud_EqNtQJr_gyAnJSWgFDYPOqr4Dq6-LT8AE",
+      "googleSafeActive": true,
+      "googleBotChecked": true,
+      "engineAfterDuck": "duckduckgo",
+      "aboutText": "זוך־מאָטאָר\nDuckDuckGo (דיפֿאָלט)\nGoogle\nBing\nהיים־בלאַט\nפֿילטער־סעטטינגס\nעפֿענען דעם פֿילטער־דאַשבאָרד (פּאָליסי, דעווייסעס)\nפֿאַרמעקן געשיכטע\nפֿאַרמעקן בוקמאַרקס\nפֿאַרמעקן אַראָפּלאָד־רשימה\nפֿאַרמאַכן אַלע בלעטער (און אָנהייבן פֿריש)\nוועגן דער וועב־דעמאָ\n\nוועב־דעמאָ ווערסיע 0.2.0 (multi-tab shell). דעטעקטאָר: EfficientDet JS (MediaPipe tasks-vision, Apache 2.0). די דעמאָ לויפֿט אין Chromium, נישט אין GeckoView, און נוצט דעם EfficientDet־JS־דעטעקטאָר, נישט דעם RF-DETR־וועג פֿונעם טעלעפֿאָן. פֿילטער־פּאָליסי: שוועל 0.70; מענטש → באַדעקט; קיין מענטש ≥ 0.70 → דערלויבט; אומבאַקאַנט → באַדעקט (fail closed). אַלע דאַטן (געשיכטע, בוקמאַרקס, אַראָפּלאָדס, בלעטער) זענען לאָקאַל אויף דעם דעווייס בלויז — קיין אַקאַונט־סינק.",
+      "aboutHasVersion": true,
+      "aboutHasLicense": true,
+      "historyAfterClear": [],
+      "historyRowsAfterClear": [],
+      "ok": true
+    },
+    {
+      "case": "l-safesearch-block",
+      "googleTarget": "https://www.google.com/sorry/index?continue=https://www.google.com/search%3Fq%3Dcats%26safe%3Dactive&q=EgSinru0GLm1-9cGIjBFclEbIXgcp_sdwpqNlhVxXbQ9WusfBmRW-EjJh3sjwI60DuuqR4LIyd4BeZ8TvO4yAnJSWgFDYIqQg8b4mvLB3AE",
+      "googleHasSafeActive": true,
+      "googleBotChecked": true,
+      "frameBody": "🛡️\nדער פּלאַץ איז בלאקירט\nwww.facebook.com\n\nדער פֿילטער האָט בלאקירט דעם פּלאַץ לויט דער פּאָליסי פֿון אײַער דיווייס.\n\nמקור: manual\n\nבעטן אַן איבערקוק פֿון דעם פּלאַץ\nגיי צום וועב־בלעטערער\n↩ צוריק צום פֿריערדיקן בלאַט\n\nFilter Platform — Free kosher internet filter. דער פּלאַץ ווערט נישט געלאָדן; קי",
+      "ok": true
+    }
+  ],
+  "downloadEvents": [
+    {
+      "filename": "l1-glacier-lake.jpg",
+      "at": "2026-11-19T11:16:37.840Z"
+    }
+  ],
+  "consoleLines": [
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +85ms vision bundle imported",
+    "[fp-detector] +85ms fileset resolved",
+    "[fp-detector] +2095ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp-detector] +2ms vision bundle imported",
+    "[fp-detector] +2ms fileset resolved",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +358ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +40ms vision bundle imported",
+    "[fp-detector] +40ms fileset resolved",
+    "[fp-detector] +429ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp-detector] +2ms vision bundle imported",
+    "[fp-detector] +3ms fileset resolved",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +424ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +17ms vision bundle imported",
+    "[fp-detector] +17ms fileset resolved",
+    "[fp-detector] +409ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +2ms vision bundle imported",
+    "[fp-detector] +2ms fileset resolved",
+    "[fp-detector] +253ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +2ms vision bundle imported",
+    "[fp-detector] +2ms fileset resolved",
+    "[fp-detector] +257ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp-detector] +4ms vision bundle imported",
+    "[fp-detector] +4ms fileset resolved",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +357ms ObjectDetector created",
+    "[fp-detector] person detector ready: MediaPipe ObjectDetector (EfficientDet-Lite0, COCO person class)",
+    "[fp] person-detector warmup reply: fp-detector-ready ",
+    "[fp] person detector ready (MediaPipe EfficientDet-Lite0, PROTOTYPE-ONLY weights — see models-mediapipe/LICENSES.md)",
+    "[fp] face model load failed: Error: Based on the provided shape, [1,1,128,256], the tensor should have 32768 values but has 30088\n    at A (https://filter-platform-web-browser.gavhah-copy.workers.dev/browser-assets/vendor/face-api.js:10:27629)\n    at Es (https://filter-platform-web-browser.gavhah-co",
+    "[fp-detector] +3ms vision bundle imported",
+    "[fp-detector] +3ms fileset resolved",
+    "[fp-detector] +246ms ObjectDetector created"
+  ],
+  "summary": {
+    "passed": 13,
+    "total": 13,
+    "cases": [
+      "a-shell-loads: PASS",
+      "m-tabstrip-layout: PASS",
+      "b-omnibox: PASS",
+      "c-tabs: PASS",
+      "d-navigation: PASS",
+      "e-filter-wired: PASS",
+      "f-history: PASS",
+      "g-bookmarks: PASS",
+      "h-downloads: PASS",
+      "i-find: PASS",
+      "j-desktop-toggle: PASS",
+      "k-settings: PASS",
+      "l-safesearch-block: PASS"
+    ]
+  }
+}
