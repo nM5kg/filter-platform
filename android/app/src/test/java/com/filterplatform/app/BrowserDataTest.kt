@@ -384,6 +384,7 @@ class BrowserDataTest {
         assertEquals(SearchEngine.DUCKDUCKGO, store.settings.searchEngine)
         assertEquals("https://filter-platform-dashboard.pages.dev", store.settings.homepage)
         assertFalse(store.settings.desktopSiteDefault)
+        assertEquals(HumanImageMode.PAINT, store.settings.humanImageMode)
     }
 
     @Test
@@ -399,10 +400,104 @@ class BrowserDataTest {
     }
 
     @Test
+    fun settings_humanImageModePersists() {
+        val storage = MemoryBrowserStorage()
+        val store = SettingsStore(storage)
+        store.save(store.settings.copy(humanImageMode = HumanImageMode.BLOCK))
+        assertEquals(
+            HumanImageMode.BLOCK, SettingsStore(storage).settings.humanImageMode)
+        // A stored bogus mode falls back to the default (paint).
+        storage.save(SettingsStore.STORAGE_KEY,
+            """{"searchEngine":"DUCKDUCKGO","homepage":"https://example.com","desktopSiteDefault":false,"humanImageMode":"nonsense"}""")
+        assertEquals(
+            HumanImageMode.PAINT, SettingsStore(storage).settings.humanImageMode)
+        // A stored file from before the mode existed loads fine, paint.
+        storage.save(SettingsStore.STORAGE_KEY,
+            """{"searchEngine":"DUCKDUCKGO","homepage":"https://example.com","desktopSiteDefault":false}""")
+        assertEquals(
+            HumanImageMode.PAINT, SettingsStore(storage).settings.humanImageMode)
+    }
+
+    @Test
     fun settings_corruptStorageFallsBackToDefaults() {
         val storage = MemoryBrowserStorage()
         storage.save(SettingsStore.STORAGE_KEY, "not json {{{")
         assertEquals(defaultSettings, SettingsStore(storage).settings)
+    }
+
+    // --- review decision store (0.3.1) ------------------------------------
+
+    private fun storedDecision(
+        key: String,
+        decision: ReviewDecision = ReviewDecision.ALLOW_PAINTED
+    ) = StoredReviewDecision(
+        imageKey = key,
+        decision = decision,
+        boxes = listOf(PersonBox(0.1, 0.2, 0.5, 0.6, 0.9)),
+        bestScore = 0.87,
+        humanImageMode = HumanImageMode.PAINT,
+        imageUrl = "https://example.com/pic.jpg",
+        pageUrl = "https://example.com/",
+        recordedAt = 1000L
+    )
+
+    @Test
+    fun reviewStore_saveAndLookup() {
+        val storage = MemoryBrowserStorage()
+        val store = ReviewDecisionStore(storage)
+        assertNull(store.lookup("u:abc"))
+        assertEquals(0, store.count())
+        store.save(storedDecision("u:abc"))
+        assertEquals(1, store.count())
+        val found = store.lookup("u:abc")!!
+        assertEquals(ReviewDecision.ALLOW_PAINTED, found.decision)
+        assertEquals(1, found.boxes.size)
+        assertEquals(0.5, found.boxes[0].w, 0.001)
+        assertEquals(0.87, found.bestScore, 0.001)
+        // Survives a reload from the same storage.
+        assertEquals(
+            ReviewDecision.ALLOW_PAINTED,
+            ReviewDecisionStore(storage).lookup("u:abc")?.decision)
+        // toCachedDecision is what the engine honours verbatim.
+        assertEquals("allow_painted", found.toCachedDecision().decision)
+        assertEquals(1, found.toCachedDecision().boxes.size)
+    }
+
+    @Test
+    fun reviewStore_upsertReplaces() {
+        val storage = MemoryBrowserStorage()
+        val store = ReviewDecisionStore(storage)
+        store.save(storedDecision("u:abc", ReviewDecision.UNCERTAIN))
+        store.save(storedDecision("u:abc", ReviewDecision.BLOCK))
+        assertEquals(1, store.count())
+        assertEquals(ReviewDecision.BLOCK, store.lookup("u:abc")?.decision)
+    }
+
+    @Test
+    fun reviewStore_capsAt500OldestFirst() {
+        val storage = MemoryBrowserStorage()
+        val store = ReviewDecisionStore(storage)
+        for (i in 0 until ReviewDecisionStore.MAX_ENTRIES + 10) {
+            store.save(storedDecision("u:$i"))
+        }
+        assertEquals(ReviewDecisionStore.MAX_ENTRIES, store.count())
+        assertNull(store.lookup("u:0"))
+        assertNull(store.lookup("u:9"))
+        assertEquals(
+            ReviewDecision.ALLOW_PAINTED,
+            store.lookup("u:${ReviewDecisionStore.MAX_ENTRIES + 9}")?.decision)
+    }
+
+    @Test
+    fun reviewStore_corruptStorageLoadsEmpty() {
+        val storage = MemoryBrowserStorage()
+        storage.save(ReviewDecisionStore.STORAGE_KEY, "not json {{{")
+        val store = ReviewDecisionStore(storage)
+        assertEquals(0, store.count())
+        assertNull(store.lookup("u:abc"))
+        // Saving still works after a corrupt load.
+        store.save(storedDecision("u:abc"))
+        assertEquals(1, store.count())
     }
 
     // --- omnibox ------------------------------------------------------------

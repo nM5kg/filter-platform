@@ -57,11 +57,29 @@ class FilterEngineTest {
     // --- fail closed -------------------------------------------------------
 
     @Test
-    fun stubDetector_neverAllows() {
-        // The shipped prototype detector: no model -> UNKNOWN -> REVIEW.
+    fun stubDetector_neverAllowsDynamic() {
+        // BEHAVIOUR CHANGE (0.3.1, Yakob req 4): the old version of
+        // this test asserted REVIEW for an unscanned HTML_IMAGE. A
+        // no-data UNKNOWN on a STATIC kind is now ALLOW unscanned
+        // (no person signal — see stubDetector_unscannedImageAllows).
+        // A dynamic surface that cannot be proven clean still stays
+        // REVIEW: the stub (no model at all) never allows it.
+        val engine = FilterEngine(StubPersonDetector())
+        val d = engine.decide(finding(ContentType.WEBGL), strictPolicy)
+        assertEquals(Verdict.REVIEW, d.verdict)
+        assertEquals(Verdict.REVIEW,
+            engine.decide(finding(ContentType.VIDEO_FRAME), strictPolicy).verdict)
+    }
+
+    @Test
+    fun stubDetector_unscannedImageAllows() {
+        // BEHAVIOUR CHANGE (0.3.1, Yakob req 4): no detector produced
+        // any signal for this image, and there is no person signal —
+        // a static image is left visible (unscanned), not covered.
         val engine = FilterEngine(StubPersonDetector())
         val d = engine.decide(finding(), strictPolicy)
-        assertEquals(Verdict.REVIEW, d.verdict)
+        assertEquals(Verdict.ALLOW, d.verdict)
+        assertTrue(d.unscanned)
     }
 
     @Test
@@ -127,6 +145,7 @@ class FilterEngineTest {
     fun defaultPolicy_isFailClosed() {
         assertTrue(FilterEngine.DEFAULT_POLICY.blockImages)
         assertTrue(FilterEngine.DEFAULT_POLICY.coverImages)
+        assertEquals(HumanImageMode.PAINT, FilterEngine.DEFAULT_POLICY.humanImageMode)
     }
 
     // --- scan message parsing ----------------------------------------------
@@ -312,13 +331,24 @@ class FilterEngineTest {
             engine.decide(detectedFinding(persons = 1, personBest = 0.60), lowPolicy).verdict)
         assertEquals(Verdict.REVIEW,
             engine.decide(detectedFinding(persons = 1, personBest = 0.60), strictPolicy).verdict)
-        // No detector ran: REVIEW (covered), even with no thumbnail.
+        // BEHAVIOUR CHANGE (0.3.1, Yakob req 4): no detector ran on a
+        // STATIC image is now ALLOW unscanned (was REVIEW) — there is
+        // no person signal. A dynamic surface with no detector ran
+        // still stays REVIEW.
+        val unscannedImg = engine.decide(
+            detectedFinding(detectionRan = false).copy(thumbnailDataUrl = null),
+            strictPolicy)
+        assertEquals(Verdict.ALLOW, unscannedImg.verdict)
+        assertTrue(unscannedImg.unscanned)
         assertEquals(Verdict.REVIEW,
-            engine.decide(detectedFinding(detectionRan = false).copy(thumbnailDataUrl = null),
+            engine.decide(
+                detectedFinding(detectionRan = false).copy(type = ContentType.WEBGL),
                 strictPolicy).verdict)
-        // Old content script (no detection fields at all): REVIEW.
-        assertEquals(Verdict.REVIEW,
-            engine.decide(finding(), strictPolicy).verdict)
+        // Old content script (no detection fields at all): same
+        // unscanned-image rule — ALLOW unscanned (was REVIEW).
+        val oldScript = engine.decide(finding(), strictPolicy)
+        assertEquals(Verdict.ALLOW, oldScript.verdict)
+        assertTrue(oldScript.unscanned)
     }
 
     // --- parseScanMessage: v1.2.0 detection fields ---------------------------
@@ -675,27 +705,69 @@ class FilterEngineTest {
 
     @Test
     fun combined_unknownVetoesNoPerson() {
-        // JS clean but RF undecided (no thumbnail) -> UNKNOWN.
+        // BEHAVIOUR CHANGE (0.3.1, Yakob req 4): only a WEAK-signal
+        // UNKNOWN vetoes a clean verdict now. A NO-DATA unknown (no
+        // thumbnail, no detector ran) does not — it is the absence of
+        // a signal, not a signal.
+        // JS clean but RF undecided for lack of a thumbnail -> NO_PERSON.
         val a = combined(
             jsDetector,
             RfDetrPersonDetector(FakeRfDetrBackend(score = 0.01))
         )
-        assertEquals(DetectionOutcome.UNKNOWN,
+        assertEquals(DetectionOutcome.NO_PERSON,
             a.detect(detectedFinding().copy(thumbnailDataUrl = null), 0.70).outcome)
-        // RF clean but JS undecided (detector never ran) -> UNKNOWN.
+        // RF clean but JS undecided (detector never ran — no data) -> NO_PERSON.
         val b = combined(
             jsDetector,
             RfDetrPersonDetector(FakeRfDetrBackend(score = 0.01))
         )
-        assertEquals(DetectionOutcome.UNKNOWN,
+        assertEquals(DetectionOutcome.NO_PERSON,
             b.detect(detectedFinding(detectionRan = false), 0.70).outcome)
-        // One weak signal is enough to veto as well.
+        // One weak signal is still enough to veto.
         val c = combined(
             jsDetector,
             RfDetrPersonDetector(FakeRfDetrBackend(score = 0.55))
         )
         assertEquals(DetectionOutcome.UNKNOWN,
             c.detect(detectedFinding(), 0.70).outcome)
+        // ...and a weak JS signal vetoes an RF clean verdict too.
+        val d = combined(
+            jsDetector,
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.01))
+        )
+        val weakJs = d.detect(
+            detectedFinding(persons = 1, personBest = 0.45), 0.70)
+        assertEquals(DetectionOutcome.UNKNOWN, weakJs.outcome)
+        assertFalse(weakJs.noData)
+    }
+
+    @Test
+    fun combined_noDataUnknownIsNoData() {
+        // All detectors no-data -> combined UNKNOWN with noData=true,
+        // so decide() can apply its kind-aware unscanned rule.
+        val d = combined(
+            StubPersonDetector(),
+            RfDetrPersonDetector(FakeRfDetrBackend(score = 0.01))
+        )
+        val r = d.detect(finding(thumbnail = null), 0.70)
+        assertEquals(DetectionOutcome.UNKNOWN, r.outcome)
+        assertTrue(r.noData)
+        // One clean verdict plus one no-data unknown -> NO_PERSON.
+        val e = combined(
+            FixedDetector(DetectionResult(DetectionOutcome.NO_PERSON, 1.0)),
+            FixedDetector(DetectionResult(DetectionOutcome.UNKNOWN, 0.0,
+                "no thumbnail", noData = true))
+        )
+        assertEquals(DetectionOutcome.NO_PERSON, e.detect(finding(), 0.70).outcome)
+        // Same, but the unknown is a WEAK signal -> UNKNOWN, noData=false.
+        val f = combined(
+            FixedDetector(DetectionResult(DetectionOutcome.NO_PERSON, 1.0)),
+            FixedDetector(DetectionResult(DetectionOutcome.UNKNOWN, 0.0,
+                "weak signal 0.45", noData = false))
+        )
+        val rf = f.detect(finding(), 0.70)
+        assertEquals(DetectionOutcome.UNKNOWN, rf.outcome)
+        assertFalse(rf.noData)
     }
 
     @Test
@@ -750,11 +822,407 @@ class FilterEngineTest {
         assertEquals(Verdict.COVER,
             engineJsPerson.decide(
                 detectedFinding(persons = 1, personBest = 0.87), strictPolicy).verdict)
-        // No thumbnail: JS clean, RF undecided -> REVIEW (covered).
-        // This is the 0.2.2 behaviour change: a finding the JS detectors
-        // checked but could not thumbnail no longer allows on JS alone.
-        assertEquals(Verdict.REVIEW,
+        // BEHAVIOUR CHANGE (0.3.1, Yakob req 4): no thumbnail means
+        // RF answers no-data UNKNOWN, which no longer vetoes the JS
+        // clean verdict — ALLOW (was REVIEW in 0.2.2).
+        assertEquals(Verdict.ALLOW,
             engine.decide(
                 detectedFinding().copy(thumbnailDataUrl = null), strictPolicy).verdict)
+    }
+
+    // --- 0.3.1 decide() rules: kind-aware unscanned, cached decisions --
+
+    @Test
+    fun decide_unscannedStaticKinds_allowUnscanned() {
+        // No signal at all (stub = no model): static kinds allow.
+        val engine = FilterEngine(StubPersonDetector())
+        for (type in listOf(
+            ContentType.HTML_IMAGE, ContentType.CSS_BACKGROUND, ContentType.SVG
+        )) {
+            val d = engine.decide(finding(type), strictPolicy)
+            assertEquals("type $type", Verdict.ALLOW, d.verdict)
+            assertTrue("type $type", d.unscanned)
+        }
+    }
+
+    @Test
+    fun decide_unscannedDynamicKinds_stayCovered() {
+        // Same no-signal finding, dynamic kinds: REVIEW (fail closed —
+        // a surface that cannot be snapshotted cannot be proven clean).
+        val engine = FilterEngine(StubPersonDetector())
+        for (type in listOf(
+            ContentType.CANVAS, ContentType.WEBGL, ContentType.VIDEO_FRAME,
+            ContentType.LIVE_STREAM, ContentType.DYNAMIC
+        )) {
+            val d = engine.decide(finding(type), strictPolicy)
+            assertEquals("type $type", Verdict.REVIEW, d.verdict)
+            assertFalse("type $type", d.unscanned)
+        }
+    }
+
+    @Test
+    fun decide_weakSignal_isReviewEvenForImages() {
+        // A weak but REAL signal is genuinely uncertain — REVIEW,
+        // never the unscanned ALLOW. (The unscanned rule keys on
+        // noData, not on "no person found".)
+        val engine = FilterEngine(jsDetector)
+        val d = engine.decide(
+            detectedFinding(persons = 1, personBest = 0.45), strictPolicy)
+        assertEquals(Verdict.REVIEW, d.verdict)
+        assertFalse(d.unscanned)
+        val d2 = engine.decide(
+            detectedFinding(persons = 0, personBest = 0.40), strictPolicy)
+        assertEquals(Verdict.REVIEW, d2.verdict)
+    }
+
+    @Test
+    fun decide_personIsCoverNotPainted() {
+        // The INITIAL verdict for a confirmed person is COVER (the
+        // user must request a review for paint/block); decide() never
+        // paints on its own, in either human-image mode.
+        val engine = FilterEngine(jsDetector)
+        val person = detectedFinding(persons = 1, personBest = 0.87)
+        assertEquals(Verdict.COVER, engine.decide(person, strictPolicy).verdict)
+        val paintPolicy = strictPolicy.copy(humanImageMode = HumanImageMode.PAINT)
+        assertEquals(Verdict.COVER, engine.decide(person, paintPolicy).verdict)
+        val blockPolicy2 = strictPolicy.copy(humanImageMode = HumanImageMode.BLOCK)
+        assertEquals(Verdict.COVER, engine.decide(person, blockPolicy2).verdict)
+    }
+
+    @Test
+    fun decide_cachedDecision_honouredVerbatim() {
+        // A reviewed image is never re-decided: even a detector that
+        // would say PERSON does not override the cached decision.
+        val engine = FilterEngine(jsDetector)
+        val base = detectedFinding(persons = 1, personBest = 0.95)
+        val box = PersonBox(0.1, 0.1, 0.5, 0.6, 0.9)
+        val painted = engine.decide(
+            base.copy(cachedDecision = CachedDecision("allow_painted", listOf(box))),
+            strictPolicy)
+        assertEquals(Verdict.PAINTED, painted.verdict)
+        assertEquals(listOf(box), painted.boxes)
+        assertEquals(Verdict.ALLOW,
+            engine.decide(
+                base.copy(cachedDecision = CachedDecision("allow")),
+                strictPolicy).verdict)
+        assertEquals(Verdict.BLOCK,
+            engine.decide(
+                base.copy(cachedDecision = CachedDecision("block")),
+                strictPolicy).verdict)
+        assertEquals(Verdict.REVIEW,
+            engine.decide(
+                base.copy(cachedDecision = CachedDecision("uncertain")),
+                strictPolicy).verdict)
+        // An unknown decision string falls through to detection.
+        assertEquals(Verdict.COVER,
+            engine.decide(
+                base.copy(cachedDecision = CachedDecision("nonsense")),
+                strictPolicy).verdict)
+    }
+
+    // --- 0.3.1 review decisions ------------------------------------------
+
+    private val smallBox = PersonBox(0.1, 0.1, 0.4, 0.4, 0.9) // area 0.16
+    private val bigBox = PersonBox(0.0, 0.0, 0.9, 0.9, 0.98) // area 0.81
+    private val midBox = PersonBox(0.1, 0.1, 0.6, 0.5, 0.9) // area 0.30
+
+    @Test
+    fun reviewDecision_bands() {
+        // best < 0.30 -> allow; [0.30, 0.50) -> uncertain; >= 0.50
+        // -> painted (small box, paint mode) or block.
+        assertEquals(ReviewDecision.ALLOW,
+            FilterEngine.reviewDecision(0.0, emptyList(), HumanImageMode.PAINT))
+        assertEquals(ReviewDecision.ALLOW,
+            FilterEngine.reviewDecision(0.29, emptyList(), HumanImageMode.PAINT))
+        assertEquals(ReviewDecision.UNCERTAIN,
+            FilterEngine.reviewDecision(0.30, listOf(smallBox), HumanImageMode.PAINT))
+        assertEquals(ReviewDecision.UNCERTAIN,
+            FilterEngine.reviewDecision(0.49, listOf(smallBox), HumanImageMode.PAINT))
+        assertEquals(ReviewDecision.ALLOW_PAINTED,
+            FilterEngine.reviewDecision(0.50, listOf(smallBox), HumanImageMode.PAINT))
+        assertEquals(ReviewDecision.ALLOW_PAINTED,
+            FilterEngine.reviewDecision(0.98, listOf(smallBox), HumanImageMode.PAINT))
+    }
+
+    @Test
+    fun reviewDecision_areaRule_paintMode() {
+        // Largest single box area > 0.60 -> block even in paint mode
+        // (the p1 portrait decodes to a 0.998 x 0.965 box, area 0.96).
+        assertEquals(ReviewDecision.BLOCK,
+            FilterEngine.reviewDecision(0.98, listOf(bigBox), HumanImageMode.PAINT))
+        // Sum of areas > 0.60 -> block, even when no single box is big.
+        assertEquals(ReviewDecision.BLOCK,
+            FilterEngine.reviewDecision(0.90,
+                listOf(midBox, midBox, midBox), HumanImageMode.PAINT))
+        // Exactly 0.60 is NOT over the limit: two 0.30 boxes sum to
+        // 0.60 exactly -> painted (the rule is strictly greater).
+        assertEquals(ReviewDecision.ALLOW_PAINTED,
+            FilterEngine.reviewDecision(0.90,
+                listOf(midBox, midBox), HumanImageMode.PAINT))
+        // One 0.30 box alone -> painted.
+        assertEquals(ReviewDecision.ALLOW_PAINTED,
+            FilterEngine.reviewDecision(0.90,
+                listOf(midBox), HumanImageMode.PAINT))
+    }
+
+    @Test
+    fun reviewDecision_areaRule_blockMode() {
+        // Block mode blocks a confirmed person whatever the boxes are.
+        assertEquals(ReviewDecision.BLOCK,
+            FilterEngine.reviewDecision(0.98, listOf(smallBox), HumanImageMode.BLOCK))
+        assertEquals(ReviewDecision.BLOCK,
+            FilterEngine.reviewDecision(0.50, listOf(smallBox), HumanImageMode.BLOCK))
+        // ...but the uncertain / allow bands still apply in block mode.
+        assertEquals(ReviewDecision.UNCERTAIN,
+            FilterEngine.reviewDecision(0.40, listOf(smallBox), HumanImageMode.BLOCK))
+        assertEquals(ReviewDecision.ALLOW,
+            FilterEngine.reviewDecision(0.10, emptyList(), HumanImageMode.BLOCK))
+    }
+
+    @Test
+    fun reviewDecision_confirmedPersonWithoutBoxes_blocks() {
+        // A confirmed person with nothing to paint cannot be shown
+        // painted — the whole picture is blocked instead.
+        assertEquals(ReviewDecision.BLOCK,
+            FilterEngine.reviewDecision(0.95, emptyList(), HumanImageMode.PAINT))
+    }
+
+    // --- 0.3.1 RF-DETR box decode (pure, cxcywh verified) ---------------
+
+    /** Labels for [n] queries: every slot -10 (sigmoid ~0) except the
+     *  given (query, logit) overrides. A zero-filled labels array
+     *  would read as 0.5 everywhere — this helper avoids that trap. */
+    private fun labelsWith(vararg overrides: Pair<Int, Double>): FloatArray {
+        val labels = FloatArray(RfDetrPersonDetector.NUM_QUERIES *
+            RfDetrPersonDetector.NUM_CLASSES) { -10f }
+        for ((q, logit) in overrides) {
+            labels[q * RfDetrPersonDetector.NUM_CLASSES +
+                RfDetrPersonDetector.PERSON_SLOT] = logit.toFloat()
+        }
+        return labels
+    }
+
+    @Test
+    fun decodePersonDetections_cxcywhPortrait() {
+        // The empirical check (2026-11-19): the p1 portrait's top
+        // query is dets [0.500, 0.510, 0.998, 0.965] at score 0.981
+        // (logit ~3.94). As cxcywh that is the full-frame portrait;
+        // as xyxy it would be a bottom-right quadrant box.
+        val dets = FloatArray(300 * 4)
+        dets[0] = 0.500185f; dets[1] = 0.509599f
+        dets[2] = 0.997952f; dets[3] = 0.964976f
+        val decoded = RfDetrPersonDetector.decodePersonDetections(
+            dets, labelsWith(0 to 3.944))
+        assertEquals(0.981, decoded.bestScore, 0.002)
+        assertEquals(1, decoded.boxes.size)
+        val b = decoded.boxes[0]
+        assertEquals(0.001, b.x, 0.002)
+        assertEquals(0.027, b.y, 0.002)
+        assertEquals(0.998, b.w, 0.002)
+        assertEquals(0.965, b.h, 0.002)
+        assertEquals(0.981, b.score, 0.002)
+        // Area 0.963 > 0.60: the review blocks even in paint mode.
+        assertEquals(ReviewDecision.BLOCK,
+            FilterEngine.reviewDecision(
+                decoded.bestScore, decoded.boxes, HumanImageMode.PAINT))
+    }
+
+    @Test
+    fun decodePersonDetections_tinyDistantBox() {
+        // The d3 beach walker: dets [0.855, 0.648, 0.012, 0.026] at
+        // 0.568 — a small distant figure. Read as xyxy this would be
+        // a NEGATIVE width (x2=0.012 < x1=0.855); as cxcywh it is a
+        // real tiny box.
+        val dets = FloatArray(300 * 4)
+        dets[0] = 0.855192f; dets[1] = 0.648129f
+        dets[2] = 0.011566f; dets[3] = 0.026075f
+        val decoded = RfDetrPersonDetector.decodePersonDetections(
+            dets, labelsWith(0 to 0.274))
+        assertEquals(0.568, decoded.bestScore, 0.002)
+        assertEquals(1, decoded.boxes.size)
+        val b = decoded.boxes[0]
+        assertEquals(0.849, b.x, 0.002)
+        assertEquals(0.635, b.y, 0.002)
+        assertEquals(0.012, b.w, 0.002)
+        assertEquals(0.026, b.h, 0.002)
+    }
+
+    @Test
+    fun decodePersonDetections_thresholdAndBest() {
+        // Best score is the max over ALL queries, even below the box
+        // threshold; boxes only include queries >= 0.30.
+        val dets = FloatArray(300 * 4)
+        dets[0] = 0.5f; dets[1] = 0.5f; dets[2] = 0.2f; dets[3] = 0.2f
+        dets[4] = 0.2f; dets[5] = 0.2f; dets[6] = 0.1f; dets[7] = 0.1f
+        // q0 logit for 0.45, q1 logit for 0.10, rest ~0.
+        val decoded = RfDetrPersonDetector.decodePersonDetections(
+            dets, labelsWith(0 to -0.201, 1 to -2.197))
+        assertEquals(0.45, decoded.bestScore, 0.002)
+        assertEquals(1, decoded.boxes.size)
+        assertEquals(0.45, decoded.boxes[0].score, 0.002)
+        // Nothing above threshold: best is still the true max, boxes empty.
+        val none = RfDetrPersonDetector.decodePersonDetections(
+            FloatArray(300 * 4), labelsWith())
+        assertEquals(0.0, none.bestScore, 0.01)
+        assertTrue(none.boxes.isEmpty())
+    }
+
+    @Test
+    fun decodePersonDetections_clipsToFrame() {
+        // A box hanging off the frame edge is trimmed, not dropped.
+        val dets = FloatArray(300 * 4)
+        dets[0] = 0.95f; dets[1] = 0.95f; dets[2] = 0.4f; dets[3] = 0.4f
+        val decoded = RfDetrPersonDetector.decodePersonDetections(
+            dets, labelsWith(0 to 2.0))
+        assertEquals(1, decoded.boxes.size)
+        val b = decoded.boxes[0]
+        assertEquals(0.75, b.x, 0.001)
+        assertEquals(0.75, b.y, 0.001)
+        assertEquals(0.25, b.w, 0.001)
+        assertEquals(0.25, b.h, 0.001)
+    }
+
+    // --- 0.3.1 parse/build round-trip ------------------------------------
+
+    @Test
+    fun parseScanMessage_withBoxesAndCachedDecision() {
+        val json = JSONObject(
+            """{"type":"scan","pageUrl":"https://example.com/","findings":[
+            |{"id":"a","kind":"img","source":"https://x/y.jpg","thumb":"data:,",
+            | "persons":1,"personBest":0.87,"faces":0,"faceBest":0.0,
+            | "detected":true,"detectError":"",
+            | "boxes":[{"x":0.1,"y":0.2,"w":0.5,"h":0.6,"score":0.87}],
+            | "image_key":"u:abc123",
+            | "cachedDecision":{"decision":"allow_painted",
+            |   "boxes":[{"x":0.1,"y":0.2,"w":0.5,"h":0.6,"score":0.87}]}}]}""".trimMargin()
+        )
+        val f = FilterEngine.parseScanMessage(json)[0]
+        assertEquals(1, f.boxes.size)
+        assertEquals(0.1, f.boxes[0].x, 0.001)
+        assertEquals(0.6, f.boxes[0].h, 0.001)
+        assertEquals(0.87, f.boxes[0].score, 0.001)
+        assertEquals("u:abc123", f.imageKey)
+        assertEquals("allow_painted", f.cachedDecision?.decision)
+        assertEquals(1, f.cachedDecision?.boxes?.size)
+    }
+
+    @Test
+    fun parseScanMessage_boxesAndCacheAbsent_defaultEmpty() {
+        // The pre-sync Android script sends neither: empty, not null.
+        val json = JSONObject(
+            """{"type":"scan","pageUrl":"https://example.com/","findings":[
+            |{"id":"a","kind":"img"}]}""".trimMargin()
+        )
+        val f = FilterEngine.parseScanMessage(json)[0]
+        assertTrue(f.boxes.isEmpty())
+        assertNull(f.imageKey)
+        assertNull(f.cachedDecision)
+    }
+
+    @Test
+    fun parseScanMessage_malformedBoxesSkipped() {
+        val json = JSONObject(
+            """{"type":"scan","pageUrl":"https://example.com/","findings":[
+            |{"id":"a","kind":"img",
+            | "boxes":[{"x":0.1,"y":0.2,"w":0.5,"h":0.6,"score":0.9},
+            |          {"x":0.1},
+            |          {"x":2.0,"y":-1.0,"w":0.5,"h":0.5,"score":0.5}]}]}""".trimMargin()
+        )
+        val f = FilterEngine.parseScanMessage(json)[0]
+        // One good box, one incomplete (skipped), one clamped into range.
+        assertEquals(2, f.boxes.size)
+        assertEquals(1.0, f.boxes[1].x, 0.001)
+        assertEquals(0.0, f.boxes[1].y, 0.001)
+    }
+
+    @Test
+    fun buildDecisionsMessage_paintedCarriesBoxes() {
+        val msg = FilterEngine.buildDecisionsMessage(
+            listOf(
+                ElementDecision("a", Verdict.ALLOW, "clean"),
+                ElementDecision("b", Verdict.PAINTED, "painted",
+                    boxes = listOf(PersonBox(0.1, 0.2, 0.5, 0.6, 0.9))),
+                ElementDecision("c", Verdict.ALLOW, "unscanned", unscanned = true),
+                ElementDecision("d", Verdict.REVIEW, "uncertain")
+            )
+        )
+        val arr = msg.getJSONArray("decisions")
+        assertEquals("allow", arr.getJSONObject(0).getString("verdict"))
+        assertEquals("painted", arr.getJSONObject(1).getString("verdict"))
+        val boxes = arr.getJSONObject(1).getJSONArray("boxes")
+        assertEquals(1, boxes.length())
+        assertEquals(0.1, boxes.getJSONObject(0).getDouble("x"), 0.001)
+        assertEquals(0.6, boxes.getJSONObject(0).getDouble("h"), 0.001)
+        assertTrue(arr.getJSONObject(2).getBoolean("unscanned"))
+        assertEquals("cover", arr.getJSONObject(3).getString("verdict"))
+        assertTrue(arr.getJSONObject(3).getString("reason").isNotBlank())
+    }
+
+    // --- 0.3.1 image keys, boxes, modes -----------------------------------
+
+    @Test
+    fun imageKeys_prefixesAndDeterminism() {
+        val bytes = "hello".toByteArray(Charsets.UTF_8)
+        val b = FilterEngine.imageKeyForContent(bytes)
+        assertTrue(b.startsWith("b:"))
+        assertEquals(66, b.length) // 'b:' + 64 hex chars
+        assertEquals(b, FilterEngine.imageKeyForContent(bytes))
+        val u = FilterEngine.imageKeyForUrl("https://example.com/pic.jpg")
+        assertTrue(u.startsWith("u:"))
+        assertEquals(66, u.length)
+        assertEquals(u, FilterEngine.imageKeyForUrl("https://example.com/pic.jpg"))
+        // SHA-256 of "hello" is a known constant.
+        assertEquals(
+            "b:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+            b)
+    }
+
+    @Test
+    fun personBox_areaAndClamp() {
+        assertEquals(0.25, PersonBox(0.1, 0.1, 0.5, 0.5, 0.9).area(), 0.001)
+        val clamped = PersonBox.fromWire(2.0, -1.0, 0.5, 0.5, 1.5)
+        assertEquals(1.0, clamped?.x)
+        assertEquals(0.0, clamped?.y)
+        assertEquals(1.0, clamped?.score)
+        assertNull(PersonBox.fromWire(0.1, 0.1, null, 0.5, 0.9))
+        assertNull(PersonBox.fromWire(0.1, 0.1, 0.5, 0.5, Double.NaN))
+    }
+
+    @Test
+    fun humanImageMode_parseAndWire() {
+        assertEquals(HumanImageMode.PAINT, HumanImageMode.parse("paint"))
+        assertEquals(HumanImageMode.BLOCK, HumanImageMode.parse("block"))
+        assertEquals(HumanImageMode.BLOCK, HumanImageMode.parse(" BLOCK "))
+        assertNull(HumanImageMode.parse(null))
+        assertNull(HumanImageMode.parse(""))
+        assertNull(HumanImageMode.parse("nonsense"))
+        assertEquals("paint", HumanImageMode.wireName(HumanImageMode.PAINT))
+        assertEquals("block", HumanImageMode.wireName(HumanImageMode.BLOCK))
+        assertEquals(ReviewDecision.ALLOW_PAINTED, ReviewDecision.parse("allow_painted"))
+        assertEquals(ReviewDecision.ALLOW, ReviewDecision.parse("allow"))
+        assertEquals(ReviewDecision.BLOCK, ReviewDecision.parse("block"))
+        assertEquals(ReviewDecision.UNCERTAIN, ReviewDecision.parse("uncertain"))
+        assertNull(ReviewDecision.parse("cover"))
+        assertEquals("allow_painted", ReviewDecision.wireName(ReviewDecision.ALLOW_PAINTED))
+    }
+
+    @Test
+    fun rfDetrMapping_noScoreIsNoData() {
+        // Null = model not loaded / inference failed: UNKNOWN with
+        // noData=true (0.3.1: it must not veto another detector).
+        val r = RfDetrPersonDetector.mapBestPersonScore(null, 0.70)
+        assertEquals(DetectionOutcome.UNKNOWN, r.outcome)
+        assertTrue(r.noData)
+        // A weak signal is UNKNOWN with noData=false.
+        assertFalse(RfDetrPersonDetector.mapBestPersonScore(0.45, 0.70).noData)
+    }
+
+    @Test
+    fun jsDetector_noDataFlag() {
+        assertTrue(jsDetector.detect(
+            detectedFinding(detectionRan = false), 0.70).noData)
+        assertFalse(jsDetector.detect(
+            detectedFinding(persons = 1, personBest = 0.45), 0.70).noData)
+        assertFalse(jsDetector.detect(detectedFinding(), 0.70).noData)
     }
 }
