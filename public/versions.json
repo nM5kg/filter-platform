@@ -1,0 +1,20 @@
+{
+  "extension": {
+    "version": "1.2.1",
+    "file": "our-filter-extension-1.2.1.zip",
+    "url": "/our-filter-extension-1.2.1.zip",
+    "sha256": "b9f095d12f8d656b378c1c792552cede20773cccdcafc87f2615f8193663704b",
+    "size_bytes": 11119834
+  },
+  "android": {
+    "status": "testing",
+    "version": "0.2.0",
+    "version_code": 5,
+    "package": "com.filterplatform.app",
+    "download_url": null,
+    "sha256": "a355e65353d53006d32eac78669c72636deabc314562368e7a378c1a22e1ea09",
+    "size_bytes": 211176487,
+    "signing": "debug",
+    "note": "Android app is still in testing — no public download until release signing is done. sha256/size above describe the 0.2.0 test build only."
+  }
+}

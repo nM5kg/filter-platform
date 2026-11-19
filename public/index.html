@@ -62,6 +62,12 @@
     <div id="status" class="muted">גיט אַרײַן דעם API token פֿון ~/workspace/filter-platform/api_token.txt (ער ווערט געהאַלטן נאָר אין דעם בלעטערער־טאַב).</div>
   </div>
 
+  <div class="card">
+    <h2>⬇ אַראָפּלאָד־צענטער — אונדזער פֿילטער</h2>
+    <p>לאָדט אַראָפּ די פֿילטער־עקסטענשאַן פֿאַר אײַער קאָמפּיוטער, און זעט צי אַ נײַע ווערסיע איז דאָ. <a href="/download.html"><b>גייט צום אַראָפּלאָד־בלאַט ←</b></a></p>
+    <div id="dlCenter" class="muted">לאָודט ווערסיע־אינפֿאָ…</div>
+  </div>
+
   <div class="tabs">
     <button id="tabAdmin" class="active" onclick="showTab('admin')">אַדמין</button>
     <button id="tabCustomer" onclick="showTab('customer')">קונה</button>
@@ -205,8 +211,28 @@
         <select id="myCustomer" onchange="loadCustomerView()"></select>
         <button onclick="loadCustomerView()">ווײַזן</button>
       </div>
+      <h3>מײַנע אייגענע דעוויסעס</h3>
       <div id="myDevices" style="margin-top:10px"></div>
       <div id="myPolicy" style="margin-top:10px"></div>
+    </div>
+
+    <div class="card">
+      <h2>דעוויסעס וואָס איך פֿאַרוואַלט</h2>
+      <p class="muted">דאָס זײַנען דעוויסעס פֿון <b>אַנדערע מענטשן</b> וואָס איר פֿאַרוואַלט — איר קענט זען צי זיי זײַנען אָנליין, און טוישן זייער פּאָליטיק. דער באַזיצער זעט אין זײַן עקסטענשאַן אַז איר פֿאַרוואַלט אים, און קען זיך אַליין אָפּקאַפּלען.</p>
+      <div id="managedDevices"></div>
+    </div>
+
+    <div class="card">
+      <h2>שאַפֿן אַן אײַנלאַדונג פֿאַר אַ מאַנאַגעד דעוויס</h2>
+      <p class="muted">שאַפֿט אַ 6־ציפֿער קאָד און גיט אים — <b>צוזאַמען מיט דעם API טאָוקן</b> וואָס איר נוצט דאָ אויפֿן דאַשבאָרד — צום אַנדערן מענטש. ער אָדער זי רעגיסטרירט דעם דעוויס דערמיט אין דער עקסטענשאַן; דאָס אַרײַנגעבן פֿונעם קאָד <b>איז</b> זיין/איר הסכמה צו דער פֿאַרוואַלטונג.</p>
+      <form class="row" onsubmit="return createManagedInvite(event)">
+        <input id="invDeviceName" placeholder="נאָמען פֿונעם דעוויס">
+        <select id="invPolicy"></select>
+        <button>שאַפֿן אײַנלאַדונג</button>
+      </form>
+      <div id="inviteResult"></div>
+      <h3>מײַנע אײַנלאַדונגען</h3>
+      <div id="myInvites"></div>
     </div>
 
     <div class="card">
@@ -341,7 +367,7 @@ function renderCustomers() {
     : '<p class="muted">קיין קאַסטאַמערס נישטאָ — שאַפֿט אַ נײַעם קונה אונטן.</p>';
 }
 function renderDevices() {
-  document.getElementById("devices").innerHTML = DEVICES.length ? "<table><tr><th>נאָמען</th><th>קונה</th><th>פּלאַטפֿאָרמע</th><th>סטאַטוס</th><th>אָנליין</th><th>לעצט געזען</th><th>פּאָליטיק</th><th>אַקטיוואַציע־קאָד</th></tr>" +
+  document.getElementById("devices").innerHTML = DEVICES.length ? "<table><tr><th>נאָמען</th><th>קונה</th><th>פּלאַטפֿאָרמע</th><th>סטאַטוס</th><th>אָנליין</th><th>לעצט געזען</th><th>פּאָליטיק</th><th>פֿאַרוואַלט פֿון</th><th>אַקטיוואַציע־קאָד</th></tr>" +
     DEVICES.map(x => {
       const st = DEV_STATUS[x.id];
       const live = !st ? pill("—", "pending") : st.status === "online" ? pill("אָנליין", "allow") : st.status === "offline" ? pill("אָפֿליין", "block") : pill(st.status, "pending");
@@ -349,7 +375,7 @@ function renderDevices() {
       return "<tr><td>" + esc(x.name) + "</td><td>" + esc(x.customer_name) + "</td><td>" + esc(x.platform) + "</td><td>" +
       (x.status === "active" ? pill("אַקטיוו", "allow") : x.status === "pending" ? pill("וואַרט אויף קאָד", "pending") : pill(x.status, "block")) + "</td><td>" +
       live + "</td><td dir='ltr'>" + esc(seen ? String(seen).slice(0, 19).replace("T", " ") : "—") + "</td><td>" +
-      esc(x.policy_name || "—") + "</td><td dir='ltr'>" + (x.status === "pending" ? esc(x.activation_code || "") : "—") + "</td></tr>";
+      esc(x.policy_name || "—") + "</td><td>" + esc(x.managed_by_name || "—") + "</td><td dir='ltr'>" + (x.status === "pending" ? esc(x.activation_code || "") : "—") + "</td></tr>";
     }).join("") + "</table>"
     : '<p class="muted">קיין דעוויסעס נישטאָ.</p>';
 }
@@ -524,18 +550,86 @@ async function loadCustomerView() {
   const cid = document.getElementById("myCustomer").value;
   if (!cid) return;
   try {
-    const [devs, reqs, pols] = await Promise.all([
+    const [devs, reqs, pols, invs] = await Promise.all([
       api("GET", "/api/v1/devices"), api("GET", "/api/v1/requests?customer_id=" + cid), api("GET", "/api/v1/policies"),
+      api("GET", "/api/v1/managed-invites?manager_customer_id=" + cid),
     ]);
-    const mine = devs.data.filter(x => x.customer_id === cid);
-    document.getElementById("myDevices").innerHTML = mine.length ? "<table><tr><th>דעוויס</th><th>פּלאַטפֿאָרמע</th><th>סטאַטוס</th><th>לעצט געזען</th><th>פּאָליטיק</th></tr>" +
-      mine.map(x => "<tr><td>" + esc(x.name) + "</td><td>" + esc(x.platform) + "</td><td>" + (x.status === "active" ? pill("אַקטיוו", "allow") : pill("וואַרט אויף קאָד", "pending")) + "</td><td dir='ltr'>" + esc(x.last_seen_at ? String(x.last_seen_at).slice(0, 19).replace("T", " ") : "—") + "</td><td>" + esc(x.policy_name || "—") + "</td></tr>").join("") + "</table>"
-      : '<p class="muted">קיין דעוויסעס נישטאָ פֿאַר דעם קונה.</p>';
+    const mine = devs.data.filter(x => x.customer_id === cid && !x.managed_by_customer_id);
+    const mineManagedByMe = devs.data.filter(x => x.customer_id === cid && x.managed_by_customer_id === cid);
+    const own = mine.concat(mineManagedByMe);
+    document.getElementById("myDevices").innerHTML = own.length ? "<table><tr><th>דעוויס</th><th>פּלאַטפֿאָרמע</th><th>סטאַטוס</th><th>לעצט געזען</th><th>פּאָליטיק</th></tr>" +
+      own.map(x => "<tr><td>" + esc(x.name) + "</td><td>" + esc(x.platform) + "</td><td>" + (x.status === "active" ? pill("אַקטיוו", "allow") : pill("וואַרט אויף קאָד", "pending")) + "</td><td dir='ltr'>" + esc(x.last_seen_at ? String(x.last_seen_at).slice(0, 19).replace("T", " ") : "—") + "</td><td>" + esc(x.policy_name || "—") + "</td></tr>").join("") + "</table>"
+      : '<p class="muted">קיין אייגענע דעוויסעס נישטאָ פֿאַר דעם קונה.</p>';
     const def = pols.data.find(p => p.is_default) || pols.data[0];
     document.getElementById("myPolicy").innerHTML = def ? "<b>מײַן פּאָליטיק:</b> " + esc(def.name) + " — בלאָקירט בילדער: <b>" + (def.block_images ? "יאָ" : "ניין") + "</b> · אַדס־פֿילטער: <b>" + (def.filter_ads ? "אָן" : "אויס") + "</b> · SafeSearch: <b>" + (def.force_safesearch ? "אָן" : "אויס") + "</b> · ווידעאָ־פֿילטער: <b>" + (def.filter_videos ? "יאָ" : "ניין") + "</b>." : "";
+    // Managed by me: devices whose managed_by_customer_id is this customer.
+    const managed = devs.data.filter(x => x.managed_by_customer_id === cid);
+    const mStatus = {};
+    await Promise.all(managed.map(async x => {
+      try { const s = await api("GET", "/api/v1/devices/" + x.id + "/status"); mStatus[x.id] = s.data; }
+      catch (e) { mStatus[x.id] = null; }
+    }));
+    renderManagedDevices(managed, mStatus, pols.data);
+    renderInvites(invs.data || []);
+    document.getElementById("invPolicy").innerHTML = '<option value="">דיפֿאָלט־פּאָליטיק</option>' +
+      pols.data.map(p => '<option value="' + p.id + '">' + esc(p.name) + "</option>").join("");
     document.getElementById("myRequests").innerHTML = reqs.data.length ? "<table><tr><th>סאָרט</th><th>ציל</th><th>סטאַטוס</th><th>AI באַשלוס</th></tr>" +
       reqs.data.map(x => "<tr><td>" + esc(x.kind) + "</td><td dir='ltr'>" + esc(x.target) + "</td><td>" + statusPill(x.status) + "</td><td>" + esc(x.ai_verdict || "—") + "</td></tr>").join("") + "</table>"
       : '<p class="muted">קיין בקשות נישטאָ.</p>';
+  } catch (err) { setStatus("פֿעלער: " + err.message, false); }
+}
+function renderManagedDevices(list, mStatus, policies) {
+  const el = document.getElementById("managedDevices");
+  if (!list.length) { el.innerHTML = '<p class="muted">איר פֿאַרוואַלט קיין פֿרעמדע דעוויסעס נישט — שאַפֿט אַן אײַנלאַדונג אונטן צו אָנהייבן.</p>'; return; }
+  el.innerHTML = "<table><tr><th>דעוויס</th><th>באַזיצער</th><th>פּאָליטיק</th><th>לעבט?</th><th>לעצט געזען</th><th>אַקציע</th></tr>" +
+    list.map(x => {
+      const st = mStatus[x.id];
+      const live = !st ? pill("אומבאַקאַנט", "pending") : st.status === "online" ? pill("אָנליין", "allow") : pill("אָפֿליין", "block");
+      const seen = x.last_seen_at || (st ? st.checked_at : null);
+      const opts = policies.map(p => '<option value="' + p.id + '"' + (p.id === x.policy_id ? " selected" : "") + ">" + esc(p.name) + "</option>").join("");
+      return "<tr><td>" + esc(x.name) + "</td><td>" + esc(x.customer_name) + "</td><td>" +
+        '<select onchange="changeManagedPolicy(\'' + x.id + "', this.value)\">" + opts + "</select></td><td>" +
+        live + "</td><td dir='ltr'>" + esc(seen ? String(seen).slice(0, 19).replace("T", " ") : "—") + "</td><td>" +
+        '<button class="danger" onclick="unlinkManagedDevice(\'' + x.id + "', '" + esc(x.name).replace(/'/g, "") + "')\">אָפּקאַפּלען</button></td></tr>";
+    }).join("") + "</table>";
+}
+function renderInvites(list) {
+  const el = document.getElementById("myInvites");
+  if (!list.length) { el.innerHTML = '<p class="muted">קיין אײַנלאַדונגען נישטאָ.</p>'; return; }
+  el.innerHTML = "<table><tr><th>קאָד</th><th>דעוויס</th><th>סטאַטוס</th><th>געשאַפֿן</th></tr>" +
+    list.map(x => "<tr><td dir='ltr'><b>" + esc(x.code) + "</b></td><td>" + esc(x.device_name || "—") + "</td><td>" +
+      (x.status === "used" ? pill("גענוצט", "allow") : pill("וואַרט", "pending")) + "</td><td dir='ltr'>" +
+      esc(String(x.created_at || "").slice(0, 19).replace("T", " ")) + "</td></tr>").join("") + "</table>";
+}
+async function createManagedInvite(e) {
+  e.preventDefault();
+  const cid = document.getElementById("myCustomer").value;
+  const name = document.getElementById("invDeviceName").value.trim();
+  const policyId = document.getElementById("invPolicy").value;
+  try {
+    const body = { manager_customer_id: cid };
+    if (name) body.device_name = name;
+    if (policyId) body.policy_id = policyId;
+    const d = await api("POST", "/api/v1/managed-invites", body);
+    document.getElementById("inviteResult").innerHTML = '<div class="codebox">אײַנלאַדונג־קאָד: <b dir="ltr" style="font-size:28px">' + esc(d.data.code) + "</b><br><span style='font-size:14px'>גיט דעם קאָד <b>און דעם API טאָוקן</b> צום אַנדערן מענטש — ער/זי גיט דעם קאָד אַרײַן אין דער עקסטענשאַן־פּאָפּאַפּ אונטער „רעגיסטרירן מיט אַ מאַנאַדזשערס קאָד“. דער קאָד אַרבעט נאָר איין מאָל.</span></div>";
+    setStatus("אײַנלאַדונג געשאַפֿן — קאָד אויבן.", true);
+    loadCustomerView();
+  } catch (err) { setStatus("פֿעלער: " + err.message, false); }
+  return false;
+}
+async function changeManagedPolicy(deviceId, policyId) {
+  try {
+    await api("PATCH", "/api/v1/devices/" + deviceId, { policy_id: policyId });
+    setStatus("פּאָליטיק געטוישט.", true);
+    loadCustomerView();
+  } catch (err) { setStatus("פֿעלער: " + err.message, false); loadCustomerView(); }
+}
+async function unlinkManagedDevice(deviceId, name) {
+  if (!confirm("זענט איר זיכער אַז איר ווילט אָפּקאַפּלען דעם דעוויס „" + name + "“? דער באַזיצער וועט מער נישט זײַן אונטער אײַער פֿאַרוואַלטונג.")) return;
+  try {
+    await api("POST", "/api/v1/devices/" + deviceId + "/unlink", {});
+    setStatus("דעוויס אָפּגעקאַפּלט.", true);
+    loadCustomerView();
   } catch (err) { setStatus("פֿעלער: " + err.message, false); }
 }
 async function checkDomain(e) {
@@ -561,6 +655,41 @@ async function registerDevice(e) {
   }
   return false;
 }
+
+function fmtBytes(n) {
+  if (typeof n !== "number") return "—";
+  if (n >= 1048576) return (n / 1048576).toFixed(1) + " MB";
+  if (n >= 1024) return (n / 1024).toFixed(0) + " KB";
+  return n + " bytes";
+}
+// Download Center — public, no token needed. Shows the current extension
+// version from versions.json and the Android status.
+async function loadDownloadCenter() {
+  const el = document.getElementById("dlCenter");
+  try {
+    const res = await fetch("/versions.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const v = await res.json();
+    const e = v.extension || {};
+    const a = v.android || {};
+    let html = "קאָמפּיוטער־עקסטענשאַן: <b>ווערסיע " + esc(e.version || "?") + "</b>";
+    if (e.size_bytes) html += " · " + fmtBytes(e.size_bytes);
+    html += ' · <a href="/download.html">אַראָפּלאָדן</a>';
+    html += "<br>אַנדרויד־בלעטערער: ";
+    html += (a.status === "testing")
+      ? "<b>אין טעסטן — נישטאָ פֿאַר עפֿנטלעכן אַראָפּלאָד</b>"
+      : "<b>" + esc(a.status || "?") + "</b>";
+    if (a.version) html += " (ווערסיע " + esc(a.version) + ")";
+    html += "<br><span class='muted'>אַפּדעיט־סטאַטוס: די עקסטענשאַן טשעקט אײַן אויף דעם זײַטל און מעלדט ווען אַ נײַע ווערסיע איז דאָ — דערהײַנטיקונג איז האַנט־אַרבעט פֿון דעם אַראָפּלאָד־בלאַט.</span>";
+    el.innerHTML = html;
+  } catch (err) {
+    el.textContent = "קען נישט לאָדן ווערסיע־אינפֿאָ (" + err.message + ") — דער אַראָפּלאָד־בלאַט: ";
+    const a = document.createElement("a");
+    a.href = "/download.html"; a.textContent = "אַראָפּלאָדן";
+    el.appendChild(a);
+  }
+}
+loadDownloadCenter();
 
 if (TOKEN) connect();
 </script>

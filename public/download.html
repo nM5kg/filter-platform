@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="yi" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>אונדזער פֿילטער — אַראָפּלאָדן</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, "Segoe UI", Arial, sans-serif; margin: 0; background: #f4f6f8; color: #1c2430; }
+  header { background: #14324f; color: #fff; padding: 18px 22px; }
+  header h1 { margin: 0; font-size: 22px; }
+  header p { margin: 4px 0 0; opacity: .85; font-size: 14px; }
+  header a { color: #fff; }
+  main { max-width: 900px; margin: 0 auto; padding: 18px; }
+  .card { background: #fff; border: 1px solid #dde3ea; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .card h2 { margin: 0 0 10px; font-size: 18px; }
+  .card h3 { margin: 14px 0 6px; font-size: 15px; }
+  .muted { color: #5a6b7d; font-size: 13px; }
+  .btn { display: inline-block; background: #2e7d32; color: #fff; border-radius: 8px; padding: 12px 22px; font-size: 17px; font-weight: 700; text-decoration: none; }
+  .btn:hover { background: #256b29; }
+  .btn.disabled { background: #9aa7b4; cursor: default; }
+  .meta { font-size: 14px; margin-top: 10px; }
+  .meta code { direction: ltr; unicode-bidi: embed; word-break: break-all; font-size: 12px; }
+  ol { line-height: 1.9; padding-inline-start: 22px; }
+  code.addr { direction: ltr; unicode-bidi: embed; background: #f0f3f6; padding: 1px 6px; border-radius: 4px; }
+  .warn { background: #fef7e0; border: 1px solid #d9a400; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .warn h2 { margin: 0 0 8px; font-size: 18px; color: #7a5a00; }
+  .warn li { margin-bottom: 6px; }
+  .badge { display: inline-block; background: #b06000; color: #fff; border-radius: 4px; padding: 2px 8px; font-size: 12px; margin-inline-start: 8px; }
+  .pill { display: inline-block; background: #b06000; color: #fff; border-radius: 4px; padding: 2px 8px; font-size: 12px; margin-inline-start: 8px; }
+  .pill.pending { background: #b06000; }
+  button:disabled { background: #9aa7b4; color: #fff; border: none; border-radius: 8px; padding: 12px 22px; font-size: 17px; font-weight: 700; cursor: default; }
+  .back { font-size: 14px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>אונדזער פֿילטער — אַראָפּלאָדן</h1>
+  <p>דער אָפֿיציעלער אַראָפּלאָד־צענטער פֿון דער פֿילטער פּלאַטפאָרמע. קיין Chrome Web Store, קיין Google Play — אַלץ קומט פֿון דאָ, פֿון אונדזער אייגענעם וועבזײַטל.</p>
+</header>
+<main>
+  <p class="back"><a href="/index.html">← צוריק צום דאַשבאָרד</a></p>
+
+  <!-- ============ COMPUTER EXTENSION ============ -->
+  <div class="card">
+    <h2>🖥️ קאָמפּיוטער־עקסטענשאַן</h2>
+    <p>דער פֿילטער פֿאַר אײַער קאָמפּיוטער־בלעטערער — ער בלאָקירט בילדער פֿון מענטשן לויט אײַער פּאָליסי, בלאָקירט פֿאַרבאָטענע זײַטן, און פֿילטערט אַדס און זוכונג.</p>
+    <p><a class="btn" id="dlBtn" href="/our-filter-extension-1.2.0.zip">⬇ אַראָפּלאָדן די עקסטענשאַן</a></p>
+    <div class="meta" id="extMeta">
+      ווערסיע: <b id="extVersion">1.2.0</b> ·
+      גרייס: <b id="extSize">—</b> ·
+      SHA-256: <code id="extSha">—</code>
+    </div>
+    <p class="muted">נאָכן אַראָפּלאָדן: מאַכט אויף דעם ZIP (אַן אויסגעפּאַקטער פֿאָלדער) און פֿאָלגט די שריט אונטן פֿאַר אײַער בלעטערער.</p>
+
+    <h3>Chrome — ווי אַזוי צו אינסטאַלירן</h3>
+    <ol>
+      <li>לאָדט אַראָפּ דעם ZIP אויבן און <b>פּאַקט אים אויס</b> (רעכט־קליק → "Extract all" / "אויספּאַקן"), אַז איר זאָלט האָבן אַ פֿאָלדער מיט טעקעס.</li>
+      <li>עפֿנט אין Chrome דעם אַדרעס <code class="addr">chrome://extensions</code></li>
+      <li>שאַלט אָן אויבן רעכטס דעם <b>"Developer mode" (דעוועלאָפּער־מאָדע)</b> קנעפּל.</li>
+      <li>דריקט <b>"Load unpacked"</b> און קלייבט אויס דעם אויסגעפּאַקטן פֿאָלדער.</li>
+      <li>דריקט דאָס פּאַזל־איקאָן (🧩) אויבן אין Chrome און פּינט אָן דעם "Filter Platform" איקאָן, אַז איר זאָלט אים זען.</li>
+      <li>עפֿנט דעם פֿילטער־איקאָן און גיט אַרײַן אײַער API טאָוקן און דיווייס ID פֿונעם דאַשבאָרד.</li>
+    </ol>
+
+    <h3>Microsoft Edge — ווי אַזוי צו אינסטאַלירן</h3>
+    <ol>
+      <li>לאָדט אַראָפּ דעם ZIP אויבן און <b>פּאַקט אים אויס</b>.</li>
+      <li>עפֿנט אין Edge דעם אַדרעס <code class="addr">edge://extensions</code></li>
+      <li>שאַלט אָן אונטן לינקס דעם <b>"Developer mode"</b> קנעפּל.</li>
+      <li>דריקט <b>"Load unpacked"</b> און קלייבט אויס דעם אויסגעפּאַקטן פֿאָלדער.</li>
+      <li>גיט אַרײַן אײַער API טאָוקן און דיווייס ID אינעם פֿילטער־איקאָן.</li>
+    </ol>
+
+    <h3>Brave — ווי אַזוי צו אינסטאַלירן</h3>
+    <ol>
+      <li>לאָדט אַראָפּ דעם ZIP אויבן און <b>פּאַקט אים אויס</b>.</li>
+      <li>עפֿנט אין Brave דעם אַדרעס <code class="addr">brave://extensions</code></li>
+      <li>שאַלט אָן אויבן רעכטס דעם <b>"Developer mode"</b> קנעפּל.</li>
+      <li>דריקט <b>"Load unpacked"</b> און קלייבט אויס דעם אויסגעפּאַקטן פֿאָלדער.</li>
+      <li>גיט אַרײַן אײַער API טאָוקן און דיווייס ID אינעם פֿילטער־איקאָן.</li>
+    </ol>
+  </div>
+
+  <!-- ============ ANDROID (merged from download-android-snippet.html, 2026-11-19) ============ -->
+  <section class="card" id="android" lang="yi" dir="rtl">
+    <h2>אַנדרויד אַפּ <span class="pill pending">אין טעסטן — נישט פֿאַר דאַונלאָוד</span></h2>
+    <p>
+      די אַנדרויד אַפּ (אונזער אייגענער בלעטערער, געבויט אויף GeckoView)
+      איז נאָך אין טעסטן. ווערסיע <b>0.2.0</b> קראַשט אויפֿן טעסט־טעלעפֿאָן,
+      און די טעלעפֿאָן־אַרבעט איז פּאַרקירט ביז די קאָמפּיוטער־ווערסיע איז
+      געהעריק פֿאַרטיק. <b>עס איז דערווייל קיין דאַונלאָוד נישטאָ</b> — נישט
+      פֿון אונזער זײַט, נישט פֿון Google Play, נישט פֿון ערגעץ אַנדערש.
+    </p>
+    <p class="muted">
+      ווען די אַפּ איז גרייט, וועט מען זי אַראָפּלאָדן נאָר פֿון דאָ — פֿון
+      אונזער אייגענער זײַט. קיין Google Play, קיין Chrome Web Store.
+    </p>
+    <h3>ווי אַזוי מען וועט עס אינסטאַלירן (ווען עס איז גרייט)</h3>
+    <p>
+      ווײַל די אַפּ קומט נישט פֿון Google Play, וועט אַנדרויד ווײַזן אַ
+      זיכערהייט־וואָרענונג. דאָס איז נאָרמאַל פֿאַר אַן אַפּ פֿון אונזער
+      אייגענער זײַט — מען דאַרף עס ערלויבן איין מאָל:
+    </p>
+    <ol>
+      <li>לאָדט אַראָפּ די APK־טעקע פֿון דאָ (דעם דאַונלאָוד־צענטער).</li>
+      <li>עפֿנט די אַראָפּגעלאָדענע טעקע — אַנדרויד פֿרעגט:
+        <q>Install unknown apps</q> (אינסטאַלירן אַפּס פֿון אומבאַקאַנטע מקורים).</li>
+      <li>דריקט <b>Allow</b> / <b>ערלויבן</b> פֿאַר דעם בלעטערער (Chrome) —
+        נאָר פֿאַר דעם איין אינסטאַל.</li>
+      <li>דריקט <b>Install</b> / <b>אינסטאַלירן</b>, און דערנאָך
+        <b>Open</b> / <b>עפֿענען</b>.</li>
+      <li>בײַם ערשטן עפֿענען: רעגיסטרירט דעם דעווייס מיט דעם 6־ציפֿערדיקן
+        קאָד פֿון דאַשבאָרד, ווי בײַם עקסטענשאָן.</li>
+    </ol>
+    <p class="muted">
+      די וואָרענונג קומט ווײַל Google קען די אַפּ נישט — נישט ווײַל עפּעס איז
+      פֿאַלש מיט איר. לאָדט די אַפּ אַראָפּ נאָר פֿון דאָ, קיינמאָל נישט פֿון אַ
+      פֿרעמדן לינק.
+    </p>
+    <h3>חתימה־כלל (release signing)</h3>
+    <p>
+      נאָר אַ <b>release־געחתימטע</b> ווערסיע ווערט פֿאַרשפּרייט. דער איצטיקער
+      טעסט־בילד איז געחתימט מיט אַ <b>debug־שליסל</b> (געמאַכט אויף דער
+      בילד־מאַשין, נישט אַ באַשיצטער release־שליסל) — אַ debug־שליסל איז
+      <b>נישט פֿאַר פֿאַרשפּרייטונג</b>. איידער די אַפּ גייט אַרויס, ווערט אַ
+      באַזונדערער release־שליסל געמאַכט און באַהאַלטן, און דער דאַונלאָוד
+      באַקומט זײַן SHA-256 און גרייס דאָ אויפֿן בלאַט.
+    </p>
+    <p>
+      <button disabled>אַראָפּלאָדן — נאָך נישט גרייט</button>
+      <span class="muted">ווערסיע 0.2.0 (טעסט־בילד) · גרייס 211 MB · SHA-256 ווערט פֿאַרעפֿנטלעכט מיט דער release־ווערסיע</span>
+    </p>
+  </section>
+
+  <!-- ============ HONEST LIMITATIONS ============ -->
+  <div class="warn">
+    <h2>⚠️ וויכטיק צו וויסן — ערלעכע באַגרענעצונגען</h2>
+    <ul>
+      <li><b>Chrome לאָזט נישט אינסטאַלירן עקסטענשאַנס פֿון דרויסן דעם Web Store אויף אַ געוויינטלעכן וועג.</b> דער וועג דאָ ("Load unpacked" אין Developer mode) אַרבעט, אָבער Chrome ווײַזט אַ וואָרענונג אַז די עקסטענשאַן קומט נישט פֿון דעם סטאָר, און איר מוזט זי אַליין דערהאַלטן.</li>
+      <li><b>אײַער עקסטענשאַן וועט זיך נישט דערהײַנטיקן פֿון זיך אַליין.</b> ווען אַ נײַע ווערסיע קומט אַרויס, מוזט איר צוריקקומען צו דעם זײַטל, אַראָפּלאָדן דעם נײַעם ZIP, און אים ווידער אינסטאַלירן. די עקסטענשאַן אַליין וועט אײַך מעלדן ווען אַ נײַע ווערסיע איז דאָ.</li>
+      <li><b>אַן אַנדרויד־APK פֿון דרויסן Google Play ברענגט אַ זיכערהייט־וואָרענונג.</b> אַנדרויד וועט אײַך וואָרענען "Install unknown apps" (אינסטאַלירן אַפּס פֿון אומבאַקאַנטע מקורים) — דאָס איז נאָרמאַל פֿאַר אַפּס וואָס קומען נישט פֿון Play, און איר וועט דאַרפֿן עס דערלויבן איין מאָל פֿאַר דעם אינסטאַל.</li>
+      <li><b>מיר פֿאַרשפּרייטן מיט אַבסאָלוט נישט דעם Chrome Web Store אָדער Google Play</b> — אַלץ קומט פֿון אונדזער אייגענעם וועבזײַטל, כדי עס זאָל בלייבן פֿרײַ און אָן סטאָר־אָפּצאָלן.</li>
+    </ul>
+  </div>
+
+  <p class="muted">פֿראַגעס? קומט צוריק צום <a href="/index.html">דאַשבאָרד</a>.</p>
+</main>
+<script>
+// Fill version / size / sha256 from versions.json (single source of truth).
+// Static fallbacks above stay if the fetch fails.
+function fmtBytes(n) {
+  if (typeof n !== "number") return "—";
+  if (n >= 1048576) return (n / 1048576).toFixed(1) + " MB";
+  if (n >= 1024) return (n / 1024).toFixed(0) + " KB";
+  return n + " bytes";
+}
+fetch("/versions.json", { cache: "no-store" })
+  .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+  .then(v => {
+    const e = v.extension || {};
+    if (e.version) document.getElementById("extVersion").textContent = e.version;
+    if (e.size_bytes) document.getElementById("extSize").textContent = fmtBytes(e.size_bytes) + " (" + e.size_bytes.toLocaleString("en-US") + " bytes)";
+    if (e.sha256) document.getElementById("extSha").textContent = e.sha256;
+    if (e.url) document.getElementById("dlBtn").href = e.url;
+  })
+  .catch(() => { /* fallbacks stay */ });
+</script>
+</body>
+</html>
