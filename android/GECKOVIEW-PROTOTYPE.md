@@ -549,3 +549,79 @@ link as before (file replaced in place).
    the status line say on bbc.com / wikipedia.org / example.com? Does
    the facebook block page appear? Anything that kicks out or shows an
    on-screen error — copy the exact text.
+
+---
+
+## Web demo (added 2026-11-19 — web-demo child; do not rewrite the sections above)
+
+The same browser is ALSO usable on the web, so it can be tested here
+without Yakob's phone. This does **not** replace the phone test above —
+it cannot prove the GeckoView app launches on the phone.
+
+- **Demo shell:** https://filter-platform-dashboard.pages.dev/browser.html
+  (address bar, back / forward / reload, filter-status line in Yiddish,
+  one-click links to the 8 test pages + Wikipedia / BBC / example.com /
+  Google & Bing SafeSearch tests / facebook block test).
+- **Proxy Worker:** `filter-platform-web-browser`
+  (https://filter-platform-web-browser.gavhah-copy.workers.dev) —
+  fetches the target, strips its CSP, rewrites links/forms/images/
+  scripts to stay inside the proxy (`/browse?u=…`), injects the shim +
+  the SAME `content.js` / `detector.js` / `detector-page.js` / models
+  the app ships (served from `public/browser-assets/`), enforces the
+  SafeSearch rewrite (port of `FilterEngine.rewriteSafeSearch`), and
+  checks the domain server-side against the filter API (service binding
+  to `filter-platform-api`; the API token never leaves the Worker).
+  SSRF guard ported from `scanner/scanner.js` (same IP ranges; DNS
+  resolved via Cloudflare DoH because Workers have no DNS API).
+- **In-page engine:** a direct JS translation of
+  `FilterEngine.decide` + `JsReportedPersonDetector` + `DEFAULT_POLICY`
+  (block images, cover, threshold 0.70; PERSON → cover, NO_PERSON ≥ 0.70
+  → allow, UNKNOWN → cover, fail closed). Status counts reach the shell
+  via `postMessage` from the iframe.
+- **What it proves (verified live 2026-11-19, Playwright headless
+  Chromium — `harness/verify-web-demo.js` 8/8 PASS,
+  `harness/verify-web-demo-testpages.js` 5/5 PASS):** the filter
+  pipeline, the EfficientDet JS detector, SafeSearch, and the Yiddish
+  block page all work on real pages — Wikipedia 23 scanned (20 covered,
+  3 allowed), BBC 257 scanned (187 covered, 70 allowed), test page 01
+  person/crowd covered + landscape allowed, canvas + video covered with
+  videos paused, WebGL covered (pixels unreadable → fail closed),
+  facebook.com → Yiddish block page, Google search gains `safe=active`
+  (Google itself bot-checks headless Chromium to `/sorry`), Bing gains
+  `adlt=strict`, slow-3G first counts in ~1 s, detector ready in ~2 s
+  warm (~5 s on first load incl. the one-time 15 MB WASM + 7 MB model
+  download). Test pages live at `/test-pages/` on the Pages site.
+- **What it does NOT prove:** the GeckoView app launching on Yakob's
+  phone (phone test still needed); Gecko-specific behaviour (this runs
+  in Chromium); the native RF-DETR Kotlin path (phone-only — the web
+  demo runs the EfficientDet JS detector); logins/cookies on proxied
+  sites (mostly broken through the proxy); phone performance.
+- **Files:** `public/browser.html`, `public/browser-assets/` (copies of
+  the app's filter-extension files), `public/test-pages/` (copies of
+  `android/test-pages/`), `web-browser-worker.js`,
+  `web_browser_deploy.py`, `harness/verify-web-demo*.js` +
+  results JSON. `pages_deploy.py` now deploys `public/` recursively.
+- **Known quirks (2026-11-19):** (1) Worker-to-Worker fetch to
+  `*.workers.dev` returns Cloudflare error 1042 even with the subdomain
+  enabled — the domain check therefore uses a service binding to
+  `filter-platform-api`. (2) Cloudflare error 1010 blocks non-browser
+  User-Agents on `*.workers.dev` — the Worker sends a browser UA on its
+  API calls. (3) `<input type=image>` has no `naturalWidth`, so the
+  content script cannot read its pixels — it stays covered (fail
+  closed), even for a landscape picture. (4) On test page 02 one extra
+  overlay was counted vs the status line (6 overlays, 5 covered / 1
+  allowed) — likely a re-report timing artifact; nothing that should be
+  covered was shown uncovered.
+
+## 0.2.1-test — launch-crash diagnostic build (2026-11-19, versionCode 6)
+- Same app as 0.2.0 plus crash reporting: catches `Throwable` (not just `Exception`) in the launch path, writes checkpoints + full crash (class, message, stack) to `startup-report.txt`, and shows a previous-crash screen on the next launch so Yakob can photograph it.
+- APK: `manual-build/out/FilterPlatform-diagnostic-0.2.1-test.apk`, 211,176,487 bytes, sha256 `9b5bd6887eb9083f89736bcd1e6e7c439dc3d0c21a1f1ab7e1e3f27df4d90e62`, apksigner v2+v3 true.
+- Drive (separate file, main APK untouched): file id `1hwlBJDmb7Tn1m2LoWmAQoAeYZDvO2hPR` — https://drive.google.com/file/d/1hwlBJDmb7Tn1m2LoWmAQoAeYZDvO2hPR/view?usp=drivesdk
+- Phone test (uninstall the old app first, then install, then tap): (a) opens to setup = launch works; (b) crash-report screen appears = photograph it before tapping anything; (c) only "keeps stopping" with no report screen = report that exactly.
+
+## 0.2.2 — RF-DETR Nano in the app (2026-11-19, versionCode 7)
+- RF-DETR Nano ONNX (`app/src/main/assets/rfdetr-nano.onnx`, 116,607,449 bytes, sha256 `26728b72…bee0851`, matches the benchmarked file) + ONNX Runtime 1.32.0 (CPU, arm64 `.so` files packed stored/uncompressed). New code: `RfDetrOrtBackend.kt` (lazy OrtSession, inference on the background thread, never the UI thread), `RfDetrPersonDetector` + `CombinedPersonDetector` in `FilterEngine.kt` — PERSON if either detector says person, NO_PERSON only if all say clean, else UNKNOWN (stays covered). Threshold still flows from policy (0.50 vs 0.70 still Yakob's decision). Face-api fallback kept as a complementary signal.
+- Behaviour change: a photo the JS detectors could not thumbnail (cross-origin, WebGL, live stream) used to be allow-able on the JS clean verdict alone; now it stays covered, because RF-DETR answers UNKNOWN with no thumbnail and one UNKNOWN vetoes a clean verdict. That only ever keeps content covered, never uncovers anything unchecked.
+- APK: `manual-build/out/app-debug.apk`, 364,289,292 bytes (~348 MB), sha256 `78becf7355e54c67d24a3b4ff034c2d7ad5a5a46ef9ab217609639ee13350420`, apksigner v2+v3 true, badging versionCode 7 / versionName 0.2.2. Tests 59/59 pass (37 existing + 22 new).
+- NOT uploaded to Drive yet — the parent decides which build goes to Yakob; 0.2.1-test remains the current phone test. Only the phone can prove: ORT native libs loading on the BLU, on-device inference speed, real detection on phone photos, memory use with GeckoView + ORT together, and whether the app still launches at all with the extra ~150 MB. This build has never run on a device.
+- Known wart: the failure screen still says "diagnostic build 0.2.1-test" — it should say 0.2.2 someday.
